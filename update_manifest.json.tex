@@ -1,0 +1,32 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":444,"path":"/root/projects/yohaku/release-prep/yohaku/update_manifest.json","sha256":"3b163c38d774687e8dc5297e0b5868fbc1ead59114511a78aa9f332fafb46cb0"}
+---
+
+## 正文
+```text
+{
+  "format": "yohaku-update/0.1",
+  "release": "source-checkout-not-an-upgrade-payload",
+  "project_checks": {},
+  "files": [
+    {
+      "path": "bin/yohaku-agent",
+      "sha256": "fc0677768067353696bda58d056e19f56ab8c5f2a283e3fd8f4bb6419b183eb6",
+      "executable": true
+    },
+    {
+      "path": "bin/yohaku-tools",
+      "sha256": "186550e969d9a73f4e9bcd7fff14fa81587ed415a413e2e4a5e5e0bfa26c15d9",
+      "executable": true
+    }
+  ]
+}
+```
+
+## 输出与关联
+```yaml
+output: "update_manifest.json"
+```

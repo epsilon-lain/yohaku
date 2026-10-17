@@ -1,0 +1,228 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":6507,"path":"/root/projects/yohaku/release-prep/yohaku/src/editor.rs","sha256":"8b11d82271c7c149473042fef022823959c8dbbc14292688d746242fd5f5a4b9"}
+---
+
+## 正文
+```text
+//! Small UTF-8 editor state. The UI, keyboard, and tests use byte boundaries.
+#[derive(Default)]
+pub struct Editor {
+    pub text: String,
+    pub cursor: usize,
+    pub top: usize,
+    pub selected_all: bool,
+    undo: Vec<(String, usize)>,
+    redo: Vec<(String, usize)>,
+}
+
+impl Editor {
+    pub fn load(&mut self, text: String) {
+        self.text = text;
+        self.cursor = 0;
+        self.top = 0;
+        self.selected_all = false;
+        self.undo.clear();
+        self.redo.clear();
+    }
+    fn checkpoint(&mut self) {
+        self.undo.push((self.text.clone(), self.cursor));
+        self.redo.clear();
+        while self.undo.len() > 100
+            || (self.undo.len() > 1
+                && self.undo.iter().map(|v| v.0.len()).sum::<usize>() > 4 * 1024 * 1024)
+        {
+            self.undo.remove(0);
+        }
+    }
+    pub fn insert(&mut self, text: &str) {
+        self.checkpoint();
+        if self.selected_all {
+            self.text.clear();
+            self.cursor = 0;
+            self.selected_all = false;
+        }
+        self.text.insert_str(self.cursor, text);
+        self.cursor += text.len();
+    }
+    pub fn newline(&mut self) {
+        let ending = if self.text.contains("\r\n") {
+            "\r\n"
+        } else if self.text.contains('\r') && !self.text.contains('\n') {
+            "\r"
+        } else {
+            "\n"
+        };
+        self.insert(ending);
+    }
+    fn previous(&self) -> usize {
+        if self.text[..self.cursor].ends_with("\r\n") {
+            self.cursor - 2
+        } else {
+            self.text[..self.cursor]
+                .char_indices()
+                .next_back()
+                .map_or(0, |v| v.0)
+        }
+    }
+    fn next(&self) -> usize {
+        if self.text[self.cursor..].starts_with("\r\n") {
+            self.cursor + 2
+        } else {
+            self.cursor
+                + self.text[self.cursor..]
+                    .chars()
+                    .next()
+                    .map_or(0, char::len_utf8)
+        }
+    }
+    pub fn backspace(&mut self) {
+        if self.selected_all {
+            self.insert("");
+            return;
+        }
+        if self.cursor == 0 {
+            return;
+        }
+        self.checkpoint();
+        let start = self.previous();
+        self.text.replace_range(start..self.cursor, "");
+        self.cursor = start;
+    }
+    pub fn delete(&mut self) {
+        if self.selected_all {
+            self.insert("");
+            return;
+        }
+        if self.cursor == self.text.len() {
+            return;
+        }
+        self.checkpoint();
+        let end = self.next();
+        self.text.replace_range(self.cursor..end, "");
+    }
+    pub fn horizontal(&mut self, right: bool) {
+        self.selected_all = false;
+        self.cursor = if right { self.next() } else { self.previous() };
+    }
+    pub fn starts(&self) -> Vec<usize> {
+        let bytes = self.text.as_bytes();
+        let mut result = vec![0];
+        let mut i = 0;
+        while i < bytes.len() {
+            if bytes[i] == b'\r' {
+                i += 1;
+                if bytes.get(i) == Some(&b'\n') {
+                    i += 1;
+                }
+                result.push(i);
+            } else if bytes[i] == b'\n' {
+                i += 1;
+                result.push(i);
+            } else {
+                i += 1;
+            }
+        }
+        result
+    }
+    pub fn row_column(&self) -> (usize, usize) {
+        let starts = self.starts();
+        let row = starts
+            .partition_point(|n| *n <= self.cursor)
+            .saturating_sub(1);
+        (row, self.text[starts[row]..self.cursor].chars().count())
+    }
+    pub fn line<'a>(&'a self, starts: &[usize], row: usize) -> &'a str {
+        let start = starts[row];
+        let end = starts.get(row + 1).copied().unwrap_or(self.text.len());
+        self.text[start..end].trim_end_matches(['\r', '\n'])
+    }
+    pub fn place(&mut self, row: usize, column: usize) {
+        let starts = self.starts();
+        let row = row.min(starts.len() - 1);
+        let line = self.line(&starts, row);
+        let offset = line.char_indices().nth(column).map_or(line.len(), |v| v.0);
+        self.cursor = starts[row] + offset;
+        self.selected_all = false;
+    }
+    pub fn vertical(&mut self, down: bool) {
+        let (row, col) = self.row_column();
+        self.place(if down { row + 1 } else { row.saturating_sub(1) }, col);
+    }
+    pub fn home_end(&mut self, end: bool) {
+        let (row, _) = self.row_column();
+        self.place(row, if end { usize::MAX } else { 0 });
+    }
+    pub fn ensure_visible(&mut self, rows: usize) {
+        let (row, _) = self.row_column();
+        if row < self.top {
+            self.top = row;
+        }
+        if row >= self.top + rows {
+            self.top = row.saturating_sub(rows.saturating_sub(1));
+        }
+    }
+    pub fn undo(&mut self) {
+        if let Some((text, cursor)) = self.undo.pop() {
+            self.redo
+                .push((std::mem::replace(&mut self.text, text), self.cursor));
+            self.cursor = cursor;
+            self.selected_all = false;
+        }
+    }
+    pub fn redo(&mut self) {
+        if let Some((text, cursor)) = self.redo.pop() {
+            self.undo
+                .push((std::mem::replace(&mut self.text, text), self.cursor));
+            self.cursor = cursor;
+            self.selected_all = false;
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn unicode_and_crlf_cursor_never_splits_a_character() {
+        let mut e = Editor::default();
+        e.load("中🧸\r\nx".into());
+        e.horizontal(true);
+        assert_eq!(e.cursor, 3);
+        e.horizontal(true);
+        assert_eq!(e.cursor, 7);
+        e.horizontal(true);
+        assert_eq!(e.cursor, 9);
+        e.backspace();
+        assert_eq!(e.text, "中🧸x");
+        e.backspace();
+        assert_eq!(e.text, "中x");
+        e.undo();
+        assert_eq!(e.text, "中🧸x");
+        e.redo();
+        assert_eq!(e.text, "中x");
+    }
+    #[test]
+    fn select_all_replace_and_navigation_keep_empty_final_line() {
+        let mut e = Editor::default();
+        e.load("abc\n中\n".into());
+        e.place(1, 1);
+        e.vertical(false);
+        assert_eq!(e.cursor, 1);
+        e.place(99, 99);
+        assert_eq!(e.row_column(), (2, 0));
+        e.selected_all = true;
+        e.insert("print(\"lain\")");
+        assert_eq!(e.text, "print(\"lain\")");
+        e.undo();
+        assert_eq!(e.text, "abc\n中\n");
+    }
+}
+```
+
+## 输出与关联
+```yaml
+output: "src/editor.rs"
+```

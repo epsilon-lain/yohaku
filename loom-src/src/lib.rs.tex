@@ -1,0 +1,31 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":553,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/src/lib.rs","sha256":"5e7b0ff389aa5fe4b11c8dac684356ed00a02682e40532c5991333796d25f661"}
+---
+
+## 正文
+```text
+//! Loom converts explicitly delimited text using an explicitly selected macro.
+//! It never evaluates the source body or invokes a language runtime or model.
+
+mod engine;
+mod error;
+mod format;
+mod mapping;
+mod reverse;
+mod tracking;
+
+pub use engine::{build, build_document, BuildResult};
+pub use error::{LoomError, Result};
+pub use format::{parse_file, Document};
+pub use mapping::{map_line, SourceLocation, SourceMap};
+pub use reverse::{reverse_file, ReverseResult};
+pub use tracking::{sync_document, sync_with_root, SyncIssue, SyncResult, Watcher};
+```
+
+## 输出与关联
+```yaml
+output: "loom-src/src/lib.rs"
+```

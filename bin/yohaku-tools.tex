@@ -1,0 +1,19 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":136,"path":"/root/projects/yohaku/release-prep/yohaku/bin/yohaku-tools","sha256":"186550e969d9a73f4e9bcd7fff14fa81587ed415a413e2e4a5e5e0bfa26c15d9"}
+---
+
+## 正文
+```text
+#!/bin/sh
+set -eu
+project_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+exec python3 -B "$project_dir/agent/yohaku_tools.py" "$@"
+```
+
+## 输出与关联
+```yaml
+output: "bin/yohaku-tools"
+```

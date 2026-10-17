@@ -1,0 +1,113 @@
+use std::{num::NonZeroU32, rc::Rc};
+use softbuffer::{Context, Surface};
+use winit::{
+    application::ApplicationHandler,
+    event::{ElementState, MouseButton, WindowEvent},
+    event_loop::{ActiveEventLoop, EventLoop, OwnedDisplayHandle},
+    window::{Window, WindowId},
+};
+
+struct App {
+    context: Context<OwnedDisplayHandle>,
+    surface: Option<Surface<OwnedDisplayHandle, Rc<Window>>>,
+    clicked: bool,
+}
+
+impl ApplicationHandler for App {
+    fn resumed(&mut self, event_loop: &ActiveEventLoop) {
+        if self.surface.is_some() {
+            return;
+        }
+
+        let window = Rc::new(
+            event_loop
+                .create_window(
+                    Window::default_attributes()
+                        .with_title("Yohaku — Genesis")
+                        .with_inner_size(
+                            winit::dpi::LogicalSize::new(960.0, 600.0)
+                        ),
+                )
+                .unwrap(),
+        );
+
+        let surface = Surface::new(&self.context, window.clone()).unwrap();
+        self.surface = Some(surface);
+        window.request_redraw();
+    }
+
+    fn window_event(
+        &mut self,
+        event_loop: &ActiveEventLoop,
+        id: WindowId,
+        event: WindowEvent,
+    ) {
+        let Some(surface) = &mut self.surface else {
+            return;
+        };
+
+        if surface.window().id() != id {
+            return;
+        }
+
+        match event {
+            WindowEvent::CloseRequested => event_loop.exit(),
+
+            WindowEvent::Resized(_) => {
+                surface.window().request_redraw();
+            }
+
+            WindowEvent::MouseInput {
+                state: ElementState::Pressed,
+                button: MouseButton::Left,
+                ..
+            } => {
+                self.clicked = !self.clicked;
+                surface.window().request_redraw();
+            }
+
+            WindowEvent::KeyboardInput { event, .. }
+                if event.state == ElementState::Pressed && !event.repeat =>
+            {
+                self.clicked = !self.clicked;
+                surface.window().request_redraw();
+            }
+
+            WindowEvent::RedrawRequested => {
+                let size = surface.window().inner_size();
+
+                let (Some(width), Some(height)) = (
+                    NonZeroU32::new(size.width),
+                    NonZeroU32::new(size.height),
+                ) else {
+                    return;
+                };
+
+                surface.resize(width, height).unwrap();
+
+                let mut buffer = surface.buffer_mut().unwrap();
+                buffer.fill(if self.clicked { 0x00F4B3B3 } else { 0x00C5E7F0 });
+                buffer.present().unwrap();
+            }
+
+            _ => {}
+        }
+    }
+
+    fn suspended(&mut self, _: &ActiveEventLoop) {
+        self.surface = None;
+    }
+}
+
+fn main() {
+    let event_loop = EventLoop::new().unwrap();
+    let context = Context::new(event_loop.owned_display_handle()).unwrap();
+
+    let mut app = App {
+        context,
+        surface: None,
+        clicked: false,
+    };
+
+    event_loop.run_app(&mut app).unwrap();
+}

@@ -1,0 +1,166 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":6545,"path":"/root/projects/yohaku/release-prep/yohaku/agent/yohaku_codex_linux.py","sha256":"8e489ce1a4298f05d1bdafca7d35267b114f6c2a0319e41f3acbc65c8016a3eb"}
+---
+
+## 正文
+```text
+"""Native Linux Codex app-server runtime for Yohaku.
+
+Host inference is separate from world tools. No Windows setup and no automatic
+credential import. Native command/exec is verified in a deny-by-default policy.
+"""
+import json
+import os
+from pathlib import Path
+import shutil
+import stat
+import subprocess
+import tempfile
+
+# Import the existing bridge module only when needed; avoid import cycles.
+import yohaku_apps as apps
+
+PROFILE='yohaku-control'
+PROBE='''import json,pathlib,sys
+cwd,outer=map(pathlib.Path,sys.argv[1:])
+r={}
+try:r['control_read']=(cwd/'read-control').read_text()=='yohaku-readable-control'
+except OSError:r['control_read']=False
+for key,path in [('workspace_write_denied',cwd/'write-probe'),('outside_write_denied',outer/'outside-write')]:
+ try:path.write_text('probe');r[key]=False
+ except OSError:r[key]=True
+try:(outer/'outside-read').read_bytes();r['outside_read_denied']=False
+except OSError:r['outside_read_denied']=True
+print(json.dumps(r))
+'''
+
+
+def is_linux_codex(address):
+    try:
+        path=apps.address_path(address)
+        if path.name!='codex' or not path.is_file() or not os.access(path,os.X_OK):return False
+        with path.open('rb') as stream:hdr=stream.read(20)
+        return len(hdr)==20 and hdr[:6]==b'\x7fELF\x02\x01' and hdr[18:20]==b'\x3e\x00'
+    except (OSError,ValueError,apps.tools.ToolError):return False
+
+
+def _auth_home():
+    return Path.home()/'.local/state/yohaku/codex-linux-login'
+
+
+def _runtime_config(executable,cwd):
+    return '''approval_policy = "never"
+default_permissions = "yohaku-control"
+cli_auth_credentials_store = "file"
+mcp_servers = {}
+hooks = {}
+plugins = {}
+[features]
+shell_tool = false
+multi_agent = false
+apps = false
+plugins = false
+use_legacy_landlock = false
+[permissions.yohaku-control.filesystem]
+":root" = "deny"
+":minimal" = "read"
+'''+json.dumps(str(executable)) + ' = "read"\n' + json.dumps(str(cwd))+''' = "read"
+[permissions.yohaku-control.network]
+enabled = false
+'''
+
+
+def _safe_auth_copy(target):
+    # Login is explicit and credentials remain solely on the user's device.
+    source=_auth_home()/'auth.json'
+    try:
+        metadata=source.lstat()
+    except FileNotFoundError:
+        return
+    if not stat.S_ISREG(metadata.st_mode) or metadata.st_size>1024*1024:
+        raise ValueError('Invalid dedicated Linux Codex authentication file')
+    # Open without following a replaced symlink.
+    fd=os.open(source,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC)
+    try:
+        current=os.fstat(fd)
+        if not stat.S_ISREG(current.st_mode) or current.st_size>1024*1024:
+            raise ValueError('Invalid Codex credential file')
+        with os.fdopen(fd,'rb',closefd=False) as src:
+            with target.open('xb') as dest:
+                dest.write(src.read(1024*1024+1))
+        target.chmod(0o600)
+    finally:os.close(fd)
+
+
+def launch(address):
+    if not is_linux_codex(address):
+        raise ValueError('Choose a native x86_64 Linux Codex ELF executable')
+    executable=apps.address_path(address)
+    python=shutil.which('python3',path='/usr/bin:/bin')
+    if python is None:raise ValueError('System python3 is needed for the Linux boundary probe')
+    cache=Path.home()/'.cache/yohaku'
+    cache.mkdir(mode=0o700,parents=True,exist_ok=True)
+    runtime=tempfile.TemporaryDirectory(prefix='codex-bridge-',dir=cache)
+    try:
+        outer=Path(runtime.name);home=outer/'state';cwd=outer/'control'
+        home.mkdir(mode=0o700);cwd.mkdir(mode=0o700);(home/'tmp').mkdir(mode=0o700)
+        (cwd/'read-control').write_text('yohaku-readable-control')
+        (outer/'outside-read').write_text('outside-canary')
+        (home/'config.toml').write_text(_runtime_config(executable,cwd))
+        (home/'config.toml').chmod(0o600)
+        _safe_auth_copy(home/'auth.json')
+        env={'PATH':'/usr/bin:/bin:/usr/sbin:/sbin','HOME':str(home),'CODEX_HOME':str(home),
+             'TMPDIR':str(home/'tmp'),'LANG':'C.UTF-8','PYTHONDONTWRITEBYTECODE':'1'}
+        child=subprocess.Popen([str(executable),'app-server','--listen','stdio://'],env=env,cwd=cwd,
+                               stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,start_new_session=True)
+        child.yohaku_linux=True
+        child.yohaku_runtime=runtime
+        child.yohaku_info={'cwd':str(cwd),'outside':str(outer),'readProbe':str(outer/'outside-read'),
+                           'python':python,'executable':str(executable)}
+        return child
+    except BaseException:
+        runtime.cleanup()
+        raise
+
+
+def verify_boundaries(connection):
+    from yohaku_codex import CodexError
+    info=connection.info
+    result=connection.request('command/exec',{'command':[info['python'],'-I','-B','-c',PROBE,info['cwd'],info['outside']],
+        'cwd':info['cwd'],'permissionProfile':PROFILE,'timeoutMs':10000},timeout=25)
+    if result.get('exitCode')!=0:raise CodexError('Linux Codex sandbox probe failed to execute; no model turn started')
+    raw=result.get('stdout')
+    if not isinstance(raw,str) or len(raw)>4096:raise CodexError('Linux Codex sandbox probe returned invalid output')
+    try:
+        checks=json.loads(raw)
+    except ValueError:raise CodexError('Linux Codex sandbox probe returned invalid JSON')
+    expected={'control_read','workspace_write_denied','outside_write_denied','outside_read_denied'}
+    if not isinstance(checks,dict) or set(checks)!=expected or any(type(checks[k]) is not bool for k in expected):
+        raise CodexError('Linux Codex sandbox probe returned invalid checks')
+    # A tmpfs write inside bwrap does not imply a write to the host filesystem.
+    host_blocked=not (Path(info['outside'])/'outside-write').exists()
+    if not all(checks[k] for k in ('control_read','workspace_write_denied','outside_read_denied')) or not host_blocked:
+        raise CodexError('Linux Codex sandbox boundary check failed; no model turn started')
+
+
+def cleanup(child):
+    runtime=getattr(child,'yohaku_runtime',None)
+    if runtime is not None:runtime.cleanup()
+
+
+def login(address):
+    """Only performed by an explicit user-invoked login command; never during probe."""
+    if not is_linux_codex(address):raise ValueError('Choose a native Linux Codex executable')
+    directory=_auth_home();directory.mkdir(mode=0o700,parents=True,exist_ok=True)
+    env=os.environ.copy();env['CODEX_HOME']=str(directory)
+    print('Sign in to dedicated Yohaku Linux Codex storage; no Windows credentials are copied.',flush=True)
+    return subprocess.call([str(apps.address_path(address)),'login','--device-auth'],env=env)
+```
+
+## 输出与关联
+```yaml
+output: "agent/yohaku_codex_linux.py"
+```

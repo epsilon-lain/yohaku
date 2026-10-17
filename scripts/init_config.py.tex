@@ -1,0 +1,37 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":559,"path":"/root/projects/yohaku/release-prep/yohaku/scripts/init_config.py","sha256":"9a82ed621aa232c958628d35e0f9486b1ef9dc8ddad8a83b5732ec586f63e763"}
+---
+
+## 正文
+```text
+import json
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main():
+    for name in ['ai', 'shell']:
+        data = (ROOT / f'config/{name}.example.json').read_bytes()
+        json.loads(data)
+        destination = ROOT / f'config/{name}.json'
+        try:
+            with destination.open('xb') as stream:
+                stream.write(data)
+            print(f'Created local {destination.name}')
+        except FileExistsError:
+            print(f'Kept existing local {destination.name}')
+
+
+if __name__ == '__main__':
+    main()
+```
+
+## 输出与关联
+```yaml
+output: "scripts/init_config.py"
+```

@@ -1,0 +1,43 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":1573,"path":"/root/projects/yohaku/release-prep/yohaku/agent/yohaku_windows_inventory.ps1","sha256":"6b8bae0c8e0ec804776591905c9c504432c6dec91d53d1ae0ea9159b03cc450b"}
+---
+
+## 正文
+```text
+$ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+$apps = New-Object System.Collections.Generic.List[object]
+$seen = @{}
+function Add-App([string]$name, [string]$path) {
+    if ($path -and (Test-Path -LiteralPath $path -PathType Leaf) -and -not $seen.ContainsKey($path.ToLowerInvariant())) {
+        $seen[$path.ToLowerInvariant()] = $true
+        $apps.Add(@{name=$name;path=$path})
+    }
+}
+Add-App 'Codex' (Join-Path $env:APPDATA 'npm\codex')
+Add-App 'Codex' (Join-Path $env:APPDATA 'npm\codex.cmd')
+Add-App 'Visual Studio Code' (Join-Path $env:LOCALAPPDATA 'Programs\Microsoft VS Code\Code.exe')
+$shell = New-Object -ComObject WScript.Shell
+$roots = @((Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs'), (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs'))
+foreach ($root in $roots) {
+    if (-not (Test-Path -LiteralPath $root)) { continue }
+    foreach ($link in (Get-ChildItem -LiteralPath $root -Filter '*.lnk' -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 256)) {
+        try { $target = $shell.CreateShortcut($link.FullName).TargetPath; Add-App $link.BaseName $target } catch {}
+    }
+}
+if (Get-Command Get-StartApps -ErrorAction SilentlyContinue) {
+    foreach ($app in (Get-StartApps | Select-Object -First 256)) {
+        if ($app.AppID -like '*!*') {$apps.Add(@{name=[string]$app.Name;app_id=[string]$app.AppID})}
+    }
+}
+# Inventory only: never run shortcut targets or their arguments.
+ConvertTo-Json -InputObject @($apps.ToArray()) -Depth 4 -Compress
+```
+
+## 输出与关联
+```yaml
+output: "agent/yohaku_windows_inventory.ps1"
+```

@@ -1,0 +1,10 @@
+Description: disable redox dependency to resolve conflict
+ redox_syscall until 0.4.1 still uses bitflags 1, causing dependency conflict
+ for sccache between tempfile (this) and rustix (requiring bitflags 2).
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -51,2 +51,2 @@
+-[target."cfg(target_os = \"redox\")".dependencies.redox_syscall]
+-version = "0.4"
++#[target."cfg(target_os = \"redox\")".dependencies.redox_syscall]
++#version = "0.4"

@@ -1,0 +1,47 @@
+use fontdue::{Font, FontSettings};
+use std::sync::OnceLock;
+
+pub fn primary() -> &'static Font {
+    static FONT: OnceLock<Font> = OnceLock::new();
+    FONT.get_or_init(|| {
+        for path in [
+            "/mnt/c/Windows/Fonts/simfang.ttf",
+            "/usr/share/fonts/TTF/DejaVuSans.ttf",
+            "/usr/share/fonts/noto/NotoSans-Regular.ttf",
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+            "/mnt/c/Windows/Fonts/segoeui.ttf",
+        ] {
+            if let Some(font) = load(path) {
+                return font;
+            }
+        }
+        panic!("No usable text font found");
+    })
+}
+
+pub fn for_character(character: char) -> &'static Font {
+    let primary = primary();
+    if primary.has_glyph(character) {
+        return primary;
+    }
+    static SYMBOL: OnceLock<Option<Font>> = OnceLock::new();
+    static CJK: OnceLock<Option<Font>> = OnceLock::new();
+    for (path, cache) in [
+        ("/mnt/c/Windows/Fonts/seguisym.ttf", &SYMBOL),
+        ("/mnt/c/Windows/Fonts/msyh.ttc", &CJK),
+    ] {
+        if let Some(font) = cache.get_or_init(|| load(path)) {
+            if font.has_glyph(character) {
+                return font;
+            }
+        }
+    }
+    primary
+}
+
+fn load(path: &str) -> Option<Font> {
+    let bytes = std::fs::read(path).ok()?;
+    let font = Font::from_bytes(bytes, FontSettings::default()).ok()?;
+    eprintln!("[TEXT FONT] loaded {path}");
+    Some(font)
+}

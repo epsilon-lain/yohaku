@@ -1,0 +1,43 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":400,"path":"/root/projects/yohaku/release-prep/yohaku/.gitignore","sha256":"9cc31bc37ddc7858cb76861fddf494a3fb145d6f7ecb90826a387016f580d308"}
+---
+
+## 正文
+```text
+/target/
+/worlds/
+/config/ai.json
+/config/shell.json
+/config/development-runtime.json
+/bin/loom-linux-x86_64
+/bin/yohaku_workspace
+/bin/yohaku-tool-window
+/bin/yohaku_compositor
+/.verification/
+/.yohaku-backups/
+/.loom/
+**/.loom/
+/.yohaku/
+/.cargo/credentials*
+/.env
+/.env.*
+!.env.example
+**/__pycache__/
+*.py[cod]
+*.log
+*.bak
+*.ppm
+*.tmp
+auth.json
+credentials.json
+config/ai.local.json
+**/.DS_Store
+```
+
+## 输出与关联
+```yaml
+output: ".gitignore"
+```

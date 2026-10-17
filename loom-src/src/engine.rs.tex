@@ -1,0 +1,301 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":10488,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/src/engine.rs","sha256":"80ab408de6daea6b40155c65f544ffa95051dd627a19c4f5df7078332d861a21"}
+---
+
+## 正文
+```text
+use crate::format::{lines, property, required_string};
+use crate::mapping::digest;
+use crate::{parse_file, Document, LoomError, Result, SourceMap};
+use std::fs;
+use std::io::Write;
+use std::path::{Component, Path, PathBuf};
+use tempfile::{Builder, NamedTempFile};
+
+#[derive(Debug, serde::Serialize)]
+pub struct BuildResult {
+    pub source: PathBuf,
+    pub output: PathBuf,
+    pub map_path: PathBuf,
+    pub build_id: String,
+    pub bytes_written: usize,
+}
+
+/// Convert using the source document's actual containing directory as the base.
+pub fn build_document(source: impl AsRef<Path>) -> Result<BuildResult> {
+    let requested = source.as_ref();
+    let source =
+        fs::canonicalize(requested).map_err(|error| LoomError::new(requested, 1, error))?;
+    let root = source
+        .parent()
+        .ok_or_else(|| LoomError::new(&source, 1, "source has no containing directory"))?;
+    build(&source, root)
+}
+
+pub(crate) fn check_macro(doc: &Document) -> Result<()> {
+    let tokens = ["<%*", "emit", "(", "body", ",", "output", ")", "%>"];
+    let mut rest = doc.body.as_str();
+    for token in tokens {
+        rest = rest.trim_start_matches(char::is_whitespace);
+        rest = rest.strip_prefix(token).ok_or_else(|| {
+            let consumed = doc.body.len() - rest.len();
+            let line = doc.body_line
+                + lines(&doc.body[..consumed])
+                    .iter()
+                    .filter(|line| line.content_end < line.end)
+                    .count();
+            LoomError::new(
+                &doc.path,
+                line,
+                format!("macro expects {token:?}; R1 supports <%* emit(body, output) %>"),
+            )
+        })?;
+    }
+    if !rest.trim().is_empty() {
+        return Err(LoomError::new(
+            &doc.path,
+            doc.body_line,
+            "extra macro content; R1 supports one emit command",
+        ));
+    }
+    Ok(())
+}
+
+pub(crate) fn macro_path(doc: &Document, root: &Path) -> Result<PathBuf> {
+    let reference = required_string(&doc.header, "macro", &doc.path, 2)?;
+    let inner = reference
+        .strip_prefix("[[")
+        .and_then(|value| value.strip_suffix("]]"))
+        .filter(|value| !value.is_empty() && !value.contains(['[', ']', '\r', '\n']))
+        .ok_or_else(|| LoomError::new(&doc.path, 2, "macro must be [[relative/path]]"))?;
+    if Path::new(inner).is_absolute() {
+        return Err(LoomError::new(
+            &doc.path,
+            2,
+            "macro reference must be relative to --root",
+        ));
+    }
+    let file = if inner.ends_with(".source.md") {
+        inner.to_owned()
+    } else {
+        format!("{inner}.source.md")
+    };
+    Ok(root.join(file))
+}
+
+// Resolve existing ancestors to handle symlinks and lexical aliases without
+// creating the output or following an output symlink when publishing it.
+pub(crate) fn output_path(path: &Path) -> Result<PathBuf> {
+    let file_name = path
+        .file_name()
+        .ok_or_else(|| LoomError::new(path, 1, "output needs a file name"))?
+        .to_owned();
+    let parent = path
+        .parent()
+        .ok_or_else(|| LoomError::new(path, 1, "output has no parent"))?;
+    let mut result = PathBuf::new();
+    for component in parent.components() {
+        match component {
+            Component::CurDir => {}
+            Component::ParentDir => {
+                result.pop();
+            }
+            value => {
+                result.push(value.as_os_str());
+                match fs::symlink_metadata(&result) {
+                    Ok(_) => {
+                        let resolved = fs::canonicalize(&result)
+                            .map_err(|error| LoomError::new(path, 1, error))?;
+                        if !resolved.is_dir() {
+                            return Err(LoomError::new(
+                                path,
+                                1,
+                                "output parent component is not a directory",
+                            ));
+                        }
+                        result = resolved;
+                    }
+                    Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+                    Err(error) => return Err(LoomError::new(path, 1, error)),
+                }
+            }
+        }
+    }
+    result.push(file_name);
+    Ok(result)
+}
+
+fn conflicts(candidate: &Path, others: &[&Path]) -> bool {
+    let resolved = fs::canonicalize(candidate).unwrap_or_else(|_| candidate.to_owned());
+    others
+        .iter()
+        .any(|other| candidate == *other || resolved == **other)
+}
+
+pub(crate) fn stage(path: &Path, bytes: &[u8]) -> Result<NamedTempFile> {
+    let parent = path
+        .parent()
+        .ok_or_else(|| LoomError::new(path, 1, "missing parent"))?;
+    fs::create_dir_all(parent).map_err(|error| LoomError::new(path, 1, error))?;
+    let mut temp = Builder::new()
+        .prefix(".loom-")
+        .suffix(".tmp")
+        .tempfile_in(parent)
+        .map_err(|error| LoomError::new(path, 1, error))?;
+    if let Ok(metadata) = fs::metadata(path) {
+        if metadata.is_file() {
+            temp.as_file()
+                .set_permissions(metadata.permissions())
+                .map_err(|error| LoomError::new(path, 1, error))?;
+        }
+    }
+    temp.write_all(bytes)
+        .and_then(|()| temp.as_file().sync_all())
+        .map_err(|error| LoomError::new(path, 1, error))?;
+    Ok(temp)
+}
+
+/// Read, validate, stage and publish one text output, plus an immutable map.
+pub fn build(source: impl AsRef<Path>, root: impl AsRef<Path>) -> Result<BuildResult> {
+    let root_request = root.as_ref();
+    let root =
+        fs::canonicalize(root_request).map_err(|error| LoomError::new(root_request, 1, error))?;
+    if !root.is_dir() {
+        return Err(LoomError::new(&root, 1, "--root must be a directory"));
+    }
+    let _lock = crate::tracking::RootLock::acquire(&root)?;
+    build_locked(source.as_ref(), &root)
+}
+
+pub(crate) fn build_locked(source: &Path, root: &Path) -> Result<BuildResult> {
+    let doc = parse_file(source)?;
+    let macro_doc = parse_file(macro_path(&doc, root)?)?;
+    if required_string(&macro_doc.header, "target", &macro_doc.path, 2)? != "macro" {
+        return Err(LoomError::new(
+            &macro_doc.path,
+            2,
+            "referenced macro must have target: macro",
+        ));
+    }
+    check_macro(&macro_doc)?;
+    let requested_output = required_string(&doc.routing, "output", &doc.path, doc.routing_line)?;
+    let relative = Path::new(requested_output);
+    if relative.is_absolute()
+        || relative.file_name().is_none()
+        || requested_output.ends_with(['/', '\\'])
+    {
+        return Err(LoomError::new(
+            &doc.path,
+            doc.routing_line,
+            "output must name a file relative to --root",
+        ));
+    }
+    let output = output_path(&root.join(relative))?;
+    if output.components().any(|part| part.as_os_str() == ".loom") {
+        return Err(LoomError::new(
+            &doc.path,
+            doc.routing_line,
+            "output cannot be inside reserved .loom metadata",
+        ));
+    }
+    if conflicts(&output, &[&doc.path, &macro_doc.path]) {
+        return Err(LoomError::new(
+            &doc.path,
+            doc.routing_line,
+            "output conflicts with source or macro",
+        ));
+    }
+    if output.is_dir() {
+        return Err(LoomError::new(
+            &output,
+            1,
+            "output is an existing directory",
+        ));
+    }
+    let source_hash = digest(doc.original.as_bytes());
+    let macro_hash = digest(macro_doc.original.as_bytes());
+    let output_hash = digest(doc.body.as_bytes());
+    let identity =
+        serde_json::to_vec(&(&doc.path, &source_hash, &macro_hash, &output_hash, &output))
+            .map_err(|error| LoomError::new(&output, 1, error))?;
+    let build_id = digest(&identity);
+    let mut map_name = output.file_name().expect("validated file name").to_owned();
+    map_name.push(format!(".{build_id}.json"));
+    let map_path = output
+        .parent()
+        .expect("absolute output parent")
+        .join(".loom/maps")
+        .join(map_name);
+    if conflicts(&map_path, &[&doc.path, &macro_doc.path, &output]) {
+        return Err(LoomError::new(
+            &map_path,
+            1,
+            "source map path conflicts with an input or output",
+        ));
+    }
+    let mapping = SourceMap {
+        format: "loom-source-map/0.1".into(),
+        build_id: build_id.clone(),
+        source: doc.path.clone(),
+        source_hash,
+        source_snapshot: doc.original.clone(),
+        r#macro: macro_doc.path,
+        macro_hash,
+        macro_snapshot: macro_doc.original,
+        output: output.clone(),
+        output_hash,
+        body_byte_start: doc.body_byte_start,
+        body_byte_end: doc.body_byte_end,
+        body_source_line: doc.body_line,
+        generated_to_source_line: (0..lines(&doc.body).len())
+            .map(|index| doc.body_line + index)
+            .collect(),
+        source_version_declared: property(&doc.ai_note, "source_version")
+            .and_then(serde_yaml::Value::as_u64),
+        note_authorship_verified: false,
+        note_freshness_verified: false,
+    };
+    let mut map_bytes =
+        serde_json::to_vec_pretty(&mapping).map_err(|error| LoomError::new(&map_path, 1, error))?;
+    map_bytes.push(b'\n');
+    let output_temp = stage(&output, doc.body.as_bytes())?;
+    let map_temp = stage(&map_path, &map_bytes)?;
+    let tracking = crate::tracking::PreparedRecord::new(root, &mapping, &map_path, &map_bytes)?;
+    if map_path.exists() {
+        let previous = fs::read(&map_path).map_err(|error| LoomError::new(&map_path, 1, error))?;
+        if previous != map_bytes {
+            return Err(LoomError::new(
+                &map_path,
+                1,
+                "existing immutable source map differs",
+            ));
+        }
+        drop(map_temp);
+    } else {
+        map_temp
+            .persist_noclobber(&map_path)
+            .map_err(|error| LoomError::new(&map_path, 1, error.error))?;
+    }
+    // Publishing the output last makes an interrupted map-first write harmless:
+    // the unused immutable map remains, and its output digest must be verified.
+    output_temp
+        .persist(&output)
+        .map_err(|error| LoomError::new(&output, 1, error.error))?;
+    tracking.publish()?;
+    Ok(BuildResult {
+        source: doc.path,
+        output,
+        map_path,
+        build_id,
+        bytes_written: doc.body.len(),
+    })
+}
+```
+
+## 输出与关联
+```yaml
+output: "loom-src/src/engine.rs"
+```

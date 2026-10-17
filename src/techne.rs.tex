@@ -1,0 +1,125 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":4595,"path":"/root/projects/yohaku/release-prep/yohaku/src/techne.rs","sha256":"0426bad62b71b22d72282b5e7ec4d66f03e7f9c764c9f5fc05162875d703e3df"}
+---
+
+## 正文
+```text
+//! Text registry for local tools; sandbox policy is fixed by the launcher.
+use serde_json::{Value, json};
+use std::path::{Component, Path};
+pub const REGISTRY_PATH: &str = "memory/tools.json";
+pub fn defaults() -> Value {
+    json!({"format":"yohaku-tools/1","tools":[
+        {"id":"window","name":"Tool window demo","program":"builtin:window","args":[],"wayland":true},
+        {"id":"python","name":"Python file demo","program":"/usr/bin/python3","args":["-c","from pathlib import Path; p=Path('files/tool-demo.txt'); p.write_text('hello from a Yohaku tool\\n'); print(p.resolve())"],"wayland":false}
+    ]})
+}
+pub fn parse_registry(text: &str) -> Result<Value, String> {
+    if text.len() > 65536 {
+        return Err("Tool registry exceeds 64 KiB".into());
+    }
+    let value: Value =
+        serde_json::from_str(text).map_err(|e| format!("Invalid tools JSON: {e}"))?;
+    let obj = value.as_object().ok_or("Tool registry must be an object")?;
+    if obj.len() != 2 || value["format"] != "yohaku-tools/1" || !obj.contains_key("tools") {
+        return Err("Expected format yohaku-tools/1 and tools array".into());
+    }
+    let tools = value["tools"].as_array().ok_or("tools must be an array")?;
+    if tools.len() > 100 {
+        return Err("At most 100 tools".into());
+    }
+    let mut ids = Vec::new();
+    for tool in tools {
+        let obj = tool.as_object().ok_or("Each tool must be an object")?;
+        if obj.len() != 5
+            || obj
+                .keys()
+                .any(|k| !["id", "name", "program", "args", "wayland"].contains(&k.as_str()))
+        {
+            return Err("Tool fields: id, name, program, args, wayland".into());
+        }
+        let id = tool["id"].as_str().ok_or("Tool id must be text")?;
+        if id.is_empty()
+            || id.len() > 40
+            || !id
+                .bytes()
+                .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'-' || b == b'_')
+            || ids.contains(&id)
+        {
+            return Err("Tool ids must be unique lowercase ASCII, digits, - or _".into());
+        }
+        ids.push(id);
+        let name = tool["name"].as_str().ok_or("Tool name must be text")?;
+        if name.is_empty() || name.chars().count() > 80 || name.chars().any(char::is_control) {
+            return Err("Tool name must be 1-80 visible characters".into());
+        }
+        let program = tool["program"].as_str().ok_or("Program must be text")?;
+        if program.len() > 1024 || program.contains('\0') {
+            return Err("Invalid program".into());
+        }
+        if let Some(relative) = program.strip_prefix("world:") {
+            if relative.is_empty()
+                || Path::new(relative)
+                    .components()
+                    .any(|c| !matches!(c, Component::Normal(_)))
+            {
+                return Err("World program must be a relative path inside the world".into());
+            }
+        } else if program != "builtin:window"
+            && program != "builtin:dev"
+            && !program.starts_with("/usr/")
+            && !program.starts_with("/bin/")
+        {
+            return Err(
+                "Program must be /usr/..., /bin/..., world:... or a supported builtin".into(),
+            );
+        }
+        let args = tool["args"].as_array().ok_or("args must be an array")?;
+        if args.len() > 40
+            || args.iter().any(|a| {
+                a.as_str()
+                    .is_none_or(|s| s.len() > 8192 || s.contains('\0'))
+            })
+        {
+            return Err("args: at most 40 strings, 8 KiB each".into());
+        }
+        if !tool["wayland"].is_boolean() {
+            return Err("wayland must be boolean".into());
+        }
+    }
+    Ok(value)
+}
+pub fn read_registry(root: &Path) -> Result<Option<String>, String> {
+    use std::io::Read;
+    let mut path = root.to_owned();
+    for part in REGISTRY_PATH.split('/') {
+        path.push(part);
+        match std::fs::symlink_metadata(&path) {
+            Ok(m) if m.file_type().is_symlink() => {
+                return Err("Tool registry cannot use symlinks".into());
+            }
+            Ok(_) => (),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+            Err(e) => return Err(e.to_string()),
+        }
+    }
+    let mut text = String::new();
+    std::fs::File::open(path)
+        .map_err(|e| e.to_string())?
+        .take(65537)
+        .read_to_string(&mut text)
+        .map_err(|e| e.to_string())?;
+    if text.len() > 65536 {
+        return Err("Tool registry exceeds 64 KiB".into());
+    }
+    Ok(Some(text))
+}
+```
+
+## 输出与关联
+```yaml
+output: "src/techne.rs"
+```

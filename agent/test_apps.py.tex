@@ -1,0 +1,137 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":9696,"path":"/root/projects/yohaku/release-prep/yohaku/agent/test_apps.py","sha256":"15153b80921d7604f25ab79b6cde8ac1abe332b4edebea7bcbbd81172192ac17"}
+---
+
+## 正文
+```text
+import json,os,subprocess,sys,tempfile,unittest
+from pathlib import Path
+from unittest.mock import patch
+import yohaku_apps as a
+import yohaku_tools as t
+
+class ApplicationTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.base=Path(self.temp.name);self.root=self.base/'world'
+        (self.root/'.yohaku').mkdir(parents=True);(self.root/'memory').mkdir()
+        (self.root/'.yohaku/files.json').write_text(json.dumps({'format':'yohaku-workspace/0.1'}))
+    def tearDown(self):self.temp.cleanup()
+    def script(self,path):
+        path.parent.mkdir(parents=True,exist_ok=True);path.write_text('#!/usr/bin/python3\nprint("app")\n');path.chmod(0o755);return path
+    def desktop(self,name,exec_line,extra=''):
+        p=self.base/(name+'.desktop');p.write_text('[Desktop Entry]\nType=Application\nName='+name+'\nExec='+exec_line+'\n'+extra);return p
+    def test_system_app_discovery_and_fields_without_execution(self):
+        p=self.desktop('Python App','/usr/bin/python3 "literal $(touch nope)" %F %% %c')
+        with patch.object(a.subprocess if hasattr(a,'subprocess') else t,'run',create=True) as runner:
+            apps=a.discover(self.root,[self.base]);self.assertEqual(len(apps),1);runner.assert_not_called()
+        item=apps[0];self.assertTrue(item['ready']);self.assertEqual(item['entry']['name'],'Python App')
+        self.assertEqual(item['entry']['args'],['literal $(touch nope)','%','Python App'])
+        self.assertFalse((self.base/'nope').exists())
+    def test_unsupported_terminal_windows_unknown_fields_and_missing_app(self):
+        for name,command,extra in [('term','/usr/bin/python3','Terminal=true\n'),('field','/usr/bin/python3 %x',''),('missing','/missing/app','')]:
+            p=self.desktop(name,command,extra)
+            with self.assertRaises((t.ToolError,OSError)):a.inspect(str(p),self.root)
+        p=self.base/'windows.exe';p.write_bytes(b'MZ'+b'0'*128)
+        with self.assertRaisesRegex(t.ToolError,'Windows'):a.inspect(str(p),self.root)
+    def test_import_single_preserves_original_and_uses_world_program(self):
+        p=self.script(self.base/'external script');original=p.read_bytes();item=a.import_address(str(p),self.root)
+        self.assertTrue(item['ready']);self.assertTrue(item['entry']['program'].startswith('world:tools/apps/'))
+        copied=self.root/item['entry']['program'][6:];self.assertEqual(copied.read_bytes(),original);self.assertEqual(p.read_bytes(),original)
+        self.assertFalse((self.root/'memory/tools.json').exists(),'Import must leave registry to optimistic UI save')
+    def test_import_folder_copies_assets_and_rejects_escape_symlinks(self):
+        folder=self.base/'Portable';p=self.script(folder/'Portable');(folder/'asset').write_text('keep')
+        item=a.import_address(str(folder),self.root);copied=self.root/item['entry']['program'][6:]
+        self.assertEqual((copied.parent/'asset').read_text(),'keep')
+        bad=self.base/'Bad';self.script(bad/'Bad');(bad/'escape').symlink_to('/etc/passwd')
+        with self.assertRaises(t.ToolError):a.import_address(str(bad),self.root)
+    def test_world_destination_symlink_and_copy_limit_rejected(self):
+        outside=self.base/'outside';outside.mkdir();(self.root/'tools').symlink_to(outside,target_is_directory=True)
+        with self.assertRaises(t.ToolError):a.import_address(str(self.script(self.base/'tool')),self.root)
+        self.assertEqual(list(outside.iterdir()),[])
+        (self.root/'tools').unlink()
+        with patch.object(a,'MAX_COPY',5):
+            with self.assertRaises(t.ToolError):a.import_address(str(self.base/'tool'),self.root)
+    def test_cli_returns_structured_error_for_import_and_catalog(self):
+        argv=[sys.executable,'-B',str(Path(t.__file__)),'--root',str(self.root)]
+        result=subprocess.run(argv+['--path',str(self.base/'none'),'import-address'],capture_output=True,text=True)
+        self.assertNotEqual(result.returncode,0);self.assertEqual(json.loads(result.stdout)['event'],'error')
+        result=subprocess.run(argv+['discover'],capture_output=True,text=True)
+        self.assertEqual(result.returncode,0);self.assertEqual(json.loads(result.stdout)['event'],'apps')
+    def test_vscode_profile_and_world_folder_arguments(self):
+        p=self.script(self.base/'code');item=a.import_address(str(p),self.root)
+        self.assertIn('--ozone-platform=wayland',item['entry']['args']);self.assertIn('/world/files',item['entry']['args'])
+        self.assertTrue(all(not value.startswith(str(self.base)) for value in item['entry']['args']))
+    def test_registry_limit_matches_native_and_usr_share_program_is_allowed(self):
+        entry={'id':'share','name':'App','program':'/usr/share/code/bin/code','args':[],'wayland':True}
+        t.validate({'format':'yohaku-tools/1','tools':[entry]})
+        with self.assertRaises(t.ToolError):t.validate({'format':'yohaku-tools/1','tools':[dict(entry,id=str(i)) for i in range(101)]})
+    def test_path_commands_and_windows_catalog_include_codex_without_launching_targets(self):
+        shim=self.base/'codex';shim.write_text('#!/bin/sh\nnode.exe codex.js\n');shim.chmod(0o755)
+        windows=a.windows_item('/mnt/c/Users/test/AppData/Roaming/npm/codex.cmd','Codex')
+        original=subprocess.run
+        with patch.object(a.shutil,'which',side_effect=lambda name:str(shim) if name=='codex' else None),patch.object(a,'is_windows_path',return_value=True),patch.object(a,'windows_inventory',return_value=([windows],'Windows scan complete')),patch.object(subprocess,'run') as execute:
+            items,report=a.discover(self.root,with_report=True)
+            execute.assert_not_called()
+        matches=[v for v in items if v['entry']['name']=='Codex']
+        self.assertTrue(matches);self.assertTrue(all(v['origin']=='Windows' and v['action']=='codex' and not v['ready'] for v in matches))
+        self.assertGreaterEqual(report['windows'],1)
+    def test_windows_app_address_is_inspected_without_copying_or_claiming_launch_support(self):
+        exe=self.base/'Code.exe';exe.write_bytes(b'MZfixture')
+        with patch.object(a,'is_windows_path',return_value=True):item=a.import_address(str(exe),self.root)
+        self.assertEqual(item['origin'],'Windows');self.assertFalse(item['ready'])
+        self.assertIn('adapter',item['reason']);self.assertFalse((self.root/'tools/apps').exists())
+    def test_linux_script_on_windows_disk_can_still_be_imported_as_linux(self):
+        script=self.script(self.base/'portable-linux')
+        with patch.object(a,'is_windows_path',return_value=True):item=a.import_address(str(script),self.root)
+        self.assertTrue(item['ready']);self.assertTrue(item['entry']['program'].startswith('world:'))
+    def test_packaged_windows_apps_are_searchable_without_executable_or_launch(self):
+        payload=json.dumps([{'name':'ChatGPT','app_id':'OpenAI.ChatGPT_abc!App'}]).encode()
+        with patch.object(a,'powershell_path',return_value=Path('/windows/powershell.exe')),patch.object(a,'windows_path',return_value='C:\\inventory.ps1'),patch.object(a.subprocess,'run',return_value=subprocess.CompletedProcess([],0,payload,b'')) as runner:
+            items,notice=a.windows_inventory()
+        self.assertEqual(items[0]['entry']['name'],'ChatGPT');self.assertFalse(items[0]['ready'])
+        self.assertEqual(items[0]['action'],'unsupported');self.assertTrue(items[0]['address'].startswith('windows-app:'))
+        self.assertIn('-File',runner.call_args.args[0]);self.assertIn('complete',notice)
+
+    def npm_codex(self):
+        # npm's POSIX shim can use plain `node`; it need not mention node.exe.
+        folder=self.base/'Windows npm';folder.mkdir()
+        shim=folder/'codex'
+        shim.write_text('#!/bin/sh\nbasedir=$(dirname "$0")\nif [ -x "$basedir/node" ]; then\n'
+                        '  exec "$basedir/node" "$basedir/node_modules/@openai/codex/bin/codex.js" "$@"\n'
+                        'else\n  exec node "$basedir/node_modules/@openai/codex/bin/codex.js" "$@"\nfi\n')
+        shim.chmod(0o755)
+        (folder/'codex.cmd').write_text('@ECHO off\nnode "%~dp0node_modules\\@openai\\codex\\bin\\codex.js" %*\n')
+        return shim
+
+    def test_windows_npm_posix_codex_shim_routes_to_connector_without_execution(self):
+        shim=self.npm_codex()
+        with patch.object(a,'is_windows_path',return_value=True),patch.object(subprocess,'run') as execute:
+            item=a.import_address(str(shim),self.root)
+            execute.assert_not_called()
+        self.assertEqual(item['origin'],'Windows');self.assertEqual(item['action'],'codex')
+        self.assertEqual(item['address'],str(shim));self.assertFalse(item['ready'])
+        self.assertFalse((self.root/'tools/apps').exists())
+
+    def test_windows_npm_codex_shim_is_discovered_from_path(self):
+        shim=self.npm_codex()
+        with patch.object(a,'is_windows_path',return_value=True),patch.object(a.shutil,'which',side_effect=lambda name:str(shim) if name=='codex' else None),patch.object(a,'windows_inventory',return_value=([],'Fixture inventory')),patch.object(subprocess,'run') as execute:
+            items=a.discover(self.root)
+            execute.assert_not_called()
+        self.assertTrue(any(item.get('action')=='codex' and item['address']==str(shim) for item in items))
+
+    def test_linux_npm_codex_without_windows_companion_is_not_windows(self):
+        shim=self.npm_codex();shim.with_suffix('.cmd').unlink()
+        with patch.object(a,'is_windows_path',return_value=True):
+            self.assertFalse(a.is_windows_program(shim))
+            with self.assertRaisesRegex(t.ToolError,'CLI application'):a.inspect(str(shim),self.root)
+
+if __name__=='__main__':unittest.main()
+```
+
+## 输出与关联
+```yaml
+output: "agent/test_apps.py"
+```

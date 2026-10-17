@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "header": {"avatar_source": "default", "title": "Yohaku"},
+  "sidebar": {
+    "collapsed": false,
+    "width": 208,
+    "items": [
+      {"icon": "folder", "id": "mneme", "label": "Mneme"},
+      {"icon": "wrench", "id": "techne", "label": "Techne"},
+      {"icon": "bot", "id": "socius", "label": "Socius"}
+    ]
+  },
+  "workspace": {"background": "#FFFFFF"}
+}

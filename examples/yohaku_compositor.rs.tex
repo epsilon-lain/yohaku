@@ -1,0 +1,1341 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":50398,"path":"/root/projects/yohaku/release-prep/yohaku/examples/yohaku_compositor.rs","sha256":"ecc1b11bb6fc224f4c23aefc6877f545a167425a6969af28f80b8cdbcb59c553"}
+---
+
+## 正文
+```text
+use std::{os::unix::io::OwnedFd, sync::Arc};
+
+#[path = "yohaku_workspace/agent.rs"]
+mod agent_panel;
+#[path = "yohaku_workspace/clipboard.rs"]
+mod host_clipboard;
+#[path = "yohaku_workspace/text_font.rs"]
+mod text_font;
+#[allow(dead_code)] // Keep the upstream backend API intact in the small local adapter.
+#[path = "yohaku_workspace/native_winit/mod.rs"]
+mod native_winit;
+#[path = "yohaku_workspace/tools.rs"]
+mod tool_panel;
+#[path = "yohaku_workspace/windows.rs"]
+mod tool_windows;
+#[cfg(test)]
+#[path = "yohaku_workspace/window_protocol_tests.rs"]
+mod window_protocol_tests;
+#[path = "yohaku_workspace/panel.rs"]
+mod workspace_panel;
+
+use ::winit::platform::pump_events::PumpStatus;
+use smithay::{
+    backend::{
+        input::{
+            AbsolutePositionEvent, Axis, ButtonState, Event, InputEvent, KeyState,
+            KeyboardKeyEvent, MouseButton, PointerAxisEvent, PointerButtonEvent,
+        },
+        renderer::{
+            Color32F, Frame, Renderer,
+            element::{
+                Kind,
+                surface::{WaylandSurfaceRenderElement, render_elements_from_surface_tree},
+            },
+            gles::GlesRenderer,
+            utils::{draw_render_elements, on_commit_buffer_handler},
+        },
+    },
+    delegate_compositor, delegate_data_device, delegate_seat, delegate_shm, delegate_xdg_shell,
+    delegate_xdg_decoration,
+    delegate_output,
+    output::{Mode, Output, PhysicalProperties, Subpixel},
+    input::{
+        Seat, SeatHandler, SeatState,
+        keyboard::FilterResult,
+        pointer::{AxisFrame, ButtonEvent, MotionEvent},
+    },
+    reexports::wayland_server::{Display, protocol::wl_seat},
+    utils::{Rectangle, SERIAL_COUNTER, Serial, Transform},
+    wayland::{
+        buffer::BufferHandler,
+        compositor::{
+            CompositorClientState, CompositorHandler, CompositorState, SurfaceAttributes,
+            TraversalAction, with_surface_tree_downward,
+        },
+        selection::{
+            SelectionHandler,
+            data_device::{
+                ClientDndGrabHandler, DataDeviceHandler, DataDeviceState, ServerDndGrabHandler,
+            },
+        },
+        shell::xdg::{
+            PopupSurface, PositionerState, ToplevelSurface, XdgShellHandler, XdgShellState,
+            decoration::{XdgDecorationHandler, XdgDecorationState},
+        },
+        shm::{ShmHandler, ShmState},
+        output::{OutputHandler, OutputManagerState},
+    },
+};
+use native_winit::{self as winit, WinitEvent};
+use wayland_protocols::xdg::shell::server::xdg_toplevel;
+use smithay::reexports::wayland_protocols::xdg::decoration::zv1::server::zxdg_toplevel_decoration_v1::Mode as DecorationMode;
+use yohaku::window_geometry::{work_area, Edges, Hit};
+use wayland_server::{
+    Client, ListeningSocket,
+    backend::{ClientData, ClientId, DisconnectReason},
+    protocol::{
+        wl_buffer,
+        wl_surface::{self, WlSurface},
+    },
+};
+
+impl BufferHandler for App {
+    fn buffer_destroyed(&mut self, _buffer: &wl_buffer::WlBuffer) {}
+}
+
+impl XdgShellHandler for App {
+    fn xdg_shell_state(&mut self) -> &mut XdgShellState {
+        &mut self.xdg_shell_state
+    }
+
+    fn new_toplevel(&mut self, surface: ToplevelSurface) {
+        surface.with_pending_state(|state| {
+            state.states.set(xdg_toplevel::State::Activated);
+        });
+        surface.send_configure();
+    }
+
+    fn move_request(&mut self, surface: ToplevelSurface, seat: wl_seat::WlSeat, serial: Serial) {
+        if self.valid_window_grab(&surface, &seat, serial) {
+            self.window_requests
+                .push(tool_windows::Request::Move(surface));
+        }
+    }
+    fn resize_request(
+        &mut self,
+        surface: ToplevelSurface,
+        seat: wl_seat::WlSeat,
+        serial: Serial,
+        edge: xdg_toplevel::ResizeEdge,
+    ) {
+        use xdg_toplevel::ResizeEdge as E;
+        let edges = Edges {
+            left: matches!(edge, E::Left | E::TopLeft | E::BottomLeft),
+            right: matches!(edge, E::Right | E::TopRight | E::BottomRight),
+            top: matches!(edge, E::Top | E::TopLeft | E::TopRight),
+            bottom: matches!(edge, E::Bottom | E::BottomLeft | E::BottomRight),
+        };
+        if edge != E::None && self.valid_window_grab(&surface, &seat, serial) {
+            self.window_requests
+                .push(tool_windows::Request::Resize(surface, edges));
+        }
+    }
+    fn maximize_request(&mut self, surface: ToplevelSurface) {
+        self.window_requests
+            .push(tool_windows::Request::Maximize(surface, true));
+    }
+    fn unmaximize_request(&mut self, surface: ToplevelSurface) {
+        self.window_requests
+            .push(tool_windows::Request::Maximize(surface, false));
+    }
+
+    fn new_popup(&mut self, _surface: PopupSurface, _positioner: PositionerState) {
+        // Handle popup creation here
+    }
+
+    fn grab(&mut self, _surface: PopupSurface, _seat: wl_seat::WlSeat, _serial: Serial) {
+        // Handle popup grab here
+    }
+
+    fn reposition_request(
+        &mut self,
+        _surface: PopupSurface,
+        _positioner: PositionerState,
+        _token: u32,
+    ) {
+        // Handle popup reposition here
+    }
+}
+
+impl App {
+    fn valid_window_grab(
+        &self,
+        surface: &ToplevelSurface,
+        seat: &wl_seat::WlSeat,
+        serial: Serial,
+    ) -> bool {
+        let Some(pointer) = self.seat.get_pointer() else {
+            return false;
+        };
+        self.seat.owns(seat)
+            && pointer.has_grab(serial)
+            && pointer
+                .grab_start_data()
+                .and_then(|d| d.focus)
+                .is_some_and(|(focus, _)| focus == *surface.wl_surface())
+    }
+}
+
+impl XdgDecorationHandler for App {
+    fn new_decoration(&mut self, surface: ToplevelSurface) {
+        surface.with_pending_state(|s| s.decoration_mode = Some(DecorationMode::ServerSide));
+        surface.send_pending_configure();
+    }
+    fn request_mode(&mut self, surface: ToplevelSurface, _: DecorationMode) {
+        self.new_decoration(surface);
+    }
+    fn unset_mode(&mut self, surface: ToplevelSurface) {
+        self.new_decoration(surface);
+    }
+}
+
+impl SelectionHandler for App {
+    type SelectionUserData = ();
+}
+
+impl DataDeviceHandler for App {
+    fn data_device_state(&self) -> &DataDeviceState {
+        &self.data_device_state
+    }
+}
+
+impl ClientDndGrabHandler for App {}
+impl ServerDndGrabHandler for App {
+    fn send(&mut self, _mime_type: String, _fd: OwnedFd, _seat: Seat<Self>) {}
+}
+
+impl CompositorHandler for App {
+    fn compositor_state(&mut self) -> &mut CompositorState {
+        &mut self.compositor_state
+    }
+
+    fn client_compositor_state<'a>(&self, client: &'a Client) -> &'a CompositorClientState {
+        &client.get_data::<ClientState>().unwrap().compositor_state
+    }
+
+    fn commit(&mut self, surface: &WlSurface) {
+        on_commit_buffer_handler::<Self>(surface);
+    }
+}
+
+impl ShmHandler for App {
+    fn shm_state(&self) -> &ShmState {
+        &self.shm_state
+    }
+}
+impl OutputHandler for App {}
+
+impl SeatHandler for App {
+    type KeyboardFocus = WlSurface;
+    type PointerFocus = WlSurface;
+    type TouchFocus = WlSurface;
+
+    fn seat_state(&mut self) -> &mut SeatState<Self> {
+        &mut self.seat_state
+    }
+
+    fn focus_changed(&mut self, _seat: &Seat<Self>, _focused: Option<&WlSurface>) {}
+    fn cursor_image(
+        &mut self,
+        _seat: &Seat<Self>,
+        _image: smithay::input::pointer::CursorImageStatus,
+    ) {
+    }
+}
+
+struct App {
+    compositor_state: CompositorState,
+    xdg_shell_state: XdgShellState,
+    shm_state: ShmState,
+    seat_state: SeatState<Self>,
+    data_device_state: DataDeviceState,
+    _decoration_state: XdgDecorationState,
+    _output_manager: OutputManagerState,
+    window_requests: Vec<tool_windows::Request>,
+
+    seat: Seat<Self>,
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    if let Ok(env_filter) = tracing_subscriber::EnvFilter::try_from_default_env() {
+        tracing_subscriber::fmt().with_env_filter(env_filter).init();
+    } else {
+        tracing_subscriber::fmt().init();
+    }
+
+    run_winit()
+}
+
+// The same font metrics drive rasterization, cursor placement and mouse hit tests.
+fn shell_font() -> &'static fontdue::Font {
+    text_font::primary()
+}
+
+fn shell_text_width(text: &str, scale: i32) -> f32 {
+    let font = shell_font();
+    let px = (scale * 8) as f32;
+    text.chars()
+        .take_while(|c| !matches!(c, '\r' | '\n'))
+        .map(|c| {
+            if c == '\t' {
+                font.metrics(' ', px).advance_width * 4.0
+            } else {
+                text_font::for_character(c).metrics(c, px).advance_width
+            }
+        })
+        .sum()
+}
+
+fn shell_text_column(text: &str, scale: i32, x: f32) -> usize {
+    let mut advance = 0.0;
+    for (column, ch) in text.chars().enumerate() {
+        let width = shell_text_width(&ch.to_string(), scale);
+        if x < advance + width / 2.0 {
+            return column;
+        }
+        advance += width;
+    }
+    text.chars().count()
+}
+
+fn draw_shell_text<F: Frame>(
+    frame: &mut F,
+    text: &str,
+    x: i32,
+    y: i32,
+    scale: i32,
+    max_width: i32,
+    color: Color32F,
+) -> Result<(), F::Error> {
+    draw_shell_text_on(
+        frame,
+        text,
+        x,
+        y,
+        scale,
+        max_width,
+        (color, Color32F::new(0.965, 0.965, 0.965, 1.0)),
+    )
+}
+
+fn draw_shell_text_on<F: Frame>(
+    frame: &mut F,
+    text: &str,
+    x: i32,
+    y: i32,
+    scale: i32,
+    max_width: i32,
+    paint: (Color32F, Color32F),
+) -> Result<(), F::Error> {
+    let (color, background) = paint;
+    let px = (scale * 8) as f32;
+    let mut cursor = x as f32;
+    let mut bands: [Vec<Rectangle<i32, smithay::utils::Physical>>; 8] =
+        std::array::from_fn(|_| Vec::new());
+
+    for ch in text.chars() {
+        let (m, bitmap) = text_font::for_character(ch).rasterize(ch, px);
+        let gx = cursor.round() as i32 + m.xmin;
+        let gy = y + px.ceil() as i32 - m.ymin - m.height as i32;
+
+        for row in 0..m.height {
+            let mut col = 0;
+            while col < m.width {
+                let level = ((bitmap[row * m.width + col] as usize * 8 + 127) / 255).min(8);
+
+                if level == 0 {
+                    col += 1;
+                    continue;
+                }
+
+                let first = col;
+                col += 1;
+
+                while col < m.width {
+                    let next = ((bitmap[row * m.width + col] as usize * 8 + 127) / 255).min(8);
+                    if next != level {
+                        break;
+                    }
+                    col += 1;
+                }
+
+                let rx = gx + first as i32;
+                let rw = (col - first) as i32;
+                let ry = gy + row as i32;
+
+                if rx >= 0 && rx + rw <= max_width && ry >= 0 {
+                    bands[level - 1].push(Rectangle::new((rx, ry).into(), (rw, 1).into()));
+                }
+            }
+        }
+
+        cursor += m.advance_width;
+        if cursor as i32 >= max_width {
+            break;
+        }
+    }
+
+    for (i, rects) in bands.iter().enumerate() {
+        if rects.is_empty() {
+            continue;
+        }
+
+        let alpha = (i + 1) as f32 / 8.0;
+
+        frame.clear(
+            Color32F::new(
+                background.r() * (1.0 - alpha) + color.r() * alpha,
+                background.g() * (1.0 - alpha) + color.g() * alpha,
+                background.b() * (1.0 - alpha) + color.b() * alpha,
+                1.0,
+            ),
+            rects,
+        )?;
+    }
+
+    Ok(())
+}
+
+pub fn run_winit() -> Result<(), Box<dyn std::error::Error>> {
+    // Load the user-editable Yohaku Shell configuration.
+    let shell_text = std::fs::read_to_string("config/shell.json")?;
+    let shell_config: serde_json::Value = serde_json::from_str(&shell_text)?;
+    let mut shell_mouse_grab = false;
+    let mut macro_right_grab = false;
+    let shell_width = if shell_config["sidebar"]["collapsed"]
+        .as_bool()
+        .unwrap_or(false)
+    {
+        0_i32
+    } else {
+        shell_config["sidebar"]["width"]
+            .as_i64()
+            .expect("sidebar.width must be an integer")
+            .clamp(96, 480) as i32
+    };
+    println!(
+        "Yohaku Shell loaded: {} (sidebar: {}px)",
+        shell_config["header"]["title"].as_str().unwrap_or("Yohaku"),
+        shell_width
+    );
+
+    let mut display: Display<App> = Display::new()?;
+    let dh = display.handle();
+
+    let compositor_state = CompositorState::new::<App>(&dh);
+    let shm_state = ShmState::new::<App>(&dh, vec![]);
+    let mut seat_state = SeatState::new();
+    let seat = seat_state.new_wl_seat(&dh, "winit");
+
+    let mut state = {
+        App {
+            compositor_state,
+            xdg_shell_state: XdgShellState::new::<App>(&dh),
+            shm_state,
+            seat_state,
+            data_device_state: DataDeviceState::new::<App>(&dh),
+            _decoration_state: XdgDecorationState::new::<App>(&dh),
+            _output_manager: OutputManagerState::new_with_xdg_output::<App>(&dh),
+            window_requests: Vec::new(),
+            seat,
+        }
+    };
+
+    let listener = ListeningSocket::bind_auto("yohaku", 0..32)?;
+    let tool_socket = std::path::PathBuf::from(
+        std::env::var_os("XDG_RUNTIME_DIR").ok_or("XDG_RUNTIME_DIR is required")?,
+    )
+    .join(listener.socket_name().unwrap())
+    .to_string_lossy()
+    .into_owned();
+    println!("Yohaku tool display: {tool_socket}");
+    let mut clients = Vec::new();
+
+    let (mut backend, mut winit) = winit::init_from_attributes::<GlesRenderer>(
+        ::winit::window::Window::default_attributes()
+            .with_title("Yohaku")
+            .with_inner_size(::winit::dpi::LogicalSize::new(1280., 800.))
+            .with_min_inner_size(::winit::dpi::LogicalSize::new(480., 320.))
+            .with_visible(true),
+    )?;
+
+    let mut ime_allowed = false;
+    let mut window_focused = backend.window().has_focus();
+    let mut skip_text_key = false;
+    let start_time = std::time::Instant::now();
+    let output = Output::new(
+        "Yohaku".into(),
+        PhysicalProperties {
+            size: (0, 0).into(),
+            subpixel: Subpixel::Unknown,
+            make: "Yohaku".into(),
+            model: "Workspace".into(),
+        },
+    );
+    output.create_global::<App>(&dh);
+    let mut output_size = backend.window_size();
+    let mode = Mode {
+        size: output_size,
+        refresh: 60000,
+    };
+    output.change_current_state(
+        Some(mode),
+        Some(Transform::Normal),
+        None,
+        Some((0, 0).into()),
+    );
+    output.set_preferred(mode);
+    state.seat.add_pointer();
+    // Later entries are drawn on top of earlier entries.
+    let mut windows = tool_windows::Manager::new();
+    let mut cursor_pos = (0.0_f64, 0.0_f64);
+    let mut client_buttons: Vec<u32> = Vec::new();
+    let mut active_page = "workspace";
+
+    let root = std::env::var_os("YOHAKU_WORKSPACE")
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|| "worlds/default".into());
+    let loom = std::env::var_os("YOHAKU_LOOM")
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|| "bin/loom-linux-x86_64".into());
+    let mut local_space = workspace_panel::Panel::new(root, loom)?;
+    let mut agents = agent_panel::AgentPanel::new();
+    let mut tools = tool_panel::ToolPanel::new(tool_socket);
+
+    let keyboard = state
+        .seat
+        .add_keyboard(Default::default(), 200, 200)
+        .unwrap();
+
+    loop {
+        local_space.update();
+        tools.update(&mut local_space);
+        if let Some(connection) = (!local_space.agent_active)
+            .then(|| tools.codex_connection.take())
+            .flatten()
+        {
+            tools.blur();
+            agents.connect_local_codex(connection, &local_space);
+        }
+        let view_size = backend.window_size();
+        let ime_area = if tools.takes_keyboard() { None } else {
+            agents.ime_cursor_area(view_size.w, view_size.h, shell_width)
+        };
+        if ime_allowed != ime_area.is_some() {
+            eprintln!(
+                "[IME STATE CHANGE] {} -> {}; window_focused={}; \
+tools_takes_keyboard={}; ime_area={:?}; page={}",
+                ime_allowed,
+                ime_area.is_some(),
+                window_focused,
+                tools.takes_keyboard(),
+                ime_area,
+                active_page,
+            );
+            ime_allowed = ime_area.is_some();
+            backend.window().set_ime_allowed(ime_allowed);
+            agents.clear_preedit();
+        }
+        if let Some((x, y, h)) = ime_area {
+            backend.window().set_ime_cursor_area(
+                ::winit::dpi::PhysicalPosition::new(x, y),
+                ::winit::dpi::PhysicalSize::new(1u32, h as u32),
+            );
+        }
+        let area = work_area(view_size.w, view_size.h, shell_width);
+        windows.sync(
+            state.xdg_shell_state.toplevel_surfaces(),
+            area,
+            tools.active_tool(),
+            &mut local_space,
+        );
+        for request in state.window_requests.drain(..) {
+            windows.request(request, cursor_pos, area);
+        }
+        windows.persist(&mut local_space);
+        if active_page == "techne" {
+            tools.activate();
+        } else {
+            tools.blur();
+        }
+        agents.update(&mut local_space, active_page);
+        agents.dispatch_tools(&mut tools, &local_space);
+        if tools.show_workspace && !state.xdg_shell_state.toplevel_surfaces().is_empty() {
+            active_page = "workspace";
+            tools.show_workspace = false;
+            keyboard.set_focus(&mut state, windows.active(), SERIAL_COUNTER.next_serial());
+        }
+        for window in &windows.items {
+            output.enter(window.id());
+        }
+        let mut close_requested = false;
+        let status = winit.dispatch_new_events(|event| match event {
+            WinitEvent::CloseRequested => {
+                eprintln!("[WINDOW CLOSE] CloseRequested received; shutting down main loop");
+                close_requested = true;
+            }
+            WinitEvent::Resized { .. } => {
+                windows.cancel();
+                release_client_buttons(&mut state, &mut client_buttons);
+            }
+            WinitEvent::Focus(false) => {
+                eprintln!("[IME DISABLE SOURCE] window lost focus; ime_allowed={ime_allowed}");
+                window_focused = false;
+                // Diagnostic only: preserve IME state across focus changes.
+                windows.cancel();
+                release_client_buttons(&mut state, &mut client_buttons);
+                shell_mouse_grab = false;
+                macro_right_grab = false;
+                keyboard.set_focus(&mut state, None, SERIAL_COUNTER.next_serial());
+            }
+            WinitEvent::Focus(true) => {
+                eprintln!("[WINDOW FOCUS] gained focus; ime_allowed={ime_allowed}");
+                window_focused = true;
+                if active_page == "workspace" {
+                    keyboard.set_focus(&mut state, windows.active(), SERIAL_COUNTER.next_serial());
+                }
+            }
+            WinitEvent::Ime(event) => {
+                eprintln!(
+                    "[IME EVENT] {event:?}, allowed={ime_allowed}, takes_keyboard={}",
+                    tools.takes_keyboard()
+                );
+                if ime_allowed && !tools.takes_keyboard() {
+                    agents.ime(event);
+                }
+            }
+            WinitEvent::Text(text) => {
+                eprintln!(
+                    "[TEXT EVENT] text={text:?}, allowed={ime_allowed}, takes_keyboard={}",
+                    tools.takes_keyboard()
+                );
+                if ime_allowed && !tools.takes_keyboard() {
+                    agents.ime(::winit::event::Ime::Commit(text));
+                    skip_text_key = true;
+                }
+            }
+            WinitEvent::Input(event) => match event {
+                InputEvent::Keyboard { event } => {
+                    let composed = std::mem::take(&mut skip_text_key);
+                    keyboard.input::<(), _>(
+                        &mut state,
+                        event.key_code(),
+                        event.state(),
+                        0.into(),
+                        0,
+                        |_, mods, key| {
+                            let sym = key.modified_sym();
+                            if composed {
+                                FilterResult::Intercept(())
+                            } else if tools.takes_keyboard() {
+                                if event.state() == KeyState::Pressed {
+                                    tools.key(
+                                        sym,
+                                        mods.ctrl,
+                                        mods.shift,
+                                        mods.alt,
+                                        &mut local_space,
+                                    );
+                                }
+                                FilterResult::Intercept(())
+                            } else if agents.shortcut(
+                                sym,
+                                mods.ctrl,
+                                mods.shift,
+                                mods.alt,
+                                event.state() == KeyState::Pressed,
+                                &local_space,
+                                active_page,
+                            ) {
+                                FilterResult::Intercept(())
+                            } else if agents.takes_keyboard() {
+                                if event.state() == KeyState::Pressed {
+                                    agents.key(
+                                        sym,
+                                        mods.ctrl,
+                                        mods.shift,
+                                        mods.alt,
+                                        &mut local_space,
+                                        active_page,
+                                    );
+                                }
+                                FilterResult::Intercept(())
+                            } else if active_page == "techne" {
+                                if event.state() == KeyState::Pressed {
+                                    tools.key(
+                                        sym,
+                                        mods.ctrl,
+                                        mods.shift,
+                                        mods.alt,
+                                        &mut local_space,
+                                    );
+                                }
+                                FilterResult::Intercept(())
+                            } else if active_page == "files" {
+                                if event.state() == KeyState::Pressed {
+                                    local_space.key(sym, mods.ctrl, mods.shift, mods.alt);
+                                }
+                                FilterResult::Intercept(())
+                            } else if active_page != "workspace" {
+                                FilterResult::Intercept(())
+                            } else if mods.alt
+                                && matches!(
+                                    sym,
+                                    smithay::input::keyboard::Keysym::F10
+                                        | smithay::input::keyboard::Keysym::F4
+                                )
+                            {
+                                if event.state() == KeyState::Pressed {
+                                    if sym == smithay::input::keyboard::Keysym::F10 {
+                                        windows.toggle_active(area);
+                                    } else {
+                                        windows.close_active();
+                                    }
+                                }
+                                FilterResult::Intercept(())
+                            } else {
+                                FilterResult::Forward
+                            }
+                        },
+                    );
+                }
+                InputEvent::PointerMotionAbsolute { event } => {
+                    cursor_pos = (
+                        event.x_transformed(view_size.w),
+                        event.y_transformed(view_size.h),
+                    );
+
+                    if agents.pointer_motion(
+                        cursor_pos.0,
+                        cursor_pos.1,
+                        view_size.w,
+                        view_size.h,
+                        shell_width,
+                    ) {
+                        // The shell owns motion until the panel gesture is released.
+                    } else if windows.motion(cursor_pos, area) {
+                    } else {
+                        // Hit-test in reverse drawing order: topmost first.
+                        let on_shell = (shell_width > 0 && cursor_pos.0 < shell_width as f64)
+                            || (shell_width == 0 && cursor_pos.0 < 42.0 && cursor_pos.1 < 42.0);
+                        let under = if on_shell
+                            || active_page != "workspace"
+                            || tools.hit_modal()
+                            || agents.hit_global(
+                                cursor_pos.0,
+                                cursor_pos.1,
+                                view_size.w,
+                                view_size.h,
+                                shell_width,
+                            ) {
+                            None
+                        } else {
+                            windows.under(cursor_pos)
+                        };
+                        let pointer = state.seat.get_pointer().unwrap();
+                        pointer.motion(
+                            &mut state,
+                            under,
+                            &MotionEvent {
+                                location: cursor_pos.into(),
+                                serial: SERIAL_COUNTER.next_serial(),
+                                time: event.time_msec(),
+                            },
+                        );
+                        pointer.frame(&mut state);
+                    }
+                }
+                InputEvent::PointerButton { event } => {
+                    // Diagnostic test: do not recreate the IME context
+                    // on every pointer press. Restore the original behavior
+                    // after testing if this does not fix composition.
+                    let sidebar_hit = (shell_width > 0 && cursor_pos.0 < shell_width as f64)
+                        || (shell_width == 0 && cursor_pos.0 < 42.0 && cursor_pos.1 < 42.0);
+                    let global_hit = tools.hit_modal()
+                        || agents.hit_global(
+                            cursor_pos.0,
+                            cursor_pos.1,
+                            view_size.w,
+                            view_size.h,
+                            shell_width,
+                        );
+                    let mut forward = !sidebar_hit && !global_hit && active_page == "workspace";
+                    if event.button() == Some(MouseButton::Right) && !tools.hit_modal() {
+                        if event.state() == ButtonState::Pressed {
+                            macro_right_grab = (active_page == "techne"
+                                && tools.right_click(
+                                    cursor_pos.0,
+                                    cursor_pos.1,
+                                    shell_width + 32,
+                                    view_size.w - shell_width - 48,
+                                ))
+                                || agents.right_click(
+                                    cursor_pos.0,
+                                    cursor_pos.1,
+                                    view_size.w,
+                                    view_size.h,
+                                    &local_space,
+                                    active_page,
+                                );
+                            if macro_right_grab {
+                                forward = false;
+                            }
+                        } else if macro_right_grab {
+                            forward = false;
+                            macro_right_grab = false;
+                        }
+                    }
+                    if event.button() == Some(MouseButton::Left)
+                        && event.state() == ButtonState::Pressed
+                        && !global_hit
+                    {
+                        agents.unfocus_chat();
+                    }
+                    if event.button() == Some(MouseButton::Left) {
+                        if event.state() == ButtonState::Released {
+                            if agents.pointer_release(&mut local_space) {
+                                forward = false;
+                            }
+                            if shell_mouse_grab {
+                                forward = false;
+                            }
+                            shell_mouse_grab = false;
+                        } else if global_hit {
+                            shell_mouse_grab = true;
+                            if tools.hit_modal() {
+                                tools.click(
+                                    cursor_pos.0,
+                                    cursor_pos.1,
+                                    shell_width + 32,
+                                    view_size.w - shell_width - 48,
+                                    &mut local_space,
+                                );
+                                return;
+                            }
+                            agents.click_global(
+                                cursor_pos.0,
+                                cursor_pos.1,
+                                view_size.w,
+                                view_size.h,
+                                shell_width,
+                                &mut local_space,
+                                active_page,
+                            );
+                        } else if sidebar_hit {
+                            shell_mouse_grab = true;
+
+                            let y = cursor_pos.1;
+                            if y >= 30.0 && y < 110.0 {
+                                active_page = if active_page == "settings" {
+                                    "workspace"
+                                } else {
+                                    "settings"
+                                };
+                            } else if y >= 120.0 && y < 185.0 {
+                                active_page = "mneme";
+                            } else if y >= 185.0 && y < 250.0 {
+                                active_page = "techne";
+                            } else if y >= 250.0 && y < 315.0 {
+                                active_page = "socius";
+                            }
+                            println!("Yohaku page: {active_page}");
+                            if active_page != "workspace" {
+                                keyboard.set_focus(&mut state, None, SERIAL_COUNTER.next_serial());
+                            }
+                        } else if active_page == "files" {
+                            local_space.click(
+                                cursor_pos.0,
+                                cursor_pos.1,
+                                shell_width + 32,
+                                view_size.w - shell_width - 48,
+                                view_size.h,
+                            );
+                        } else if active_page == "techne" {
+                            tools.click(
+                                cursor_pos.0,
+                                cursor_pos.1,
+                                shell_width + 32,
+                                view_size.w - shell_width - 48,
+                                &mut local_space,
+                            );
+                        } else if active_page == "socius" {
+                            agents.click_definition(
+                                cursor_pos.0,
+                                cursor_pos.1,
+                                shell_width + 32,
+                                view_size.w - shell_width - 48,
+                                view_size.h,
+                            );
+                        } else if active_page == "mneme"
+                            && cursor_pos.0 >= (shell_width + 48) as f64
+                            && cursor_pos.1 >= 145.0
+                        {
+                            let index = ((cursor_pos.1 - 145.0) / 46.0) as usize;
+                            let worlds = local_worlds();
+                            if let Some(world) = worlds.get(index) {
+                                local_space.switch(std::path::Path::new("worlds").join(world));
+                                active_page = "files";
+                            }
+                        }
+                    }
+                    if event.button() == Some(MouseButton::Left) {
+                        if event.state() == ButtonState::Released {
+                            let owes_release = windows.owes_release();
+                            if windows.release() {
+                                forward = false;
+                            } else if owes_release {
+                                forward = true;
+                            }
+                        } else if forward {
+                            let consumed = windows.press(cursor_pos, area);
+                            keyboard.set_focus(
+                                &mut state,
+                                windows.active(),
+                                SERIAL_COUNTER.next_serial(),
+                            );
+                            if consumed {
+                                forward = false;
+                            }
+                        }
+                    }
+                    if forward {
+                        let under = windows.under(cursor_pos);
+                        let pointer = state.seat.get_pointer().unwrap();
+                        pointer.motion(
+                            &mut state,
+                            under,
+                            &MotionEvent {
+                                location: cursor_pos.into(),
+                                serial: SERIAL_COUNTER.next_serial(),
+                                time: event.time_msec(),
+                            },
+                        );
+                        pointer.button(
+                            &mut state,
+                            &ButtonEvent {
+                                button: event.button_code(),
+                                state: event.state(),
+                                serial: SERIAL_COUNTER.next_serial(),
+                                time: event.time_msec(),
+                            },
+                        );
+                        if event.state() == ButtonState::Pressed {
+                            if !client_buttons.contains(&event.button_code()) {
+                                client_buttons.push(event.button_code());
+                            }
+                        } else {
+                            client_buttons.retain(|button| *button != event.button_code());
+                        }
+                        pointer.frame(&mut state);
+                    }
+                }
+                InputEvent::PointerAxis { event }
+                    if active_page == "files"
+                        || active_page == "techne"
+                        || agents.hit_global(
+                            cursor_pos.0,
+                            cursor_pos.1,
+                            view_size.w,
+                            view_size.h,
+                            shell_width,
+                        ) =>
+                {
+                    if let Some(amount) = event
+                        .amount(Axis::Vertical)
+                        .or_else(|| event.amount_v120(Axis::Vertical))
+                    {
+                        if amount != 0.0 {
+                            if agents.hit_global(
+                                cursor_pos.0,
+                                cursor_pos.1,
+                                view_size.w,
+                                view_size.h,
+                                shell_width,
+                            ) {
+                                agents.scroll(amount > 0.0);
+                            } else if active_page == "techne" {
+                                tools.scroll(amount > 0., (190.0..390.0).contains(&cursor_pos.1));
+                            } else {
+                                local_space.scroll(
+                                    amount > 0.0,
+                                    cursor_pos.0 < (shell_width + 240) as f64,
+                                );
+                            }
+                        }
+                    }
+                }
+                InputEvent::PointerAxis { event }
+                    if active_page == "workspace" && !tools.hit_modal() =>
+                {
+                    let pointer = state.seat.get_pointer().unwrap();
+                    let mut axis = AxisFrame::new(event.time_msec()).source(event.source());
+                    for direction in [Axis::Horizontal, Axis::Vertical] {
+                        if let Some(value) = event.amount(direction) {
+                            axis = axis.value(direction, value);
+                            if value == 0. {
+                                axis = axis.stop(direction);
+                            }
+                        } else if let Some(value) = event.amount_v120(direction) {
+                            axis = axis.value(direction, value * 15. / 120.);
+                        }
+                        if let Some(value) = event.amount_v120(direction) {
+                            axis = axis.v120(direction, value as i32);
+                        }
+                    }
+                    if windows.under(cursor_pos).is_some() {
+                        pointer.axis(&mut state, axis);
+                        pointer.frame(&mut state);
+                    }
+                }
+                _ => {}
+            },
+            _ => (),
+        });
+
+        if close_requested {
+            eprintln!("[WINDOW CLOSE] main loop exiting");
+            return Ok(());
+        }
+
+        match status {
+            PumpStatus::Continue => (),
+            PumpStatus::Exit(_) => return Ok(()),
+        };
+
+        let size = backend.window_size();
+        if size != output_size {
+            output_size = size;
+            let mode = Mode {
+                size,
+                refresh: 60000,
+            };
+            output.change_current_state(Some(mode), None, None, None);
+            output.set_preferred(mode);
+        }
+        let area = work_area(size.w, size.h, shell_width);
+        for w in &mut windows.items {
+            w.layout.fit(area);
+        }
+        windows.configure(area);
+        windows.persist(&mut local_space);
+        let cursor = if active_page == "workspace"
+            && !agents.hit_global(cursor_pos.0, cursor_pos.1, size.w, size.h, shell_width)
+        {
+            use ::winit::window::CursorIcon;
+            match windows.hit(cursor_pos) {
+                Some(Hit::Resize(e)) if (e.left && e.top) || (e.right && e.bottom) => {
+                    CursorIcon::NwseResize
+                }
+                Some(Hit::Resize(e)) if (e.right && e.top) || (e.left && e.bottom) => {
+                    CursorIcon::NeswResize
+                }
+                Some(Hit::Resize(e)) if e.left || e.right => CursorIcon::EwResize,
+                Some(Hit::Resize(_)) => CursorIcon::NsResize,
+                _ => CursorIcon::Default,
+            }
+        } else {
+            ::winit::window::CursorIcon::Default
+        };
+        backend.window().set_cursor(cursor);
+        let damage = Rectangle::from_size(size);
+        {
+            let (renderer, mut framebuffer) = backend.bind().unwrap();
+            let elements = windows
+                .items
+                .iter()
+                .map(|w| {
+                    render_elements_from_surface_tree(
+                        renderer,
+                        w.id(),
+                        w.origin(),
+                        1.0,
+                        1.0,
+                        Kind::Unspecified,
+                    )
+                })
+                .collect::<Vec<Vec<WaylandSurfaceRenderElement<GlesRenderer>>>>();
+
+            let mut frame = renderer
+                .render(&mut framebuffer, size, Transform::Flipped180)
+                .unwrap();
+            frame
+                .clear(Color32F::new(1.0, 1.0, 1.0, 1.0), &[damage])
+                .unwrap();
+            if active_page == "files" {
+                local_space
+                    .draw(
+                        &mut frame,
+                        shell_width + 32,
+                        size.w - shell_width - 48,
+                        size.h,
+                    )
+                    .unwrap();
+            }
+            if active_page == "socius" {
+                agents
+                    .draw_definition(
+                        &mut frame,
+                        shell_width + 32,
+                        size.w - shell_width - 48,
+                        size.h,
+                        &local_space,
+                    )
+                    .unwrap();
+            }
+            if active_page == "workspace" {
+                for (index, (window, elements)) in windows.items.iter().zip(&elements).enumerate() {
+                    let content = tool_windows::draw_frame(
+                        &mut frame,
+                        window.layout,
+                        &window.title(),
+                        index + 1 == windows.items.len(),
+                    )
+                    .unwrap();
+                    draw_render_elements(&mut frame, 1.0, elements, &[content]).unwrap();
+                }
+            }
+
+            // Draw the persistent shell above client windows.
+            if shell_width > 0 && size.w > 0 && size.h > 0 {
+                let width = shell_width.min(size.w);
+                let panel = Rectangle::new((0, 0).into(), (width, size.h).into());
+                frame
+                    .clear(Color32F::new(0.965, 0.965, 0.965, 1.0), &[panel])
+                    .unwrap();
+
+                let edge = Rectangle::new((width - 1, 0).into(), (1, size.h).into());
+                frame
+                    .clear(Color32F::new(0.85, 0.85, 0.85, 1.0), &[edge])
+                    .unwrap();
+            }
+
+            // We rely on the nested compositor to do the sync for us
+
+            // Navigation labels come from config/shell.json.
+            if shell_width > 0 {
+                draw_shell_text(
+                    &mut frame,
+                    shell_config["header"]["title"].as_str().unwrap_or("Yohaku"),
+                    20,
+                    45,
+                    3,
+                    shell_width,
+                    Color32F::new(0.12, 0.12, 0.12, 1.0),
+                )
+                .unwrap();
+
+                if let Some(items) = shell_config["sidebar"]["items"].as_array() {
+                    for (index, item) in items.iter().enumerate() {
+                        if let Some(label) = item["label"].as_str() {
+                            draw_shell_text(
+                                &mut frame,
+                                label,
+                                24,
+                                145 + index as i32 * 65,
+                                2,
+                                shell_width,
+                                Color32F::new(0.35, 0.35, 0.35, 1.0),
+                            )
+                            .unwrap();
+                        }
+                    }
+                }
+            }
+
+            // Mneme: show actual local world directories.
+            if active_page == "mneme" {
+                let left = shell_width + 48;
+                let color = Color32F::new(0.18, 0.18, 0.18, 1.0);
+
+                draw_shell_text(&mut frame, "Mneme", left, 65, 3, size.w - 20, color).unwrap();
+
+                let worlds = local_worlds();
+
+                if worlds.is_empty() {
+                    draw_shell_text(
+                        &mut frame,
+                        "No worlds yet",
+                        left,
+                        155,
+                        2,
+                        size.w - 20,
+                        Color32F::new(0.45, 0.45, 0.45, 1.0),
+                    )
+                    .unwrap();
+                } else {
+                    for (index, world) in worlds.iter().take(12).enumerate() {
+                        draw_shell_text(
+                            &mut frame,
+                            world,
+                            left,
+                            155 + index as i32 * 46,
+                            2,
+                            size.w - 20,
+                            color,
+                        )
+                        .unwrap();
+                    }
+                }
+            }
+
+            // Additional Yohaku Shell navigation pages.
+            if active_page == "settings" {
+                let (title, message, hint) = match active_page {
+                    "settings" => (
+                        "Local Settings",
+                        "Configuration: config/shell.json",
+                        "Click Yohaku again to return",
+                    ),
+                    "techne" => (
+                        "Techne",
+                        "Tool registry not connected yet",
+                        "Tools will be managed here",
+                    ),
+                    _ => unreachable!(),
+                };
+
+                let left = shell_width + 48;
+                let dark = Color32F::new(0.18, 0.18, 0.18, 1.0);
+                let muted = Color32F::new(0.42, 0.42, 0.42, 1.0);
+
+                draw_shell_text(&mut frame, title, left, 65, 3, size.w - 20, dark).unwrap();
+
+                draw_shell_text(&mut frame, message, left, 155, 2, size.w - 20, muted).unwrap();
+
+                draw_shell_text(&mut frame, hint, left, 205, 2, size.w - 20, muted).unwrap();
+            }
+
+            if active_page == "techne" {
+                tools
+                    .draw(
+                        &mut frame,
+                        shell_width + 32,
+                        size.w - shell_width - 48,
+                        size.h,
+                    )
+                    .unwrap();
+            }
+            agents
+                .draw_global(
+                    &mut frame,
+                    size.w,
+                    size.h,
+                    shell_width,
+                    &local_space,
+                    active_page,
+                )
+                .unwrap();
+            tools
+                .draw_modal(&mut frame, size.w, size.h, shell_width)
+                .unwrap();
+            let _ = frame.finish().unwrap();
+
+            for surface in state.xdg_shell_state.toplevel_surfaces() {
+                send_frames_surface_tree(
+                    surface.wl_surface(),
+                    start_time.elapsed().as_millis() as u32,
+                );
+            }
+
+            if let Some(stream) = listener.accept()? {
+                println!("Got a client: {:?}", stream);
+
+                let client = display
+                    .handle()
+                    .insert_client(stream, Arc::new(ClientState::default()))
+                    .unwrap();
+                clients.push(client);
+            }
+
+            display.dispatch_clients(&mut state)?;
+            display.flush_clients()?;
+        }
+
+        // It is important that all events on the display have been dispatched and flushed to clients before
+        // swapping buffers because this operation may block.
+        backend.submit(Some(&[damage])).unwrap();
+    }
+}
+
+fn release_client_buttons(state: &mut App, buttons: &mut Vec<u32>) {
+    if let Some(pointer) = state.seat.get_pointer() {
+        for button in buttons.drain(..) {
+            pointer.button(
+                state,
+                &ButtonEvent {
+                    button,
+                    state: ButtonState::Released,
+                    serial: SERIAL_COUNTER.next_serial(),
+                    time: 0,
+                },
+            );
+        }
+        pointer.frame(state);
+    }
+}
+
+pub fn send_frames_surface_tree(surface: &wl_surface::WlSurface, time: u32) {
+    with_surface_tree_downward(
+        surface,
+        (),
+        |_, _, &()| TraversalAction::DoChildren(()),
+        |_surf, states, &()| {
+            // the surface may not have any user_data if it is a subsurface and has not
+            // yet been commited
+            for callback in states
+                .cached_state
+                .get::<SurfaceAttributes>()
+                .current()
+                .frame_callbacks
+                .drain(..)
+            {
+                callback.done(time);
+            }
+        },
+        |_, _, &()| true,
+    );
+}
+
+fn local_worlds() -> Vec<String> {
+    let mut worlds: Vec<String> = std::fs::read_dir("worlds")
+        .ok()
+        .map(|entries| {
+            entries
+                .filter_map(Result::ok)
+                .filter(|entry| entry.path().is_dir() && !entry.path().is_symlink())
+                .map(|entry| entry.file_name().to_string_lossy().into_owned())
+                .collect()
+        })
+        .unwrap_or_default();
+    worlds.sort();
+    worlds
+}
+
+#[derive(Default)]
+struct ClientState {
+    compositor_state: CompositorClientState,
+}
+impl ClientData for ClientState {
+    fn initialized(&self, _client_id: ClientId) {
+        println!("initialized");
+    }
+
+    fn disconnected(&self, _client_id: ClientId, _reason: DisconnectReason) {
+        println!("disconnected");
+    }
+}
+
+// Macros used to delegate protocol handling to types in the app state.
+delegate_xdg_shell!(App);
+delegate_xdg_decoration!(App);
+delegate_output!(App);
+delegate_compositor!(App);
+delegate_shm!(App);
+delegate_seat!(App);
+delegate_data_device!(App);
+```
+
+## 输出与关联
+```yaml
+output: "examples/yohaku_compositor.rs"
+```

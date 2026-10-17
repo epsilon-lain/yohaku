@@ -1,0 +1,222 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":7673,"path":"/root/projects/yohaku/release-prep/yohaku/src/socius.rs","sha256":"9eb1ac32a8dcc17546745e8172835e0cd5fce99003029197812acac0f8f3dff1"}
+---
+
+## 正文
+```text
+//! The world-owned, human/agent editable Socius interaction settings.
+use serde_json::{Value, json};
+pub const SETTINGS_PATH: &str = "memory/socius.json";
+pub const MAX_SETTINGS_BYTES: usize = 256 * 1024;
+pub fn default_macros() -> Value {
+    json!([{"name":"Chat","trigger":"context_menu","shortcut":"Ctrl+J","action":"open_chat","prompt":""}])
+}
+pub fn parse_shortcut(s: &str) -> Option<(bool, bool, bool, char)> {
+    let mut ctrl = false;
+    let mut shift = false;
+    let mut alt = false;
+    let mut key = None;
+    for p in s.split('+') {
+        match p.trim().to_ascii_lowercase().as_str() {
+            "ctrl" if !ctrl => ctrl = true,
+            "shift" if !shift => shift = true,
+            "alt" if !alt => alt = true,
+            p if p.len() == 1 && p.as_bytes()[0].is_ascii_alphanumeric() && key.is_none() => {
+                key = p.chars().next()
+            }
+            _ => return None,
+        }
+    }
+    if !ctrl && !alt {
+        return None;
+    }
+    key.map(|k| (ctrl, shift, alt, k))
+}
+pub fn validate_macros(v: &Value) -> Result<(), String> {
+    let items = v.as_array().ok_or("Expected a JSON array")?;
+    if items.len() > 12 {
+        return Err("At most 12 AI macros".into());
+    }
+    let mut shortcuts = Vec::new();
+    let mut direct = false;
+    for item in items {
+        let obj = item.as_object().ok_or("Each macro must be an object")?;
+        if obj
+            .keys()
+            .any(|k| !["name", "trigger", "shortcut", "action", "prompt"].contains(&k.as_str()))
+        {
+            return Err("Unknown macro field".into());
+        }
+        let name = item["name"].as_str().ok_or("Each macro needs a name")?;
+        if name.trim().is_empty() || name.chars().count() > 80 || name.chars().any(char::is_control)
+        {
+            return Err("Macro name must contain 1-80 visible characters".into());
+        }
+        let trigger = item["trigger"].as_str().ok_or("Missing trigger")?;
+        if !["context_menu", "right_click", "shortcut"].contains(&trigger) {
+            return Err("Invalid trigger".into());
+        }
+        if trigger == "right_click" {
+            if direct {
+                return Err("Only one direct right-click macro".into());
+            }
+            direct = true;
+        }
+        if let Some(action) = item.get("action") {
+            if !["open_chat", "toggle_chat", "close_chat"]
+                .iter()
+                .any(|a| action.as_str() == Some(a))
+            {
+                return Err("Invalid action".into());
+            }
+        }
+        if let Some(prompt) = item.get("prompt") {
+            if prompt.as_str().is_none_or(|p| p.len() > 16384) {
+                return Err("Prompt must be text, at most 16 KiB".into());
+            }
+        }
+        if let Some(shortcut) = item.get("shortcut").filter(|s| !s.is_null()) {
+            let parsed = shortcut
+                .as_str()
+                .and_then(parse_shortcut)
+                .ok_or("Shortcut: Ctrl/Alt + letter or digit")?;
+            if shortcuts.contains(&parsed) {
+                return Err("Duplicate shortcut".into());
+            }
+            shortcuts.push(parsed);
+        } else if trigger == "shortcut" {
+            return Err("Shortcut trigger needs a shortcut".into());
+        }
+    }
+    Ok(())
+}
+
+pub fn defaults(macros: Value) -> Value {
+    json!({"format":"yohaku-socius/1","macros":macros,"chat":{"x":null,"y":null,"width":880,"height":720,"font_scale":3}})
+}
+pub fn validate_settings(v: &Value) -> Result<(), String> {
+    let obj = v.as_object().ok_or("Socius settings must be an object")?;
+    if obj
+        .keys()
+        .any(|k| !["format", "macros", "chat"].contains(&k.as_str()))
+    {
+        return Err("Unknown Socius setting".into());
+    }
+    if v["format"] != "yohaku-socius/1" {
+        return Err("format must be yohaku-socius/1".into());
+    }
+    validate_macros(&v["macros"])?;
+    let chat = v["chat"].as_object().ok_or("chat must be an object")?;
+    if chat
+        .keys()
+        .any(|k| !["x", "y", "width", "height", "font_scale"].contains(&k.as_str()))
+    {
+        return Err("Unknown chat setting".into());
+    }
+    for (key, min, max) in [
+        ("width", 480, 4096),
+        ("height", 420, 4096),
+        ("font_scale", 2, 4),
+    ] {
+        let n = v["chat"][key]
+            .as_i64()
+            .ok_or_else(|| format!("chat.{key} must be an integer"))?;
+        if !(min..=max).contains(&n) {
+            return Err(format!("chat.{key} must be {min}..{max}"));
+        }
+    }
+    for key in ["x", "y"] {
+        let val = &v["chat"][key];
+        if !val.is_null() && !val.as_i64().is_some_and(|n| (0..=32768).contains(&n)) {
+            return Err(format!("chat.{key} must be null or 0..32768"));
+        }
+    }
+    Ok(())
+}
+pub fn parse_settings(text: &str) -> Result<Value, String> {
+    if text.len() > MAX_SETTINGS_BYTES {
+        return Err("Socius settings exceed 256 KiB".into());
+    }
+    let v =
+        serde_json::from_str::<Value>(text).map_err(|e| format!("Invalid settings JSON: {e}"))?;
+    validate_settings(&v)?;
+    Ok(v)
+}
+pub fn read_settings(root: &std::path::Path) -> Result<Option<String>, String> {
+    use std::io::Read;
+    let mut path = root.to_owned();
+    for part in SETTINGS_PATH.split('/') {
+        path.push(part);
+        match std::fs::symlink_metadata(&path) {
+            Ok(m) if m.file_type().is_symlink() => {
+                return Err("Socius settings cannot use symlinks".into());
+            }
+            Ok(_) => (),
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+            Err(e) => return Err(e.to_string()),
+        }
+    }
+    let mut text = String::new();
+    std::fs::File::open(path)
+        .map_err(|e| e.to_string())?
+        .take((MAX_SETTINGS_BYTES + 1) as u64)
+        .read_to_string(&mut text)
+        .map_err(|e| e.to_string())?;
+    if text.len() > MAX_SETTINGS_BYTES {
+        return Err("Socius settings exceed 256 KiB".into());
+    }
+    Ok(Some(text))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn schema_bounds_reject_invalid_values_and_unknown_actions() {
+        let valid = defaults(default_macros());
+        assert!(validate_settings(&valid).is_ok());
+        for (key, value) in [
+            ("width", json!(479)),
+            ("height", json!(419)),
+            ("font_scale", json!(5)),
+            ("x", json!(-1)),
+            ("y", json!("auto")),
+            ("width", json!(true)),
+        ] {
+            let mut v = valid.clone();
+            v["chat"][key] = value;
+            assert!(validate_settings(&v).is_err());
+        }
+        let mut v = valid.clone();
+        v["chat"]["command"] = json!("run");
+        assert!(validate_settings(&v).is_err());
+        let mut v = valid.clone();
+        v["macros"][0]["action"] = json!("exec");
+        assert!(validate_settings(&v).is_err());
+        assert!(parse_settings(&" ".repeat(MAX_SETTINGS_BYTES + 1)).is_err());
+    }
+    #[cfg(unix)]
+    #[test]
+    fn settings_loader_rejects_symlinks_without_following_them() {
+        let base =
+            std::env::temp_dir().join(format!("yohaku-setting-symlink-{}", std::process::id()));
+        std::fs::create_dir_all(&base).unwrap();
+        let target = base.join("outside");
+        std::fs::write(&target, "secret").unwrap();
+        let root = base.join("world");
+        std::fs::create_dir_all(&root).unwrap();
+        std::os::unix::fs::symlink(&target, root.join("memory")).unwrap();
+        assert!(read_settings(&root).is_err());
+        assert_eq!(std::fs::read_to_string(target).unwrap(), "secret");
+        std::fs::remove_dir_all(base).unwrap();
+    }
+}
+```
+
+## 输出与关联
+```yaml
+output: "src/socius.rs"
+```

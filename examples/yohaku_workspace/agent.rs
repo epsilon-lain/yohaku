@@ -1,0 +1,2737 @@
+//! Socius uses the same native renderer and workspace worker as the file editor.
+use super::workspace_panel::Panel;
+use serde_json::{Value, json};
+use smithay::{
+    backend::renderer::{Color32F, Frame},
+    input::keyboard::Keysym,
+    utils::Rectangle,
+};
+use std::{
+    collections::HashMap,
+    io::{BufRead, BufReader, Write},
+    process::{Child, Command, Stdio},
+    sync::{
+        Arc, Mutex,
+        mpsc::{self, Receiver, Sender},
+    },
+};
+use yohaku::editor::Editor;
+use yohaku::socius::{
+    SETTINGS_PATH, default_macros, defaults, parse_settings, parse_shortcut, read_settings,
+    validate_macros,
+};
+
+enum Event {
+    Message(u64, Value),
+    Request(u64, Value, Sender<Value>),
+    Paste(Option<Field>, Result<String, String>),
+    Copied(String, Option<(Option<Field>, String)>, Result<(), String>),
+    Exit(u64),
+}
+#[derive(Clone, Copy, PartialEq)]
+enum Field {
+    Url,
+    Model,
+    Key,
+    Name,
+    Personality,
+    Macros,
+}
+struct MacroMenu {
+    x: i32,
+    y: i32,
+    items: Vec<Value>,
+    context: Value,
+    top: usize,
+    rows: usize,
+}
+impl MacroMenu {
+    fn geometry(&self, width: i32, height: i32) -> (i32, i32, i32, i32) {
+        let w = 240.min((width - 8).max(0));
+        let h = (self.rows as i32 * 32).min((height - 8).max(0));
+        (
+            self.x.clamp(4, (width - w - 4).max(4)),
+            self.y.clamp(4, (height - h - 4).max(4)),
+            w,
+            h,
+        )
+    }
+}
+fn expand_prompt(prompt: &str, context: &Value) -> String {
+    let mut result = String::new();
+    let mut rest = prompt;
+    while let Some(start) = rest.find('{') {
+        result.push_str(&rest[..start]);
+        rest = &rest[start..];
+        let Some(end) = rest.find('}') else {
+            break;
+        };
+        let token = &rest[1..end];
+        let value = match token {
+            "selection" if context["page"] == "files" && context["selected_all"] == true => {
+                context["draft"].as_str()
+            }
+            "selection" => Some(""),
+            "source" | "page" | "root" => Some(context[token].as_str().unwrap_or("")),
+            _ => None,
+        };
+        result.push_str(value.unwrap_or(&rest[..=end]));
+        rest = &rest[end + 1..];
+    }
+    result.push_str(rest);
+    result
+}
+const UI_WRITE_ID: u64 = u64::MAX;
+struct SettingsWrite {
+    root: String,
+    text: String,
+    close_field: bool,
+}
+struct Gesture {
+    x: i32,
+    y: i32,
+    bounds: (i32, i32, i32, i32),
+    edges: u8,
+    expected: Option<String>,
+    root: String,
+}
+struct ChatLayout {
+    scale: i32,
+    line: i32,
+    log_y: i32,
+    log_h: i32,
+    input_y: i32,
+    input_h: i32,
+}
+impl ChatLayout {
+    fn new(top: i32, height: i32, scale: i32) -> Self {
+        let line = scale * 8 + 8;
+        let log_y = top + 52 + line * 2 + 8;
+        let input_h = line * 3 + 12;
+        let input_y = top + height - 62 - input_h;
+        Self {
+            scale,
+            line,
+            log_y,
+            log_h: (input_y - log_y - 12).max(line),
+            input_y,
+            input_h,
+        }
+    }
+}
+pub struct AgentPanel {
+    tool_requests: Vec<(Value, Sender<Value>)>,
+    viewport: (i32, i32, i32),
+    ui: Option<Value>,
+    ui_root: String,
+    ui_text: Option<String>,
+    field_expected: Option<String>,
+    ui_error: String,
+    ui_initialized: bool,
+    ui_poll: std::time::Instant,
+    pending_ui: Option<SettingsWrite>,
+    gesture: Option<Gesture>,
+    menu: Option<MacroMenu>,
+    macro_error: String,
+    config: Value,
+    config_path: std::path::PathBuf,
+    pub chat_open: bool,
+    chat_focus: bool,
+    log_focus: bool,
+    log_selected_all: bool,
+    ime_preedit: String,
+    key: String,
+    input: Editor,
+    field: Option<Field>,
+    field_input: Editor,
+    logs: Vec<String>,
+    log_offset: usize,
+    status: String,
+    tx: Sender<Event>,
+    rx: Receiver<Event>,
+    child: Option<Arc<Mutex<Child>>>,
+    waiting: HashMap<u64, Sender<Value>>,
+    history: Value,
+    turn: u64,
+    running: bool,
+    history_root: String,
+}
+impl AgentPanel {
+    pub fn new() -> Self {
+        let config = std::fs::read_to_string("config/ai.json").ok().and_then(|s|serde_json::from_str::<Value>(&s).ok()).filter(Value::is_object)
+            .unwrap_or_else(||json!({"protocol":"chat","base_url":"https://api.deepseek.com","model":"deepseek-flash","api_key_env":"DEEPSEEK_API_KEY","max_tokens":4096,"max_rounds":12,"timeout":120}));
+        let (tx, rx) = mpsc::channel();
+        let panel = Self {
+            tool_requests: Vec::new(),
+            viewport: (0, 0, 0),
+            ui: None,
+            ui_root: String::new(),
+            ui_text: None,
+            field_expected: None,
+            ui_error: String::new(),
+            ui_initialized: false,
+            ui_poll: std::time::Instant::now(),
+            pending_ui: None,
+            gesture: None,
+            menu: None,
+            macro_error: String::new(),
+            config,
+            config_path: "config/ai.json".into(),
+            chat_open: false,
+            chat_focus: false,
+            log_focus: false,
+            log_selected_all: false,
+            ime_preedit: String::new(),
+            key: String::new(),
+            input: Editor::default(),
+            field: None,
+            field_input: Editor::default(),
+            logs: Vec::new(),
+            log_offset: 0,
+            status: "Choose model/key, then write a request. Ctrl+Enter sends.".into(),
+            tx,
+            rx,
+            child: None,
+            waiting: HashMap::new(),
+            history: json!([]),
+            turn: 0,
+            running: false,
+            history_root: String::new(),
+        };
+        panel
+    }
+
+    fn log(&mut self, text: String) {
+        self.logs.extend(text.lines().map(str::to_owned));
+        if self.logs.len() > 2000 {
+            self.logs.drain(..self.logs.len() - 2000);
+        }
+        self.log_offset = 0;
+    }
+    fn save_config(&mut self) {
+        let mut config = self.config.clone();
+        config.as_object_mut().map(|v| v.remove("api_key"));
+        let result = (|| -> Result<(), std::io::Error> {
+            let parent = self
+                .config_path
+                .parent()
+                .unwrap_or_else(|| std::path::Path::new("."));
+            std::fs::create_dir_all(parent)?;
+            std::fs::write(
+                self.config_path.with_extension("update.json"),
+                serde_json::to_vec_pretty(&config)?,
+            )?;
+            std::fs::rename(
+                self.config_path.with_extension("update.json"),
+                &self.config_path,
+            )
+        })();
+        self.status = match result {
+            Ok(()) => "Model settings saved; API key stays in memory only".into(),
+            Err(e) => format!("Could not save model settings: {e}"),
+        };
+        self.history = json!([]);
+    }
+    fn edit(&mut self, field: Field) {
+        if self.running {
+            return;
+        }
+        self.menu = None;
+        self.clear_preedit();
+        self.macro_error.clear();
+        self.field_expected = self.ui_text.clone();
+        self.field = Some(field);
+        self.field_input.load(match field {
+            Field::Url => self.config["base_url"].as_str().unwrap_or("").into(),
+            Field::Model => self.config["model"].as_str().unwrap_or("").into(),
+            Field::Key => self.key.clone(),
+            Field::Name => self.config["name"].as_str().unwrap_or("AI").into(),
+            Field::Personality => self.config["personality"].as_str().unwrap_or("").into(),
+            Field::Macros => serde_json::to_string_pretty(&self.ui_settings()).unwrap(),
+        });
+        self.field_input.selected_all = true;
+        self.field_input.cursor = self.field_input.text.len();
+    }
+    fn start(&mut self, panel: &mut Panel, page: &str) {
+        if self.running || self.input.text.trim().is_empty() {
+            return;
+        }
+        if self.history_root != panel.root {
+            self.history = json!([]);
+            self.logs.clear();
+            self.history_root = panel.root.clone();
+        }
+        let mut config = self.config.clone();
+        if !self.key.is_empty() {
+            config["api_key"] = json!(self.key);
+        }
+        let initial = json!({"config":config,"prompt":self.input.text,"context":self.visible_context(panel,page),"history":self.history});
+        let mut command = Command::new("python3");
+        command.args(["-B", "agent/yohaku_agent.py", "wire"]);
+        if self.launch_worker(command, initial, panel) {
+            self.status = "AI is working...".into();
+            self.log(format!("You: {}", self.input.text));
+            self.input.load(String::new());
+        }
+    }
+    fn launch_worker(&mut self, mut command: Command, initial: Value, panel: &mut Panel) -> bool {
+        self.turn += 1;
+        let turn = self.turn;
+        let launch = command
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::null())
+            .spawn();
+        let mut child = match launch {
+            Ok(c) => c,
+            Err(_) => {
+                self.status = "Could not start Python 3; check that it is installed".into();
+                return false;
+            }
+        };
+        let mut stdin = child.stdin.take().unwrap();
+        let stdout = child.stdout.take().unwrap();
+        if writeln!(stdin, "{initial}").is_err() {
+            let _ = child.kill();
+            let _ = child.wait();
+            self.status = "Could not send request to AI connector".into();
+            return false;
+        }
+        let child = Arc::new(Mutex::new(child));
+        self.child = Some(child.clone());
+        let tx = self.tx.clone();
+        std::thread::spawn(move || {
+            for line in BufReader::new(stdout).lines() {
+                let value = match line
+                    .ok()
+                    .and_then(|s| serde_json::from_str::<Value>(&s).ok())
+                {
+                    Some(v) => v,
+                    None => break,
+                };
+                if value["event"] == "request" {
+                    let local_id = value["id"].as_u64().unwrap_or(0);
+                    let id = (turn << 32) | local_id;
+                    let (reply, rx) = mpsc::channel();
+                    if tx
+                        .send(Event::Request(
+                            id,
+                            {
+                                let mut request = value["request"].clone();
+                                request["__agent_tool"] = value["tool"].clone();
+                                request
+                            },
+                            reply,
+                        ))
+                        .is_err()
+                    {
+                        break;
+                    }
+                    match rx.recv() {
+                        Ok(mut result) => {
+                            result["id"] = json!(local_id);
+                            if writeln!(stdin, "{result}").is_err() {
+                                break;
+                            }
+                        }
+                        Err(_) => break,
+                    }
+                } else if tx.send(Event::Message(turn, value)).is_err() {
+                    break;
+                }
+            }
+            drop(stdin);
+            if let Ok(mut c) = child.lock() {
+                let _ = c.kill();
+                let _ = c.wait();
+            }
+            let _ = tx.send(Event::Exit(turn));
+        });
+        self.running = true;
+        panel.agent_active = true;
+        true
+    }
+    fn stop(&mut self, panel: &mut Panel) {
+        if let Some(c) = self.child.take() {
+            if let Ok(mut c) = c.lock() {
+                let _ = c.kill();
+            }
+        }
+        self.waiting.clear();
+        for (_, reply) in self.tool_requests.drain(..) {
+            let _ = reply.send(json!({"ok":false,"error":"AI turn stopped"}));
+        }
+        self.pending_ui = None;
+        self.ui_poll = std::time::Instant::now() - std::time::Duration::from_secs(1);
+        panel.cancel_agent();
+        self.running = false;
+        // A partially completed tool chain is not valid model history.
+        self.history = json!([]);
+        self.status = "Stopped. Completed file changes remain saved.".into();
+    }
+    pub fn update(&mut self, panel: &mut Panel, page: &str) {
+        for (id, result) in panel.take_agent_replies() {
+            if id == UI_WRITE_ID {
+                if let Some(write) = self.pending_ui.take() {
+                    if write.root == panel.root {
+                        if result["ok"] == true {
+                            self.ui = parse_settings(&write.text).ok();
+                            self.field_expected = Some(write.text.clone());
+                            let matches_draft =
+                                parse_settings(&self.field_input.text).ok() == self.ui;
+                            self.ui_text = Some(write.text);
+                            self.ui_error.clear();
+                            self.status = "Socius text settings saved".into();
+                            if write.close_field
+                                && matches_draft
+                                && self.field == Some(Field::Macros)
+                            {
+                                self.field = None;
+                            }
+                        } else {
+                            self.ui_error = result["error"]
+                                .as_str()
+                                .unwrap_or("Settings write failed")
+                                .into();
+                            self.macro_error = self.ui_error.clone();
+                            self.status = format!("Settings not saved: {}", self.ui_error);
+                            self.ui_poll =
+                                std::time::Instant::now() - std::time::Duration::from_secs(1);
+                        }
+                    }
+                }
+                continue;
+            }
+            if let Some(tx) = self.waiting.remove(&id) {
+                let _ = tx.send(result);
+            }
+        }
+        self.refresh_settings(panel, false);
+        while let Ok(event) = self.rx.try_recv() {
+            match event {
+                Event::Copied(root, cut, result) => {
+                    if root != panel.root {
+                        continue;
+                    }
+                    match result {
+                        Ok(()) => {
+                            if let Some((field, expected)) = cut {
+                                if self.field == field {
+                                    let e = if field.is_some() {
+                                        &mut self.field_input
+                                    } else {
+                                        &mut self.input
+                                    };
+                                    if e.selected_all && e.text == expected {
+                                        e.insert("");
+                                    }
+                                }
+                            }
+                            self.status = "Copied to system clipboard".into();
+                        }
+                        Err(error) => self.status = error,
+                    }
+                }
+                Event::Paste(field, result) if field == self.field => match result {
+                    Ok(s) => {
+                        if self.field.is_some() {
+                            self.field_input.insert(s.trim());
+                        } else {
+                            self.input.insert(&s);
+                        }
+                    }
+                    Err(e) => self.status = e,
+                },
+                Event::Request(id, request, reply) => {
+                    if (id >> 32) != self.turn || !self.running {
+                        let _ = reply.send(json!({"ok":false,"error":"AI turn stopped"}));
+                        continue;
+                    }
+                    let tool = request["__agent_tool"].as_str().unwrap_or("");
+                    let command = request["command"].as_str().unwrap_or("");
+                    if !self.permits_rpc(tool, command) {
+                        let _ = reply.send(json!({"ok":false,"error":"AI tool permission denied"}));
+                        continue;
+                    }
+                    if matches!(command, "tool_run" | "tool_status" | "tool_stop") {
+                        let mut request = request.clone();
+                        request["__world_root"] = json!(panel.root);
+                        self.tool_requests.push((request, reply));
+                    } else if request["command"] == "context" {
+                        let _ = reply
+                            .send(json!({"ok":true,"result":self.visible_context(panel,page)}));
+                    } else {
+                        self.waiting.insert(id, reply);
+                        panel.queue_agent(id, request);
+                    }
+                }
+                Event::Exit(turn) if turn == self.turn => {
+                    if self.running {
+                        self.status =
+                            "Connector ended before completion; check API settings".into();
+                        self.history = json!([]);
+                    }
+                    self.running = false;
+                    panel.agent_active = false;
+                    self.child = None;
+                }
+                Event::Message(turn, v) if turn == self.turn && self.running => {
+                    match v["event"].as_str().unwrap_or("") {
+                        "status" => self.status = v["text"].as_str().unwrap_or("").into(),
+                        "assistant" => self.log(format!(
+                            "{}: {}",
+                            self.config["name"].as_str().unwrap_or("AI"),
+                            v["text"].as_str().unwrap_or("")
+                        )),
+                        "tool_result" => {
+                            let r = &v["result"];
+                            let ok = r["ok"] == true;
+                            let detail = if ok {
+                                if r["result"]["sync_error"].is_string() {
+                                    r["result"]["sync_error"].as_str().unwrap_or("").to_owned()
+                                } else {
+                                    r["result"]["source"]
+                                        .as_str()
+                                        .or_else(|| r["result"]["path"].as_str())
+                                        .unwrap_or("completed")
+                                        .to_owned()
+                                }
+                            } else {
+                                r["error"].as_str().unwrap_or("failed").into()
+                            };
+                            self.log(format!(
+                                "Tool {}: {} {}",
+                                v["name"].as_str().unwrap_or(""),
+                                if ok { "OK" } else { "ERROR" },
+                                detail
+                            ));
+                        }
+                        "done" => {
+                            self.history = v["history"].clone();
+                            self.status = format!("Done. {} tool calls.", v["tool_calls"]);
+                            self.running = false;
+                            panel.agent_active = false;
+                        }
+                        "error" => {
+                            self.log(format!("Error: {}", v["text"].as_str().unwrap_or("")));
+                            self.status =
+                                "AI turn failed; completed changes remain. Check the log.".into();
+                            self.history = json!([]);
+                            self.running = false;
+                            panel.agent_active = false;
+                        }
+                        _ => (),
+                    }
+                }
+                _ => (),
+            }
+        }
+    }
+    pub fn key(
+        &mut self,
+        sym: Keysym,
+        ctrl: bool,
+        shift: bool,
+        alt: bool,
+        panel: &mut Panel,
+        page: &str,
+    ) {
+        // Composition belongs to the native input method. Do not send, close
+        // the panel, or edit the draft while it is choosing characters.
+        if !self.ime_preedit.is_empty() {
+            return;
+        }
+        if sym == Keysym::Escape {
+            if self.menu.take().is_some() {
+                return;
+            }
+            if self.field.take().is_none() {
+                self.chat_open = false;
+                self.chat_focus = false;
+            }
+            return;
+        }
+        if self.menu.is_some() {
+            return;
+        }
+        let letter = sym.key_char().map(|c| c.to_ascii_lowercase());
+        if self.field.is_none()
+            && self.chat_open
+            && ctrl
+            && letter == Some('c')
+            && (shift || self.log_focus)
+        {
+            self.copy_conversation(panel);
+            return;
+        }
+        if self.field.is_none() && self.log_focus {
+            if ctrl && letter == Some('a') {
+                self.log_selected_all = true;
+            }
+            return;
+        }
+        if ctrl && matches!(letter, Some('c' | 'x')) {
+            let e = if self.field.is_some() {
+                &self.field_input
+            } else {
+                &self.input
+            };
+            if e.selected_all && !e.text.is_empty() {
+                let text = e.text.clone();
+                let cut = (letter == Some('x')).then(|| (self.field, text.clone()));
+                self.copy_text(text, cut, panel);
+            }
+            return;
+        }
+        if self.field.is_none() && self.chat_open && ctrl {
+            let delta = match sym.key_char() {
+                Some('+' | '=') => Some(1),
+                Some('-') => Some(-1),
+                Some('0') => Some(0),
+                _ => None,
+            };
+            if let Some(delta) = delta {
+                let mut v = self.ui_settings();
+                let scale = if delta == 0 {
+                    3
+                } else {
+                    (self.font_scale() + delta).clamp(2, 4)
+                };
+                v["chat"]["font_scale"] = json!(scale);
+                self.queue_settings(
+                    panel,
+                    serde_json::to_string_pretty(&v).unwrap() + "\n",
+                    self.ui_text.clone(),
+                    false,
+                );
+                return;
+            }
+        }
+        if self.field == Some(Field::Macros)
+            && self.pending_ui.as_ref().is_some_and(|p| p.close_field)
+        {
+            return;
+        }
+        if ctrl && sym.key_char().is_some_and(|c| c.eq_ignore_ascii_case(&'v')) {
+            let tx = self.tx.clone();
+            let field = self.field;
+            std::thread::spawn(move || {
+                let _ = tx.send(Event::Paste(field, super::workspace_panel::clipboard()));
+            });
+            return;
+        }
+        if self.field.is_some()
+            && matches!(sym, Keysym::Return | Keysym::KP_Enter)
+            && (!matches!(self.field, Some(Field::Personality | Field::Macros)) || ctrl)
+        {
+            let value = self.field_input.text.trim().to_owned();
+            if self.field == Some(Field::Macros) {
+                match parse_settings(&value) {
+                    Ok(v) => {
+                        let text = serde_json::to_string_pretty(&v).unwrap() + "\n";
+                        self.queue_settings(panel, text, self.field_expected.clone(), true);
+                    }
+                    Err(e) => self.macro_error = e,
+                }
+                return;
+            }
+            match self.field.take().unwrap() {
+                Field::Url => self.config["base_url"] = json!(value),
+                Field::Model => self.config["model"] = json!(value),
+                Field::Key => self.key = value,
+                Field::Name => {
+                    self.config["name"] = json!(if value.is_empty() { "AI".into() } else { value })
+                }
+                Field::Personality => self.config["personality"] = json!(value),
+                Field::Macros => (),
+            }
+            self.save_config();
+            return;
+        }
+        if ctrl && matches!(sym, Keysym::Return | Keysym::KP_Enter) {
+            self.start(panel, page);
+            return;
+        }
+        let e = if self.field.is_some() {
+            &mut self.field_input
+        } else {
+            &mut self.input
+        };
+        if ctrl {
+            match sym.key_char().map(|c| c.to_ascii_lowercase()) {
+                Some('a') => e.selected_all = true,
+                Some('z') if shift => e.redo(),
+                Some('z') => e.undo(),
+                Some('y') => e.redo(),
+                _ => (),
+            };
+            return;
+        }
+        if alt {
+            return;
+        }
+        match sym {
+            Keysym::BackSpace => e.backspace(),
+            Keysym::Delete => e.delete(),
+            Keysym::Left => e.horizontal(false),
+            Keysym::Right => e.horizontal(true),
+            Keysym::Up => e.vertical(false),
+            Keysym::Down => e.vertical(true),
+            Keysym::Home => e.home_end(false),
+            Keysym::End => e.home_end(true),
+            Keysym::Return | Keysym::KP_Enter => e.newline(),
+            Keysym::Tab => e.insert("    "),
+            _ => {
+                if let Some(c) = sym.key_char().filter(|c| !c.is_control()) {
+                    e.insert(&c.to_string());
+                }
+            }
+        }
+        e.ensure_visible(
+            if matches!(self.field, Some(Field::Personality | Field::Macros)) {
+                7
+            } else {
+                3
+            },
+        );
+    }
+
+    pub fn dispatch_tools(&mut self, tools: &mut super::tool_panel::ToolPanel, panel: &Panel) {
+        for (request, reply) in self.tool_requests.drain(..) {
+            let result = if request["__world_root"] == panel.root {
+                tools.rpc(&request, panel)
+            } else {
+                json!({"ok":false,"error":"World changed"})
+            };
+            let _ = reply.send(result);
+        }
+    }
+    fn permission(&self, group: &str) -> bool {
+        if group == "run" {
+            return self.config["permissions"]["run"].as_bool() == Some(true);
+        }
+        match self.config.get("permissions") {
+            None => true,
+            Some(v) if v.is_object() => match v.get(group) {
+                None => true,
+                Some(b) => b.as_bool().unwrap_or(false),
+            },
+            _ => false,
+        }
+    }
+    fn permits_rpc(&self, tool: &str, command: &str) -> bool {
+        let (group, commands): (&str, &[&str]) = match tool {
+            "context" => ("read", &["context"]),
+            "list_tools" => ("read", &["read_text"]),
+            "tool_status" => ("read", &["tool_status"]),
+            "run_tool" => ("run", &["tool_run", "tool_status"]),
+            "stop_tool" => ("run", &["tool_stop"]),
+            "list_files" => ("read", &["list"]),
+            "list_entry_nodes" => ("read", &["node_entries"]),
+            "find_nodes" => ("read", &["node_search"]),
+            "get_node" => ("read", &["node_get"]),
+            "walk_nodes" => ("read", &["node_walk"]),
+            "rebuild_node_index" => ("read", &["node_index"]),
+            "list_directory" => ("read", &["directory"]),
+            "read_document" => ("read", &["read"]),
+            "read_text" => ("read", &["read_text"]),
+            "search_text" => ("read", &["directory", "read_text"]),
+            "create_document" => ("write", &["create"]),
+            "adopt_file" => ("write", &["adopt"]),
+            "write_document" | "patch_document" => ("write", &["read", "save"]),
+            "sync_document" => ("write", &["sync"]),
+            "write_text" | "patch_text" => ("write", &["read_text", "write_text"]),
+            "delete_document" => ("delete", &["read", "delete"]),
+            "delete_text" => ("delete", &["read_text", "delete_text"]),
+            "import_document" => ("import", &["import"]),
+            _ => return false,
+        };
+        self.permission(group) && commands.contains(&command)
+    }
+    fn visible_context(&self, panel: &Panel, page: &str) -> Value {
+        if self.permission("read") {
+            let mut context = panel.context(page);
+            context["techne"] = json!({"registry_path":yohaku::techne::REGISTRY_PATH,"instructions":"list_tools, run_tool, tool_status, stop_tool; only the registered offline world sandbox is supported. Startup request is not success; inspect status."});
+            context["development"] = json!({"guide":"memory/yohaku-development.md", "record":"memory/development.json",
+                "instructions":"If prepared, read the guide and edit the Loom-managed source copy under files/yohaku-default. Registered yohaku-check/test/build/preview tools are available after human preparation. They do not replace or publish the host app."});
+            context["socius"] = json!({"settings_path":SETTINGS_PATH,"settings":self.ui_settings(),"error":self.ui_error,
+                "viewport":{"width":self.viewport.0,"height":self.viewport.1,"sidebar":self.viewport.2},
+                "chat_bounds":self.chat_geometry(self.viewport.0,self.viewport.1,self.viewport.2),
+                "instructions":"Read settings_path using read_text, then write_text with its revision to configure macros or chat. These settings hot reload. No automatic sending or code execution."});
+            context
+        } else {
+            json!({"root":panel.root,"page":page,"read_permission":false})
+        }
+    }
+    fn ui_settings(&self) -> Value {
+        self.ui.clone().unwrap_or_else(|| defaults(self.macros()))
+    }
+    fn font_scale(&self) -> i32 {
+        self.ui
+            .as_ref()
+            .and_then(|v| v["chat"]["font_scale"].as_i64())
+            .unwrap_or(3) as i32
+    }
+    fn queue_settings(
+        &mut self,
+        panel: &mut Panel,
+        text: String,
+        expected: Option<String>,
+        close_field: bool,
+    ) -> bool {
+        if self.pending_ui.is_some() {
+            self.macro_error = "Wait for the current settings save".into();
+            return false;
+        }
+        if let Err(e) = parse_settings(&text) {
+            self.macro_error = e;
+            return false;
+        }
+        self.pending_ui = Some(SettingsWrite {
+            root: panel.root.clone(),
+            text: text.clone(),
+            close_field,
+        });
+        panel.queue_agent(UI_WRITE_ID,json!({"command":"write_text","path":SETTINGS_PATH,"expected":expected,"text":text,"__world_root":panel.root}));
+        self.status = "Saving Socius text settings...".into();
+        true
+    }
+    fn refresh_settings(&mut self, panel: &mut Panel, force: bool) {
+        let changed = self.ui_root != panel.root;
+        if !changed
+            && (!force && self.ui_poll.elapsed() < std::time::Duration::from_millis(400)
+                || self.gesture.is_some()
+                || self.pending_ui.is_some())
+        {
+            return;
+        }
+        self.ui_poll = std::time::Instant::now();
+        if changed {
+            self.ui = None;
+            self.ui = Some(defaults(self.macros()));
+            self.ui_initialized = false;
+            self.ui_root = panel.root.clone();
+            self.ui_text = None;
+            self.ui_error.clear();
+            self.gesture = None;
+            self.menu = None;
+            if self.field == Some(Field::Macros) {
+                self.field = None;
+            }
+        }
+        match read_settings(std::path::Path::new(&panel.root)) {
+            Ok(Some(text)) => {
+                self.ui_initialized = true;
+                match parse_settings(&text) {
+                    Ok(v) => {
+                        self.ui = Some(v);
+                        self.ui_text = Some(text);
+                        self.ui_error.clear();
+                    }
+                    Err(e) => {
+                        self.ui_text = Some(text);
+                        self.ui_error = e;
+                    }
+                }
+            }
+            Ok(None) => {
+                self.ui_text = None;
+                if !self.ui_initialized
+                    && std::path::Path::new(&panel.root).is_dir()
+                    && self.pending_ui.is_none()
+                {
+                    self.ui_initialized = true;
+                    self.queue_settings(
+                        panel,
+                        serde_json::to_string_pretty(&self.ui_settings()).unwrap() + "\n",
+                        None,
+                        false,
+                    );
+                }
+            }
+            Err(e) => self.ui_error = e,
+        }
+    }
+    fn macros(&self) -> Value {
+        if let Some(ui) = &self.ui {
+            return ui["macros"].clone();
+        }
+        match self.config.get("ai_macros") {
+            None => default_macros(),
+            Some(v) if validate_macros(v).is_ok() => v.clone(),
+            Some(_) => json!([]), // Invalid bindings never grant unintended actions.
+        }
+    }
+    fn run_macro(&mut self, item: &Value, context: &Value) {
+        self.menu = None;
+        match item["action"].as_str().unwrap_or("open_chat") {
+            "close_chat" => {
+                self.chat_open = false;
+                self.chat_focus = false;
+                return;
+            }
+            "toggle_chat" => self.toggle_chat(),
+            _ => {
+                self.chat_open = true;
+                self.chat_focus = true;
+            }
+        }
+        if self.chat_open {
+            let prompt = expand_prompt(item["prompt"].as_str().unwrap_or(""), context);
+            if !prompt.is_empty() {
+                self.input.selected_all = false;
+                self.input.cursor = self.input.text.len();
+                if !self.input.text.is_empty() {
+                    self.input.insert("\n");
+                }
+                self.input.insert(&prompt);
+                self.input.ensure_visible(3);
+            }
+        }
+    }
+    pub fn shortcut(
+        &mut self,
+        sym: Keysym,
+        ctrl: bool,
+        shift: bool,
+        alt: bool,
+        pressed: bool,
+        panel: &Panel,
+        page: &str,
+    ) -> bool {
+        if self.field.is_some() {
+            return false;
+        }
+        let Some(c) = sym.key_char() else {
+            return false;
+        };
+        let macros = self.macros();
+        let found = macros.as_array().unwrap().iter().find(|m| {
+            m["shortcut"].as_str().and_then(parse_shortcut)
+                == Some((ctrl, shift, alt, c.to_ascii_lowercase()))
+        });
+        if let Some(item) = found {
+            if pressed {
+                self.run_macro(item, &self.visible_context(panel, page));
+            }
+            true
+        } else {
+            false
+        }
+    }
+    pub fn right_click(
+        &mut self,
+        x: f64,
+        y: f64,
+        width: i32,
+        height: i32,
+        panel: &Panel,
+        page: &str,
+    ) -> bool {
+        if self.field.is_some() {
+            return true;
+        }
+        let macros = self.macros();
+        let items = macros.as_array().unwrap();
+        let context = self.visible_context(panel, page);
+        if let Some(item) = items.iter().find(|m| m["trigger"] == "right_click") {
+            self.run_macro(item, &context);
+            return true;
+        }
+        let items: Vec<Value> = items
+            .iter()
+            .filter(|m| m["trigger"] == "context_menu")
+            .cloned()
+            .collect();
+        if items.is_empty() {
+            self.menu = None;
+            return false;
+        }
+        let rows = items.len().min(((height - 8).max(32) / 32) as usize);
+        self.menu = Some(MacroMenu {
+            x: x as i32,
+            y: y as i32,
+            items,
+            context,
+            top: 0,
+            rows,
+        });
+        // Geometry also clamps when the window is resized after invocation.
+        let _ = width;
+        true
+    }
+    pub fn takes_keyboard(&self) -> bool {
+        self.menu.is_some() || self.field.is_some() || (self.chat_open && self.chat_focus)
+    }
+    fn copy_conversation(&mut self, panel: &Panel) {
+        if self.logs.is_empty() {
+            self.status = "No chat text to copy yet".into();
+            return;
+        }
+        self.status = "Copying chat to system clipboard...".into();
+        self.copy_text(self.logs.join("\n"), None, panel);
+    }
+    fn copy_text(&mut self, text: String, cut: Option<(Option<Field>, String)>, panel: &Panel) {
+        if text.is_empty() {
+            return;
+        }
+        let tx = self.tx.clone();
+        let root = panel.root.clone();
+        std::thread::spawn(move || {
+            let result = super::host_clipboard::write(&text);
+            let _ = tx.send(Event::Copied(root, cut, result));
+        });
+    }
+    pub fn clear_preedit(&mut self) {
+        self.ime_preedit.clear();
+    }
+    pub fn ime(&mut self, event: ::winit::event::Ime) {
+        use ::winit::event::Ime;
+        if !self.text_input_active() {
+            self.clear_preedit();
+            return;
+        }
+        match event {
+            Ime::Preedit(text, _) => self.ime_preedit = text,
+            Ime::Commit(text) => {
+                self.clear_preedit();
+                let text: String = text
+                    .chars()
+                    .filter(|c| !c.is_control() || matches!(c, '\n' | '\t'))
+                    .collect();
+                if !text.is_empty() {
+                    let e = if self.field.is_some() {
+                        &mut self.field_input
+                    } else {
+                        &mut self.input
+                    };
+                    e.insert(&text);
+                    e.ensure_visible(
+                        if matches!(self.field, Some(Field::Personality | Field::Macros)) {
+                            7
+                        } else {
+                            3
+                        },
+                    );
+                }
+            }
+            Ime::Disabled => self.clear_preedit(),
+            Ime::Enabled => (),
+        }
+    }
+    fn text_input_active(&self) -> bool {
+        self.menu.is_none()
+            && (self.field.is_some() || (self.chat_open && self.chat_focus && !self.log_focus))
+            && !(self.field == Some(Field::Macros)
+                && self.pending_ui.as_ref().is_some_and(|p| p.close_field))
+    }
+    pub fn ime_cursor_area(
+        &self,
+        width: i32,
+        height: i32,
+        sidebar: i32,
+    ) -> Option<(i32, i32, i32)> {
+        if !self.text_input_active() {
+            return None;
+        }
+        let (e, x, y, w, scale, rows) = if let Some(field) = self.field {
+            let w = (width - sidebar - 40).clamp(240, 620);
+            let multiline = matches!(field, Field::Personality | Field::Macros);
+            let h = if multiline { 320 } else { 170 };
+            (
+                &self.field_input,
+                sidebar + (width - sidebar - w) / 2 + 20,
+                (height - h) / 2 + 62,
+                w - 40,
+                2,
+                if multiline { 7 } else { 1 },
+            )
+        } else {
+            let (left, top, w, h) = self.chat_geometry(width, height, sidebar);
+            let layout = ChatLayout::new(top, h, self.font_scale());
+            (
+                &self.input,
+                left + 24,
+                layout.input_y + 6,
+                w - 48,
+                layout.scale,
+                3,
+            )
+        };
+        let (row, col) = e.row_column();
+        let starts = e.starts();
+        let before: String = e.line(&starts, row).chars().take(col).collect();
+        let advance = super::shell_text_width(&before, scale).min((w - 8).max(0) as f32) as i32;
+        let line = scale * 8 + 8;
+        Some((
+            (x + advance).clamp(0, width.saturating_sub(1)),
+            (y + row.saturating_sub(e.top).min(rows - 1) as i32 * line)
+                .clamp(0, height.saturating_sub(1)),
+            line,
+        ))
+    }
+    pub fn toggle_chat(&mut self) {
+        self.clear_preedit();
+        self.log_focus = false;
+        if self.chat_open && self.chat_focus {
+            self.chat_open = false;
+            self.chat_focus = false;
+        } else {
+            self.chat_open = true;
+            self.chat_focus = true;
+        }
+    }
+    pub fn connect_local_codex(&mut self, connection: Value, panel: &Panel) {
+        if self.running || connection["protocol"] != "codex-local" {
+            return;
+        }
+        for key in ["protocol", "codex_entry", "model"] {
+            self.config[key] = connection[key].clone();
+        }
+        self.config["name"] = json!("Codex");
+        self.key.clear();
+        self.history = json!([]);
+        self.history_root = panel.root.clone();
+        self.save_config();
+        self.chat_open = true;
+        self.chat_focus = true;
+        self.log_focus = false;
+        self.log_selected_all = false;
+        self.clear_preedit();
+        self.status = "Codex connected. World edits go through Yohaku tools.".into();
+    }
+    pub fn unfocus_chat(&mut self) {
+        self.clear_preedit();
+        self.menu = None;
+        if self.field.is_none() {
+            self.chat_focus = false;
+        }
+    }
+    fn chat_geometry(
+        &self,
+        screen_width: i32,
+        screen_height: i32,
+        sidebar: i32,
+    ) -> (i32, i32, i32, i32) {
+        let v = self.ui_settings();
+        let chat = &v["chat"];
+        let available = (screen_width - sidebar - 16).max(0);
+        let w = (chat["width"].as_i64().unwrap_or(880) as i32).min(available);
+        let h = (chat["height"].as_i64().unwrap_or(720) as i32).min((screen_height - 16).max(0));
+        let x = chat["x"]
+            .as_i64()
+            .map(|n| n as i32)
+            .unwrap_or(screen_width - w - 8)
+            .clamp(sidebar + 8, (screen_width - w - 8).max(sidebar + 8));
+        let y = chat["y"]
+            .as_i64()
+            .map(|n| n as i32)
+            .unwrap_or(screen_height - h - 8)
+            .clamp(8, (screen_height - h - 8).max(8));
+        (x, y, w, h)
+    }
+    pub fn pointer_motion(
+        &mut self,
+        x: f64,
+        y: f64,
+        width: i32,
+        height: i32,
+        sidebar: i32,
+    ) -> bool {
+        let Some(g) = &self.gesture else {
+            return false;
+        };
+        let (left, top, w, h) = g.bounds;
+        let dx = x as i32 - g.x;
+        let dy = y as i32 - g.y;
+        let (max_w, max_h) = ((width - sidebar - 16).max(0), (height - 16).max(0));
+        let (min_w, min_h) = (480.min(max_w), 420.min(max_h));
+        let mut l = left;
+        let mut t = top;
+        let mut r = left + w;
+        let mut b = top + h;
+        if g.edges == 0 {
+            l = (left + dx).clamp(sidebar + 8, (width - w - 8).max(sidebar + 8));
+            t = (top + dy).clamp(8, (height - h - 8).max(8));
+            r = l + w;
+            b = t + h;
+        } else {
+            if g.edges & 1 != 0 {
+                l = (left + dx).clamp(sidebar + 8, (r - min_w).max(sidebar + 8));
+            }
+            if g.edges & 2 != 0 {
+                r = (left + w + dx).clamp(l + min_w, (width - 8).max(l + min_w));
+            }
+            if g.edges & 4 != 0 {
+                t = (top + dy).clamp(8, (b - min_h).max(8));
+            }
+            if g.edges & 8 != 0 {
+                b = (top + h + dy).clamp(t + min_h, (height - 8).max(t + min_h));
+            }
+        }
+        let mut v = self.ui_settings();
+        v["chat"]["x"] = json!(l.max(0));
+        v["chat"]["y"] = json!(t.max(0));
+        // Store legal preference sizes even when a temporary small window clamps them.
+        v["chat"]["width"] = json!((r - l).max(480));
+        v["chat"]["height"] = json!((b - t).max(420));
+        self.ui = Some(v);
+        true
+    }
+    pub fn pointer_release(&mut self, panel: &mut Panel) -> bool {
+        let Some(g) = self.gesture.take() else {
+            return false;
+        };
+        if g.root == panel.root {
+            self.queue_settings(
+                panel,
+                serde_json::to_string_pretty(&self.ui_settings()).unwrap() + "\n",
+                g.expected,
+                false,
+            );
+        }
+        true
+    }
+    pub fn hit_global(
+        &self,
+        x: f64,
+        y: f64,
+        screen_width: i32,
+        screen_height: i32,
+        sidebar: i32,
+    ) -> bool {
+        if self.field.is_some() {
+            return true;
+        }
+        let (x, y) = (x as i32, y as i32);
+        if self
+            .menu
+            .as_ref()
+            .is_some_and(|m| inside(x, y, m.geometry(screen_width, screen_height)))
+        {
+            return true;
+        }
+        self.chat_open
+            && inside(
+                x,
+                y,
+                self.chat_geometry(screen_width, screen_height, sidebar),
+            )
+    }
+    pub fn click_global(
+        &mut self,
+        x: f64,
+        y: f64,
+        screen_width: i32,
+        screen_height: i32,
+        sidebar: i32,
+        panel: &mut Panel,
+        page: &str,
+    ) {
+        self.clear_preedit();
+        if self.field.is_some() {
+            return;
+        }
+        let (x, y) = (x as i32, y as i32);
+        if let Some(menu) = self.menu.take() {
+            let bounds = menu.geometry(screen_width, screen_height);
+            if inside(x, y, bounds) {
+                let index = menu.top + ((y - bounds.1) / 32) as usize;
+                if let Some(item) = menu.items.get(index) {
+                    self.run_macro(item, &menu.context);
+                }
+                return;
+            }
+        }
+        let (left, top, w, h) = self.chat_geometry(screen_width, screen_height, sidebar);
+        if !self.chat_open || !inside(x, y, (left, top, w, h)) {
+            self.chat_focus = false;
+            return;
+        }
+        self.chat_focus = true;
+        self.log_focus = false;
+        self.log_selected_all = false;
+        if y < top + 40 && x > left + w - 76 {
+            self.chat_open = false;
+            self.chat_focus = false;
+            return;
+        }
+        if inside(x, y, (left + w - 192, top + 4, 108, 36)) {
+            self.log_focus = true;
+            self.log_selected_all = true;
+            self.copy_conversation(panel);
+            return;
+        }
+        let mut edges = 0;
+        if x < left + 8 {
+            edges |= 1;
+        }
+        if x >= left + w - 8 {
+            edges |= 2;
+        }
+        if y < top + 8 {
+            edges |= 4;
+        }
+        if y >= top + h - 8 {
+            edges |= 8;
+        }
+        if (edges != 0 || y < top + 44) && self.pending_ui.is_none() {
+            self.gesture = Some(Gesture {
+                x,
+                y,
+                bounds: (left, top, w, h),
+                edges,
+                expected: self.ui_text.clone(),
+                root: panel.root.clone(),
+            });
+            return;
+        }
+        let bottom = top + h;
+        if (bottom - 50..bottom - 14).contains(&y) {
+            match x - left {
+                12..=95 => self.start(panel, page),
+                102..=185 => self.stop(panel),
+                192..=295 if !self.running => {
+                    self.history = json!([]);
+                    self.logs.clear();
+                    self.status = "New conversation".into();
+                }
+                _ => (),
+            }
+        } else {
+            let layout = ChatLayout::new(top, h, self.font_scale());
+            if (layout.log_y..layout.log_y + layout.log_h).contains(&y) {
+                self.log_focus = true;
+                self.status =
+                    "Chat text: Ctrl+A select all, Ctrl+C copy; Ctrl+Shift+C copies conversation"
+                        .into();
+                return;
+            }
+            if !(layout.input_y..layout.input_y + layout.input_h).contains(&y) {
+                return;
+            }
+            let row = self.input.top + ((y - layout.input_y - 6).max(0) / layout.line) as usize;
+            let starts = self.input.starts();
+            let row = row.min(starts.len() - 1);
+            let col = super::shell_text_column(
+                self.input.line(&starts, row),
+                layout.scale,
+                (x - left - 24).max(0) as f32,
+            );
+            self.input.place(row, col);
+        }
+    }
+    pub fn click_definition(&mut self, x: f64, y: f64, left: i32, _width: i32, _height: i32) {
+        if self.field.is_some() {
+            return;
+        }
+        self.chat_focus = false;
+        if self.running {
+            self.status = "Stop the current AI turn before changing its definition".into();
+            return;
+        }
+        let x = x as i32 - left;
+        let y = y as i32;
+        if (88..124).contains(&y) {
+            match x {
+                0..=99 => self.config["protocol"] = json!("chat"),
+                106..=215 => self.config["protocol"] = json!("responses"),
+                222..=331 => self.config["protocol"] = json!("anthropic"),
+                338..=467 => {
+                    if self.config["codex_entry"]
+                        .as_str()
+                        .is_some_and(|s| !s.is_empty())
+                    {
+                        self.config["protocol"] = json!("codex-local");
+                    } else {
+                        self.status = "Connect the existing Codex from Techne first".into();
+                        return;
+                    }
+                }
+                _ => return,
+            };
+            self.save_config();
+        } else if (136..172).contains(&y) {
+            if self.config["protocol"] == "codex-local" && !(96..=185).contains(&x) {
+                self.status="Local Codex uses its existing Windows login; no API URL or key is needed here.".into();
+                return;
+            }
+            match x {
+                0..=89 => self.edit(Field::Url),
+                96..=185 => self.edit(Field::Model),
+                192..=281 => self.edit(Field::Key),
+                _ => (),
+            }
+        } else if (200..236).contains(&y) {
+            match x {
+                0..=99 => self.edit(Field::Name),
+                112..=241 => self.edit(Field::Personality),
+                254..=383 => self.edit(Field::Macros),
+                _ => (),
+            }
+        } else if x >= 0 && x < 420 && (388..584).contains(&y) {
+            let index = ((y - 388) / 40) as usize;
+            if let Some(group) = ["read", "write", "delete", "import", "run"].get(index) {
+                let mut permissions = json!({"read":self.permission("read"),"write":self.permission("write"),"delete":self.permission("delete"),"import":self.permission("import"),"run":self.permission("run")});
+                permissions[group] = json!(!self.permission(group));
+                self.config["permissions"] = permissions;
+                self.save_config();
+            }
+        }
+    }
+    pub fn scroll(&mut self, down: bool) {
+        if let Some(menu) = self.menu.as_mut() {
+            menu.top = if down {
+                (menu.top + 1).min(menu.items.len().saturating_sub(menu.rows))
+            } else {
+                menu.top.saturating_sub(1)
+            };
+            return;
+        }
+        self.log_offset = if down {
+            self.log_offset.saturating_sub(3)
+        } else {
+            self.log_offset.saturating_add(3)
+        };
+    }
+    pub fn draw_definition<F: Frame>(
+        &mut self,
+        frame: &mut F,
+        left: i32,
+        width: i32,
+        height: i32,
+        _panel: &Panel,
+    ) -> Result<(), F::Error> {
+        if width < 240 || height < 240 {
+            return Ok(());
+        }
+        let (white, bg, dark, muted, blue) = palette();
+        let right = left + width - 15;
+        super::draw_shell_text_on(
+            frame,
+            "Socius / AI definition",
+            left,
+            38,
+            3,
+            right,
+            (dark, white),
+        )?;
+        let connection = format!(
+            "{} | {} | {}",
+            self.config["protocol"].as_str().unwrap_or("chat"),
+            self.config["model"].as_str().unwrap_or(""),
+            if self.config["protocol"] == "codex-local" {
+                "Windows login"
+            } else if self.key.is_empty() {
+                "key: environment"
+            } else {
+                "key: set"
+            }
+        );
+        super::draw_shell_text_on(frame, &connection, left, 66, 2, right, (muted, white))?;
+        for (x, w, label, protocol) in [
+            (0, 100, "Chat API", "chat"),
+            (106, 110, "Responses", "responses"),
+            (222, 110, "Anthropic", "anthropic"),
+            (338, 130, "Local Codex", "codex-local"),
+        ] {
+            let color = if self.config["protocol"] == protocol {
+                blue
+            } else {
+                bg
+            };
+            button(frame, left + x, 88, w, label, right, dark, color)?;
+        }
+        for (x, w, label) in [(0, 90, "URL"), (96, 90, "Model"), (192, 90, "Key")] {
+            if self.config["protocol"] == "codex-local" && x != 96 {
+                continue;
+            }
+            button(frame, left + x, 136, w, label, right, dark, bg)?;
+        }
+        super::draw_shell_text_on(frame, &self.status, left, 176, 2, right, (muted, white))?;
+        for (x, w, label) in [
+            (0, 100, "Name"),
+            (112, 130, "Personality"),
+            (254, 130, "AI / UI text"),
+        ] {
+            button(frame, left + x, 200, w, label, right, dark, bg)?;
+        }
+        super::draw_shell_text_on(
+            frame,
+            &format!("Name: {}", self.config["name"].as_str().unwrap_or("AI")),
+            left,
+            246,
+            2,
+            right,
+            (dark, white),
+        )?;
+        let personality = self.config["personality"].as_str().unwrap_or("");
+        let preview = if personality.is_empty() {
+            "Personality: not set".to_owned()
+        } else {
+            format!("Personality: {}", personality.replace('\n', " "))
+        };
+        for (n, line) in wrap(&preview, (width - 24) as f32)
+            .iter()
+            .take(3)
+            .enumerate()
+        {
+            super::draw_shell_text_on(
+                frame,
+                line,
+                left,
+                280 + n as i32 * 24,
+                2,
+                right,
+                (muted, white),
+            )?;
+        }
+        super::draw_shell_text_on(
+            frame,
+            "Tool permissions (click to toggle)",
+            left,
+            354,
+            2,
+            right,
+            (dark, white),
+        )?;
+        for (n, (group, label)) in [
+            ("read", "Read files and page context"),
+            ("write", "Create, edit and sync text"),
+            ("delete", "Delete text and owned outputs"),
+            ("import", "Import external text copies"),
+            ("run", "Run/stop sandboxed local tools"),
+        ]
+        .iter()
+        .enumerate()
+        {
+            let y = 388 + n as i32 * 40;
+            if y + 36 > height - 20 {
+                continue;
+            }
+            let enabled = self.permission(group);
+            let label = format!("[{}] {}", if enabled { "on" } else { "off" }, label);
+            button(
+                frame,
+                left,
+                y,
+                (width - 15).min(420),
+                &label,
+                right,
+                dark,
+                if enabled { blue } else { bg },
+            )?;
+        }
+        if height > 652 {
+            super::draw_shell_text_on(
+                frame,
+                "World settings: memory/socius.json (AI can edit)",
+                left,
+                610,
+                2,
+                right,
+                (muted, white),
+            )?;
+        }
+        Ok(())
+    }
+    pub fn draw_global<F: Frame>(
+        &mut self,
+        frame: &mut F,
+        screen_width: i32,
+        screen_height: i32,
+        sidebar: i32,
+        panel: &Panel,
+        page: &str,
+    ) -> Result<(), F::Error> {
+        self.viewport = (screen_width, screen_height, sidebar);
+        let (white, bg, dark, muted, _) = palette();
+        let (left, top, w, h) = self.chat_geometry(screen_width, screen_height, sidebar);
+        if self.chat_open && w >= 320 && h >= 300 {
+            let right = left + w;
+            let bottom = top + h;
+            let layout = ChatLayout::new(top, h, self.font_scale());
+            frame.clear(muted, &[rect((left - 1, top - 1), (w + 2, h + 2))])?;
+            frame.clear(white, &[rect((left, top), (w, h))])?;
+            super::draw_shell_text_on(
+                frame,
+                self.config["name"].as_str().unwrap_or("AI"),
+                left + 12,
+                top + 10,
+                layout.scale,
+                right - 200,
+                (dark, white),
+            )?;
+            button(frame, right - 192, top + 4, 108, "Copy chat", right - 84, dark, bg)?;
+            button(frame, right - 76, top + 4, 64, "Hide", right - 8, dark, bg)?;
+            super::draw_shell_text_on(
+                frame,
+                &format!("{} | {}", page, panel.root),
+                left + 12,
+                top + 52,
+                layout.scale,
+                right - 12,
+                (muted, white),
+            )?;
+            let status = if !self.ime_preedit.is_empty() && self.field.is_none() {
+                format!("Input: {}", self.ime_preedit)
+            } else if self.ui_error.is_empty() {
+                self.status.clone()
+            } else {
+                format!("Settings error: {}", self.ui_error)
+            };
+            super::draw_shell_text_on(
+                frame,
+                &status,
+                left + 12,
+                top + 52 + layout.line,
+                layout.scale,
+                right - 12,
+                (muted, white),
+            )?;
+            let log_bg = if self.log_focus && self.log_selected_all {
+                palette().4
+            } else {
+                bg
+            };
+            frame.clear(
+                log_bg,
+                &[rect((left + 12, layout.log_y), (w - 24, layout.log_h))],
+            )?;
+            let wrapped: Vec<String> = self
+                .logs
+                .iter()
+                .flat_map(|line| wrap_scaled(line, (w - 48) as f32, layout.scale))
+                .collect();
+            let rows = (layout.log_h / layout.line) as usize;
+            self.log_offset = self.log_offset.min(wrapped.len().saturating_sub(rows));
+            let end = wrapped.len().saturating_sub(self.log_offset);
+            let start = end.saturating_sub(rows);
+            for (n, line) in wrapped[start..end].iter().enumerate() {
+                super::draw_shell_text_on(
+                    frame,
+                    line,
+                    left + 24,
+                    layout.log_y + 4 + n as i32 * layout.line,
+                    layout.scale,
+                    right - 20,
+                    (dark, log_bg),
+                )?;
+            }
+            frame.clear(
+                bg,
+                &[rect((left + 12, layout.input_y), (w - 24, layout.input_h))],
+            )?;
+            self.draw_editor(
+                frame,
+                &self.input,
+                left + 24,
+                layout.input_y + 6,
+                w - 48,
+                3,
+                false,
+                layout.scale,
+            )?;
+            for (x, width, label) in [(12, 84, "Send"), (102, 84, "Stop"), (192, 104, "New chat")] {
+                button(
+                    frame,
+                    left + x,
+                    bottom - 50,
+                    width,
+                    label,
+                    right - 12,
+                    dark,
+                    bg,
+                )?;
+            }
+            if w > 650 {
+                super::draw_shell_text_on(
+                    frame,
+                    "Click reply: Ctrl+A/C | Ctrl+Shift+C copy chat",
+                    left + 308,
+                    bottom - 44,
+                    2,
+                    right - 24,
+                    (muted, white),
+                )?;
+            }
+            // A subtle grip only on the open panel; no persistent controls.
+            frame.clear(
+                muted,
+                &[
+                    rect((right - 12, bottom - 4), (8, 1)),
+                    rect((right - 8, bottom - 8), (4, 1)),
+                ],
+            )?;
+        }
+        if let Some(menu) = &mut self.menu {
+            menu.rows = menu
+                .items
+                .len()
+                .min(((screen_height - 8).max(32) / 32) as usize);
+            menu.top = menu.top.min(menu.items.len().saturating_sub(menu.rows));
+            let (x, y, w, h) = menu.geometry(screen_width, screen_height);
+            frame.clear(muted, &[rect((x - 1, y - 1), (w + 2, h + 2))])?;
+            frame.clear(white, &[rect((x, y), (w, h))])?;
+            for (n, item) in menu.items.iter().skip(menu.top).take(menu.rows).enumerate() {
+                super::draw_shell_text_on(
+                    frame,
+                    item["name"].as_str().unwrap_or(""),
+                    x + 12,
+                    y + n as i32 * 32 + 6,
+                    2,
+                    x + w - 12,
+                    (dark, white),
+                )?;
+            }
+        }
+        if self.field.is_some() {
+            self.draw_field(frame, screen_width, screen_height, sidebar)?;
+        }
+        Ok(())
+    }
+    fn draw_editor<F: Frame>(
+        &self,
+        frame: &mut F,
+        e: &Editor,
+        x: i32,
+        y: i32,
+        width: i32,
+        rows: usize,
+        masked: bool,
+        scale: i32,
+    ) -> Result<(), F::Error> {
+        let (_, bg, dark, _, blue) = palette();
+        let starts = e.starts();
+        let (cursor_row, cursor_col) = e.row_column();
+        for row in e.top..(e.top + rows).min(starts.len()) {
+            let text = e.line(&starts, row);
+            let text = if masked {
+                "*".repeat(text.chars().count())
+            } else {
+                text.into()
+            };
+            let skip = if row == cursor_row {
+                let mut skip = 0;
+                while super::shell_text_width(
+                    &text
+                        .chars()
+                        .skip(skip)
+                        .take(cursor_col.saturating_sub(skip))
+                        .collect::<String>(),
+                    scale,
+                ) > (width - 8) as f32
+                    && skip < cursor_col
+                {
+                    skip += 1;
+                }
+                skip
+            } else {
+                0
+            };
+            let visible: String = text.chars().skip(skip).collect();
+            let y = y + (row - e.top) as i32 * (scale * 8 + 8);
+            let color = if e.selected_all { blue } else { bg };
+            if e.selected_all {
+                frame.clear(
+                    blue,
+                    &[rect(
+                        (x, y),
+                        (
+                            super::shell_text_width(&visible, scale)
+                                .min(width as f32)
+                                .max(8.) as i32,
+                            scale * 8 + 8,
+                        ),
+                    )],
+                )?;
+            }
+            super::draw_shell_text_on(frame, &visible, x, y, scale, x + width, (dark, color))?;
+            if row == cursor_row && !e.selected_all {
+                let before: String = text
+                    .chars()
+                    .skip(skip)
+                    .take(cursor_col.saturating_sub(skip))
+                    .collect();
+                let caret = x + super::shell_text_width(&before, scale) as i32;
+                frame.clear(dark, &[rect((caret, y + 2), (1, scale * 8 + 4))])?;
+            }
+        }
+        Ok(())
+    }
+    fn draw_field<F: Frame>(
+        &self,
+        frame: &mut F,
+        screen_width: i32,
+        screen_height: i32,
+        sidebar: i32,
+    ) -> Result<(), F::Error> {
+        let Some(field) = self.field else {
+            return Ok(());
+        };
+        let (white, bg, dark, muted, _) = palette();
+        let multiline = matches!(field, Field::Personality | Field::Macros);
+        let w = (screen_width - sidebar - 40).clamp(240, 620);
+        let h = if multiline { 320 } else { 170 };
+        let x = sidebar + (screen_width - sidebar - w) / 2;
+        let y = (screen_height - h) / 2;
+        frame.clear(muted, &[rect((x - 1, y - 1), (w + 2, h + 2))])?;
+        frame.clear(white, &[rect((x, y), (w, h))])?;
+        let title = match field {
+            Field::Url => "API base URL",
+            Field::Model => "Model name",
+            Field::Key => "API key (memory only)",
+            Field::Name => "AI name",
+            Field::Personality => "AI personality and instructions",
+            Field::Macros => "Socius world text: macros and chat (JSON)",
+        };
+        super::draw_shell_text_on(frame, title, x + 16, y + 14, 2, x + w - 16, (dark, white))?;
+        frame.clear(
+            bg,
+            &[rect(
+                (x + 12, y + 54),
+                (w - 24, if multiline { 192 } else { 40 }),
+            )],
+        )?;
+        self.draw_editor(
+            frame,
+            &self.field_input,
+            x + 20,
+            y + 62,
+            w - 40,
+            if multiline { 7 } else { 1 },
+            field == Field::Key,
+            2,
+        )?;
+        super::draw_shell_text_on(
+            frame,
+            if multiline {
+                "Ctrl+Enter save / Enter newline / Escape cancel"
+            } else {
+                "Enter save / Escape cancel"
+            },
+            x + 16,
+            y + h - 60,
+            2,
+            x + w - 16,
+            (muted, white),
+        )?;
+        super::draw_shell_text_on(
+            frame,
+            if !self.ime_preedit.is_empty() {
+                if field == Field::Key {
+                    "Composing..."
+                } else {
+                    &self.ime_preedit
+                }
+            } else if self.macro_error.is_empty() {
+                "Ctrl+A all / Ctrl+C copy / Ctrl+V paste"
+            } else {
+                &self.macro_error
+            },
+            x + 16,
+            y + h - 30,
+            2,
+            x + w - 16,
+            (muted, white),
+        )?;
+        Ok(())
+    }
+}
+impl Drop for AgentPanel {
+    fn drop(&mut self) {
+        if let Some(c) = self.child.take() {
+            if let Ok(mut c) = c.lock() {
+                let _ = c.kill();
+            }
+        }
+        self.waiting.clear();
+    }
+}
+fn rect(loc: (i32, i32), size: (i32, i32)) -> Rectangle<i32, smithay::utils::Physical> {
+    Rectangle::new(loc.into(), size.into())
+}
+fn inside(x: i32, y: i32, b: (i32, i32, i32, i32)) -> bool {
+    x >= b.0 && y >= b.1 && x < b.0 + b.2 && y < b.1 + b.3
+}
+fn palette() -> (Color32F, Color32F, Color32F, Color32F, Color32F) {
+    (
+        Color32F::new(1., 1., 1., 1.),
+        Color32F::new(0.965, 0.965, 0.965, 1.),
+        Color32F::new(0.18, 0.18, 0.18, 1.),
+        Color32F::new(0.42, 0.42, 0.42, 1.),
+        Color32F::new(0.76, 0.85, 1., 1.),
+    )
+}
+fn button<F: Frame>(
+    frame: &mut F,
+    x: i32,
+    y: i32,
+    w: i32,
+    label: &str,
+    right: i32,
+    fg: Color32F,
+    bg: Color32F,
+) -> Result<(), F::Error> {
+    if x + w > right {
+        return Ok(());
+    }
+    frame.clear(bg, &[rect((x, y), (w, 36))])?;
+    super::draw_shell_text_on(frame, label, x + 10, y + 6, 2, x + w - 4, (fg, bg))
+}
+
+pub(super) fn wrap(text: &str, width: f32) -> Vec<String> {
+    wrap_scaled(text, width, 2)
+}
+fn wrap_scaled(text: &str, width: f32, scale: i32) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut line = String::new();
+    let mut w = 0.;
+    for c in text.chars() {
+        let advance = super::shell_text_width(&c.to_string(), scale);
+        if w + advance > width && !line.is_empty() {
+            out.push(std::mem::take(&mut line));
+            w = 0.;
+        }
+        line.push(c);
+        w += advance;
+    }
+    out.push(line);
+    out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::super::workspace_panel::tests::{Capture, render_panel};
+    use super::*;
+    #[test]
+    fn ime_commits_unicode_atomically_and_preedit_never_sends_a_turn() {
+        use ::winit::event::Ime;
+        let mut a = AgentPanel::new();
+        let mut p = render_panel();
+        a.chat_open = true;
+        a.chat_focus = true;
+        a.input.load("replace me".into());
+        a.input.selected_all = true;
+        a.ime(Ime::Preedit("ni hao".into(), Some((6, 6))));
+        a.key(Keysym::Return, true, false, false, &mut p, "techne");
+        assert!(!a.running && a.child.is_none());
+        assert_eq!(a.input.text, "replace me");
+        a.ime(Ime::Preedit(String::new(), None));
+        a.ime(Ime::Commit("你好喵🧸".into()));
+        assert_eq!(a.input.text, "你好喵🧸");
+        assert_eq!(a.input.cursor, a.input.text.len());
+        a.input.undo();
+        assert_eq!(a.input.text, "replace me");
+        a.chat_focus = false;
+        a.ime(Ime::Commit("must not enter draft".into()));
+        assert_eq!(a.input.text, "replace me");
+    }
+    #[test]
+    fn input_method_cursor_follows_chat_and_definition_focus() {
+        let mut a = AgentPanel::new();
+        assert!(a.ime_cursor_area(1280, 800, 208).is_none());
+        a.chat_open = true;
+        a.chat_focus = true;
+        a.input.insert("你好\n第二行");
+        let (x, y, h) = a.ime_cursor_area(1280, 800, 208).unwrap();
+        assert!((208..1280).contains(&x) && (0..800).contains(&y) && h > 0);
+        a.log_focus = true;
+        assert!(a.ime_cursor_area(1280, 800, 208).is_none());
+        a.edit(Field::Personality);
+        a.ime(::winit::event::Ime::Commit("耐心一些".into()));
+        assert_eq!(a.field_input.text, "耐心一些");
+        assert!(a.ime_cursor_area(1280, 800, 208).is_some());
+    }
+    #[test]
+    fn cut_only_removes_unchanged_selected_draft_after_successful_copy() {
+        let mut a = AgentPanel::new();
+        let mut p = render_panel();
+        a.input.insert("你好\n世界");
+        a.input.selected_all = true;
+        let cut = Some((None, a.input.text.clone()));
+        a.tx.send(Event::Copied(
+            p.root.clone(),
+            cut.clone(),
+            Err("failed".into()),
+        ))
+        .unwrap();
+        a.update(&mut p, "techne");
+        assert_eq!(a.input.text, "你好\n世界");
+        a.tx.send(Event::Copied("different-world".into(), cut.clone(), Ok(())))
+            .unwrap();
+        a.update(&mut p, "techne");
+        assert_eq!(a.input.text, "你好\n世界");
+        a.tx.send(Event::Copied(p.root.clone(), cut, Ok(())))
+            .unwrap();
+        a.update(&mut p, "techne");
+        assert!(a.input.text.is_empty());
+        a.input.undo();
+        assert_eq!(a.input.text, "你好\n世界");
+    }
+    #[test]
+    fn selecting_conversation_does_not_change_or_send_the_draft() {
+        let mut a = AgentPanel::new();
+        let mut p = render_panel();
+        a.chat_open = true;
+        a.chat_focus = true;
+        a.log_focus = true;
+        a.logs.push("Codex: 你好".into());
+        a.input.insert("unsent draft");
+        a.key(Keysym::a, true, false, false, &mut p, "techne");
+        assert!(a.log_selected_all);
+        let mut frame = Capture::new(1280,800);
+        a.draw_global(&mut frame,1280,800,208,&p,"techne").unwrap();
+        assert!(frame.pixels.chunks_exact(3).filter(|p| p[2] > p[0] && p[2] > p[1]).count()>1000);
+        frame.dump("chat-selected-copy.ppm");
+        a.key(Keysym::Return, true, false, false, &mut p, "techne");
+        assert!(!a.running && a.input.text == "unsent draft");
+    }
+    #[test]
+    fn copy_chat_button_works_while_running_and_never_sends_the_draft() {
+        let mut a = AgentPanel::new();
+        let mut p = render_panel();
+        a.chat_open = true;
+        a.running = true;
+        a.logs = vec!["Codex: 中文输出\n第二行".into(), "Tool: OK".into()];
+        a.input.insert("Do not send this");
+        let (left, top, width, _) = a.chat_geometry(1280, 800, 208);
+        a.click_global((left + width - 140) as f64, (top + 22) as f64,
+                       1280, 800, 208, &mut p, "techne");
+        assert!(a.chat_open && a.chat_focus && a.log_focus && a.log_selected_all);
+        assert!(a.status.starts_with("Copying chat"));
+        assert_eq!(a.input.text, "Do not send this");
+        assert!(a.child.is_none() && a.gesture.is_none());
+        assert_eq!(a.logs.len(), 2);
+    }
+    #[test]
+    fn copy_reply_shortcuts_accept_focus_without_selection_and_preserve_draft_selection() {
+        let mut a = AgentPanel::new();
+        let mut p = render_panel();
+        a.chat_open = true;
+        a.chat_focus = true;
+        a.log_focus = true;
+        a.logs.push("Codex: 你好".into());
+        a.input.insert("unsent");
+        a.input.selected_all = true;
+        a.key(Keysym::c, true, false, false, &mut p, "techne");
+        assert!(a.status.starts_with("Copying chat"));
+        assert_eq!(a.input.text, "unsent");
+        assert!(a.input.selected_all);
+        a.log_focus = false;
+        a.status.clear();
+        a.key(Keysym::C, true, true, false, &mut p, "techne");
+        assert!(a.status.starts_with("Copying chat"));
+        assert!(!a.running);
+    }
+    #[test]
+    fn empty_copy_chat_reports_no_text_and_keeps_chat_open() {
+        let mut a = AgentPanel::new();
+        let p = render_panel();
+        a.chat_open = true;
+        a.logs.clear();
+        a.copy_conversation(&p);
+        assert_eq!(a.status, "No chat text to copy yet");
+        assert!(a.chat_open && a.gesture.is_none() && !a.running);
+    }
+    #[test]
+    fn local_codex_connection_opens_chat_and_keeps_permissions_without_saving_keys() {
+        let mut a = AgentPanel::new();
+        let p = render_panel();
+        let dir = std::env::temp_dir().join(format!("yohaku-codex-config-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        a.config_path = dir.join("ai.json");
+        a.key = "in-memory-api-key".into();
+        a.config["api_key"] = json!("must-not-be-saved");
+        a.config["permissions"] = json!({"read":true,"write":false,"run":false});
+        a.connect_local_codex(json!({"protocol":"codex-local","codex_entry":"/mnt/c/Users/test/AppData/Roaming/npm/codex","model":"existing-model"}),&p);
+        assert!(a.chat_open && a.chat_focus && !a.running && a.child.is_none());
+        let saved = std::fs::read_to_string(&a.config_path).unwrap();
+        let value: Value = serde_json::from_str(&saved).unwrap();
+        assert_eq!(value["protocol"], "codex-local");
+        assert_eq!(value["permissions"]["write"], false);
+        assert!(!saved.contains("must-not-be-saved") && !saved.contains("in-memory-api-key"));
+        let _ = std::fs::remove_dir_all(dir);
+    }
+    #[test]
+    fn closed_chat_has_no_pixels_or_tab_hit_area_and_menu_opens_at_edges() {
+        let mut a = AgentPanel::new();
+        a.config = json!({}); // Legacy config gets the runtime default.
+        let mut p = render_panel();
+        let mut frame = Capture::new(1100, 800);
+        a.draw_global(&mut frame, 1100, 800, 208, &p, "files")
+            .unwrap();
+        assert!(frame.pixels.iter().all(|b| *b == 255));
+        assert!(!a.hit_global(1050., 770., 1100, 800, 208));
+        assert!(a.right_click(1098., 798., 1100, 800, &p, "files"));
+        assert!(!a.chat_open && !a.running && a.child.is_none());
+        let (x, y, w, h) = a.menu.as_ref().unwrap().geometry(1100, 800);
+        assert!(x >= 0 && y >= 0 && x + w <= 1100 && y + h <= 800);
+        a.draw_global(&mut frame, 1100, 800, 208, &p, "files")
+            .unwrap();
+        frame.dump("ai-macro-menu.ppm");
+        a.key(Keysym::Escape, false, false, false, &mut p, "files");
+        assert!(a.menu.is_none() && !a.takes_keyboard());
+        a.right_click(700., 300., 1100, 800, &p, "files");
+        a.unfocus_chat();
+        assert!(a.menu.is_none());
+        a.right_click(700., 300., 1100, 800, &p, "files");
+        a.click_global(710., 310., 1100, 800, 208, &mut p, "files");
+        assert!(a.chat_open && a.chat_focus && !a.running && a.child.is_none());
+        a.key(Keysym::Escape, false, false, false, &mut p, "files");
+        assert!(!a.hit_global(1050., 770., 1100, 800, 208));
+    }
+    #[test]
+    fn macros_prefill_captured_selection_without_overwriting_draft_or_sending() {
+        let mut a = AgentPanel::new();
+        let mut p = render_panel();
+        a.config = json!({"ai_macros":[{"name":"Explain","trigger":"context_menu","shortcut":"Alt+E","prompt":"{page}: {selection}"}]});
+        for c in "literal {root} 喵".chars() {
+            p.key(Keysym::from_char(c), false, false, false);
+        }
+        p.key(Keysym::a, true, false, false);
+        a.input.insert("my draft");
+        a.input.selected_all = true;
+        a.right_click(500., 250., 1100, 800, &p, "files");
+        p.key(Keysym::x, false, false, false); // selection changes after opening the menu
+        a.click_global(510., 260., 1100, 800, 208, &mut p, "files");
+        assert_eq!(a.input.text, "my draft\nfiles: literal {root} 喵");
+        assert!(!a.running && a.child.is_none());
+        let draft = a.input.text.clone();
+        assert!(a.shortcut(Keysym::e, false, false, true, false, &p, "files"));
+        assert_eq!(a.input.text, draft); // key release never performs action
+        a.config["permissions"] = json!({"read":false});
+        a.input.load(String::new());
+        assert!(a.shortcut(Keysym::e, false, false, true, true, &p, "files"));
+        assert_eq!(a.input.text, "files: ");
+        assert_eq!(
+            expand_prompt(
+                "{selection}",
+                &json!({"page":"workspace","selected_all":true,"draft":"hidden"})
+            ),
+            ""
+        );
+    }
+    fn live_panel(label: &str) -> (std::path::PathBuf, Panel) {
+        let base = std::env::temp_dir().join(format!("yohaku-ui-{}-{label}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&base);
+        std::fs::create_dir_all(&base).unwrap();
+        let loom = std::env::current_dir()
+            .unwrap()
+            .join("bin/loom-linux-x86_64");
+        let panel = Panel::new(base.join("world"), loom).unwrap();
+        (base, panel)
+    }
+    fn settle_ui(a: &mut AgentPanel, p: &mut Panel) {
+        let start = std::time::Instant::now();
+        loop {
+            p.update();
+            a.update(p, "socius");
+            if a.pending_ui.is_none() {
+                break;
+            }
+            assert!(
+                start.elapsed() < std::time::Duration::from_secs(5),
+                "{}",
+                a.status
+            );
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+    }
+    #[test]
+    fn custom_macro_settings_validate_and_persist_without_resetting_connections() {
+        let (base, mut p) = live_panel("macros");
+        let mut a = AgentPanel::new();
+        a.config_path = base.join("ai.json");
+        a.config = json!({"model":"keep-model","personality":"keep-persona","permissions":{"write":false}});
+        a.key = "TEST_ONLY_SECRET".into();
+        let original = a.config.clone();
+        settle_ui(&mut a, &mut p);
+        a.edit(Field::Macros);
+        a.field_input.load("[{".into());
+        a.key(Keysym::Return, true, false, false, &mut p, "socius");
+        assert!(a.field == Some(Field::Macros) && !a.macro_error.is_empty());
+        assert_eq!(a.config, original);
+        let custom = json!([{"name":"Talk","trigger":"right_click","shortcut":"Ctrl+Shift+K","action":"toggle_chat"}]);
+        let mut settings = a.ui_settings();
+        settings["macros"] = custom.clone();
+        a.field_input.load(settings.to_string());
+        a.key(Keysym::Return, true, false, false, &mut p, "socius");
+        settle_ui(&mut a, &mut p);
+        let saved = std::fs::read_to_string(base.join("world").join(SETTINGS_PATH)).unwrap();
+        assert_eq!(parse_settings(&saved).unwrap()["macros"], custom);
+        assert!(!saved.contains("TEST_ONLY_SECRET"));
+        assert_eq!(a.config, original);
+        assert!(!a.config_path.exists());
+        assert!(a.field.is_none());
+        assert!(a.right_click(500., 300., 1100, 800, &p, "socius"));
+        assert!(a.chat_open && a.menu.is_none());
+        assert!(a.shortcut(Keysym::K, true, true, false, true, &p, "socius"));
+        assert!(!a.chat_open);
+        settings["macros"] = json!([]);
+        a.ui = Some(settings);
+        assert!(!a.right_click(500., 300., 1100, 800, &p, "socius"));
+        assert!(!a.shortcut(Keysym::j, true, false, false, true, &p, "socius"));
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn chat_drag_resize_zoom_persist_and_restore_without_requesting_a_model() {
+        let (base, mut p) = live_panel("gesture");
+        let mut a = AgentPanel::new();
+        settle_ui(&mut a, &mut p);
+        a.chat_open = true;
+        a.chat_focus = true;
+        let (x, y, w, h) = a.chat_geometry(1600, 1100, 208);
+        a.click_global(
+            (x + 30) as f64,
+            (y + 22) as f64,
+            1600,
+            1100,
+            208,
+            &mut p,
+            "files",
+        );
+        assert!(a.gesture.is_some());
+        assert!(a.pointer_motion((x - 270) as f64, (y - 178) as f64, 1600, 1100, 208));
+        assert!(a.pointer_release(&mut p));
+        settle_ui(&mut a, &mut p);
+        let moved = a.chat_geometry(1600, 1100, 208);
+        assert_eq!(moved, (x - 300, y - 200, w, h));
+        let (x, y, w, h) = moved;
+        a.click_global(
+            (x + w - 3) as f64,
+            (y + h - 3) as f64,
+            1600,
+            1100,
+            208,
+            &mut p,
+            "files",
+        );
+        assert!(a.pointer_motion((x + w + 97) as f64, (y + h + 77) as f64, 1600, 1100, 208));
+        a.pointer_release(&mut p);
+        settle_ui(&mut a, &mut p);
+        let resized = a.chat_geometry(1600, 1100, 208);
+        assert_eq!(resized, (x, y, w + 100, h + 80));
+        a.key(Keysym::plus, true, false, false, &mut p, "files");
+        settle_ui(&mut a, &mut p);
+        assert_eq!(a.font_scale(), 4);
+        let mut frame = Capture::new(1600, 1100);
+        a.input.load("Readable chat text.\nSecond row.".into());
+        a.log("The chat can move, resize and zoom.".into());
+        a.draw_global(&mut frame, 1600, 1100, 208, &p, "files")
+            .unwrap();
+        frame.dump("movable-chat-large.ppm");
+        assert_eq!(
+            a.visible_context(&p, "files")["socius"]["viewport"]["width"],
+            1600
+        );
+        let mut restored = AgentPanel::new();
+        settle_ui(&mut restored, &mut p);
+        assert_eq!(restored.chat_geometry(1600, 1100, 208), resized);
+        assert_eq!(restored.font_scale(), 4);
+        let small = restored.chat_geometry(600, 460, 208);
+        assert!(
+            small.0 >= 208 && small.1 >= 0 && small.0 + small.2 <= 600 && small.1 + small.3 <= 460
+        );
+        assert!(!a.running && a.child.is_none());
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn world_settings_hot_reload_and_keep_last_valid_state_on_external_error() {
+        let (base, mut p) = live_panel("reload");
+        let mut a = AgentPanel::new();
+        a.config["ai_macros"] = json!([{"name":"Legacy","trigger":"shortcut","shortcut":"Alt+L"}]);
+        settle_ui(&mut a, &mut p);
+        assert_eq!(a.macros()[0]["name"], "Legacy");
+        let file = base.join("world").join(SETTINGS_PATH);
+        let mut v = a.ui_settings();
+        v["chat"]["width"] = json!(1100);
+        v["chat"]["font_scale"] = json!(2);
+        v["macros"] = json!([{"name":"New","trigger":"right_click"}]);
+        std::fs::write(&file, v.to_string()).unwrap();
+        a.refresh_settings(&mut p, true);
+        assert_eq!(a.ui_settings(), v);
+        assert_eq!(a.font_scale(), 2);
+        assert!(a.right_click(500., 300., 1600, 1000, &p, "workspace"));
+        assert!(a.chat_open);
+        std::fs::write(&file, "invalid edit").unwrap();
+        a.refresh_settings(&mut p, true);
+        assert_eq!(a.ui_settings(), v);
+        assert!(!a.ui_error.is_empty());
+        assert_eq!(std::fs::read_to_string(&file).unwrap(), "invalid edit");
+        std::fs::write(&file, v.to_string()).unwrap();
+        a.refresh_settings(&mut p, true);
+        assert!(a.ui_error.is_empty());
+        let context = a.visible_context(&p, "files");
+        assert_eq!(context["socius"]["settings_path"], SETTINGS_PATH);
+        a.config["permissions"] = json!({"read":false});
+        assert!(a.visible_context(&p, "files").get("socius").is_none());
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn gesture_and_text_editor_refuse_to_overwrite_concurrent_settings_changes() {
+        let (base, mut p) = live_panel("conflict");
+        let mut a = AgentPanel::new();
+        settle_ui(&mut a, &mut p);
+        a.chat_open = true;
+        let (x, y, _, _) = a.chat_geometry(1400, 1000, 208);
+        a.click_global(
+            (x + 30) as f64,
+            (y + 22) as f64,
+            1400,
+            1000,
+            208,
+            &mut p,
+            "socius",
+        );
+        a.pointer_motion((x + 50) as f64, (y + 42) as f64, 1400, 1000, 208);
+        let mut external = a.ui_settings();
+        external["macros"] = json!([]);
+        let bytes = external.to_string();
+        let file = base.join("world").join(SETTINGS_PATH);
+        std::fs::write(&file, &bytes).unwrap();
+        a.pointer_release(&mut p);
+        settle_ui(&mut a, &mut p);
+        assert_eq!(std::fs::read_to_string(&file).unwrap(), bytes);
+        assert!(a.status.contains("not saved"));
+        assert_eq!(a.macros(), json!([]));
+        a.edit(Field::Macros);
+        let draft = a.field_input.text.clone();
+        external["chat"]["width"] = json!(1000);
+        let next = external.to_string();
+        std::fs::write(&file, &next).unwrap();
+        a.key(Keysym::Return, true, false, false, &mut p, "socius");
+        settle_ui(&mut a, &mut p);
+        assert_eq!(std::fs::read_to_string(file).unwrap(), next);
+        assert_eq!(a.field_input.text, draft);
+        assert!(a.field == Some(Field::Macros));
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn settings_write_cannot_follow_a_world_switch_to_another_root() {
+        let (base, mut p) = live_panel("world-guard");
+        super::super::workspace_panel::tests::settle(&mut p);
+        p.queue_agent(123,json!({"command":"write_text","path":SETTINGS_PATH,"expected":null,
+            "text":defaults(default_macros()).to_string(),"__world_root":base.join("other").to_string_lossy()}));
+        p.update();
+        super::super::workspace_panel::tests::settle(&mut p);
+        let replies = p.take_agent_replies();
+        assert_eq!(replies[0].1["ok"], false);
+        assert!(
+            replies[0].1["error"]
+                .as_str()
+                .unwrap()
+                .contains("World changed")
+        );
+        assert!(!base.join("world").join(SETTINGS_PATH).exists());
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn malformed_macros_are_inert_and_duplicates_rejected() {
+        for v in [
+            json!(null),
+            json!({}),
+            json!([{"name":"x","trigger":"context_menu","action":"exec"}]),
+            json!([{"name":"x","trigger":"shortcut","shortcut":"j"}]),
+            json!([{"name":"x","trigger":"right_click"},{"name":"y","trigger":"right_click"}]),
+            json!([{"name":"x","trigger":"shortcut","shortcut":"Ctrl+J"},{"name":"y","trigger":"shortcut","shortcut":"ctrl+j"}]),
+        ] {
+            assert!(validate_macros(&v).is_err());
+            let mut a = AgentPanel::new();
+            a.config = json!({"ai_macros":v});
+            assert_eq!(a.macros(), json!([]));
+        }
+        assert!(validate_macros(&default_macros()).is_ok());
+        assert_eq!(
+            expand_prompt("{page} {unknown} {", &json!({"page":"files"})),
+            "files {unknown} {"
+        );
+    }
+    #[test]
+    fn agent_center_renders_existing_native_style_and_masks_key() {
+        let mut agents = AgentPanel::new();
+        let panel = render_panel();
+        agents.log("You: 把当前文件输出改成 hello".into());
+        agents.log("Tool patch_document: OK files/demo.py.tex".into());
+        agents.log("AI: 已完成修改并同步。".into());
+        agents
+            .input
+            .insert("Read the current file and change its output.");
+        let mut frame = Capture::new(1100, 800);
+        agents
+            .draw_definition(&mut frame, 32, 1050, 800, &panel)
+            .unwrap();
+        agents.chat_open = true;
+        agents
+            .draw_global(&mut frame, 1100, 800, 0, &panel, "files")
+            .unwrap();
+        frame.dump("agent-center.ppm");
+        agents.edit(Field::Key);
+        agents.field_input.load("TEST_ONLY_KEY".into());
+        let mut a = Capture::new(1100, 800);
+        agents
+            .draw_global(&mut a, 1100, 800, 0, &panel, "files")
+            .unwrap();
+        a.dump("agent-key.ppm");
+        agents.field_input.load("ANOTHER_KEY_X".into());
+        let mut b = Capture::new(1100, 800);
+        agents
+            .draw_global(&mut b, 1100, 800, 0, &panel, "files")
+            .unwrap();
+        assert_eq!(
+            a.pixels, b.pixels,
+            "Actual key characters must never affect rendered pixels"
+        );
+        assert!(matches!(agents.field, Some(Field::Key)));
+    }
+    #[test]
+    fn native_send_runs_python_http_tools_and_refreshes_current_editor() {
+        use super::super::workspace_panel::tests::settle;
+        use std::{
+            io::Read,
+            net::TcpListener,
+            time::{Duration, Instant},
+        };
+        let server = TcpListener::bind("127.0.0.1:0").unwrap();
+        let address = server.local_addr().unwrap();
+        let http = std::thread::spawn(move || {
+            for n in 0..5 {
+                let (mut stream, _) = server.accept().unwrap();
+                stream
+                    .set_read_timeout(Some(Duration::from_secs(10)))
+                    .unwrap();
+                let mut raw = Vec::new();
+                let mut buffer = [0u8; 4096];
+                let body = loop {
+                    let size = stream.read(&mut buffer).unwrap();
+                    assert!(size > 0);
+                    raw.extend_from_slice(&buffer[..size]);
+                    if let Some(end) = raw.windows(4).position(|v| v == b"\r\n\r\n") {
+                        let header = String::from_utf8_lossy(&raw[..end]);
+                        let len = header
+                            .lines()
+                            .find_map(|l| {
+                                l.to_ascii_lowercase()
+                                    .strip_prefix("content-length:")
+                                    .map(|n| n.trim().parse::<usize>().unwrap())
+                            })
+                            .unwrap();
+                        if raw.len() >= end + 4 + len {
+                            break serde_json::from_slice::<Value>(&raw[end + 4..end + 4 + len])
+                                .unwrap();
+                        }
+                    }
+                };
+                let message = if n == 0 {
+                    json!({"role":"assistant","content":null,"tool_calls":[{"id":"read","type":"function","function":{"name":"read_document","arguments":"{\"source\":\"files/demo.py.tex\"}"}}]})
+                } else if n == 1 {
+                    let messages = body["messages"].as_array().unwrap();
+                    let result: Value =
+                        serde_json::from_str(messages.last().unwrap()["content"].as_str().unwrap())
+                            .unwrap();
+                    let args = json!({"source":"files/demo.py.tex","revision":result["result"]["revision"],"old":"old","new":"native AI","body_only":true});
+                    json!({"role":"assistant","content":null,"tool_calls":[{"id":"patch","type":"function","function":{"name":"patch_document","arguments":args.to_string()}}]})
+                } else if n == 2 {
+                    json!({"role":"assistant","content":null,"tool_calls":[{"id":"settings-read","type":"function","function":{"name":"read_text","arguments":json!({"path":SETTINGS_PATH}).to_string()}}]})
+                } else if n == 3 {
+                    let messages = body["messages"].as_array().unwrap();
+                    let result: Value =
+                        serde_json::from_str(messages.last().unwrap()["content"].as_str().unwrap())
+                            .unwrap();
+                    assert_eq!(result["ok"], true);
+                    let mut settings =
+                        parse_settings(result["result"]["text"].as_str().unwrap()).unwrap();
+                    settings["chat"]["width"] = json!(1000);
+                    settings["chat"]["font_scale"] = json!(4);
+                    settings["macros"].as_array_mut().unwrap().push(json!({"name":"Explain","trigger":"context_menu","prompt":"Explain {selection}"}));
+                    let args = json!({"path":SETTINGS_PATH,"revision":result["result"]["revision"],"text":settings.to_string()});
+                    json!({"role":"assistant","content":null,"tool_calls":[{"id":"settings-write","type":"function","function":{"name":"write_text","arguments":args.to_string()}}]})
+                } else {
+                    json!({"role":"assistant","content":"Updated the current document and chat settings."})
+                };
+                let reply=json!({"choices":[{"message":message,"finish_reason":if n<4{"tool_calls"}else{"stop"}}],"usage":{"prompt_tokens":1,"completion_tokens":1}}).to_string();
+                write!(stream,"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",reply.len(),reply).unwrap();
+            }
+        });
+        let base = std::env::temp_dir().join(format!("yohaku-native-http-{}", std::process::id()));
+        std::fs::create_dir_all(&base).unwrap();
+        let installed = std::env::var_os("YOHAKU_TEST_LOOM")
+            .map(std::path::PathBuf::from)
+            .unwrap_or_else(|| "bin/loom-linux-x86_64".into());
+        let loom = base.join("loom");
+        std::fs::copy(installed, &loom).unwrap();
+        use std::os::unix::fs::PermissionsExt;
+        std::fs::set_permissions(&loom, std::fs::Permissions::from_mode(0o755)).unwrap();
+        {
+            let mut panel = Panel::new(base.join("world"), loom).unwrap();
+            settle(&mut panel);
+            panel.key(Keysym::n, true, false, false);
+            for c in "demo.py".chars() {
+                panel.key(Keysym::from_char(c), false, false, false);
+            }
+            panel.key(Keysym::Return, false, false, false);
+            settle(&mut panel);
+            for c in "print(\"old\")".chars() {
+                panel.key(Keysym::from_char(c), false, false, false);
+            }
+            panel.key(Keysym::s, true, false, false);
+            settle(&mut panel);
+            let mut agents = AgentPanel::new();
+            agents.config = json!({"protocol":"chat","base_url":format!("http://{address}"),"model":"test-model","max_rounds":5,"timeout":5});
+            agents
+                .input
+                .insert("Change old to native AI, enlarge chat and add an Explain macro.");
+            agents.chat_open = true;
+            let (left, top, _, h) = agents.chat_geometry(1100, 800, 208);
+            agents.click_global(
+                (left + 30) as f64,
+                (top + h - 30) as f64,
+                1100,
+                800,
+                208,
+                &mut panel,
+                "files",
+            );
+            assert!(agents.running);
+            let begin = Instant::now();
+            while agents.running {
+                panel.update();
+                agents.update(&mut panel, "files");
+                assert!(
+                    begin.elapsed() < Duration::from_secs(15),
+                    "{}",
+                    agents.status
+                );
+                std::thread::sleep(Duration::from_millis(5));
+            }
+            settle(&mut panel);
+            assert_eq!(
+                std::fs::read_to_string(base.join("world/files/demo.py")).unwrap(),
+                "print(\"native AI\")"
+            );
+            assert_eq!(panel.context("files")["draft"], "print(\"native AI\")");
+            assert!(agents.status.starts_with("Done."), "{}", agents.status);
+            assert!(agents.logs.iter().any(|s| s.contains("patch_document: OK")));
+            assert!(agents.logs.iter().any(|s| s.contains("write_text: OK")));
+            agents.refresh_settings(&mut panel, true);
+            assert_eq!(agents.font_scale(), 4);
+            assert_eq!(agents.ui_settings()["chat"]["width"], 1000);
+            assert_eq!(agents.macros()[1]["name"], "Explain");
+        }
+        http.join().unwrap();
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn global_chat_keeps_conversation_across_pages_and_focus_returns_to_editor() {
+        let mut a = AgentPanel::new();
+        let mut panel = render_panel();
+        a.input.insert("unsent draft");
+        a.history = json!([{"role":"user","content":"remember"}]);
+        for page in [
+            "workspace",
+            "mneme",
+            "files",
+            "socius",
+            "techne",
+            "settings",
+        ] {
+            a.toggle_chat();
+            assert!(a.takes_keyboard());
+            let (left, top, w, h) = a.chat_geometry(1200, 800, 208);
+            assert!(left >= 208 && top >= 0 && left + w <= 1200 && top + h <= 800);
+            assert!(a.hit_global((left + 20) as f64, (top + 20) as f64, 1200, 800, 208));
+            let mut frame = Capture::new(1200, 800);
+            a.draw_global(&mut frame, 1200, 800, 208, &panel, page)
+                .unwrap();
+            if page == "files" {
+                frame.dump("global-chat-files.ppm");
+            }
+            a.unfocus_chat();
+            assert!(!a.takes_keyboard());
+            assert!(a.chat_open);
+            a.running = true;
+            a.key(Keysym::Escape, false, false, false, &mut panel, page);
+            assert!(!a.chat_open);
+            assert!(a.running);
+            a.running = false;
+            assert_eq!(a.input.text, "unsent draft");
+            assert_eq!(a.history[0]["content"], "remember");
+        }
+    }
+    #[test]
+    fn definitions_persist_personality_and_permissions_without_saving_key() {
+        let base =
+            std::env::temp_dir().join(format!("yohaku-ai-definition-{}", std::process::id()));
+        std::fs::create_dir_all(&base).unwrap();
+        let mut a = AgentPanel::new();
+        let mut panel = render_panel();
+        a.config_path = base.join("ai.json");
+        a.key = "TEST_ONLY_SECRET".into();
+        a.edit(Field::Personality);
+        a.field_input.load("Use Chinese.\nBe patient.".into());
+        a.key(Keysym::Return, true, false, false, &mut panel, "socius");
+        assert!(a.field.is_none());
+        assert_eq!(a.config["personality"], "Use Chinese.\nBe patient.");
+        a.click_definition(50., 438., 32, 1050, 800);
+        assert!(!a.permission("write"));
+        let saved = std::fs::read_to_string(&a.config_path).unwrap();
+        let config: Value = serde_json::from_str(&saved).unwrap();
+        assert_eq!(config["permissions"]["write"], false);
+        assert!(!saved.contains("TEST_ONLY_SECRET"));
+        assert_eq!(a.key, "TEST_ONLY_SECRET");
+        let mut frame = Capture::new(1100, 800);
+        a.draw_definition(&mut frame, 32, 1050, 800, &panel)
+            .unwrap();
+        frame.dump("socius-definition.ppm");
+        a.edit(Field::Personality);
+        let mut frame = Capture::new(1100, 800);
+        a.draw_global(&mut frame, 1100, 800, 208, &panel, "socius")
+            .unwrap();
+        frame.dump("personality-editor.ppm");
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn tool_rpc_checks_run_permission_and_dispatches_only_registered_world_tools() {
+        let (base, mut p) = live_panel("tool-rpc");
+        let mut tools = super::super::tool_panel::ToolPanel::new(String::new());
+        let mut a = AgentPanel::new();
+        a.turn = 1;
+        a.running = true;
+        a.config["permissions"] = json!({"read":true,"run":false});
+        let (tx, rx) = mpsc::channel();
+        a.tx.send(Event::Request(
+            (1 << 32) | 1,
+            json!({"__agent_tool":"run_tool","command":"tool_run","id":"python"}),
+            tx,
+        ))
+        .unwrap();
+        a.update(&mut p, "techne");
+        assert_eq!(rx.recv().unwrap()["ok"], false);
+        assert!(a.tool_requests.is_empty());
+        a.config["permissions"]["run"] = json!(true);
+        let (tx, rx) = mpsc::channel();
+        a.tx.send(Event::Request(
+            (1 << 32) | 2,
+            json!({"__agent_tool":"run_tool","command":"tool_status"}),
+            tx,
+        ))
+        .unwrap();
+        a.update(&mut p, "techne");
+        a.dispatch_tools(&mut tools, &p);
+        assert_eq!(rx.recv().unwrap()["ok"], true);
+        let (tx, rx) = mpsc::channel();
+        a.tx.send(Event::Request(
+            (1 << 32) | 3,
+            json!({"__agent_tool":"tool_status","command":"tool_status"}),
+            tx,
+        ))
+        .unwrap();
+        a.update(&mut p, "techne");
+        a.dispatch_tools(&mut tools, &p);
+        assert_eq!(rx.recv().unwrap()["ok"], true);
+        assert!(tools.rpc(&json!({"command":"tool_stop"}), &p)["ok"] == true);
+        a.running = false;
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn node_rpc_round_trip_reaches_the_native_workspace_worker() {
+        let (base, mut panel) = live_panel("node-rpc");
+        let root = std::path::PathBuf::from(&panel.root);
+        let loom = std::env::current_dir().unwrap().join("bin/loom-linux-x86_64");
+        let mut workspace = yohaku::workspace::Workspace::open(&root, loom).unwrap();
+        let created = workspace.execute(&json!({"command":"create","name":"entry.txt","body":"keep body"})).unwrap();
+        let document = workspace.execute(&json!({"command":"read","source":created["source"]})).unwrap();
+        let source = document["text"].as_str().unwrap().replacen("target: text", "target: text\nnode: {id: native-entry, name: Native entry, description: RPC fixture, entry: true, links: []}", 1);
+        workspace.execute(&json!({"command":"save","source":created["source"],"expected":document["text"],"text":source,"body_only":false})).unwrap();
+        let mut agent = AgentPanel::new();
+        agent.config = json!({"permissions":{"read":true}});
+        agent.turn = 1;
+        agent.running = true;
+        let calls = [
+            ("list_entry_nodes", json!({"command":"node_entries"})),
+            ("find_nodes", json!({"command":"node_search","query":"RPC fixture"})),
+            ("get_node", json!({"command":"node_get","id":"native-entry"})),
+            ("walk_nodes", json!({"command":"node_walk","id":"native-entry","max_depth":2,"limit":3})),
+            ("rebuild_node_index", json!({"command":"node_index"})),
+        ];
+        for (offset, (tool, mut request)) in calls.into_iter().enumerate() {
+            request["__agent_tool"] = json!(tool);
+            let (sender, receiver) = mpsc::channel();
+            agent.tx.send(Event::Request((1 << 32) | (offset as u64 + 1), request, sender)).unwrap();
+            let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+            let reply = loop {
+                panel.update();
+                agent.update(&mut panel, "workspace");
+                if let Ok(reply) = receiver.try_recv() { break reply; }
+                assert!(std::time::Instant::now() < deadline, "{tool} timed out");
+                std::thread::sleep(std::time::Duration::from_millis(10));
+            };
+            assert_eq!(reply["ok"], true, "{tool}: {reply}");
+            let result = &reply["result"];
+            match tool {
+                "get_node" => assert_eq!(result["node"]["id"], "native-entry"),
+                "walk_nodes" => assert_eq!(result["nodes"][0]["node"]["id"], "native-entry"),
+                "rebuild_node_index" => assert_eq!(result["node_count"], 1),
+                _ => assert_eq!(result["nodes"][0]["id"], "native-entry"),
+            }
+        }
+        agent.running = false;
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn native_rpc_permissions_reject_forged_commands_and_hide_read_context() {
+        let mut a = AgentPanel::new();
+        a.config["permissions"] = json!({"read":true,"write":false,"delete":false,"import":false});
+        assert!(a.permits_rpc("read_document", "read"));
+        assert!(a.permits_rpc("get_node", "node_get"));
+        assert!(!a.permits_rpc("get_node", "save"));
+        assert!(!a.permits_rpc("read_document", "save"));
+        assert!(!a.permits_rpc("patch_document", "save"));
+        assert!(!a.permits_rpc("delete_text", "delete_text"));
+        a.turn = 1;
+        a.running = true;
+        let mut panel = render_panel();
+        let (tx, rx) = mpsc::channel();
+        a.tx.send(Event::Request((1<<32)|1,json!({"__agent_tool":"read_document","command":"save","source":"files/demo.py.tex","text":"bad"}),tx)).unwrap();
+        a.update(&mut panel, "files");
+        assert_eq!(rx.recv().unwrap()["ok"], false);
+        a.config["permissions"]["read"] = json!(false);
+        let context = a.visible_context(&panel, "files");
+        assert!(context.get("draft").is_none());
+        assert!(context.get("files").is_none());
+        a.running = false;
+    }
+    #[test]
+    fn context_requests_track_current_page_and_cancelled_paste_does_not_leak_into_chat() {
+        let mut a = AgentPanel::new();
+        let mut panel = render_panel();
+        a.turn = 1;
+        a.running = true;
+        let (tx, rx) = mpsc::channel();
+        a.tx.send(Event::Request(
+            (1 << 32) | 1,
+            json!({"command":"context","__agent_tool":"context"}),
+            tx,
+        ))
+        .unwrap();
+        a.update(&mut panel, "socius");
+        assert_eq!(rx.recv().unwrap()["result"]["page"], "socius");
+        a.field = None;
+        a.tx.send(Event::Paste(Some(Field::Key), Ok("TEST_ONLY_KEY".into())))
+            .unwrap();
+        a.update(&mut panel, "socius");
+        assert!(a.input.text.is_empty());
+        a.stop(&mut panel);
+        let (tx, rx) = mpsc::channel();
+        a.tx.send(Event::Request(
+            (1 << 32) | 2,
+            json!({"command":"create","name":"no.py","body":"no"}),
+            tx,
+        ))
+        .unwrap();
+        a.update(&mut panel, "socius");
+        assert_eq!(rx.recv().unwrap()["ok"], false);
+        assert!(!panel.agent_active);
+    }
+}

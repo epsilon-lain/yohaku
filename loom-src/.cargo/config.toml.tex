@@ -1,0 +1,23 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":123,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/.cargo/config.toml","sha256":"992df442f8e3a3e2188c6088a75abaf7a6311926e02e1392d4090b1a5b27fd62"}
+---
+
+## 正文
+```text
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
+
+[net]
+offline = true
+```
+
+## 输出与关联
+```yaml
+output: "loom-src/.cargo/config.toml"
+```

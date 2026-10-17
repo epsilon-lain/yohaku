@@ -1,0 +1,5 @@
+#!/bin/sh
+# Shared human and agent entry point; preserve every argument.
+set -eu
+loom_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+exec "$loom_dir/bin/loom-linux-x86_64" "$@"

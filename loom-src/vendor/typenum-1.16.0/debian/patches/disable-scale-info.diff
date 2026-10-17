@@ -1,0 +1,20 @@
+Index: typenum/Cargo.toml
+===================================================================
+--- typenum.orig/Cargo.toml
++++ typenum/Cargo.toml
+@@ -33,15 +33,9 @@ repository = "https://github.com/paholg/
+ [lib]
+ name = "typenum"
+ 
+-[dependencies.scale-info]
+-version = "1.0"
+-optional = true
+-default-features = false
+-
+ [features]
+ const-generics = []
+ force_unix_path_separator = []
+ i128 = []
+ no_std = []
+-scale_info = ["scale-info/derive"]
+ strict = []

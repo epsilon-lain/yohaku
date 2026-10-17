@@ -1,0 +1,41 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":417,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/Cargo.toml","sha256":"09e30372d22f394350d89b42e1c2221a69f6c14a877d306f3ab17f33a16ceeb4"}
+---
+
+## 正文
+```text
+[package]
+name = "yohaku-loom"
+version = "0.1.4"
+edition = "2021"
+rust-version = "1.75"
+description = "Deterministic text macro converter for Yohaku"
+
+[lib]
+name = "loom"
+path = "src/lib.rs"
+
+[[bin]]
+name = "loom"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.8"
+sha2 = "0.10"
+tempfile = "3.9"
+libc = "0.2"
+
+[profile.release]
+strip = true
+
+```
+
+## 输出与关联
+```yaml
+output: "loom-src/Cargo.toml"
+```

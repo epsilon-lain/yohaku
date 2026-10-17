@@ -1,0 +1,18 @@
+{
+  "version": "0.1.4",
+  "based_on": "user-provided Loom 0.1.2 archive",
+  "date": "2026-10-13",
+  "platform": "Linux x86_64 / WSL",
+  "formats": [
+    "yohaku/0.1",
+    "yohaku/0.2"
+  ],
+  "text_encoding": "UTF-8",
+  "tests": {
+    "existing": 44,
+    "new_reverse": 23,
+    "total": 67
+  },
+  "binary_sha256": "b0b22e61d6120de543a1614510609d59718c01dec8a9e50ea7c7fcba67d1f56d",
+  "offline_dependencies": "unchanged"
+}

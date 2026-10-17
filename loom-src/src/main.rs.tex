@@ -1,0 +1,364 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":12639,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/src/main.rs","sha256":"90a6f289f40ee3fed95d485fc6fa5cbe646d5a11f110a15fdfb1669fd82d7123"}
+---
+
+## 正文
+```text
+use serde_json::{json, Value};
+use std::env;
+use std::ffi::OsString;
+use std::path::PathBuf;
+use std::process::ExitCode;
+
+const USAGE: &str = "Loom — deterministic text macro converter\n\nUsage:\n  loom SOURCE [--root ROOT] [--json]\n  loom build SOURCE [--root ROOT] [--json]\n  loom sync SOURCE [--root ROOT] [--json]\n  loom watch SOURCE [--root ROOT] [--json]\n  loom reverse FILE [--source TEX] [--output FILE] [--root ROOT] [--json]\n  loom inspect SOURCE [--json]\n  loom map MAP_FILE GENERATED_LINE [--json]\n  loom --version\n\nThe default root is the source document's actual containing directory.\n--root overrides the base for macro references and output paths.\nsync updates a document or cleans its artifacts when the source is missing.\nwatch keeps syncing until Ctrl+C; deletion settles for one second.\n--json emits one object, or one object per event during watch.\nUse -- before a source file name that starts with a hyphen.\n";
+
+fn emit_json(action: &str, result: Value) {
+    println!(
+        "{}",
+        json!({
+            "format": "loom-result/0.1", "ok": true,
+            "action": action, "result": result,
+        })
+    );
+}
+
+fn usage_error(message: &str, json_output: bool) -> ExitCode {
+    if json_output {
+        println!(
+            "{}",
+            json!({
+                "format": "loom-result/0.1", "ok": false,
+                "error": {"kind": "usage", "message": message, "exit_code": 2},
+            })
+        );
+    } else {
+        eprintln!("{message}\n\n{USAGE}");
+    }
+    ExitCode::from(2)
+}
+
+fn conversion_error(error: loom::LoomError, json_output: bool) -> ExitCode {
+    if json_output {
+        println!(
+            "{}",
+            json!({
+                "format": "loom-result/0.1", "ok": false,
+                "error": {
+                    "kind": "conversion", "file": error.path.to_string_lossy(),
+                    "line": error.line, "message": error.message, "exit_code": 1,
+                },
+            })
+        );
+    } else {
+        eprintln!("{error}");
+    }
+    ExitCode::FAILURE
+}
+
+// Do not mistake option values or literal paths after -- for output switches.
+fn output_flag(args: Vec<OsString>) -> (Vec<OsString>, bool) {
+    let mut result = Vec::new();
+    let mut json_output = false;
+    let mut literal = false;
+    let mut option_value = false;
+    for arg in args {
+        if option_value {
+            result.push(arg);
+            option_value = false;
+        } else if literal {
+            result.push(arg);
+        } else if arg == "--json" {
+            json_output = true;
+        } else {
+            literal = arg == "--";
+            option_value = matches!(arg.to_str(), Some("--root" | "--source" | "--output"));
+            result.push(arg);
+        }
+    }
+    (result, json_output)
+}
+
+fn document_command(args: &[OsString], json_output: bool, action: &str) -> ExitCode {
+    let mut source = None;
+    let mut root = None;
+    let mut index = 0;
+    let mut literal = false;
+    while index < args.len() {
+        if !literal && args[index] == "--" {
+            literal = true;
+            index += 1;
+        } else if !literal && args[index] == "--root" {
+            if root.is_some() || index + 1 == args.len() {
+                return usage_error(
+                    "--root requires one directory and may appear once",
+                    json_output,
+                );
+            }
+            root = Some(PathBuf::from(&args[index + 1]));
+            index += 2;
+        } else if !literal && args[index].to_string_lossy().starts_with('-') {
+            return usage_error("unknown document option", json_output);
+        } else if source.is_none() {
+            source = Some(PathBuf::from(&args[index]));
+            index += 1;
+        } else {
+            return usage_error("command accepts one source file", json_output);
+        }
+    }
+    let Some(source) = source else {
+        return usage_error("command requires a source file", json_output);
+    };
+    if action == "inspect" {
+        if root.is_some() {
+            return usage_error("inspect does not use --root", json_output);
+        }
+        return match loom::parse_file(source) {
+            Ok(document) => {
+                if json_output {
+                    emit_json("inspect", json!(document));
+                } else {
+                    print!("{}", document.original);
+                }
+                ExitCode::SUCCESS
+            }
+            Err(error) => conversion_error(error, json_output),
+        };
+    }
+    if action == "watch" {
+        return watch(source, root, json_output);
+    }
+    if action == "sync" {
+        return match root {
+            Some(root) => loom::sync_with_root(source, root),
+            None => loom::sync_document(source),
+        }
+        .map_or_else(
+            |error| conversion_error(error, json_output),
+            |result| report_sync(&result, json_output),
+        );
+    }
+    let converted = if let Some(root) = root {
+        loom::build(source, root)
+    } else {
+        loom::build_document(source)
+    };
+    match converted {
+        Ok(result) => {
+            if json_output {
+                emit_json("build", json!(result));
+            } else {
+                println!(
+                    "generated {} ({} bytes)",
+                    result.output.display(),
+                    result.bytes_written
+                );
+                println!("map {}", result.map_path.display());
+            }
+            ExitCode::SUCCESS
+        }
+        Err(error) => conversion_error(error, json_output),
+    }
+}
+
+fn reverse_command(args: &[OsString], json_output: bool) -> ExitCode {
+    let (mut input, mut source, mut root, mut output) = (None, None, None, None);
+    let (mut index, mut literal) = (0, false);
+    while index < args.len() {
+        let option = args[index].to_str();
+        if !literal && option == Some("--") {
+            literal = true;
+            index += 1;
+            continue;
+        }
+        if !literal && matches!(option, Some("--source" | "--root" | "--output")) {
+            if index + 1 == args.len() {
+                return usage_error("reverse option requires a path", json_output);
+            }
+            let slot = match option {
+                Some("--source") => &mut source,
+                Some("--root") => &mut root,
+                _ => &mut output,
+            };
+            if slot.is_some() {
+                return usage_error("reverse option may appear once", json_output);
+            }
+            *slot = Some(PathBuf::from(&args[index + 1]));
+            index += 2;
+            continue;
+        }
+        if !literal && args[index].to_string_lossy().starts_with('-') {
+            return usage_error(
+                "unknown reverse option; use -- before a literal file name",
+                json_output,
+            );
+        }
+        if input.is_some() {
+            return usage_error("reverse accepts one input file", json_output);
+        }
+        input = Some(PathBuf::from(&args[index]));
+        index += 1;
+    }
+    let Some(input) = input else {
+        return usage_error("reverse requires an input file", json_output);
+    };
+    match loom::reverse_file(input, source.as_deref(), root.as_deref(), output.as_deref()) {
+        Ok(result) => {
+            if json_output {
+                emit_json("reverse", json!(result));
+            } else {
+                println!(
+                    "imported {} ({} bytes)",
+                    result.input.display(),
+                    result.bytes_read
+                );
+                println!("source {}", result.source.display());
+                println!("output {}", result.output.display());
+                if result.created_macro {
+                    println!("macro {}", result.macro_path.display());
+                }
+            }
+            ExitCode::SUCCESS
+        }
+        Err(error) => conversion_error(error, json_output),
+    }
+}
+
+fn report_sync(result: &loom::SyncResult, json_output: bool) -> ExitCode {
+    let complete = result.retained.is_empty();
+    if json_output {
+        println!(
+            "{}",
+            json!({
+                "format": "loom-result/0.1", "ok": complete,
+                "action": "sync", "result": result,
+            })
+        );
+    } else {
+        if let Some(build) = &result.build {
+            println!(
+                "generated {} ({} bytes)",
+                build.output.display(),
+                build.bytes_written
+            );
+            println!("map {}", build.map_path.display());
+        }
+        for path in &result.removed {
+            println!("removed {}", path.display());
+        }
+        for issue in &result.retained {
+            eprintln!("retained {}: {}", issue.path.display(), issue.message);
+        }
+        if result.state == "absent" {
+            println!(
+                "source absent; no recorded artifacts for {}",
+                result.source.display()
+            );
+        }
+    }
+    if complete {
+        ExitCode::SUCCESS
+    } else {
+        ExitCode::FAILURE
+    }
+}
+
+fn watch(source: PathBuf, root: Option<PathBuf>, json_output: bool) -> ExitCode {
+    let mut watcher = match loom::Watcher::new(source, root.as_deref()) {
+        Ok(watcher) => watcher,
+        Err(error) => return conversion_error(error, json_output),
+    };
+    if json_output {
+        emit_json(
+            "watch",
+            json!({
+                "source": watcher.source, "root": watcher.root,
+                "poll_ms": 100, "settle_ms": 300, "deletion_settle_ms": 1000,
+            }),
+        );
+    } else {
+        println!("watching {}; Ctrl+C to stop", watcher.source.display());
+    }
+    let mut last_error = None;
+    loop {
+        match watcher.poll() {
+            Ok(Some(result)) => {
+                report_sync(&result, json_output);
+                last_error = None;
+            }
+            Ok(None) => {}
+            Err(error) => {
+                let message = error.to_string();
+                if last_error.as_ref() != Some(&message) {
+                    conversion_error(error, json_output);
+                    last_error = Some(message);
+                }
+            }
+        }
+        std::thread::sleep(std::time::Duration::from_millis(100));
+    }
+}
+
+fn main() -> ExitCode {
+    let (args, json_output) = output_flag(env::args_os().skip(1).collect());
+    let Some(first) = args.first() else {
+        return usage_error("missing source file or command", json_output);
+    };
+    match first.to_str() {
+        Some("--help" | "-h") if args.len() == 1 => {
+            if json_output {
+                emit_json("help", json!({"usage": USAGE}));
+            } else {
+                print!("{USAGE}");
+            }
+            ExitCode::SUCCESS
+        }
+        Some("--version" | "-V") if args.len() == 1 => {
+            if json_output {
+                emit_json("version", json!({"version": env!("CARGO_PKG_VERSION")}));
+            } else {
+                println!("loom {}", env!("CARGO_PKG_VERSION"));
+            }
+            ExitCode::SUCCESS
+        }
+        Some("build" | "sync" | "watch" | "inspect") => {
+            document_command(&args[1..], json_output, first.to_str().unwrap())
+        }
+        Some("reverse") => reverse_command(&args[1..], json_output),
+        Some("map") if args.len() == 3 => {
+            let Some(line) = args[2]
+                .to_str()
+                .and_then(|value| value.parse::<usize>().ok())
+                .filter(|line| *line > 0)
+            else {
+                return usage_error("generated line must be a positive integer", json_output);
+            };
+            match loom::map_line(PathBuf::from(&args[1]), line) {
+                Ok(location) => {
+                    if json_output {
+                        emit_json("map", json!(location));
+                    } else {
+                        println!("{}:{}", location.source.display(), location.source_line);
+                        println!("snapshot {}", location.source_hash);
+                        if !location.current_source_matches {
+                            println!("current source changed or missing; showing saved snapshot");
+                        }
+                        println!("{}", location.snapshot_text);
+                    }
+                    ExitCode::SUCCESS
+                }
+                Err(error) => conversion_error(error, json_output),
+            }
+        }
+        Some("map") => usage_error("map requires a map file and generated line", json_output),
+        _ => document_command(&args, json_output, "build"),
+    }
+}
+```
+
+## 输出与关联
+```yaml
+output: "loom-src/src/main.rs"
+```

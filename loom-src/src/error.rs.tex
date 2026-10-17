@@ -1,0 +1,44 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":687,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/src/error.rs","sha256":"dc5ca88ee151fed90f2a82e4089cc7cb0d24bdb7ad7e2d275682644bd8982284"}
+---
+
+## 正文
+```text
+use std::fmt;
+use std::path::{Path, PathBuf};
+
+pub type Result<T> = std::result::Result<T, LoomError>;
+
+#[derive(Debug)]
+pub struct LoomError {
+    pub path: PathBuf,
+    pub line: usize,
+    pub message: String,
+}
+
+impl LoomError {
+    pub(crate) fn new(path: impl AsRef<Path>, line: usize, message: impl ToString) -> Self {
+        Self {
+            path: path.as_ref().to_owned(),
+            line,
+            message: message.to_string(),
+        }
+    }
+}
+
+impl fmt::Display for LoomError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}:{}: {}", self.path.display(), self.line, self.message)
+    }
+}
+
+impl std::error::Error for LoomError {}
+```
+
+## 输出与关联
+```yaml
+output: "loom-src/src/error.rs"
+```

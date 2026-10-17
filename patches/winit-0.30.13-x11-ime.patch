@@ -1,0 +1,16 @@
+--- a/src/platform_impl/linux/x11/event_processor.rs
++++ b/src/platform_impl/linux/x11/event_processor.rs
+@@ -96,6 +96,13 @@
+                 },
+                 ImeRequest::Allow(window_id, allowed) => {
+                     ime.set_ime_allowed(window_id, allowed);
++
++                    // Re-focus the newly created XIM context if the
++                    // top-level X11 window is still active.
++                    if allowed && self.active_window == Some(window_id as xproto::Window) {
++                        ime.focus(window_id)
++                            .expect("Failed to refocus input context after IME enable");
++                    }
+                 },
+             }
+         }

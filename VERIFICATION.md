@@ -1,0 +1,98 @@
+# Verification
+
+Measured on 2026-10-17. Known failures are listed explicitly; no simulated
+event, successful build or tool discovery is substituted for real AI acceptance.
+
+## Prior accepted installation
+
+- Human observation: native Chinese composition/selection, `你好👋`, English,
+  backspace and paste worked without duplicate Pinyin or missing demo glyphs.
+  Clicking the window close button exited the process, not merely hid it.
+- Real AI turn 1: coordinate editing/Loom generation and sandboxed execution
+  passed; node navigation failed. The test first exited 1 with the old expected
+  value, then exited 0 after updating it for the requested `晚上好` behavior.
+- Native no-model check: all five node commands executed through the restarted
+  actual host's RPC chain after repairing the panel queue.
+- Real AI turn 2, initiated by the human: entry → contains → module → tests →
+  test navigation succeeded using node tools. Coordinate reads confirmed the
+  saved module/test revisions and `晚上好` content. Two explicit end-line-80
+  reads were rejected, then pagination succeeded. No new edit or test run.
+
+This is acceptance across two real AI turns, not an uninterrupted first-turn
+pass. The separate source-only preparation below does not repeat a provider
+login, model call or physical IME test.
+
+## Independent source checkout
+
+Environment: Arch Linux/WSL2 on Windows 11, X11. Rust/Cargo 1.97.1
+(Arch package 1:1.97.1-1), Python 3.14.7, Loom 0.1.4, winit 0.30.13.
+
+The first build used a new target directory and clean HOME/Cargo configuration.
+Only existing Cargo registry src/cache/index directories were reused; no account
+or credential configuration was copied. Network fetching was disabled.
+
+| Check | Actual result |
+| --- | --- |
+| Loom release build from bundled sources | Pass, offline and locked |
+| Native compositor, workspace CLI and tool window | Pass, offline and locked |
+| Local winit patch | Cargo metadata and compiler log select `vendor/winit` |
+| Loom source documents | 74 documents saved through reverse and byte-checked through sync |
+| Rust library | 10 passed |
+| Rust workspace integration | 15 passed |
+| Native compositor/protocol/IME logic tests | 49 passed |
+| Python suite | 97 run: 95 passed, 2 known failures, no errors |
+| Develop-specific tests | 10 passed, including real Loom adoption and repeat-preservation |
+| Loom tests | 67 passed: 28 integration, 23 reverse, 16 roundtrip |
+| Portable demo import | Three nodes registered and generated, raw macro checked |
+| Portable demo navigation | Entry/module/test at BFS depths 0/1/2, no issues |
+| Demo direct test | One test OK, exit 0 |
+| Demo real bubblewrap execution | One test OK, exit 0; actual bounded log read |
+| Clean-config X11 startup | Real native process initialized graphics and loaded the text font |
+
+Clean launch used an isolated blank world and the English templates, with no
+model request. Its binary SHA-256 was
+`b45b974c6c0cb93e19eddc713eb4a0f380ff3b15dfa2b699b34e9b3dfb144a30`.
+The verification launcher alone was terminated afterward and the native
+process exited. The accepted original host stayed running, with its binary
+and model/Socius/tool-registry hashes unchanged. This is startup/shutdown smoke
+evidence, not another physical close-button or IME acceptance observation.
+
+The initial demo-import attempt exposed a missing raw macro in a brand-new
+world. The script was corrected to install/check the macro through existing
+file tools, and to preflight demo IDs. The partial test world was preserved
+as an ignored local verification backup; no source was deleted to adopt it.
+The corrected fresh import and actual sandbox execution then passed.
+
+## Known preexisting test failures
+
+`scripts/test.sh` therefore returns nonzero at the Python suite; this is not
+advertised as a fully green suite. These unchanged application-discovery tests
+also fail against the original host source in an isolated fixture comparison:
+
+- `test_linux_npm_codex_without_windows_companion_is_not_windows`: an old
+  error-message expectation says “CLI application”, while the current native
+  connector reports “Linux Codex must be a native ELF binary”.
+- `test_path_commands_and_windows_catalog_include_codex_without_launching_targets`:
+  a fixture assumes all named Codex catalog items have Windows origin, whereas
+  the existing discovery code also enumerates Linux candidates.
+
+They were not fixed or skipped as an unrelated behavior change. The provider
+mock tests' old tool-count expectation was refreshed for the already-added
+node tools. Packaging-specific Develop failures (debug-binary snapshot size,
+and a root LICENSE.tex glob collision) were reproduced and corrected without
+raising the existing 64 MiB limit or overwriting private development work.
+
+## Repository hygiene and remaining scope
+
+The staged source tree was checked for personal worlds, actual AI/runtime
+configuration, credentials, caches, targets, diagnostic logs, font files,
+symlinks and precompiled ELF files: none is included. English templates, source,
+Loom vendors, notices, lockfiles, the three portable demo sources and 74 source
+documents are included. Ignored local build/verification outputs are not part
+of the Git content. No remote was configured and nothing was uploaded.
+
+Third-party license texts were retained where present. Five cached dependencies
+lack standalone notice files; see THIRD_PARTY_NOTICES.md. Fonts and prebuilt
+programs are excluded. No claim is made that this source preparation completes
+a future binary-distribution license audit, cross-platform test or new real-model
+test of the clean configuration.

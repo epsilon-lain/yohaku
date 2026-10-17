@@ -1,0 +1,112 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":4818,"path":"/root/projects/yohaku/release-prep/yohaku/apply_update.py","sha256":"6e1f7fa094d9a5a2b5362c5386f4144ec6b127a6a2cafb93476b403d35689e05"}
+---
+
+## 正文
+```text
+#!/usr/bin/env python3
+"""Install the reviewed integration onto the exact uploaded native project."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import tempfile
+import time
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+
+def update_files(bundle, manifest):
+    # Develop snapshots the installed project, so installer metadata belongs to
+    # the same verified transaction as the runtime files. It cannot hash itself
+    # inside the manifest; hash these two trusted bundle files at installation.
+    files=list(manifest['files'])
+    for name in ('apply_update.py','update_manifest.json'):
+        if any(item['path']==name for item in files):
+            raise SystemExit('Installer metadata must not appear in the payload list')
+        files.append({'path':name,'sha256':sha(bundle/name),'executable':False,
+                      'before_sha256s':manifest.get('metadata_before_sha256s',{}).get(name,[])})
+    return files
+
+def main():
+    parser=argparse.ArgumentParser(description='Apply the Yohaku + Loom workspace update')
+    parser.add_argument('--project',type=Path,default=Path.home()/'projects'/'yohaku')
+    parser.add_argument('--check',action='store_true',help='Validate without writing')
+    args=parser.parse_args()
+    bundle=Path(__file__).resolve().parent
+    target=args.project.expanduser().resolve()
+    manifest=json.loads((bundle/'update_manifest.json').read_text())
+    files=update_files(bundle,manifest)
+    if not target.is_dir() or not (target/'Cargo.toml').is_file():
+        raise SystemExit(f'Cannot find the existing Yohaku project: {target}')
+    for name,digest in manifest['project_checks'].items():
+        if sha(target/name)!=digest:
+            raise SystemExit(f'{name} changed since the uploaded project. No files were changed; send the current source so this update can be adapted.')
+    for item in files:
+        name=item['path']; source=bundle/name; dest=target/name
+        if Path(name).is_absolute() or '..' in Path(name).parts:
+            raise SystemExit('Invalid update file path')
+        if sha(source)!=item['sha256']:
+            raise SystemExit(f'Update file failed verification: {name}')
+        # Do not replace unrelated files or follow directory symlinks.
+        current=target
+        for part in Path(name).parts:
+            current=current/part
+            if current.is_symlink():
+                raise SystemExit(f'Symlink in update target: {current}; no files changed')
+        if dest.exists() and not dest.is_file():
+            raise SystemExit(f'Update target is a directory: {dest}; no files changed')
+        accepted=[item['sha256'],item.get('before_sha256')]+item.get('before_sha256s',[])
+        if dest.exists() and not item.get('preserve_existing',False) and sha(dest) not in accepted:
+            raise SystemExit(f'{name} changed since the uploaded project. No files were changed; send the current source so this update can be adapted.')
+    print(f'Checked {len(files)} update files for {target}')
+    if args.check:
+        print('Check passed. No files changed.')
+        return
+    if target==bundle:
+        for item in files:
+            if item['executable']: (target/item['path']).chmod(0o755)
+        print('This extracted project already contains the update. Run ./run-yohaku')
+        return
+    backup=Path(tempfile.mkdtemp(prefix='loom-'+time.strftime('%Y%m%d-%H%M%S')+'-',dir=target))
+    previous=[]
+    try:
+        for item in files:
+            name=item['path'];source=bundle/name;dest=target/name
+            existed=dest.exists()
+            if existed and item.get('preserve_existing',False):
+                continue
+            if existed and sha(dest)==item['sha256']:
+                if item['executable']: dest.chmod(0o755)
+                continue
+            if existed:
+                saved=backup/name;saved.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(dest,saved)
+            previous.append((dest,existed,name))
+            dest.parent.mkdir(parents=True,exist_ok=True)
+            fd,temp=tempfile.mkstemp(prefix='.yohaku-install-',dir=dest.parent)
+            try:
+                with os.fdopen(fd,'wb') as out:out.write(source.read_bytes());out.flush();os.fsync(out.fileno())
+                os.chmod(temp,0o755 if item['executable'] else 0o644)
+                os.replace(temp,dest)
+            finally:
+                if os.path.exists(temp):os.unlink(temp)
+    except Exception:
+        for dest,existed,name in reversed(previous):
+            if existed:shutil.copy2(backup/name,dest)
+            elif dest.exists():dest.unlink()
+        raise
+    print(f'Applied. Original code backup: {backup}')
+    print(f'Run: cd {target} && ./run-yohaku')
+
+if __name__=='__main__':main()
+```
+
+## 输出与关联
+```yaml
+output: "apply_update.py"
+```

@@ -1,0 +1,144 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":9282,"path":"/root/projects/yohaku/release-prep/yohaku/agent/test_dev.py","sha256":"7103addc5f65984bb72dfeb3d20abc292ece81ad6d7305d00580763245c4455e"}
+---
+
+## 正文
+```text
+import contextlib,io,json,os,subprocess,sys,tempfile,unittest
+from pathlib import Path
+from unittest.mock import patch
+import yohaku_dev as d
+import yohaku_dev_runtime as runtime
+import yohaku_tools as t
+import yohaku_agent as a
+
+class DevelopmentTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.base=Path(self.temp.name)
+        self.root=self.base/'world';(self.root/'.yohaku').mkdir(parents=True);(self.root/'files').mkdir();(self.root/'memory').mkdir()
+        (self.root/'.yohaku/files.json').write_text(json.dumps({'format':'yohaku-workspace/0.1','files':[]}))
+        self.toolchain=self.base/'rust';(self.toolchain/'bin').mkdir(parents=True);(self.toolchain/'lib').mkdir()
+        for name in ('rustc','cargo'):
+            p=self.toolchain/'bin'/name;p.write_text('#!/bin/sh\nexit 0\n');p.chmod(0o755)
+        self.registry=self.base/'cargo/registry'
+        for name in ('src','cache','index'):(self.registry/name).mkdir(parents=True)
+        self.profile={'format':'yohaku-dev-runtime/1','toolchain':str(self.toolchain),'registry':str(self.registry)}
+    def tearDown(self):self.temp.cleanup()
+    def test_runtime_reuses_only_explicit_readonly_compiler_and_registry_and_has_no_network(self):
+        package=self.base/'package';(package/'config').mkdir(parents=True)
+        (package/d.PROFILE).write_text(json.dumps(self.profile))
+        with patch.object(t,'PACKAGE',package):
+            entry=d.entries()[0];argv=t.command(self.root,entry)
+        self.assertIn('--unshare-all',argv);self.assertNotIn('--share-net',argv)
+        mounts=[(argv[i],argv[i+1],argv[i+2]) for i,v in enumerate(argv) if v in ('--bind','--ro-bind')]
+        external=[v for v in mounts if str(self.base) in v[1] and not v[1].startswith(str(self.root))]
+        self.assertTrue(external);self.assertTrue(all(v[0]=='--ro-bind' for v in external))
+        self.assertNotIn(str(Path.home()),[v[1] for v in mounts])
+        env={argv[i+1]:argv[i+2] for i,v in enumerate(argv) if v=='--setenv'}
+        self.assertEqual(env['CARGO_NET_OFFLINE'],'true');self.assertTrue(env['CARGO_TARGET_DIR'].startswith('/world/'))
+        self.assertNotIn('DEEPSEEK_API_KEY',env);self.assertNotIn('RUSTUP_HOME',env)
+        self.assertEqual(argv[argv.index('--')+1:],['/usr/bin/python3','-B','/opt/yohaku/dev-runtime.py','check'])
+    def test_development_actions_reject_unknown_arguments_and_preview_without_socket(self):
+        for args in [[],['check','--manifest-path','/outside/Cargo.toml'],['upload']]:
+            entry=d.entries()[0];entry['args']=args
+            with self.assertRaises(t.ToolError):d.runtime_mounts(entry)
+        bad=d.entries()[0];bad['wayland']=True
+        with self.assertRaises(t.ToolError):d.runtime_mounts(bad)
+    def test_preview_can_initialize_its_child_world_but_not_change_outer_tracking(self):
+        package=self.base/'package';(package/'config').mkdir(parents=True)
+        (package/d.PROFILE).write_text(json.dumps(self.profile))
+        child=self.root/d.PROJECT/'worlds/default/.yohaku';child.mkdir(parents=True)
+        socket=self.base/'display';socket.touch()
+        with patch.object(t,'PACKAGE',package),patch.object(t.stat,'S_ISSOCK',return_value=True):
+            argv=t.command(self.root,d.entries()[-1],str(socket))
+        mounts=[argv[i+1] for i,v in enumerate(argv) if v=='--ro-bind']
+        self.assertIn(str(self.root/'.yohaku'),mounts);self.assertNotIn(str(child),mounts)
+    def test_snapshot_does_not_include_host_worlds_credentials_cache_or_builds(self):
+        package=t.PACKAGE
+        names=d.snapshot_files(package)
+        self.assertIn('Cargo.toml',names);self.assertIn('examples/yohaku_compositor.rs',names)
+        self.assertNotIn('config/ai.json',names);self.assertNotIn(d.PROFILE,names)
+        self.assertFalse(any(n.startswith(('worlds/','target/')) or '.env' in n for n in names))
+    def test_runtime_actions_compile_and_test_offline_and_abort_on_actual_nonzero(self):
+        for action in ('check','test','build'):
+            for argv in runtime.commands(action):self.assertIn('--offline',argv);self.assertIn('--locked',argv)
+        with self.assertRaises(ValueError):runtime.commands('shell')
+        code=runtime.run_command([sys.executable,'-c','raise SystemExit(7)'],self.base,timeout=2)
+        self.assertEqual(code,7)
+        code=runtime.run_command([sys.executable,'-c','import time;time.sleep(5)'],self.base,timeout=.05)
+        self.assertEqual(code,124)
+    def test_packaged_snapshot_retains_local_winit_and_required_executables(self):
+        names = d.snapshot_files(t.PACKAGE)
+        self.assertIn('vendor/winit/src/lib.rs', names)
+        self.assertIn('bin/loom-linux-x86_64', names)
+        self.assertIn('bin/yohaku_workspace', names)
+        self.assertNotIn('src/workspace.rs.tex', names)
+        self.assertNotIn('LICENSE.tex', names)
+        self.assertFalse(any(name.startswith(('target/', 'worlds/', '.verification/')) for name in names))
+    def test_agent_wait_keeps_model_out_of_polling_and_returns_real_job_state(self):
+        calls=[];states=iter([{'state':'starting'},{'state':'running'},{'state':'finished','exit_code':0,'log_path':'tools/logs/test.log'}])
+        def execute(request):calls.append(request);return next(states)
+        tools=a.Tools(execute,permissions={'run':True})
+        with patch.object(a.time,'sleep'):
+            result=tools.call('run_tool',{'id':'yohaku-check','wait':True})
+        self.assertTrue(result['ok']);self.assertEqual(result['result']['exit_code'],0)
+        self.assertEqual([v['command'] for v in calls],['tool_run','tool_status','tool_status'])
+    def test_log_creation_refuses_world_symlinks(self):
+        outside=self.base/'outside';outside.mkdir();(self.root/'tools').symlink_to(outside,target_is_directory=True)
+        with self.assertRaises(OSError):t.create_log(self.root,'build')
+        self.assertEqual(list(outside.iterdir()),[])
+        (self.root/'tools').unlink();path,log=t.create_log(self.root,'build');log.write(b'actual result\n');log.close()
+        self.assertEqual((self.root/path).read_text(),'actual result\n')
+    def test_runner_records_bounded_logs_and_actual_target_exit_code(self):
+        entry={'id':'logged','name':'Logged tool','program':'/usr/bin/python3','args':['-c','pass'],'wayland':False}
+        (self.root/'memory/tools.json').write_text(json.dumps({'format':'yohaku-tools/1','tools':[entry]}))
+        class Child:
+            stdout=io.BytesIO((b'x'*4095+b'\n')*600);stderr=io.BytesIO(b'compiler error\n')
+            def wait(self):return 7
+            def poll(self):return 7
+        output=io.StringIO()
+        with patch.object(t,'check',return_value={'ok':True}),patch.object(t.subprocess,'Popen',return_value=Child()),patch.object(t.signal,'signal'),contextlib.redirect_stdout(output):
+            self.assertEqual(t.run(self.root,'logged',None),1)
+        events=[json.loads(line) for line in output.getvalue().splitlines()]
+        running=next(v for v in events if v['event']=='running')
+        self.assertEqual(events[-1]['code'],7)
+        log=self.root/running['log_path'];self.assertLessEqual(log.stat().st_size,2*1024*1024)
+        self.assertTrue(log.read_text().endswith('exit_code: 7\n'))
+    def test_real_prepare_creates_loom_sources_and_preserves_edits_on_repeat(self):
+        # The compiler probe is mocked; the Rust workspace and bundled Loom are real.
+        original=t.PACKAGE
+        atomic_original=d.atomic
+        workspace=a.Workspace(self.root,original/'bin/loom-linux-x86_64')
+        with patch.object(d,'detect_runtime',return_value=self.profile),patch.object(d,'atomic',wraps=d.atomic) as writer:
+            # Keep the trusted runtime-profile write in this test's private package.
+            def atomic(path,data):
+                if path==original/d.PROFILE:path=self.base/'trusted-profile.json'
+                return atomic_original(path,data)
+            writer.side_effect=atomic
+            first=d.prepare(self.root,workspace)
+        self.assertGreater(first['text_files'],20)
+        project=self.root/d.PROJECT
+        source=project/'config/shell.json.tex';self.assertTrue(source.is_file())
+        doc=workspace.execute({'command':'read','source':str(source.relative_to(self.root))})
+        text=doc['body'].replace('"Yohaku"','"Yohaku candidate"')
+        workspace.execute({'command':'save','source':str(source.relative_to(self.root)),'expected':doc['text'],'text':text,'body_only':True})
+        self.assertIn('Yohaku candidate',(project/'config/shell.json').read_text())
+        self.assertFalse((project/d.PROFILE).exists());self.assertNotIn('api_key',json.loads((project/'config/ai.json').read_text()))
+        saved=source.read_bytes()
+        with patch.object(d,'detect_runtime',return_value=self.profile):
+            with patch.object(d,'atomic') as writer:
+                # Metadata/profile updates do not touch the source tree on a second preparation.
+                second=d.prepare(self.root,workspace)
+        self.assertEqual(source.read_bytes(),saved);self.assertEqual(second['text_files'],first['text_files'])
+        self.assertFalse((self.root/'memory/tools.json').exists(),'Native UI must register the batch optimistically')
+
+if __name__=='__main__':unittest.main()
+```
+
+## 输出与关联
+```yaml
+output: "agent/test_dev.py"
+```

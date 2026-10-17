@@ -1,0 +1,14 @@
+--- rust-indexmap-1.9.3.orig/Cargo.toml
++++ rust-indexmap-1.9.3/Cargo.toml
+@@ -37,3 +37,2 @@
+     "arbitrary",
+-    "quickcheck",
+     "serde-1",
+@@ -57,7 +56,2 @@
+ default-features = false
+-
+-[dependencies.quickcheck]
+-version = "1.0"
+-optional = true
+-default-features = false
+ 

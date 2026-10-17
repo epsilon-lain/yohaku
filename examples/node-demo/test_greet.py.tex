@@ -1,0 +1,33 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+node: {id: 'demo:test', name: Greeting test, description: Unit test for the greeting prefix., entry: false, links: [{relation: related, target: 'demo:entry'}]}
+---
+
+## 正文
+```text
+import unittest
+from greet import greet
+
+
+class GreetingTests(unittest.TestCase):
+    def test_greeting(self):
+        self.assertEqual(greet("Yohaku"), "晚上好 Yohaku")
+
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+## 输出与关联
+```yaml
+output: "files/node-demo/test_greet.py"
+```
+
+## AI 笔记
+```yaml
+source_version: 1
+writer: human
+summary: Keep the expectation consistent with an explicitly requested behavior change.
+```

@@ -1,0 +1,382 @@
+//! Geometry shared by the native window frame and Wayland configure requests.
+pub const BORDER: i32 = 5;
+pub const TITLE: i32 = 30;
+pub const BUTTON: i32 = 30;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Rect {
+    pub x: i32,
+    pub y: i32,
+    pub w: i32,
+    pub h: i32,
+}
+impl Rect {
+    pub fn contains(self, x: f64, y: f64) -> bool {
+        x >= self.x as f64
+            && y >= self.y as f64
+            && x < (self.x + self.w) as f64
+            && y < (self.y + self.h) as f64
+    }
+    pub fn content(self) -> Self {
+        Self {
+            x: self.x + BORDER,
+            y: self.y + TITLE,
+            w: (self.w - 2 * BORDER).max(1),
+            h: (self.h - TITLE - BORDER).max(1),
+        }
+    }
+    pub fn fit(self, area: Self) -> Self {
+        let w = self.w.clamp(2 * BORDER + 1, area.w.max(2 * BORDER + 1));
+        let h = self
+            .h
+            .clamp(TITLE + BORDER + 1, area.h.max(TITLE + BORDER + 1));
+        Self {
+            x: self.x.clamp(area.x, area.x + (area.w - w).max(0)),
+            y: self.y.clamp(area.y, area.y + (area.h - h).max(0)),
+            w,
+            h,
+        }
+    }
+}
+
+pub fn work_area(width: i32, height: i32, sidebar: i32) -> Rect {
+    let x = sidebar.min((width - 2 * BORDER - 1).max(0));
+    Rect {
+        x,
+        y: 0,
+        w: (width - x).max(2 * BORDER + 1),
+        h: height.max(TITLE + BORDER + 1),
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct Edges {
+    pub left: bool,
+    pub right: bool,
+    pub top: bool,
+    pub bottom: bool,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Hit {
+    Content,
+    Move,
+    Resize(Edges),
+    Maximize,
+    Close,
+}
+
+#[derive(Clone, Copy, Debug)]
+pub struct Limits {
+    pub min: (i32, i32),
+    pub max: (i32, i32),
+}
+impl Default for Limits {
+    fn default() -> Self {
+        Self {
+            min: (160, 96),
+            max: (0, 0),
+        }
+    }
+}
+impl Limits {
+    // Client constraints refer to content, while the manager stores outer frames.
+    fn outer(self, area: Rect) -> ((i32, i32), (i32, i32)) {
+        let min = (
+            self.min.0.max(1).saturating_add(2 * BORDER).min(area.w),
+            self.min.1.max(1).saturating_add(TITLE + BORDER).min(area.h),
+        );
+        let max = (
+            if self.max.0 > 0 {
+                self.max.0.saturating_add(2 * BORDER).max(min.0).min(area.w)
+            } else {
+                area.w
+            },
+            if self.max.1 > 0 {
+                self.max
+                    .1
+                    .saturating_add(TITLE + BORDER)
+                    .max(min.1)
+                    .min(area.h)
+            } else {
+                area.h
+            },
+        );
+        (min, max)
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Layout {
+    pub rect: Rect,
+    pub restore: Option<Rect>,
+}
+impl Layout {
+    pub fn new(rect: Rect, area: Rect) -> Self {
+        Self {
+            rect: rect.fit(area),
+            restore: None,
+        }
+    }
+    pub fn maximized(self) -> bool {
+        self.restore.is_some()
+    }
+    pub fn maximize(&mut self, value: bool, area: Rect) {
+        if value {
+            if self.restore.is_none() {
+                self.restore = Some(self.rect);
+            }
+            self.rect = area;
+        } else if let Some(rect) = self.restore.take() {
+            self.rect = rect.fit(area);
+        }
+    }
+    pub fn fit(&mut self, area: Rect) {
+        if self.maximized() {
+            self.rect = area;
+        } else {
+            self.rect = self.rect.fit(area);
+        }
+    }
+    pub fn hit(self, x: f64, y: f64) -> Option<Hit> {
+        let r = self.rect;
+        if !r.contains(x, y) {
+            return None;
+        }
+        let e = Edges {
+            left: x < (r.x + BORDER) as f64,
+            right: x >= (r.x + r.w - BORDER) as f64,
+            top: y < (r.y + BORDER) as f64,
+            bottom: y >= (r.y + r.h - BORDER) as f64,
+        };
+        if !self.maximized() && (e.left || e.right || e.top || e.bottom) {
+            return Some(Hit::Resize(e));
+        }
+        if y < (r.y + TITLE) as f64 {
+            if x >= (r.x + r.w - BORDER - BUTTON) as f64 {
+                Some(Hit::Close)
+            } else if x >= (r.x + r.w - BORDER - 2 * BUTTON) as f64 {
+                Some(Hit::Maximize)
+            } else {
+                Some(Hit::Move)
+            }
+        } else {
+            Some(Hit::Content)
+        }
+    }
+    pub fn moved(self, dx: i32, dy: i32, area: Rect) -> Self {
+        let mut result = self;
+        result.rect.x = result.rect.x.saturating_add(dx);
+        result.rect.y = result.rect.y.saturating_add(dy);
+        result.fit(area);
+        result
+    }
+    pub fn resized(self, edges: Edges, dx: i32, dy: i32, area: Rect, limits: Limits) -> Self {
+        let r = self.rect;
+        let (min, max) = limits.outer(area);
+        let mut out = r;
+        if edges.left {
+            out.w =
+                r.w.saturating_sub(dx)
+                    .clamp(min.0, max.0.min(r.x + r.w - area.x).max(min.0));
+            out.x = r.x + r.w - out.w;
+        } else if edges.right {
+            out.w =
+                r.w.saturating_add(dx)
+                    .clamp(min.0, max.0.min(area.x + area.w - r.x).max(min.0));
+        }
+        if edges.top {
+            out.h =
+                r.h.saturating_sub(dy)
+                    .clamp(min.1, max.1.min(r.y + r.h - area.y).max(min.1));
+            out.y = r.y + r.h - out.h;
+        } else if edges.bottom {
+            out.h =
+                r.h.saturating_add(dy)
+                    .clamp(min.1, max.1.min(area.y + area.h - r.y).max(min.1));
+        }
+        Self {
+            rect: out.fit(area),
+            restore: None,
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    fn area() -> Rect {
+        work_area(1280, 800, 208)
+    }
+    fn layout() -> Layout {
+        Layout::new(
+            Rect {
+                x: 250,
+                y: 60,
+                w: 650,
+                h: 500,
+            },
+            area(),
+        )
+    }
+    #[test]
+    fn borders_corners_buttons_and_content_have_distinct_hits() {
+        let l = layout();
+        assert_eq!(
+            l.hit(251., 61.),
+            Some(Hit::Resize(Edges {
+                left: true,
+                top: true,
+                ..Edges::default()
+            }))
+        );
+        assert_eq!(
+            l.hit(897., 558.),
+            Some(Hit::Resize(Edges {
+                right: true,
+                bottom: true,
+                ..Edges::default()
+            }))
+        );
+        assert_eq!(l.hit(400., 75.), Some(Hit::Move));
+        assert_eq!(l.hit(850., 75.), Some(Hit::Maximize));
+        assert_eq!(l.hit(880., 75.), Some(Hit::Close));
+        assert_eq!(l.hit(400., 100.), Some(Hit::Content));
+        assert_eq!(l.hit(249., 75.), None);
+    }
+    #[test]
+    fn moving_cannot_lose_window_under_sidebar_or_outside_view() {
+        let l = layout().moved(-10000, -10000, area());
+        assert_eq!((l.rect.x, l.rect.y), (208, 0));
+        let l = l.moved(10000, 10000, area());
+        assert_eq!((l.rect.x + l.rect.w, l.rect.y + l.rect.h), (1280, 800));
+    }
+    #[test]
+    fn all_eight_resize_directions_keep_the_opposite_edge_and_honor_minimum() {
+        for e in [
+            Edges {
+                left: true,
+                ..Edges::default()
+            },
+            Edges {
+                right: true,
+                ..Edges::default()
+            },
+            Edges {
+                top: true,
+                ..Edges::default()
+            },
+            Edges {
+                bottom: true,
+                ..Edges::default()
+            },
+            Edges {
+                left: true,
+                top: true,
+                ..Edges::default()
+            },
+            Edges {
+                right: true,
+                top: true,
+                ..Edges::default()
+            },
+            Edges {
+                left: true,
+                bottom: true,
+                ..Edges::default()
+            },
+            Edges {
+                right: true,
+                bottom: true,
+                ..Edges::default()
+            },
+        ] {
+            let original = layout();
+            let out = original
+                .resized(
+                    e,
+                    if e.left { 10000 } else { -10000 },
+                    if e.top { 10000 } else { -10000 },
+                    area(),
+                    Limits::default(),
+                )
+                .rect;
+            if e.left {
+                assert_eq!(out.x + out.w, original.rect.x + original.rect.w);
+            }
+            if e.top {
+                assert_eq!(out.y + out.h, original.rect.y + original.rect.h);
+            }
+            if e.right {
+                assert_eq!(out.x, original.rect.x);
+            }
+            if e.bottom {
+                assert_eq!(out.y, original.rect.y);
+            }
+            assert!(out.w >= 170 && out.h >= 131);
+        }
+    }
+    #[test]
+    fn resize_honors_application_maximum_and_viewport() {
+        let limits = Limits {
+            min: (320, 200),
+            max: (720, 540),
+        };
+        let out = layout().resized(
+            Edges {
+                right: true,
+                bottom: true,
+                ..Edges::default()
+            },
+            9999,
+            9999,
+            area(),
+            limits,
+        );
+        assert_eq!((out.rect.content().w, out.rect.content().h), (720, 540));
+        let out = layout().resized(
+            Edges {
+                left: true,
+                top: true,
+                ..Edges::default()
+            },
+            -9999,
+            -9999,
+            area(),
+            Limits::default(),
+        );
+        assert_eq!((out.rect.x, out.rect.y), (208, 0));
+    }
+    #[test]
+    fn maximize_restore_and_host_resize_preserve_normal_geometry() {
+        let mut l = layout();
+        let original = l.rect;
+        l.maximize(true, area());
+        assert_eq!(l.rect, area());
+        l.maximize(true, area());
+        assert_eq!(l.restore, Some(original));
+        l.fit(work_area(1600, 1000, 208));
+        assert_eq!(l.rect.w, 1392);
+        l.maximize(false, work_area(1600, 1000, 208));
+        assert_eq!(l.rect, original);
+    }
+    #[test]
+    fn tiny_viewport_and_malformed_client_limits_do_not_panic() {
+        let a = work_area(10, 10, 208);
+        let l = layout().resized(
+            Edges {
+                left: true,
+                top: true,
+                ..Edges::default()
+            },
+            i32::MAX,
+            i32::MIN,
+            a,
+            Limits {
+                min: (4000, 4000),
+                max: (1, 1),
+            },
+        );
+        assert!(l.rect.w > 0 && l.rect.h > 0);
+    }
+}

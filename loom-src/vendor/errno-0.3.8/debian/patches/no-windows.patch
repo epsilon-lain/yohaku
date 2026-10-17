@@ -1,0 +1,9 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -45,6 +44,0 @@
+-[target."cfg(windows)".dependencies.windows-sys]
+-version = "0.52"
+-features = [
+-    "Win32_Foundation",
+-    "Win32_System_Diagnostics_Debug",
+-]

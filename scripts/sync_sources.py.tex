@@ -1,0 +1,50 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":1475,"path":"/root/projects/yohaku/release-prep/yohaku/scripts/sync_sources.py","sha256":"9abc23ecc71c69f742d2609b93fdaac838819b3ffc88f74dbdf0b21ce40df85a"}
+---
+
+## 正文
+```text
+import argparse
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Regenerate listed text with Loom, or compare without replacing it')
+    parser.add_argument('--check', action='store_true')
+    arguments = parser.parse_args()
+    sources = json.loads((ROOT / 'source-documents.json').read_text())['sources']
+    loom = ROOT / 'bin/loom-linux-x86_64'
+    with tempfile.TemporaryDirectory(prefix='yohaku-source-check-') as temporary:
+        destination = Path(temporary) if arguments.check else ROOT
+        if arguments.check:
+            shutil.copytree(ROOT / 'macros', destination / 'macros')
+        for name in sources:
+            result = subprocess.run([str(loom), 'sync', str(ROOT / name), '--root', str(destination), '--json'],
+                                    capture_output=True, text=True, check=True)
+            reply = json.loads(result.stdout)
+            if not reply.get('ok'):
+                raise SystemExit(f'Loom failed for {name}: {reply}')
+            output = name.removesuffix('.tex')
+            if arguments.check and (destination / output).read_bytes() != (ROOT / output).read_bytes():
+                raise SystemExit(f'Generated text differs: {output}')
+    print(f'{"Checked" if arguments.check else "Regenerated"} {len(sources)} Loom source documents')
+
+
+if __name__ == '__main__':
+    main()
+```
+
+## 输出与关联
+```yaml
+output: "scripts/sync_sources.py"
+```

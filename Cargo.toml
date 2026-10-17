@@ -1,0 +1,22 @@
+[package]
+name = "yohaku"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+thiserror = "2"
+tracing = "0.1"
+wayland-egl = "0.32"
+font8x8 = "0.3.1"
+fontdue = "0.9.4"
+serde_json = "1.0.154"
+smithay = { version = "0.7.0", default-features = false, features = ["backend_winit", "wayland_frontend", "desktop"] }
+softbuffer = { version = "0.4.8", default-features = false, features = ["wayland", "wayland-dlopen"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+wayland-client = "0.31.15"
+wayland-protocols = { version = "0.32.13", features = ["server"] }
+wayland-server = "0.31.14"
+winit = { version = "0.30.13", default-features = false, features = ["wayland", "rwh_06", "wayland-dlopen"] }
+
+[patch.crates-io]
+winit = { path = "vendor/winit" }

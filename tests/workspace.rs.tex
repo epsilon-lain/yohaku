@@ -1,0 +1,557 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":19038,"path":"/root/projects/yohaku/release-prep/yohaku/tests/workspace.rs","sha256":"6f524376f37b3a7b46e269801a926982f3afd4bb268143789d0949a07e3be1db"}
+---
+
+## 正文
+```text
+use serde_json::{Value, json};
+use std::fs;
+use std::io::Write;
+use std::path::{Path, PathBuf};
+use std::process::{Command, Stdio};
+use std::sync::atomic::{AtomicU64, Ordering};
+use std::time::Duration;
+use yohaku::workspace::Workspace;
+
+static NEXT: AtomicU64 = AtomicU64::new(0);
+struct Fixture {
+    base: PathBuf,
+    loom: PathBuf,
+    workspace: Workspace,
+}
+impl Fixture {
+    fn new() -> Self {
+        let n = NEXT.fetch_add(1, Ordering::Relaxed);
+        let base =
+            std::env::temp_dir().join(format!("yohaku-workspace-test-{}-{n}", std::process::id()));
+        fs::create_dir_all(&base).unwrap();
+        let installed_loom = std::env::var_os("YOHAKU_TEST_LOOM")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| Path::new(env!("CARGO_MANIFEST_DIR")).join("bin/loom-linux-x86_64"));
+        let loom = base.join("loom");
+        fs::copy(installed_loom, &loom).unwrap();
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            fs::set_permissions(&loom, fs::Permissions::from_mode(0o755)).unwrap();
+        }
+        let workspace = Workspace::open(base.join("world"), &loom).unwrap();
+        Self {
+            base,
+            loom,
+            workspace,
+        }
+    }
+    fn import(&mut self, name: &str, bytes: &[u8]) -> Value {
+        let input = self.base.join(name);
+        fs::write(&input, bytes).unwrap();
+        self.workspace.import(&input).unwrap()
+    }
+    fn path(&self, relative: &str) -> PathBuf {
+        self.workspace.root.join(relative)
+    }
+}
+impl Drop for Fixture {
+    fn drop(&mut self) {
+        let _ = fs::remove_dir_all(&self.base);
+    }
+}
+
+#[test]
+fn adopt_keeps_project_paths_and_loom_controls_edits_without_overwriting_sources() {
+    let mut f = Fixture::new();
+    let output = "files/yohaku-default/src/main.rs";
+    let path = f.path(output);
+    fs::create_dir_all(path.parent().unwrap()).unwrap();
+    fs::write(&path, "fn main() { println!(\"before\"); }\n").unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        fs::set_permissions(&path, fs::Permissions::from_mode(0o755)).unwrap();
+    }
+    let result = f
+        .workspace
+        .execute(&json!({"command":"adopt","path":output}))
+        .unwrap();
+    assert_eq!(result["output"], output);
+    let source = result["source"].as_str().unwrap();
+    let doc = f.workspace.read(source).unwrap();
+    assert!(doc["body"].as_str().unwrap().contains("before"));
+    f.workspace
+        .save(
+            source,
+            doc["text"].as_str().unwrap(),
+            "fn main() { println!(\"after\"); }\n",
+            true,
+        )
+        .unwrap();
+    assert!(fs::read_to_string(&path).unwrap().contains("after"));
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        assert_eq!(
+            fs::metadata(&path).unwrap().permissions().mode() & 0o777,
+            0o755
+        );
+    }
+    let previous = fs::read(f.path(source)).unwrap();
+    let again = f
+        .workspace
+        .execute(&json!({"command":"adopt","path":output}))
+        .unwrap();
+    assert_eq!(again["already_managed"], true);
+    assert_eq!(fs::read(f.path(source)).unwrap(), previous);
+    for invalid in [
+        "../outside.rs",
+        "memory/note.md",
+        "files/.yohaku/file",
+        "files/test.rs.tex",
+    ] {
+        assert!(
+            f.workspace
+                .execute(&json!({"command":"adopt","path":invalid}))
+                .is_err()
+        );
+    }
+    let other = f.path("files/other.py");
+    fs::write(&other, "print(1)\n").unwrap();
+    fs::write(f.path("files/other.py.tex"), "a human draft").unwrap();
+    assert!(
+        f.workspace
+            .execute(&json!({"command":"adopt","path":"files/other.py"}))
+            .is_err()
+    );
+    assert_eq!(
+        fs::read_to_string(f.path("files/other.py.tex")).unwrap(),
+        "a human draft"
+    );
+}
+
+#[test]
+fn import_uses_real_loom_is_byte_exact_and_does_not_touch_or_execute_original() {
+    let mut f = Fixture::new();
+    for (n, bytes) in [
+        b"".as_slice(),
+        b"print(\"lain kawaii\")",
+        b"a\r\nb\r",
+        b"\xef\xbb\xbfhello\0",
+        "中🧸\n```\n\u{2028}".as_bytes(),
+    ]
+    .iter()
+    .enumerate()
+    {
+        let name = format!("demo{n}.py");
+        let result = f.import(&name, bytes);
+        assert_eq!(fs::read(f.base.join(&name)).unwrap(), *bytes);
+        assert_eq!(
+            fs::read(f.path(result["output"].as_str().unwrap())).unwrap(),
+            *bytes
+        );
+        let source = result["source"].as_str().unwrap();
+        let doc = f.workspace.read(source).unwrap();
+        assert_eq!(doc["body"].as_str().unwrap().as_bytes(), *bytes);
+        assert!(!doc["text"].as_str().unwrap().contains("## AI"));
+        assert!(!doc["text"].as_str().unwrap().contains("links:"));
+    }
+    let result = f.import("side-effect.sh", b"touch do-not-create-this\n");
+    assert!(f.path(result["source"].as_str().unwrap()).exists());
+    assert!(!f.workspace.root.join("do-not-create-this").exists());
+}
+
+#[test]
+fn body_edits_handle_fences_empty_and_every_final_newline_without_losing_notes() {
+    let mut f = Fixture::new();
+    let imported = f.import("note.md", b"original\r\n");
+    let source = imported["source"].as_str().unwrap().to_owned();
+    let path = f.path(&source);
+    let mut text = fs::read_to_string(&path).unwrap();
+    text.push_str(
+        "\n## AI 笔记\n```yaml\nsource_version: 1\nwriter: 'human'\nsummary: 'keep me'\n```\n",
+    );
+    fs::write(&path, text).unwrap();
+    for body in [
+        "no final newline",
+        "with final LF\n",
+        "中文🧸\r\n",
+        "CR only\r",
+        "",
+        "```\n```````text\n```\n",
+        "\u{0085}\u{2028}\u{2029}",
+    ] {
+        let doc = f.workspace.read(&source).unwrap();
+        let result = f
+            .workspace
+            .save(&source, doc["text"].as_str().unwrap(), body, true)
+            .unwrap();
+        assert!(result.get("sync_error").is_none(), "{result}");
+        assert_eq!(fs::read(f.path("files/note.md")).unwrap(), body.as_bytes());
+        let new_text = fs::read_to_string(&path).unwrap();
+        assert!(new_text.contains("summary: 'keep me'"));
+        assert!(new_text.contains("imported:"));
+    }
+}
+
+#[test]
+fn stale_editor_and_invalid_tex_cannot_overwrite_source_or_output() {
+    let mut f = Fixture::new();
+    let imported = f.import("a.py", b"old");
+    let source = imported["source"].as_str().unwrap().to_owned();
+    let old = f.workspace.read(&source).unwrap();
+    let path = f.path(&source);
+    let external = old["text"]
+        .as_str()
+        .unwrap()
+        .replace("old", "changed elsewhere");
+    fs::write(&path, &external).unwrap();
+    assert!(
+        f.workspace
+            .save(&source, old["text"].as_str().unwrap(), "editor draft", true)
+            .is_err()
+    );
+    assert_eq!(fs::read_to_string(&path).unwrap(), external);
+    assert!(
+        f.workspace
+            .save(&source, &external, "bad tex", false)
+            .is_err()
+    );
+    assert_eq!(fs::read_to_string(&path).unwrap(), external);
+    assert_eq!(fs::read(f.path("files/a.py")).unwrap(), b"old");
+}
+
+#[test]
+fn targets_cannot_escape_the_workspace_by_dot_dot_or_symlink() {
+    let mut f = Fixture::new();
+    let imported = f.import("a.py", b"old");
+    let source = imported["source"].as_str().unwrap().to_owned();
+    let text = f.workspace.read(&source).unwrap()["text"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let escape = text.replace("files/a.py", "../outside.py");
+    assert!(f.workspace.save(&source, &text, &escape, false).is_err());
+    assert!(!f.base.join("outside.py").exists());
+    #[cfg(unix)]
+    {
+        std::os::unix::fs::symlink(&f.base, f.workspace.root.join("escape")).unwrap();
+        let escape = text.replace("files/a.py", "escape/outside.py");
+        assert!(f.workspace.save(&source, &text, &escape, false).is_err());
+        let escape = text.replace("macros/raw", "../other/raw");
+        assert!(f.workspace.save(&source, &text, &escape, false).is_err());
+    }
+}
+
+#[test]
+fn deletion_cleans_owned_output_and_retains_manually_changed_output_with_reason() {
+    let mut f = Fixture::new();
+    let imported = f.import("a.py", b"old");
+    let source = imported["source"].as_str().unwrap().to_owned();
+    let text = f.workspace.read(&source).unwrap()["text"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    f.workspace.delete(&source, &text).unwrap();
+    assert!(!f.path("files/a.py").exists());
+    assert!(!f.path(&source).exists());
+    let imported = f.import("b.py", b"old");
+    let source = imported["source"].as_str().unwrap().to_owned();
+    let text = f.workspace.read(&source).unwrap()["text"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    fs::write(f.path("files/b.py"), b"manual edit").unwrap();
+    let value = f.workspace.delete(&source, &text).unwrap();
+    assert_eq!(value["ok"], false);
+    assert!(!value["result"]["retained"].as_array().unwrap().is_empty());
+    assert_eq!(fs::read(f.path("files/b.py")).unwrap(), b"manual edit");
+}
+
+#[test]
+fn reopening_keeps_registry_and_duplicate_names_do_not_overwrite_files() {
+    let mut f = Fixture::new();
+    let first = f.import("demo.py", b"one");
+    let second = f.import("demo.py", b"two");
+    assert_ne!(first["source"], second["source"]);
+    let reopened = Workspace::open(&f.workspace.root, &f.loom).unwrap();
+    assert_eq!(
+        reopened.list().unwrap()["files"].as_array().unwrap().len(),
+        2
+    );
+    assert_eq!(
+        fs::read(f.path(first["output"].as_str().unwrap())).unwrap(),
+        b"one"
+    );
+    assert_eq!(
+        fs::read(f.path(second["output"].as_str().unwrap())).unwrap(),
+        b"two"
+    );
+}
+
+#[test]
+fn invalid_utf8_import_has_no_partial_source_or_file_registration() {
+    let mut f = Fixture::new();
+    let input = f.base.join("bad.bin");
+    fs::write(&input, [255u8, 254]).unwrap();
+    assert!(f.workspace.import(&input).is_err());
+    assert_eq!(fs::read(input).unwrap(), [255, 254]);
+    assert_eq!(
+        f.workspace.list().unwrap()["files"]
+            .as_array()
+            .unwrap()
+            .len(),
+        0
+    );
+    assert!(!f.path("files/bad.bin.tex").exists());
+}
+
+#[test]
+fn external_edits_and_deletions_are_synced_by_the_worker_poll() {
+    let mut f = Fixture::new();
+    let imported = f.import("a.py", b"old");
+    let source = imported["source"].as_str().unwrap().to_owned();
+    let path = f.path(&source);
+    let text = fs::read_to_string(&path).unwrap().replace("old", "new");
+    fs::write(&path, text).unwrap();
+    assert!(f.workspace.poll().is_empty());
+    std::thread::sleep(Duration::from_millis(450));
+    assert_eq!(f.workspace.poll().len(), 1);
+    assert_eq!(fs::read(f.path("files/a.py")).unwrap(), b"new");
+    fs::remove_file(path).unwrap();
+    f.workspace.poll();
+    std::thread::sleep(Duration::from_millis(1050));
+    assert_eq!(f.workspace.poll().len(), 1);
+    assert!(!f.path("files/a.py").exists());
+}
+
+#[test]
+fn command_line_uses_the_same_dispatcher_and_machine_readable_results() {
+    let f = Fixture::new();
+    let mut child = Command::new(env!("CARGO_BIN_EXE_yohaku_workspace"))
+        .args([
+            "--root",
+            f.workspace.root.to_str().unwrap(),
+            "--loom",
+            f.loom.to_str().unwrap(),
+        ])
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        .unwrap();
+    let request = json!({"command":"create","name":"lain.py","body":"print(\"lain kawaii\")"});
+    child
+        .stdin
+        .take()
+        .unwrap()
+        .write_all(request.to_string().as_bytes())
+        .unwrap();
+    let output = child.wait_with_output().unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stdout)
+    );
+    let value: Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(value["ok"], true);
+    assert_eq!(
+        fs::read(f.path("files/lain.py")).unwrap(),
+        b"print(\"lain kawaii\")"
+    );
+}
+
+#[test]
+fn concurrent_callers_keep_all_registry_entries_and_do_not_overwrite_each_other() {
+    let f = Fixture::new();
+    let mut children = Vec::new();
+    for n in 0..4 {
+        let mut child = Command::new(env!("CARGO_BIN_EXE_yohaku_workspace"))
+            .args([
+                "--root",
+                f.workspace.root.to_str().unwrap(),
+                "--loom",
+                f.loom.to_str().unwrap(),
+            ])
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .spawn()
+            .unwrap();
+        let request = json!({"command":"create","name":"shared.py","body":format!("caller {n}")});
+        child
+            .stdin
+            .take()
+            .unwrap()
+            .write_all(request.to_string().as_bytes())
+            .unwrap();
+        children.push(child);
+    }
+    let mut outputs = Vec::new();
+    for child in children {
+        let result = child.wait_with_output().unwrap();
+        assert!(
+            result.status.success(),
+            "{}",
+            String::from_utf8_lossy(&result.stdout)
+        );
+        let value: Value = serde_json::from_slice(&result.stdout).unwrap();
+        outputs
+            .push(fs::read_to_string(f.path(value["result"]["output"].as_str().unwrap())).unwrap());
+    }
+    outputs.sort();
+    assert_eq!(
+        outputs,
+        vec!["caller 0", "caller 1", "caller 2", "caller 3"]
+    );
+    let reopened = Workspace::open(&f.workspace.root, &f.loom).unwrap();
+    assert_eq!(
+        reopened.list().unwrap()["files"].as_array().unwrap().len(),
+        4
+    );
+}
+
+#[test]
+fn world_text_tools_preserve_revisions_and_route_tex_through_loom() {
+    let mut f = Fixture::new();
+    let req = json!({"command":"write_text","path":"memory/notes.md","expected":null,"text":"remember 🧸"});
+    f.workspace.execute(&req).unwrap();
+    assert!(f.workspace.execute(&req).is_err());
+    assert!(f.workspace.execute(&json!({"command":"write_text","path":"memory/notes.md","expected":"stale","text":"lost"})).is_err());
+    f.workspace.execute(&json!({"command":"write_text","path":"memory/notes.md","expected":"remember 🧸","text":"updated"})).unwrap();
+    let listing = f
+        .workspace
+        .execute(&json!({"command":"directory","path":"memory"}))
+        .unwrap();
+    assert_eq!(listing["entries"][0]["path"], "memory/notes.md");
+    let created = f.workspace.create("demo.py", "old").unwrap();
+    let source = created["source"].as_str().unwrap();
+    let old = f.workspace.read(source).unwrap()["text"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let new = old.replace("old", "new");
+    f.workspace
+        .execute(&json!({"command":"write_text","path":source,"expected":old,"text":new}))
+        .unwrap();
+    assert_eq!(fs::read_to_string(f.path("files/demo.py")).unwrap(), "new");
+    for path in [
+        "files/demo.py",
+        ".yohaku/files.json",
+        "files/.loom/state.json",
+        "../escape",
+    ] {
+        assert!(
+            f.workspace
+                .execute(&json!({"command":"write_text","path":path,"expected":null,"text":"bad"}))
+                .is_err(),
+            "{path}"
+        );
+    }
+    f.workspace
+        .execute(&json!({"command":"delete_text","path":source,"expected":new}))
+        .unwrap();
+    assert!(!f.path("files/demo.py").exists());
+    f.workspace
+        .execute(&json!({"command":"delete_text","path":"memory/notes.md","expected":"updated"}))
+        .unwrap();
+    assert!(!f.path("memory/notes.md").exists());
+}
+
+#[test]
+fn text_tools_do_not_follow_symlinks_and_report_binary_or_large_files() {
+    let mut f = Fixture::new();
+    fs::write(f.path("memory/binary"), [255, 254]).unwrap();
+    assert!(
+        f.workspace
+            .execute(&json!({"command":"read_text","path":"memory/binary"}))
+            .is_err()
+    );
+    fs::write(f.path("memory/large"), vec![b'x'; 2 * 1024 * 1024 + 1]).unwrap();
+    assert!(
+        f.workspace
+            .execute(&json!({"command":"read_text","path":"memory/large"}))
+            .is_err()
+    );
+    #[cfg(unix)]
+    {
+        std::os::unix::fs::symlink(f.base.join("outside"), f.path("memory/link")).unwrap();
+        assert!(
+            f.workspace
+                .execute(
+                    &json!({"command":"write_text","path":"memory/link","expected":null,"text":"x"})
+                )
+                .is_err()
+        );
+        assert!(
+            f.workspace
+                .execute(&json!({"command":"directory","path":"memory/link"}))
+                .is_err()
+        );
+    }
+    let listing = f
+        .workspace
+        .execute(&json!({"command":"directory","path":"."}))
+        .unwrap();
+    assert!(
+        !listing["entries"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|v| v["path"] == ".yohaku")
+    );
+}
+
+#[test]
+fn socius_settings_share_revision_guards_and_reject_invalid_writes() {
+    let mut f = Fixture::new();
+    let path = yohaku::socius::SETTINGS_PATH;
+    let original = yohaku::socius::defaults(yohaku::socius::default_macros()).to_string();
+    f.workspace
+        .execute(&json!({"command":"write_text","path":path,"expected":null,"text":original}))
+        .unwrap();
+    let mut next: Value = serde_json::from_str(&original).unwrap();
+    next["chat"]["width"] = json!(1200);
+    next["macros"] = json!([]);
+    let text = next.to_string();
+    f.workspace
+        .execute(&json!({"command":"write_text","path":path,"expected":original,"text":text}))
+        .unwrap();
+    assert!(
+        f.workspace
+            .execute(
+                &json!({"command":"write_text","path":path,"expected":original,"text":original})
+            )
+            .is_err()
+    );
+    next["chat"]["width"] = json!(1);
+    assert!(
+        f.workspace
+            .execute(
+                &json!({"command":"write_text","path":path,"expected":text,"text":next.to_string()})
+            )
+            .is_err()
+    );
+    assert_eq!(fs::read_to_string(f.path(path)).unwrap(), text);
+}
+
+#[test]
+fn tool_registry_validates_all_file_callers_and_preserves_existing_on_error() {
+    let mut f = Fixture::new();
+    let path = yohaku::techne::REGISTRY_PATH;
+    let original = yohaku::techne::defaults().to_string();
+    f.workspace
+        .execute(&json!({"command":"write_text","path":path,"expected":null,"text":original}))
+        .unwrap();
+    let mut invalid = yohaku::techne::defaults();
+    invalid["tools"][0]["network"] = json!(true);
+    assert!(f.workspace.execute(&json!({"command":"write_text","path":path,"expected":original,"text":invalid.to_string()})).is_err());
+    invalid = yohaku::techne::defaults();
+    invalid["tools"][0]["program"] = json!("world:../../host");
+    assert!(f.workspace.execute(&json!({"command":"write_text","path":path,"expected":original,"text":invalid.to_string()})).is_err());
+    assert_eq!(fs::read_to_string(f.path(path)).unwrap(), original);
+}
+```
+
+## 输出与关联
+```yaml
+output: "tests/workspace.rs"
+```

@@ -1,0 +1,17 @@
+Index: rustix/Cargo.toml
+===================================================================
+--- rustix.orig/Cargo.toml
++++ rustix/Cargo.toml
+@@ -45,6 +45,7 @@ categories = [
+ ]
+ license = "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT"
+ repository = "https://github.com/bytecodealliance/rustix"
++autobenches = false
+ 
+ [package.metadata.docs.rs]
+ features = ["all-apis"]
+@@ -71,4 +71,0 @@ targets = [
+-[[bench]]
+-name = "mod"
+-harness = false
+-

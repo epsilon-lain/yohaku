@@ -1,0 +1,82 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":4578,"path":"/root/projects/yohaku/release-prep/yohaku/agent/test_tools.py","sha256":"4585ac0b6c5117d491c5559e3b158c7a1ece96da4f28fcddf7e50f1f44dd1f46"}
+---
+
+## 正文
+```text
+import copy,json,os,socket,tempfile,unittest
+from pathlib import Path
+from unittest.mock import patch
+import yohaku_tools as t
+
+class SandboxTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory(prefix='yohaku-tool-test-');self.root=Path(self.temp.name)/'world'
+        (self.root/'.yohaku').mkdir(parents=True);(self.root/'files').mkdir();(self.root/'memory').mkdir()
+        (self.root/'.yohaku/files.json').write_text(json.dumps({'format':'yohaku-workspace/0.1'}))
+        self.entry={'id':'python','name':'Python','program':'/usr/bin/python3','args':['-c','print("ok")'],'wayland':False}
+    def tearDown(self):self.temp.cleanup()
+    def test_mounts_environment_and_arguments_do_not_expose_host_data(self):
+        argv=t.command(self.root,self.entry)
+        self.assertIn('--unshare-all',argv);self.assertIn('--disable-userns',argv);self.assertIn('--new-session',argv)
+        self.assertNotIn('--share-net',argv)
+        mounts=[argv[i+1] for i,a in enumerate(argv) if a in ('--bind','--ro-bind')]
+        self.assertEqual([p for p in mounts if p.startswith(str(self.root))],[str(self.root),str(self.root/'.yohaku')])
+        self.assertNotIn('/root',mounts);self.assertNotIn('/mnt/c',mounts)
+        env={argv[i+1]:argv[i+2] for i,a in enumerate(argv) if a=='--setenv'}
+        self.assertNotIn('DISPLAY',env);self.assertNotIn('DBUS_SESSION_BUS_ADDRESS',env);self.assertNotIn('WSL_INTEROP',env)
+        self.assertEqual(env['HOME'],'/world/tools/state/python');self.assertIn('--clearenv',argv)
+        self.assertFalse((self.root/'tools').exists(),'Planning must not create host-side directories')
+    def test_socket_only_maps_one_live_socket(self):
+        path=Path(self.temp.name)/'yohaku-socket';path.touch()
+        entry=copy.deepcopy(self.entry);entry['wayland']=True
+        # Exercise planning in a runtime that disallows AF_UNIX creation.
+        with patch.object(t.stat,'S_ISSOCK',return_value=True):
+            argv=t.command(self.root,entry,str(path));i=argv.index(str(path))
+            self.assertEqual(argv[i-1],'--ro-bind');self.assertEqual(argv[i+1],'/run/yohaku/wayland-0')
+        with self.assertRaises(t.ToolError):t.command(self.root,entry,str(path))
+        with self.assertRaises(t.ToolError):t.command(self.root,entry,None)
+    def test_arguments_are_not_shell_interpolated_or_bwrap_options(self):
+        self.entry['args']=['--bind','/root','/host','$(touch /outside)']
+        argv=t.command(self.root,self.entry);end=argv.index('--')
+        self.assertEqual(argv[end+2:],self.entry['args'])
+    def test_registry_rejects_policy_overrides_and_world_escape(self):
+        invalid=copy.deepcopy(self.entry);invalid['network']=True
+        with self.assertRaises(t.ToolError):t.validate({'format':'yohaku-tools/1','tools':[invalid]})
+        for name in ['../../outside','/root/file']:
+            with self.assertRaises(t.ToolError):t.inside(self.root,name)
+        (self.root/'escape').symlink_to('/root')
+        with self.assertRaises(t.ToolError):t.inside(self.root,'escape/file')
+    def test_pinned_mounts_use_fds_and_reject_last_moment_symlink(self):
+        argv=t.command(self.root,self.entry)
+        with t.PinnedMounts(argv,self.root) as pinned:
+            self.assertIn('--bind-fd',pinned.argv);self.assertIn('--ro-bind-fd',pinned.argv)
+            self.assertEqual(len(pinned.fds),2)
+        path=self.root/'mutable';path.mkdir();args=['bwrap','--ro-bind',str(path),'/world/mutable']
+        path.rmdir();path.symlink_to('/root')
+        with self.assertRaises(t.ToolError):t.PinnedMounts(args,self.root)
+    def test_failed_preflight_never_starts_program(self):
+        (self.root/'memory/tools.json').write_text(json.dumps({'format':'yohaku-tools/1','tools':[self.entry]}))
+        with patch.object(t,'check',side_effect=t.ToolError('namespace blocked')),patch.object(t.subprocess,'Popen') as popen:
+            with self.assertRaises(t.ToolError):t.run(self.root,'python',None)
+            popen.assert_not_called()
+    def test_nested_host_mount_is_rejected(self):
+        (self.root/'mounted').mkdir()
+        original=os.path.ismount
+        with patch.object(t.os.path,'ismount',side_effect=lambda p:Path(p)==self.root/'mounted' or original(p)):
+            with self.assertRaises(t.ToolError):t.command(self.root,self.entry)
+    def test_real_kernel_boundary(self):
+        try:result=t.check(self.root)
+        except t.ToolError as e:self.skipTest('Kernel sandbox not available here: '+str(e))
+        self.assertTrue(result['ok'])
+
+if __name__=='__main__':unittest.main()
+```
+
+## 输出与关联
+```yaml
+output: "agent/test_tools.py"
+```

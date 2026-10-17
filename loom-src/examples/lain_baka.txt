@@ -1,0 +1,27 @@
+---
+format: yohaku/0.1
+target: python
+macro: '[[macros/raw]]'
+tags: [输出文字, 文本文档, 示例]
+---
+
+## 正文
+```python
+print("`lain baka`  ")
+```
+
+## 输出与关联
+```yaml
+output: lain_baka.py
+links: []
+```
+
+## AI 笔记
+```yaml
+source_version: 1
+writer: mirai
+summary: 把正文中的一行 Python 代码原样生成到本示例文档旁边。
+connections: 使用 macros/raw；生成的 lain_baka.py 留给 Python 单独执行。
+location: 正文中的 print 保留字符串里的反引号和两个尾部空格。
+uncertainty: 本示例使用 .txt 作为暂定源文件扩展名；笔记身份不由 Loom 认证。
+```

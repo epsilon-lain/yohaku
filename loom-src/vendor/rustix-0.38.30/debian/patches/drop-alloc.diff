@@ -1,0 +1,23 @@
+Description: Drop alloc since rustc-std-worspace-alloc-dev isn't packaged
+Author: John Goerzen <jgoerzen@complete.org>
+Last-Update: 2023-10-08 by Peter Michael Green
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+Index: rustix/Cargo.toml
+===================================================================
+--- rustix.orig/Cargo.toml
++++ rustix/Cargo.toml
+@@ -75,5 +75,0 @@ targets = [
+-[dependencies.alloc]
+-version = "1.0.0"
+-optional = true
+-package = "rustc-std-workspace-alloc"
+-
+@@ -174,7 +169,6 @@ rand = []
+ runtime = ["linux-raw-sys/prctl"]
+ rustc-dep-of-std = [
+     "dep:core",
+-    "dep:alloc",
+     "dep:compiler_builtins",
+     "linux-raw-sys/rustc-dep-of-std",
+     "bitflags/rustc-dep-of-std",

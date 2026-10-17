@@ -1,0 +1,13 @@
+Index: serde-json/Cargo.toml
+===================================================================
+--- serde-json.orig/Cargo.toml
++++ serde-json/Cargo.toml
+@@ -53,7 +53,7 @@ features = ["raw_value"]
+ doc-scrape-examples = false
+ 
+ [dependencies.indexmap]
+-version = "2"
++version = ">= 1.5.2, < 3.0.0"
+ optional = true
+ 
+ [dependencies.itoa]

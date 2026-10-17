@@ -1,0 +1,24 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+node: {id: 'demo:greeting', name: Greeting module, description: A small named greeting function., entry: false, links: [{relation: tests, target: 'demo:test'}]}
+---
+
+## 正文
+```text
+def greet(name):
+    return "晚上好 " + name
+```
+
+## 输出与关联
+```yaml
+output: "files/node-demo/greet.py"
+```
+
+## AI 笔记
+```yaml
+source_version: 1
+writer: human
+summary: The published example starts with the greeting already verified during acceptance.
+```

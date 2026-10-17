@@ -1,0 +1,29 @@
+Description: Remove Windows dep
+Author: John Goerzen <jgoerzen@complete.org>
+Last-Update: 2023-05-08
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+Index: rustix/Cargo.toml
+===================================================================
+--- rustix.orig/Cargo.toml
++++ rustix/Cargo.toml
+@@ -237,19 +237,3 @@ package = "errno"
+ version = "1.5.2"
+ optional = true
+ 
+-[target."cfg(windows)".dependencies.libc_errno]
+-version = "0.3.8"
+-default-features = false
+-package = "errno"
+-
+-[target."cfg(windows)".dependencies.windows-sys]
+-version = "0.52.0"
+-features = [
+-    "Win32_Foundation",
+-    "Win32_Networking_WinSock",
+-    "Win32_NetworkManagement_IpHelper",
+-    "Win32_System_Threading",
+-]
+-
+-[target."cfg(windows)".dev-dependencies.ctor]
+-version = "0.2.0"

@@ -1,0 +1,118 @@
+--- rust-syn-2.0.18.orig/Cargo.toml
++++ rust-syn-2.0.18/Cargo.toml
+@@ -36,6 +36,8 @@ categories = [
+ ]
+ license = "MIT OR Apache-2.0"
+ repository = "https://github.com/dtolnay/syn"
++autotests = false
++autobenches = false
+ 
+ [package.metadata.docs.rs]
+ all-features = true
+@@ -125,3 +127,77 @@ proc-macro = [
+ ]
+ visit = []
+ visit-mut = []
++[[test]]
++name="regression"
++required-features = ["parsing", "full", "extra-traits"]
++[[test]]
++name="test_asyncness"
++required-features = ["full", "derive"]
++[[test]]
++name="test_attribute"
++required-features = ["full", "derive"]
++[[test]]
++name="test_derive_input"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="test_expr"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="test_generics"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="test_grouping"
++required-features = ["full", "derive"]
++[[test]]
++name="test_ident"
++required-features = ["parsing"]
++[[test]]
++name="test_item"
++required-features = ["full", "derive"]
++[[test]]
++name="test_iterators"
++required-features = ["full", "derive"]
++[[test]]
++name="test_lit"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="test_meta"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="test_parse_buffer"
++required-features = ["parsing"]
++[[test]]
++name="test_parse_stream"
++required-features = ["parsing"]
++[[test]]
++name="test_path"
++required-features = ["full", "derive"]
++[[test]]
++name="test_pat"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="test_receiver"
++required-features = ["full", "derive"]
++[[test]]
++name="test_shebang"
++required-features = ["full", "derive"]
++[[test]]
++name="test_should_parse"
++required-features = ["parsing", "full"]
++[[test]]
++name="test_size"
++required-features = ["full"]
++[[test]]
++name="test_stmt"
++required-features = ["full", "derive"]
++[[test]]
++name="test_token_trees"
++required-features = ["full", "derive"]
++[[test]]
++name="test_ty"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="test_visibility"
++required-features = ["full", "extra-traits", "derive"]
++[[test]]
++name="zzz_stable"
+--- rust-syn-2.0.18.orig/tests/repo/mod.rs
++++ rust-syn-2.0.18/tests/repo/mod.rs
+@@ -272,7 +272,7 @@ pub fn edition(path: &Path) -> &'static
+     }
+ }
+ 
+-pub fn clone_rust() {
++/*pub fn clone_rust() {
+     let needs_clone = match fs::read_to_string("tests/rust/COMMIT") {
+         Err(_) => true,
+         Ok(contents) => contents.trim() != REVISION,
+@@ -298,9 +298,9 @@ pub fn clone_rust() {
+     if !missing.is_empty() {
+         panic!("excluded test file does not exist:{}\n", missing);
+     }
+-}
++}*/
+ 
+-fn download_and_unpack() -> Result<()> {
++/*fn download_and_unpack() -> Result<()> {
+     let url = format!(
+         "https://github.com/rust-lang/rust/archive/{}.tar.gz",
+         REVISION
+@@ -329,4 +329,4 @@ fn download_and_unpack() -> Result<()> {
+ 
+     fs::write("tests/rust/COMMIT", REVISION)?;
+     Ok(())
+-}
++}*/

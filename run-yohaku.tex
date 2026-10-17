@@ -1,0 +1,21 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":220,"path":"/root/projects/yohaku/release-prep/yohaku/run-yohaku","sha256":"ec77b447b429ee06c3b3349472a5a76bf19924dbc22f48781df493a8dd59fe16"}
+---
+
+## 正文
+```text
+#!/bin/sh
+set -eu
+project_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$project_dir"
+chmod +x bin/loom-linux-x86_64 bin/yohaku_workspace
+exec /usr/bin/python3 -B agent/yohaku_launcher.py --project "$project_dir"
+```
+
+## 输出与关联
+```yaml
+output: "run-yohaku"
+```

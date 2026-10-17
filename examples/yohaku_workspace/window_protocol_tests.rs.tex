@@ -1,0 +1,453 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":15473,"path":"/root/projects/yohaku/release-prep/yohaku/examples/yohaku_workspace/window_protocol_tests.rs","sha256":"24257d03c47237886f2f48bd242f06994dcf61dbb5b22944310fd1827413370c"}
+---
+
+## 正文
+```text
+//! Exercise the production manager with a real Wayland client over a stream pair.
+//! No display server, GPU, listening socket, or model is required.
+use super::*;
+use std::{
+    os::{fd::AsFd, unix::net::UnixStream},
+    sync::mpsc,
+    time::Duration,
+};
+use wayland_client::{
+    Connection, Dispatch, QueueHandle, delegate_noop,
+    protocol::{
+        wl_buffer as client_buffer, wl_compositor, wl_pointer as client_pointer, wl_registry,
+        wl_seat as client_seat, wl_shm, wl_shm_pool, wl_surface as client_surface,
+    },
+};
+use wayland_protocols::xdg::shell::client::{
+    xdg_surface, xdg_toplevel as client_toplevel, xdg_wm_base,
+};
+
+#[derive(Default)]
+struct TestClient {
+    compositor: Option<wl_compositor::WlCompositor>,
+    shm: Option<wl_shm::WlShm>,
+    wm: Option<xdg_wm_base::XdgWmBase>,
+    seat: Option<client_seat::WlSeat>,
+    surface: Option<client_surface::WlSurface>,
+    buffer: Option<client_buffer::WlBuffer>,
+    sizes: Vec<(i32, i32, Vec<u32>)>,
+    button_serial: u32,
+    closed: bool,
+}
+impl Dispatch<wl_registry::WlRegistry, ()> for TestClient {
+    fn event(
+        s: &mut Self,
+        registry: &wl_registry::WlRegistry,
+        event: wl_registry::Event,
+        _: &(),
+        _: &Connection,
+        qh: &QueueHandle<Self>,
+    ) {
+        if let wl_registry::Event::Global {
+            name,
+            interface,
+            version,
+        } = event
+        {
+            match interface.as_str() {
+                "wl_compositor" => s.compositor = Some(registry.bind(name, version.min(4), qh, ())),
+                "wl_shm" => s.shm = Some(registry.bind(name, 1, qh, ())),
+                "xdg_wm_base" => s.wm = Some(registry.bind(name, version.min(6), qh, ())),
+                "wl_seat" => {
+                    let seat: client_seat::WlSeat = registry.bind(name, version.min(8), qh, ());
+                    seat.get_pointer(qh, ());
+                    s.seat = Some(seat);
+                }
+                _ => (),
+            }
+        }
+    }
+}
+impl Dispatch<xdg_wm_base::XdgWmBase, ()> for TestClient {
+    fn event(
+        _: &mut Self,
+        wm: &xdg_wm_base::XdgWmBase,
+        event: xdg_wm_base::Event,
+        _: &(),
+        _: &Connection,
+        _: &QueueHandle<Self>,
+    ) {
+        if let xdg_wm_base::Event::Ping { serial } = event {
+            wm.pong(serial);
+        }
+    }
+}
+impl Dispatch<xdg_surface::XdgSurface, ()> for TestClient {
+    fn event(
+        s: &mut Self,
+        surface: &xdg_surface::XdgSurface,
+        event: xdg_surface::Event,
+        _: &(),
+        _: &Connection,
+        _: &QueueHandle<Self>,
+    ) {
+        if let xdg_surface::Event::Configure { serial } = event {
+            surface.ack_configure(serial);
+            if let (Some(wl), Some(buffer)) = (&s.surface, &s.buffer) {
+                surface.set_window_geometry(0, 0, 640, 480);
+                wl.attach(Some(buffer), 0, 0);
+                wl.commit();
+            }
+        }
+    }
+}
+impl Dispatch<client_toplevel::XdgToplevel, ()> for TestClient {
+    fn event(
+        s: &mut Self,
+        _: &client_toplevel::XdgToplevel,
+        event: client_toplevel::Event,
+        _: &(),
+        _: &Connection,
+        _: &QueueHandle<Self>,
+    ) {
+        match event {
+            client_toplevel::Event::Configure {
+                width,
+                height,
+                states,
+            } => s.sizes.push((
+                width,
+                height,
+                states
+                    .chunks_exact(4)
+                    .map(|v| u32::from_ne_bytes(v.try_into().unwrap()))
+                    .collect(),
+            )),
+            client_toplevel::Event::Close => s.closed = true,
+            _ => (),
+        }
+    }
+}
+impl Dispatch<client_pointer::WlPointer, ()> for TestClient {
+    fn event(
+        s: &mut Self,
+        _: &client_pointer::WlPointer,
+        event: client_pointer::Event,
+        _: &(),
+        _: &Connection,
+        _: &QueueHandle<Self>,
+    ) {
+        if let client_pointer::Event::Button { serial, state, .. } = event {
+            if state == wayland_client::WEnum::Value(client_pointer::ButtonState::Pressed) {
+                s.button_serial = serial;
+            }
+        }
+    }
+}
+delegate_noop!(TestClient: ignore wl_compositor::WlCompositor);
+delegate_noop!(TestClient: ignore wl_shm::WlShm);
+delegate_noop!(TestClient: ignore wl_shm_pool::WlShmPool);
+delegate_noop!(TestClient: ignore client_buffer::WlBuffer);
+delegate_noop!(TestClient: ignore client_surface::WlSurface);
+delegate_noop!(TestClient: ignore client_seat::WlSeat);
+
+enum Action {
+    Press(f64, f64),
+    Motion(f64, f64),
+    Release,
+    Snapshot,
+    Viewport(i32, i32),
+}
+struct Server {
+    send: Option<mpsc::Sender<Action>>,
+    receive: mpsc::Receiver<Option<yohaku::window_geometry::Layout>>,
+    thread: Option<std::thread::JoinHandle<()>>,
+}
+impl Server {
+    fn action(&self, action: Action) -> yohaku::window_geometry::Layout {
+        self.send.as_ref().unwrap().send(action).unwrap();
+        self.receive
+            .recv_timeout(Duration::from_secs(5))
+            .unwrap()
+            .unwrap()
+    }
+}
+impl Drop for Server {
+    fn drop(&mut self) {
+        self.send.take();
+        if let Some(t) = self.thread.take() {
+            let _ = t.join();
+        }
+    }
+}
+
+#[test]
+fn real_wayland_client_receives_resize_maximize_restore_and_close_and_rejects_forged_grabs() {
+    let base = std::env::temp_dir().join(format!("yohaku-protocol-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&base);
+    std::fs::create_dir_all(&base).unwrap();
+    let (server_stream, client_stream) = UnixStream::pair().unwrap();
+    let (tx, rx) = mpsc::channel();
+    let (answers, received) = mpsc::channel();
+    let root = base.clone();
+    let thread = std::thread::spawn(move || {
+        let mut display: Display<App> = Display::new().unwrap();
+        let dh = display.handle();
+        let mut seats = SeatState::new();
+        let seat = seats.new_wl_seat(&dh, "test");
+        let mut state = App {
+            compositor_state: CompositorState::new::<App>(&dh),
+            xdg_shell_state: XdgShellState::new::<App>(&dh),
+            shm_state: ShmState::new::<App>(&dh, vec![]),
+            seat_state: seats,
+            data_device_state: DataDeviceState::new::<App>(&dh),
+            _decoration_state: XdgDecorationState::new::<App>(&dh),
+            _output_manager: OutputManagerState::new_with_xdg_output::<App>(&dh),
+            window_requests: Vec::new(),
+            seat,
+        };
+        state.seat.add_pointer();
+        display
+            .handle()
+            .insert_client(server_stream, Arc::new(ClientState::default()))
+            .unwrap();
+        let mut panel = workspace_panel::Panel::new(
+            root.join("world"),
+            std::env::current_dir()
+                .unwrap()
+                .join("bin/loom-linux-x86_64"),
+        )
+        .unwrap();
+        let mut manager = tool_windows::Manager::new();
+        let mut area = work_area(1280, 800, 208);
+        let mut cursor = (0., 0.);
+        let mut client_pressed = false;
+        loop {
+            display.dispatch_clients(&mut state).unwrap();
+            panel.update();
+            manager.sync(
+                state.xdg_shell_state.toplevel_surfaces(),
+                area,
+                "test",
+                &mut panel,
+            );
+            for request in state.window_requests.drain(..) {
+                manager.request(request, cursor, area);
+            }
+            let mut answer = false;
+            match rx.try_recv() {
+                Ok(action) => {
+                    answer = true;
+                    let pointer = state.seat.get_pointer().unwrap();
+                    match action {
+                        Action::Press(x, y) => {
+                            cursor = (x, y);
+                            if !manager.press(cursor, area) {
+                                pointer.motion(
+                                    &mut state,
+                                    manager.under(cursor),
+                                    &MotionEvent {
+                                        location: cursor.into(),
+                                        serial: SERIAL_COUNTER.next_serial(),
+                                        time: 1,
+                                    },
+                                );
+                                pointer.button(
+                                    &mut state,
+                                    &ButtonEvent {
+                                        button: 0x110,
+                                        state: ButtonState::Pressed,
+                                        serial: SERIAL_COUNTER.next_serial(),
+                                        time: 1,
+                                    },
+                                );
+                                pointer.frame(&mut state);
+                                client_pressed = true;
+                            }
+                        }
+                        Action::Motion(x, y) => {
+                            cursor = (x, y);
+                            manager.motion(cursor, area);
+                        }
+                        Action::Release => {
+                            manager.release();
+                            if client_pressed {
+                                pointer.button(
+                                    &mut state,
+                                    &ButtonEvent {
+                                        button: 0x110,
+                                        state: ButtonState::Released,
+                                        serial: SERIAL_COUNTER.next_serial(),
+                                        time: 2,
+                                    },
+                                );
+                                pointer.frame(&mut state);
+                                client_pressed = false;
+                            }
+                        }
+                        Action::Viewport(w, h) => {
+                            area = work_area(w, h, 208);
+                            for item in &mut manager.items {
+                                item.layout.fit(area);
+                            }
+                        }
+                        Action::Snapshot => (),
+                    }
+                }
+                Err(mpsc::TryRecvError::Disconnected) => break,
+                Err(mpsc::TryRecvError::Empty) => (),
+            }
+            manager.configure(area);
+            manager.persist(&mut panel);
+            display.flush_clients().unwrap();
+            if answer {
+                answers
+                    .send(manager.items.last().map(|w| w.layout))
+                    .unwrap();
+            }
+            std::thread::sleep(Duration::from_millis(2));
+        }
+    });
+    let server = Server {
+        send: Some(tx),
+        receive: received,
+        thread: Some(thread),
+    };
+    let conn = Connection::from_socket(client_stream).unwrap();
+    let mut queue = conn.new_event_queue();
+    let qh = queue.handle();
+    conn.display().get_registry(&qh, ());
+    let mut client = TestClient::default();
+    queue.roundtrip(&mut client).unwrap();
+    let surface = client.compositor.as_ref().unwrap().create_surface(&qh, ());
+    let xdg = client
+        .wm
+        .as_ref()
+        .unwrap()
+        .get_xdg_surface(&surface, &qh, ());
+    let top = xdg.get_toplevel(&qh, ());
+    top.set_app_id("protocol-check".into());
+    top.set_title("Protocol check".into());
+    let file = std::fs::OpenOptions::new()
+        .read(true)
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(base.join("pixels"))
+        .unwrap();
+    file.set_len(640 * 480 * 4).unwrap();
+    let pool = client
+        .shm
+        .as_ref()
+        .unwrap()
+        .create_pool(file.as_fd(), 640 * 480 * 4, &qh, ());
+    client.buffer =
+        Some(pool.create_buffer(0, 640, 480, 640 * 4, wl_shm::Format::Xrgb8888, &qh, ()));
+    client.surface = Some(surface.clone());
+    surface.commit();
+    let round = |queue: &mut wayland_client::EventQueue<TestClient>, client: &mut TestClient| {
+        queue.roundtrip(client).unwrap();
+        queue.roundtrip(client).unwrap();
+    };
+    round(&mut queue, &mut client);
+    assert_eq!(
+        (
+            client.sizes.last().unwrap().0,
+            client.sizes.last().unwrap().1
+        ),
+        (768, 480)
+    );
+    let initial = server.action(Action::Snapshot);
+    // A resize without a valid pointer serial must have no effect.
+    top.resize(
+        client.seat.as_ref().unwrap(),
+        0x123456,
+        client_toplevel::ResizeEdge::BottomRight,
+    );
+    round(&mut queue, &mut client);
+    server.action(Action::Motion(900., 650.));
+    assert_eq!(server.action(Action::Snapshot), initial);
+    // The native lower-right frame sends actual configure dimensions and Resizing state.
+    let r = initial.rect;
+    server.action(Action::Press(
+        (r.x + r.w - 2) as f64,
+        (r.y + r.h - 2) as f64,
+    ));
+    let resized = server.action(Action::Motion(
+        (r.x + r.w + 98) as f64,
+        (r.y + r.h + 48) as f64,
+    ));
+    round(&mut queue, &mut client);
+    let size = client.sizes.last().unwrap();
+    assert_eq!((size.0, size.1), (868, 530));
+    assert!(size.2.contains(&(xdg_toplevel::State::Resizing as u32)));
+    server.action(Action::Release);
+    round(&mut queue, &mut client);
+    assert!(
+        !client
+            .sizes
+            .last()
+            .unwrap()
+            .2
+            .contains(&(xdg_toplevel::State::Resizing as u32))
+    );
+    // The application's own maximize and restore buttons use the same production path.
+    top.set_maximized();
+    round(&mut queue, &mut client);
+    assert_eq!(
+        server.action(Action::Snapshot).rect,
+        work_area(1280, 800, 208)
+    );
+    assert_eq!(
+        (
+            client.sizes.last().unwrap().0,
+            client.sizes.last().unwrap().1
+        ),
+        (1062, 765)
+    );
+    server.action(Action::Viewport(1100, 700));
+    round(&mut queue, &mut client);
+    assert_eq!(
+        (
+            client.sizes.last().unwrap().0,
+            client.sizes.last().unwrap().1
+        ),
+        (882, 665)
+    );
+    server.action(Action::Viewport(1280, 800));
+    top.unset_maximized();
+    round(&mut queue, &mut client);
+    assert_eq!(server.action(Action::Snapshot), resized);
+    // A valid implicit pointer grab permits a client-side resize request.
+    server.action(Action::Press((r.x + 100) as f64, (r.y + 100) as f64));
+    round(&mut queue, &mut client);
+    assert_ne!(client.button_serial, 0);
+    top.resize(
+        client.seat.as_ref().unwrap(),
+        client.button_serial,
+        client_toplevel::ResizeEdge::BottomRight,
+    );
+    round(&mut queue, &mut client);
+    let before = server.action(Action::Snapshot);
+    let after = server.action(Action::Motion((r.x + 130) as f64, (r.y + 120) as f64));
+    assert_eq!(
+        (after.rect.w, after.rect.h),
+        (before.rect.w + 30, before.rect.h + 20)
+    );
+    server.action(Action::Release);
+    round(&mut queue, &mut client);
+    let r = after.rect;
+    server.action(Action::Press((r.x + r.w - 20) as f64, (r.y + 15) as f64));
+    server.action(Action::Release);
+    round(&mut queue, &mut client);
+    assert!(client.closed);
+    drop(queue);
+    drop(conn);
+    drop(server);
+    let _ = std::fs::remove_dir_all(base);
+}
+```
+
+## 输出与关联
+```yaml
+output: "examples/yohaku_workspace/window_protocol_tests.rs"
+```

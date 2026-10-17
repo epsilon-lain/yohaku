@@ -1,0 +1,3 @@
+drop-rustc-rayon.diff
+drop-quickcheck.diff
+relax-itertools.patch

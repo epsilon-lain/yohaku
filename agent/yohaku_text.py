@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""Human text-address interface for the same tools exposed to Yohaku's AI.
+
+Examples (run from the Yohaku project directory):
+  python3 agent/yohaku_text.py read files/demo.py.tex --view body
+  python3 agent/yohaku_text.py replace files/demo.py.tex --view body \
+    --start 1:8 --end 1:11 --revision SHA256 --expected old --text new
+
+Use --text-file or --stdin for literal multiline replacements. No model/API
+request is made. Paths are relative to the chosen world; all file operations
+still use the Rust workspace and Loom.
+"""
+import argparse
+import json
+from pathlib import Path
+import sys
+
+import yohaku_agent as agent
+from yohaku_coordinates import MAX_RANGE_BYTES
+
+
+def point(value):
+    try:
+        parts = value.split(':')
+        if len(parts) != 2:
+            raise ValueError()
+        line, column = map(int,parts)
+        if min(line,column) < 1:
+            raise ValueError()
+        return line,column
+    except ValueError:
+        raise argparse.ArgumentTypeError('Use a positive LINE:COLUMN, for example 1:1') from None
+
+
+def literal(path):
+    with Path(path).open('rb') as stream:
+        data = stream.read(MAX_RANGE_BYTES+1)
+    if len(data) > MAX_RANGE_BYTES:
+        raise ValueError('Replacement/expected text file exceeds 128 KiB')
+    return data.decode('utf-8')
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--root',default=str(agent.ROOT/'worlds/default'))
+    parser.add_argument('--loom',default=str(agent.ROOT/'bin/loom-linux-x86_64'))
+    parser.add_argument('--config')
+    commands = parser.add_subparsers(dest='operation',required=True)
+    for operation in ('read','replace'):
+        command = commands.add_parser(operation)
+        command.add_argument('path',help='World-relative .tex or plain text path')
+        command.add_argument('--view',choices=('body','text'),default='body')
+        command.add_argument('--start',type=point,default=(1,1))
+        command.add_argument('--end',type=point,required=operation=='replace')
+        if operation == 'replace':
+            command.add_argument('--revision',required=True)
+            expected = command.add_mutually_exclusive_group(required=True)
+            expected.add_argument('--expected')
+            expected.add_argument('--expected-file')
+            replacement = command.add_mutually_exclusive_group(required=True)
+            replacement.add_argument('--text')
+            replacement.add_argument('--text-file')
+            replacement.add_argument('--stdin',action='store_true')
+    args = parser.parse_args(argv)
+    try:
+        workspace = agent.Workspace(args.root,args.loom)
+        config = agent.read_config(args.config)
+        tools = agent.Tools(workspace.execute,permissions=config.get('permissions',agent.DEFAULT_PERMISSIONS),native=False)
+        request = dict(path=args.path,view=args.view,start_line=args.start[0],start_column=args.start[1])
+        if args.end:
+            request.update(end_line=args.end[0],end_column=args.end[1])
+        if args.operation == 'read':
+            result = tools.call('read_range',request)
+        else:
+            expected = literal(args.expected_file) if args.expected_file else args.expected
+            text = literal(args.text_file) if args.text_file else args.text
+            if args.stdin:
+                data = sys.stdin.buffer.read(MAX_RANGE_BYTES+1)
+                if len(data) > MAX_RANGE_BYTES:
+                    raise ValueError('Replacement text exceeds 128 KiB')
+                text = data.decode('utf-8')
+            request.update(revision=args.revision,expected=expected,text=text)
+            result = tools.call('edit_range',request)
+        print(json.dumps(result,ensure_ascii=False,indent=2))
+        return 0 if result['ok'] else 1
+    except (agent.ToolError,ValueError,OSError) as error:
+        print(json.dumps({'ok':False,'error':str(error)},ensure_ascii=False))
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

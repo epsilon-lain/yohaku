@@ -1,0 +1,28 @@
+$ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+$apps = New-Object System.Collections.Generic.List[object]
+$seen = @{}
+function Add-App([string]$name, [string]$path) {
+    if ($path -and (Test-Path -LiteralPath $path -PathType Leaf) -and -not $seen.ContainsKey($path.ToLowerInvariant())) {
+        $seen[$path.ToLowerInvariant()] = $true
+        $apps.Add(@{name=$name;path=$path})
+    }
+}
+Add-App 'Codex' (Join-Path $env:APPDATA 'npm\codex')
+Add-App 'Codex' (Join-Path $env:APPDATA 'npm\codex.cmd')
+Add-App 'Visual Studio Code' (Join-Path $env:LOCALAPPDATA 'Programs\Microsoft VS Code\Code.exe')
+$shell = New-Object -ComObject WScript.Shell
+$roots = @((Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs'), (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs'))
+foreach ($root in $roots) {
+    if (-not (Test-Path -LiteralPath $root)) { continue }
+    foreach ($link in (Get-ChildItem -LiteralPath $root -Filter '*.lnk' -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 256)) {
+        try { $target = $shell.CreateShortcut($link.FullName).TargetPath; Add-App $link.BaseName $target } catch {}
+    }
+}
+if (Get-Command Get-StartApps -ErrorAction SilentlyContinue) {
+    foreach ($app in (Get-StartApps | Select-Object -First 256)) {
+        if ($app.AppID -like '*!*') {$apps.Add(@{name=[string]$app.Name;app_id=[string]$app.AppID})}
+    }
+}
+# Inventory only: never run shortcut targets or their arguments.
+ConvertTo-Json -InputObject @($apps.ToArray()) -Depth 4 -Compress

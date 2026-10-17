@@ -1,0 +1,44 @@
+# Third-party notices
+
+Original material is all rights reserved. Third-party terms remain independent.
+Preserve the license texts, not only this summary.
+
+- `vendor/winit`: winit 0.30.13, Apache-2.0, with one local X11 refocus change.
+  Upstream license/notices are retained; `patches/` records the change and the
+  original crate checksum.
+- `examples/yohaku_workspace/native_winit/LICENSE-SMITHAY`: the MIT notice for
+  the Smithay-derived native adapter. The compositor also derives from the
+  original Smithay example; preserve this attribution with that material.
+- `loom-src/vendor`: 32 dependency source packages with their original license
+  and copyright files. `loom-src/VENDOR.md` documents distro-derived manifest
+  changes and checksums. Unicode, Boost and LLVM-exception notices are retained
+  where applicable.
+- `licenses/dependencies.json`: inventory from resolved Cargo manifests.
+  `licenses/cargo/` preserves discovered license files for Yohaku's resolved
+  dependencies available for this build. Metadata is not a substitute for texts.
+
+The Loom archive did not supply a top-level license for its original code.
+No open-source grant is inferred; the owner's all-rights-reserved instruction
+applies to that original implementation, not its independently licensed vendors.
+
+## Fonts and executables
+
+No Windows/system font files, undocumented `YohakuSans.ttf`, application binary,
+prebuilt Loom executable or Codex executable is distributed here. The private
+development font had no verified provenance/license and is excluded. Loading
+an installed font does not grant redistribution rights. Glyph coverage varies.
+
+`font8x8` provides bitmap glyph data through its Rust crate; preserve its notices
+with any future binary distribution. Dynamically linked system libraries are
+not copied. Their terms and any additional obligations need a separate review
+before preparing binary packages.
+
+This is a source-only preparation, not a completed binary redistribution audit.
+Missing historical provenance and original-code permissions remain explicit.
+
+The Linux dependency inventory found no standalone notice file in the cached
+packages `drm-fourcc`, `gl_generator`, `khronos_api`, `profiling` and
+`profiling-procmacros`. Their declared SPDX terms and repository references are
+retained in the inventory; absent texts are not fabricated. Review their
+upstream provenance/notices before any binary redistribution. This is an
+explicit remaining license-documentation limitation, not an open-source grant.

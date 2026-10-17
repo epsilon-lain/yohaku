@@ -1,0 +1,146 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+imported: {"bytes":6420,"path":"/root/projects/yohaku/release-prep/yohaku/README.md","sha256":"7fa1e2c606c71460dcdd9b5ca31b45ece3e32e2f10a20dd780884da64f4e0871"}
+---
+
+## 正文
+````text
+# Yohaku
+
+Yohaku is an experimental native, local-first workspace for people and AI.
+It is independent of Lain Brain. Loom, the deterministic `.tex` text generator,
+is kept in this repository. This source-only local version is **not open source**:
+original material is all rights reserved. See [LICENSE](LICENSE) and
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Capabilities
+
+- Rust/Smithay native documents, local tools and Socius chat.
+- Loom-managed body edits that preserve notes, macros and output routing.
+- Built-in entry listing, name/description search, stable node IDs, bounded BFS
+  and a rebuildable `.tex`-derived index; no plugin required.
+- Versioned Unicode line/column reads and guarded coordinate edits.
+- Registered tools with actual exit codes/logs in an offline bubblewrap sandbox.
+- Existing optional model connectors; no new model service or vector database.
+
+## Requirements
+
+Tested on Arch Linux in WSL2, Windows 11, with the X11 host backend. Use an
+existing working graphics/WSLg setup; this project does not install or repair it.
+Native Windows and macOS builds are not verified.
+
+Requirements: Rust/Cargo supporting edition 2024, Python 3, C compiler, binutils,
+pkg-config, Wayland client/server libraries, EGL/GLES2, libxkbcommon, X11
+libraries and a usable installed font. Bubblewrap is required to run world
+tools; there is no unsandboxed fallback. Exact tested versions and results are
+in [VERIFICATION.md](VERIFICATION.md).
+
+## Build and run
+
+From this repository in WSL/Linux:
+
+```sh
+./scripts/build.sh
+python3 scripts/init_config.py
+./run-yohaku
+```
+
+The build script compiles Loom from `loom-src` with its bundled dependencies,
+then the compositor, workspace CLI and sample tool window. Locally built
+executables go into ignored `bin/` paths. No precompiled executable is committed.
+Other Yohaku dependencies use `Cargo.lock` and the normal Cargo cache; fetching
+them may require network access on a new machine. With an existing complete
+cache, use `CARGO_NET_OFFLINE=true ./scripts/build.sh`.
+
+The launcher selects X11 on WSL, forwards Fcitx variables and requires `DISPLAY`.
+`YOHAKU_DISPLAY_BACKEND=native ./run-yohaku` selects the existing native backend.
+Always start through the wrapper: runtime paths are relative to the project.
+
+The initializer copies English templates only if local destinations are absent.
+It imports no account, login, world or model configuration. Building and starting
+send no model request. Configure your own endpoint/model in Socius when needed;
+provide your own key through the configured environment variable or session UI.
+Never commit it. The experimental local Codex connector requires a separately
+installed compatible runtime and explicit human setup/login. Clean-config
+verification does not authenticate or exercise a provider.
+
+## Minimal node demo
+
+```sh
+python3 scripts/create_demo.py --root worlds/demo
+python3 agent/yohaku_agent.py --root worlds/demo --config config/ai.json tool list_entry_nodes '{}'
+python3 agent/yohaku_agent.py --root worlds/demo --config config/ai.json tool walk_nodes '{"id":"demo:entry","max_depth":3,"limit":10}'
+python3 worlds/demo/files/node-demo/test_greet.py
+YOHAKU_WORKSPACE="$PWD/worlds/demo" ./run-yohaku
+```
+
+Three portable `.tex` documents are imported using existing write,
+adopt-existing-source and Loom sync operations. Existing demo targets/tool IDs
+are refused, never overwritten. One fixed demo test tool is registered.
+No real Lain Brain directory is read or required.
+
+In Chat, ask: “From the Lain Brain demo entry, follow node links to the greeting
+module and test. Use coordinate reads to verify the greeting. Do not search
+directories instead of using node navigation.” Explicitly authorize any editing
+exercise and test run, then inspect revisions, Loom results, exit codes and logs.
+Codex chat names have a `yohaku_` prefix; internal/CLI names do not.
+Enable the existing Write/Run permissions in Socius before an editing/test
+exercise; wording in a prompt does not override disabled tool permissions.
+
+## Source documents and tests
+
+`source-documents.json` lists sibling authoritative `.tex` sources. Generated
+text is checked in for bootstrapping. Edit those documents using the existing
+Loom format and raw macro, then run:
+
+```sh
+python3 scripts/sync_sources.py
+python3 scripts/sync_sources.py --check
+./scripts/test.sh
+```
+
+`--check` generates into a temporary root and compares bytes without replacing
+tracked outputs. Demo documents are world inputs, not compiler inputs. Typed
+node links never add implicit Loom dependencies. See `loom-src/FORMAT.md` and
+`loom-src/tests`. Vendor trees retain upstream formats and notices.
+
+## Known limits
+
+- This prototype is not a security audit or a cross-platform/binary release.
+- Node queries scan `.tex` metadata. BFS has depth/result caps, deduplicates
+  cycles and reports broken/ambiguous links; there is no vector database.
+- Coordinates are 1-based Unicode characters and end-exclusive. Explicit
+  endpoints outside a document are errors; omit them for pagination. Re-read
+  after revision conflicts. File-edit success is not program-test success.
+- Runtime worlds, logs and actual configuration are private local state.
+  Chat summaries do not persist every structured tool argument.
+- Physical IME/font/close-button and real AI acceptance were performed on the
+  original installation. The clean-config smoke test is separate evidence.
+- Font fallback uses fixed installed paths, including Windows FangSong,
+  Segoe UI Symbol and Microsoft YaHei in WSL. Linux-only CJK/emoji coverage
+  is not guaranteed. Fcitx candidate fonts are configured separately in Fcitx
+  and fontconfig. No font is bundled or licensed by this project.
+- The existing X11 winit refocus patch is pinned in `vendor/winit` for
+  reproducibility, not claimed as the cause of the IME repair. The earlier
+  input failure involved a keyboard layout rather than the real Pinyin engine.
+  No global Cargo-cache modification is required by this checkout.
+- Tool launches use fixed registered arguments. Unfinished parameter changes
+  in the private development world remain untouched and are not advertised as
+  released functionality. Develop support remains experimental.
+- The full Python suite currently has two preexisting application-discovery
+  expectation failures. They are recorded in VERIFICATION.md, not hidden by
+  excluding tests. These are separate from node/RPC and source-build checks.
+- `apply_update.py` is retained for compatibility tests, not as an upgrade
+  payload for arbitrary installations. Build this checkout independently;
+  do not use it to replace another running directory.
+
+See [PROVENANCE.md](PROVENANCE.md), [CHANGELOG.md](CHANGELOG.md) and
+[VERIFICATION.md](VERIFICATION.md) for scope and measured results.
+````
+
+## 输出与关联
+```yaml
+output: "README.md"
+```

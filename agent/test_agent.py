@@ -1,0 +1,262 @@
+import copy
+import http.server
+import io
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import threading
+import unittest
+from unittest.mock import patch
+
+sys.path.insert(0,str(Path(__file__).parent))
+import yohaku_agent as y
+
+class Fixture(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory(prefix='yohaku-ai-')
+        self.root=Path(self.temp.name)/'world'
+        self.workspace=y.Workspace(self.root,y.ROOT/'bin/loom-linux-x86_64')
+        self.tools=y.Tools(self.workspace.execute,lambda:{'root':str(self.root),'page':'files','source':'files/demo.py.tex','dirty':False})
+    def tearDown(self):self.temp.cleanup()
+    def call(self,name,args=None):
+        r=self.tools.call(name,args or {})
+        self.assertTrue(r['ok'],r)
+        return r['result']
+
+class ToolTests(Fixture):
+    def test_ai_can_configure_socius_text_with_revision_and_validation(self):
+        path='memory/socius.json'
+        settings={'format':'yohaku-socius/1','macros':[{'name':'Chat','trigger':'context_menu','shortcut':'Ctrl+J'}],
+                  'chat':{'x':None,'y':None,'width':880,'height':720,'font_scale':3}}
+        self.call('write_text',{'path':path,'revision':None,'text':json.dumps(settings)})
+        doc=self.call('read_text',{'path':path})
+        settings['chat']['width']=1100
+        settings['chat']['font_scale']=4
+        settings['macros'].append({'name':'Explain','trigger':'context_menu','prompt':'Explain {selection}'})
+        self.call('write_text',{'path':path,'revision':doc['revision'],'text':json.dumps(settings)})
+        current=self.call('read_text',{'path':path})
+        self.assertEqual(json.loads(current['text']),settings)
+        self.assertFalse(self.tools.call('write_text',{'path':path,'revision':doc['revision'],'text':doc['text']})['ok'])
+        settings['chat']['width']=1
+        self.assertFalse(self.tools.call('write_text',{'path':path,'revision':current['revision'],'text':json.dumps(settings)})['ok'])
+        self.assertEqual(self.call('read_text',{'path':path})['text'],current['text'])
+        restricted=y.Tools(self.workspace.execute,permissions={'write':False})
+        self.assertFalse(restricted.call('write_text',{'path':path,'revision':current['revision'],'text':current['text']})['ok'])
+
+    def test_all_file_tools_and_loom_roundtrip(self):
+        self.assertEqual(self.call('context')['page'],'files')
+        self.assertEqual(self.call('list_files')['files'],[])
+        self.assertEqual(self.call('list_directory',{'path':'.'})['path'],'.')
+        c=self.call('create_document',{'name':'demo.py','body':'print("old")'})
+        s=c['source'];doc=self.call('read_document',{'source':s})
+        p={'source':s,'revision':doc['revision'],'old':'old','new':'new','body_only':True}
+        self.call('patch_document',p)
+        self.assertEqual((self.root/'files/demo.py').read_text(),'print("new")')
+        self.assertFalse(self.tools.call('patch_document',p)['ok'])
+        doc=self.call('read_document',{'source':s})
+        self.call('write_document',{'source':s,'revision':doc['revision'],'text':doc['text']+'\n## AI 笔记\n```yaml\nsource_version: 1\nwriter: test-model\nsummary: factual note\n```\n','body_only':False})
+        doc=self.call('read_document',{'source':s})
+        self.call('write_document',{'source':s,'revision':doc['revision'],'text':'print("中文 🧸")\r\n','body_only':True})
+        self.assertIn('factual note',(self.root/s).read_text())
+        self.assertEqual((self.root/'files/demo.py').read_bytes(),'print("中文 🧸")\r\n'.encode())
+        self.call('sync_document',{'source':s})
+        self.call('write_text',{'path':'memory/lain.md','revision':None,'text':'first note'})
+        d=self.call('read_text',{'path':'memory/lain.md'})
+        self.call('patch_text',{'path':'memory/lain.md','revision':d['revision'],'old':'first','new':'second'})
+        found=self.call('search_text',{'path':'.','query':'second note'})
+        self.assertEqual(found['matches'][0]['path'],'memory/lain.md')
+        d=self.call('read_text',{'path':'memory/lain.md'})
+        self.call('delete_text',{'path':'memory/lain.md','revision':d['revision']})
+        doc=self.call('read_document',{'source':s})
+        self.call('delete_document',{'source':s,'revision':doc['revision']})
+        self.assertFalse((self.root/'files/demo.py').exists())
+        external=Path(self.temp.name)/'incoming.txt';external.write_bytes(b'original\n')
+        self.call('import_document',{'path':str(external)})
+        self.assertEqual(external.read_bytes(),b'original\n')
+
+    def test_conflict_ambiguous_patch_and_generated_output_rejected(self):
+        c=self.call('create_document',{'name':'a.txt','body':'same same'})
+        d=self.call('read_document',{'source':c['source']})
+        r=self.tools.call('patch_document',{'source':c['source'],'revision':d['revision'],'old':'same','new':'oops','body_only':True})
+        self.assertFalse(r['ok'])
+        d=self.call('read_text',{'path':c['output']})
+        self.assertFalse(self.tools.call('write_text',{'path':c['output'],'revision':d['revision'],'text':'lost'})['ok'])
+        self.assertEqual((self.root/c['output']).read_text(),'same same')
+        for name,args in [('unknown',{}),('list_files',{'extra':True}),('write_text',{'path':'x','revision':None,'text':2}),('search_text',{'path':'.','query':''})]:
+            self.assertFalse(self.tools.call(name,args)['ok'])
+
+    def test_mcp_stdio_initialization_discovery_and_file_creation(self):
+        requests=[{'jsonrpc':'2.0','id':1,'method':'initialize','params':{'protocolVersion':'2025-06-18'}},
+            {'jsonrpc':'2.0','method':'notifications/initialized'}, {'jsonrpc':'2.0','id':2,'method':'tools/list'},
+            {'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':'create_document','arguments':{'name':'mcp.py','body':'print("mcp")'}}}]
+        r=subprocess.run([sys.executable,'-B',str(y.ROOT/'agent/yohaku_agent.py'),'--root',str(self.root),'--config',str(self.root/'no-model-config.json'),'mcp'],
+            input='\n'.join(map(json.dumps,requests))+'\n',text=True,capture_output=True,check=True)
+        replies=[json.loads(s) for s in r.stdout.splitlines()]
+        self.assertEqual(len(replies),3)
+        self.assertEqual(replies[0]['result']['protocolVersion'],'2025-06-18')
+        self.assertEqual(len(replies[1]['result']['tools']),24)
+        self.assertIn('read_range',{t['name'] for t in replies[1]['result']['tools']})
+        self.assertIn('edit_range',{t['name'] for t in replies[1]['result']['tools']})
+        self.assertFalse(replies[2]['result']['isError'])
+        self.assertEqual((self.root/'files/mcp.py').read_text(),'print("mcp")')
+        self.assertEqual(r.stderr,'')
+
+    def test_loom_retained_output_is_reported_as_tool_failure_with_details(self):
+        c=self.call('create_document',{'name':'edited.txt','body':'original'})
+        (self.root/c['output']).write_text('manual change')
+        d=self.call('read_document',{'source':c['source']})
+        result=self.tools.call('delete_document',{'source':c['source'],'revision':d['revision']})
+        self.assertFalse(result['ok'],result)
+        self.assertIn('result',result)
+        self.assertEqual((self.root/c['output']).read_text(),'manual change')
+
+    def test_permission_checks_reject_tools_before_any_workspace_operation(self):
+        calls=[]
+        tools=y.Tools(lambda req:calls.append(req),permissions={'read':True,'write':False,'delete':False,'import':False})
+        for name,args in [('create_document',{'name':'x.py','body':'x'}),('write_text',{'path':'memory/x','revision':None,'text':'x'}),('delete_document',{'source':'x','revision':'x'}),('import_document',{'path':'/outside'})]:
+            r=tools.call(name,args);self.assertFalse(r['ok']);self.assertIn('permission',r['error'])
+        self.assertEqual(calls,[])
+        self.assertEqual({t['name'] for t in tools.definitions},y.GROUPS['read'])
+
+    def test_malformed_permissions_do_not_grant_tools(self):
+        for invalid in (None,False,[],"all"):
+            with self.assertRaises(y.ToolError):y.allowed_tools(invalid)
+        self.assertNotIn('read_document',{t['name'] for t in y.allowed_tools({'read':1})})
+        self.assertEqual(len(y.allowed_tools()),25)
+
+    def test_mcp_uses_configured_permissions_and_cannot_create_when_write_is_disabled(self):
+        config=Path(self.temp.name)/'ai.json';config.write_text(json.dumps({'permissions':{'write':False,'delete':False,'import':False}}))
+        requests=[{'jsonrpc':'2.0','id':1,'method':'initialize','params':{}},{'jsonrpc':'2.0','method':'notifications/initialized'},
+            {'jsonrpc':'2.0','id':2,'method':'tools/list'}, {'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':'create_document','arguments':{'name':'denied.py','body':'no'}}}]
+        r=subprocess.run([sys.executable,'-B',str(y.ROOT/'agent/yohaku_agent.py'),'--root',str(self.root),'--config',str(config),'mcp'],input='\n'.join(map(json.dumps,requests))+'\n',text=True,capture_output=True,check=True)
+        replies=[json.loads(line) for line in r.stdout.splitlines()]
+        self.assertEqual(len(replies[1]['result']['tools']),13)
+        self.assertTrue(replies[2]['result']['isError'])
+        self.assertFalse((self.root/'files/denied.py').exists())
+
+class MockAPI:
+    def __init__(self,protocol,respond):
+        self.protocol=protocol;self.respond=respond;self.requests=[];self.errors=[]
+    def __enter__(self):
+        parent=self
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_POST(self):
+                body=json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                parent.requests.append((self.path,dict(self.headers),body))
+                try:status,response=parent.respond(body,len(parent.requests)-1)
+                except Exception as e:
+                    parent.errors.append(e);status,response=500,{}
+                data=json.dumps(response).encode();self.send_response(status);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data)
+            def log_message(self,*a):pass
+        self.server=http.server.ThreadingHTTPServer(('127.0.0.1',0),Handler)
+        self.thread=threading.Thread(target=self.server.serve_forever,daemon=True);self.thread.start()
+        self.base='http://127.0.0.1:'+str(self.server.server_port)
+        return self
+    def __exit__(self,*a):
+        self.server.shutdown();self.server.server_close();self.thread.join()
+        if self.errors:raise self.errors[0]
+    def config(self):return {'protocol':self.protocol,'base_url':self.base,'model':'test-model','api_key':'TEST_ONLY_NOT_A_REAL_KEY','max_rounds':12,'timeout':5}
+
+def response(protocol,name=None,args=None,text='done'):
+    if protocol=='chat':
+        msg={'role':'assistant','content':None if name else text}
+        if name:msg['tool_calls']=[{'id':'c1','type':'function','function':{'name':name,'arguments':json.dumps(args)}}]
+        return {'choices':[{'message':msg,'finish_reason':'tool_calls' if name else 'stop'}],'usage':{'prompt_tokens':2,'completion_tokens':1,'total_tokens':3}}
+    if protocol=='responses':
+        items=[{'type':'function_call','call_id':'c1','name':name,'arguments':json.dumps(args)}] if name else [{'type':'message','role':'assistant','content':[{'type':'output_text','text':text}]}]
+        return {'status':'completed','output':items,'usage':{'input_tokens':2,'output_tokens':1}}
+    blocks=[{'type':'tool_use','id':'c1','name':name,'input':args}] if name else [{'type':'text','text':text}]
+    return {'content':blocks,'stop_reason':'tool_use' if name else 'end_turn','usage':{'input_tokens':2,'output_tokens':1}}
+
+def last_result(protocol,body):
+    if protocol=='chat':return json.loads(body['messages'][-1]['content'])['result']
+    if protocol=='responses':return json.loads(body['input'][-1]['output'])['result']
+    return json.loads(body['messages'][-1]['content'][0]['content'])['result']
+
+class ProviderTests(Fixture):
+    def check_protocol(self,protocol):
+        def respond(body,n):
+            if n==0:return 200,response(protocol,'create_document',{'name':'demo.py','body':'print("old")'})
+            if n==1:return 200,response(protocol,'read_document',{'source':'files/demo.py.tex'})
+            if n==2:
+                doc=last_result(protocol,body)
+                return 200,response(protocol,'patch_document',{'source':doc['source'],'revision':doc['revision'],'old':'old','new':'new','body_only':True})
+            if n==3:return 200,response(protocol,'write_text',{'path':'memory/session.md','revision':None,'text':'Changed output to new.'})
+            return 200,response(protocol,text='已修改并同步')
+        events=[]
+        with MockAPI(protocol,respond) as api:
+            result=y.Agent(y.Provider(api.config()),self.tools,events.append).run('change old to new',self.tools.current_context())
+            self.assertEqual(result['tool_calls'],4)
+            self.assertEqual(result['usage']['total_tokens'],15)
+            self.assertEqual(result['text'],'已修改并同步')
+            self.assertEqual((self.root/'files/demo.py').read_text(),'print("new")')
+            self.assertTrue((self.root/'memory/session.md').exists())
+            path,headers,body=api.requests[0]
+            self.assertEqual(path,{'chat':'/chat/completions','responses':'/responses','anthropic':'/messages'}[protocol])
+            self.assertEqual(len(body['tools']),len(self.tools.definitions))
+            if protocol=='anthropic':
+                self.assertEqual(headers['X-Api-Key'],'TEST_ONLY_NOT_A_REAL_KEY');self.assertIn('input_schema',body['tools'][0])
+            else:self.assertEqual(headers['Authorization'],'Bearer TEST_ONLY_NOT_A_REAL_KEY')
+            # A second user turn preserves correctly paired tool messages.
+            result2=y.Agent(y.Provider(api.config()),self.tools).run('what changed?',self.tools.current_context(),result['history'])
+            self.assertEqual(result2['text'],'已修改并同步')
+    def test_chat_http_tools_to_real_loom(self):self.check_protocol('chat')
+    def test_responses_http_tools_to_real_loom(self):self.check_protocol('responses')
+    def test_anthropic_http_tools_to_real_loom(self):self.check_protocol('anthropic')
+
+    def test_personality_and_permissions_reach_all_three_provider_protocols(self):
+        for protocol in ('chat','responses','anthropic'):
+            with self.subTest(protocol=protocol):
+                with MockAPI(protocol,lambda b,n:(200,response(protocol,text='hello'))) as api:
+                    config=api.config();config.update({'name':'Mirai','personality':'Use Chinese.\nBe patient.','permissions':{'read':False,'write':False,'delete':False,'import':False}})
+                    y.Agent(y.Provider(config),y.Tools(self.workspace.execute,permissions=config['permissions'])).run('hello',{})
+                    body=api.requests[0][2]
+                    system=body['messages'][0]['content'] if protocol=='chat' else body['instructions' if protocol=='responses' else 'system']
+                    self.assertIn('Mirai',system);self.assertIn('Use Chinese.\nBe patient.',system)
+                    self.assertNotIn('tools',body)
+
+    def test_http_error_does_not_echo_key_and_does_not_modify_files(self):
+        with MockAPI('chat',lambda b,n:(401,{'error':'TEST_ONLY_NOT_A_REAL_KEY'})) as api:
+            with self.assertRaises(y.ToolError) as caught:y.Agent(y.Provider(api.config()),self.tools).run('go',{})
+            self.assertNotIn('TEST_ONLY',str(caught.exception));self.assertIn('401',str(caught.exception))
+        self.assertFalse((self.root/'files/demo.py').exists())
+
+    def test_incomplete_response_never_executes_partial_tool_arguments(self):
+        for protocol in ('chat','responses','anthropic'):
+            with self.subTest(protocol=protocol):
+                value=response(protocol,'create_document',{'name':'bad.py','body':'bad'})
+                if protocol=='chat':value['choices'][0]['finish_reason']='length'
+                elif protocol=='responses':value['status']='incomplete'
+                else:value['stop_reason']='max_tokens'
+                with MockAPI(protocol,lambda b,n:(200,value)) as api:
+                    with self.assertRaises(y.ToolError):y.Agent(y.Provider(api.config()),self.tools).run('go',{})
+                self.assertFalse((self.root/'files/bad.py').exists())
+
+    def test_round_limit_keeps_completed_changes_without_infinite_calls(self):
+        with MockAPI('chat',lambda b,n:(200,response('chat','create_document',{'name':'done.txt','body':'done'}))) as api:
+            config=api.config();config['max_rounds']=1
+            with self.assertRaisesRegex(y.ToolError,'round limit'):y.Agent(y.Provider(config),self.tools).run('go',{})
+            self.assertEqual(len(api.requests),1)
+        self.assertEqual((self.root/'files/done.txt').read_text(),'done')
+
+    def test_wire_process_roundtrip_through_ui_protocol(self):
+        def respond(body,n):
+            return (200,response('chat','create_document',{'name':'wire.py','body':'print("wire")'})) if n==0 else (200,response('chat'))
+        with MockAPI('chat',respond) as api:
+            p=subprocess.Popen([sys.executable,'-B',str(y.ROOT/'agent/yohaku_agent.py'),'wire'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+            p.stdin.write(json.dumps({'config':api.config(),'prompt':'create wire.py','context':{},'history':[]})+'\n');p.stdin.flush()
+            events=[]
+            for line in p.stdout:
+                event=json.loads(line);events.append(event)
+                if event['event']=='request':
+                    result=self.workspace.execute(event['request'])
+                    p.stdin.write(json.dumps({'id':event['id'],'ok':True,'result':result})+'\n');p.stdin.flush()
+            self.assertEqual(p.wait(timeout=5),0)
+            self.assertEqual(p.stderr.read(),'');p.stdin.close();p.stdout.close();p.stderr.close()
+            self.assertEqual(events[-1]['event'],'done')
+        self.assertEqual((self.root/'files/wire.py').read_text(),'print("wire")')
+
+if __name__=='__main__':unittest.main()

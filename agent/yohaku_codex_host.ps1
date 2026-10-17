@@ -1,0 +1,163 @@
+param([Parameter(Mandatory=$true)][string]$Executable)
+$ErrorActionPreference='Stop'
+$originalInputEncoding=[Console]::InputEncoding
+[Console]::OutputEncoding=New-Object System.Text.UTF8Encoding($false)
+$private=$null;$code=2;$originalHash=$null;$stateLock=$null;$authCopy=$null
+function Write-BridgeMessage($Message) {
+    # The parent waits for this message before sending initialize. Write to the
+    # redirected OS stream, not the PowerShell formatting/output pipeline.
+    [Console]::Out.WriteLine(($Message | ConvertTo-Json -Compress -Depth 8))
+    [Console]::Out.Flush()
+}
+try {
+Write-BridgeMessage @{yohakuStage='prepare-auth'}
+# .NET Framework uses Console.InputEncoding for redirected Process.StandardInput.
+# Its default UTF-8 encoding can emit EF BB BF before the first JSON-RPC line.
+[Console]::InputEncoding=New-Object System.Text.UTF8Encoding($false)
+$originalHome=if ($env:CODEX_HOME) {$env:CODEX_HOME} else {Join-Path $env:USERPROFILE '.codex'}
+$auth=Join-Path $originalHome 'auth.json'
+if (-not (Test-Path -LiteralPath $auth -PathType Leaf)) { throw 'No reusable Codex auth.json. This bridge currently supports existing file-backed Codex login only.' }
+if (-not (Test-Path -LiteralPath $Executable -PathType Leaf)) { throw 'Codex executable is missing' }
+# Native Windows sandbox provisioning belongs to a stable, private CODEX_HOME.
+# A new temporary home on every connection would discard its setup state.
+$localData=[Environment]::GetFolderPath('LocalApplicationData')
+if (-not $localData) { throw 'Windows local application data directory is unavailable' }
+$stateHome=Join-Path $localData 'Yohaku\CodexBridge-v1'
+$newStateHome=-not (Test-Path -LiteralPath $stateHome)
+New-Item -ItemType Directory -Path $stateHome -Force | Out-Null
+if ((Get-Item -LiteralPath $stateHome).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Yohaku Codex state directory must not be a link' }
+$identity=[Security.Principal.WindowsIdentity]::GetCurrent().Name
+$acl=New-Object Security.AccessControl.DirectorySecurity
+$acl.SetAccessRuleProtection($true,$false)
+$rule=New-Object Security.AccessControl.FileSystemAccessRule($identity,'FullControl','ContainerInherit,ObjectInherit','None','Allow')
+$acl.AddAccessRule($rule)
+# Provisioning can add sandbox-runtime ACLs. Do not erase those on reconnect.
+if ($newStateHome) {Set-Acl -LiteralPath $stateHome -AclObject $acl}
+try { $stateLock=[IO.File]::Open((Join-Path $stateHome 'bridge.lock'),[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::None) }
+catch { throw 'Another Yohaku Codex connection or setup is active; finish it before connecting' }
+$private=Join-Path ([IO.Path]::GetTempPath()) ('yohaku-codex-'+[Guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $private | Out-Null
+Set-Acl -LiteralPath $private -AclObject $acl
+$originalHash=(Get-FileHash -LiteralPath $auth -Algorithm SHA256).Hash
+$authCopy=Join-Path $stateHome 'auth.json'
+Copy-Item -LiteralPath $auth -Destination $authCopy -Force
+$authAcl=New-Object Security.AccessControl.FileSecurity
+$authAcl.SetAccessRuleProtection($true,$false)
+$authRule=New-Object Security.AccessControl.FileSystemAccessRule($identity,'FullControl','Allow')
+$authAcl.AddAccessRule($authRule);Set-Acl -LiteralPath $authCopy -AclObject $authAcl
+$cwd=Join-Path $private 'workspace';New-Item -ItemType Directory -Path $cwd | Out-Null
+[IO.File]::WriteAllText((Join-Path $cwd 'read-control'),'yohaku-readable-control')
+[IO.File]::WriteAllText((Join-Path $private 'read-probe'),'outside-workspace-canary')
+# Do not inherit user MCP servers, hooks, plugins, or project instructions.
+$config=@'
+approval_policy = "never"
+default_permissions = "yohaku-control"
+cli_auth_credentials_store = "file"
+mcp_servers = {}
+hooks = {}
+plugins = {}
+[features]
+shell_tool = false
+multi_agent = false
+apps = false
+plugins = false
+[permissions.yohaku-control.filesystem]
+":minimal" = "read"
+"__YOHAKU_CWD__" = "read"
+[permissions.yohaku-control.network]
+enabled = false
+[windows]
+sandbox = "elevated"
+'@
+# JSON quoting is valid for a TOML basic string; normalize Windows separators
+# before quoting, including usernames that contain quotes or non-ASCII text.
+$tomlCwd=ConvertTo-Json -InputObject ($cwd.Replace('\','/')) -Compress
+$config=$config.Replace('"__YOHAKU_CWD__"',$tomlCwd)
+[IO.File]::WriteAllText((Join-Path $stateHome 'config.toml'),$config,(New-Object Text.UTF8Encoding($false)))
+$env:CODEX_HOME=$stateHome
+$env:CODEX_SQLITE_HOME=$null
+$env:OPENAI_API_KEY=$null;$env:CODEX_API_KEY=$null;$env:OPENAI_BASE_URL=$null
+Write-BridgeMessage @{yohakuStage='compile-host'}
+Add-Type -TypeDefinition @'
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Text;
+public static class YohakuCodexHost {
+ [DllImport("kernel32.dll", CharSet=CharSet.Unicode)] static extern IntPtr CreateJobObject(IntPtr attr,string name);
+ [DllImport("kernel32.dll")] static extern bool SetInformationJobObject(IntPtr job,int kind,IntPtr info,uint len);
+ [DllImport("kernel32.dll")] static extern bool AssignProcessToJobObject(IntPtr job,IntPtr process);
+ [DllImport("kernel32.dll")] static extern bool CloseHandle(IntPtr handle);
+ [StructLayout(LayoutKind.Sequential)] struct Basic {
+  public long user,job;public uint flags;public UIntPtr min,max;public uint processes;public UIntPtr affinity;public uint priority,scheduling;
+ }
+ [StructLayout(LayoutKind.Sequential)] struct Io {public ulong a,b,c,d,e,f;}
+ [StructLayout(LayoutKind.Sequential)] struct Limits {public Basic basic;public Io io;public UIntPtr processMemory,jobMemory,peakProcess,peakJob;}
+ static async Task Pump(Stream source,Stream destination) {
+  byte[] buffer=new byte[8192];int count;
+  while((count=await source.ReadAsync(buffer,0,buffer.Length))>0) {
+   await destination.WriteAsync(buffer,0,count);
+   // StandardInput.BaseStream bypasses StreamWriter.AutoFlush. A small JSON
+   // initialize request must reach the child before either side waits again.
+   await destination.FlushAsync();
+  }
+ }
+ public static int Run(string exe,string cwd) {
+  IntPtr job=CreateJobObject(IntPtr.Zero,null);if(job==IntPtr.Zero)throw new Exception("Could not create Codex process job");
+  var limit=new Limits();limit.basic.flags=0x2000;int size=Marshal.SizeOf(limit);IntPtr ptr=Marshal.AllocHGlobal(size);
+  Process child=null;
+  try {
+   Marshal.StructureToPtr(limit,ptr,false);
+   if(!SetInformationJobObject(job,9,ptr,(uint)size))throw new Exception("Could not enforce Codex process cleanup");
+   var info=new ProcessStartInfo(exe,"app-server --listen stdio://");
+   // Newer .NET runtimes expose this property; PS 5.1 uses Console.InputEncoding.
+   var encodingProperty=typeof(ProcessStartInfo).GetProperty("StandardInputEncoding");
+   if(encodingProperty!=null)encodingProperty.SetValue(info,new UTF8Encoding(false),null);
+   info.WorkingDirectory=cwd;info.UseShellExecute=false;info.CreateNoWindow=true;
+   info.RedirectStandardInput=true;info.RedirectStandardOutput=true;info.RedirectStandardError=true;
+   child=Process.Start(info);
+   if(!AssignProcessToJobObject(job,child.Handle)){child.Kill();throw new Exception("Could not own Codex child process");}
+   if(child.StandardInput.Encoding.GetPreamble().Length!=0)throw new Exception("Codex stdin has an encoding preamble; refusing a corrupted JSON-RPC stream");
+   Console.Out.WriteLine("{\"yohakuStage\":\"native-started\"}");Console.Out.Flush();
+   Task input=Task.Run(async delegate {try {await Pump(Console.OpenStandardInput(),child.StandardInput.BaseStream);}finally {child.StandardInput.Close();}});
+   Task output=Pump(child.StandardOutput.BaseStream,Console.OpenStandardOutput());
+   Task errors=child.StandardError.BaseStream.CopyToAsync(Stream.Null);
+   DateTime eof=DateTime.MaxValue;
+   while(!child.WaitForExit(100)) {
+    if(input.IsCompleted && eof==DateTime.MaxValue)eof=DateTime.UtcNow.AddSeconds(3);
+    if(DateTime.UtcNow>eof){CloseHandle(job);job=IntPtr.Zero;child.WaitForExit();break;}
+   }
+   Task.WaitAll(new Task[]{output,errors},3000);return child.ExitCode;
+  } finally {
+   if(job!=IntPtr.Zero)CloseHandle(job);
+   if(child!=null)child.Dispose();Marshal.FreeHGlobal(ptr);
+  }
+ }
+}
+'@
+    Write-BridgeMessage @{yohakuStage='launch-app-server'}
+    Write-BridgeMessage @{yohakuBridge=@{cwd=$cwd;outside=(Join-Path $private 'outside-probe');readProbe=(Join-Path $private 'read-probe');version='1'}}
+    $code=[YohakuCodexHost]::Run($Executable,$cwd)
+} catch {
+    Write-BridgeMessage @{bridgeError=$_.Exception.Message}
+    $code=2
+} finally {
+    # Preserve a refreshed token only if the original login has not changed.
+    try {
+        if ($authCopy -and $originalHash) {
+            $fresh=$authCopy
+            if ((Test-Path -LiteralPath $fresh) -and (Get-FileHash -LiteralPath $auth -Algorithm SHA256).Hash -eq $originalHash) {
+                if ((Get-FileHash -LiteralPath $fresh -Algorithm SHA256).Hash -ne $originalHash) { Copy-Item -LiteralPath $fresh -Destination $auth -Force }
+            }
+        }
+    } catch {}
+    # Keep sandbox provisioning/cache, but do not leave a second login on disk.
+    if ($authCopy) {Remove-Item -LiteralPath $authCopy -Force -ErrorAction SilentlyContinue}
+    if ($private) {Remove-Item -LiteralPath $private -Recurse -Force -ErrorAction SilentlyContinue}
+    if ($stateLock) {$stateLock.Dispose()}
+    try {[Console]::InputEncoding=$originalInputEncoding} catch {}
+}
+exit $code

@@ -1,0 +1,7 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -38,3 +38,3 @@
+ [dependencies.fastrand]
+-version = "2.0.0"
++version = ">= 1.6.0"
+ 
