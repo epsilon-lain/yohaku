@@ -1,0 +1,23 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+node: {"id": "yohaku-update-operation", "name": "Yohaku explicit internal update", "description": "Fixed host update actions; draft is inert.", "entry": true, "links": []}
+---
+
+## 正文
+````text
+{
+  "action": "draft"
+}
+````
+
+## 输出与关联
+```yaml
+output: "files/codex-text/UPDATE.json"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

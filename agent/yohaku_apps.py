@@ -45,7 +45,7 @@ def linux_codex_item(path):
     with path.open('rb') as stream:
         if stream.read(4) != b'\x7fELF':
             raise tools.ToolError('Linux Codex must be a native ELF binary')
-    return {'entry':{'id':app_id(path),'name':'Codex','program':'','args':[],'wayland':False},
+    return {'entry':{'id':app_id(path),'name':'Codex 建设聊天','program':'','args':[],'wayland':False},
             'address':str(path),'source':str(path),'origin':'Linux','action':'codex',
             'ready':False,'reason':'Connect native Linux Codex to Yohaku Chat (dedicated login may be required)',
             'keywords':'Codex Linux native app-server ' + path.name}
@@ -147,6 +147,31 @@ def executable(path):
         raise tools.ToolError('Windows/WSL bridge launcher: cannot run inside the world sandbox')
 
 
+def inspect_tool(address, root):
+    if not isinstance(address,str) or not address or len(address)>1024 or '\0' in address:
+        raise tools.ToolError('Use an explicit Linux executable path')
+    root=Path(root).resolve(strict=True)
+    path=Path(address)
+    if not path.is_absolute():
+        raise tools.ToolError('Use an absolute Linux path or /world/...; command search is not supported')
+    if path.is_relative_to('/world'):
+        source=tools.inside(root,str(path.relative_to('/world')))
+    elif path.is_relative_to(root):
+        source=tools.inside(root,str(path.relative_to(root)))
+    elif path.is_relative_to('/usr') or path.is_relative_to('/bin'):
+        source=path.resolve(strict=True)
+        if not source.is_relative_to('/usr'):
+            raise tools.ToolError('System executable must resolve inside the existing read-only /usr runtime')
+    else:
+        raise tools.ToolError('Executable must be in /usr, /bin or the current world; no host imports')
+    executable(source)
+    program='world:'+str(source.relative_to(root)) if source.is_relative_to(root) else str(source)
+    return {'address':address,'program':program,'executable':True,'executed':False,
+            'runtime':{'read_only':['/usr','/bin','/lib','/lib64','/sbin','/etc/ld.so.cache','/etc/fonts','/etc/localtime'],
+                       'writable':'current world only; private tmp/home; network isolated',
+                       'dependencies':'not resolved automatically; missing runtime is a real launch failure'}}
+
+
 def desktop(path):
     info = path.stat()
     if not stat.S_ISREG(info.st_mode):
@@ -230,10 +255,27 @@ def inspect(address, root):
 
 
 def discover(root, directories=None, with_report=False):
+    from yohaku_entries import codex_entry
+    configured = codex_entry(root)
     default_scan=directories is None
     if directories is None:
         directories = [Path.home() / '.local/share/applications', Path('/usr/local/share/applications'), Path('/usr/share/applications')]
     found = []
+    if configured:
+        try:
+            item = inspect(configured, root)
+            if item.get('action') != 'codex':
+                raise tools.ToolError('Configured codex_entry is not a supported Codex connector')
+            item['reason'] = 'World-configured Codex connector; Chat default is unchanged'
+        except (tools.ToolError, OSError, ValueError) as error:
+            # A removed extension must not hide every other installed application.
+            # Keep the failed address visible, but never offer it as a connector.
+            item = {'entry': {'id': app_id(configured),
+                             'name': 'Codex configured entry unavailable',
+                             'program': '', 'args': [], 'wayland': False},
+                    'address': configured, 'origin': 'Configured', 'ready': False,
+                    'reason': 'Configured codex_entry unavailable: ' + str(error)}
+        found.append(item)
     seen = set()
     examined = 0
     for directory in directories:

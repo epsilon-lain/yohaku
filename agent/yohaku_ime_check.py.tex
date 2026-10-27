@@ -1,0 +1,142 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Read-only IME deployment gate. Never starts/restarts an input service or model."""
+import argparse
+import ctypes as c
+import ctypes.util
+import hashlib
+import json
+import locale
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import time
+
+REFOCUS_MARKER = b'Failed to refocus input context after IME enable'
+ENTRIES = ('chat', 'techne_codex')
+PHASES = ('first_launch', 'after_restart')
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def body_matches(source, output):
+    lines = source.read_text().splitlines(keepends=True)
+    start = next(i for i, line in enumerate(lines) if line.strip() == '## 正文')
+    opening = next(i for i in range(start+1,len(lines)) if re.fullmatch(r'`{3,}text\s*', lines[i].strip()))
+    fence = lines[opening].strip()[:-4]
+    closing = next(i for i in range(opening+1,len(lines)) if lines[i].strip() == fence)
+    return ''.join(lines[opening+1:closing]) == output.read_text()
+
+def source_check(project, binary=None):
+    checks = {}
+    adapter = next((p for p in [project/'examples/yohaku_workspace/native_winit/mod.rs',project/'examples/yohaku_workspace/winit_backend.rs'] if p.is_file()),None)
+    names = ['agent/yohaku_ime.py','agent/yohaku_launcher.py','examples/yohaku_compositor.rs','examples/yohaku_workspace/text_input.rs','examples/yohaku_workspace/text_input_tests.rs']
+    # These existing adapters predate the managed lifecycle patch; their
+    # forwarding is checked below, without claiming an absent .tex was lost.
+    checks['adapter_present'] = adapter is not None
+    for name in names:
+        output = project/name; source = Path(str(output)+'.tex')
+        checks[name+':loom_pair'] = output.is_file() and source.is_file() and body_matches(source,output)
+    policy=(project/'agent/yohaku_ime.py').read_text()
+    checks['service_disconnect_policy'] = ' -D --disable=wayland,waylandim' in policy and ' -D -k ' not in policy and 'Restart=always' in policy
+    checks['launcher_readiness'] = 'ensure_x11_ime(env)' in (project/'agent/yohaku_launcher.py').read_text()
+    compositor=(project/'examples/yohaku_compositor.rs').read_text()
+    checks['host_and_nested_ime_routing'] = all(s in compositor for s in ['set_ime_allowed','state.text_input.ime','Ime::Preedit','Ime::Commit']) and ('agents.ime(event)' in compositor or all(s in compositor for s in ['agents.preedit(&text)','agents.commit_text(&text)']))
+    checks['adapter_forwards_ime'] = adapter is not None and bool(re.search(r'WindowEvent::Ime\((\w+)\)\s*=>[^\n]*WinitEvent::Ime\(\1\)', adapter.read_text()))
+    if binary is not None:
+        checks['compiled_refocus_marker'] = binary.is_file() and REFOCUS_MARKER in binary.read_bytes()
+    return {'checks':checks,'ok':all(checks.values()),'binary_sha256':digest(binary) if binary and binary.is_file() else None,'physical_input':'not_tested'}
+
+def read_environment(pid):
+    return dict(row.split('=',1) for row in (Path('/proc')/str(pid)/'environ').read_bytes().decode(errors='replace').split('\0') if '=' in row)
+
+def runtime_check(pid):
+    import yohaku_ime as im
+    process = Path('/proc')/str(pid)
+    host_env=read_environment(pid);env=im.session_environment(host_env)
+    owner_pid=int(im.command(['busctl','--user','call','org.freedesktop.DBus','/org/freedesktop/DBus','org.freedesktop.DBus','GetConnectionUnixProcessID','s','org.fcitx.Fcitx5'],env).split()[-1])
+    service_env=read_environment(owner_pid);selection=im.XimSelection(env['DISPLAY'])
+    try:owner=selection.owner()
+    finally:selection.close()
+    x=c.CDLL(ctypes.util.find_library('X11'))
+    for n,args,ret in [('XOpenDisplay',[c.c_char_p],c.c_void_p),('XSetLocaleModifiers',[c.c_char_p],c.c_char_p),('XOpenIM',[c.c_void_p,c.c_void_p,c.c_char_p,c.c_char_p],c.c_void_p),('XCloseIM',[c.c_void_p],c.c_int),('XCloseDisplay',[c.c_void_p],c.c_int)]:
+        getattr(x,n).argtypes=args;getattr(x,n).restype=ret
+    locale.setlocale(locale.LC_CTYPE,'');d=x.XOpenDisplay(env['DISPLAY'].encode());opened=False
+    if d:
+        x.XSetLocaleModifiers(b'@im=fcitx');handle=x.XOpenIM(d,None,None,None);opened=bool(handle)
+        if handle:x.XCloseIM(handle)
+        x.XCloseDisplay(d)
+    checks={'same_display':service_env.get('DISPLAY')==host_env.get('DISPLAY'),'same_session_bus':im.session_environment(service_env)['DBUS_SESSION_BUS_ADDRESS']==env['DBUS_SESSION_BUS_ADDRESS'],'xim_selection':bool(owner),'fresh_xopenim':opened,'host_xmodifiers':host_env.get('XMODIFIERS')=='@im=fcitx'}
+    return {'checks':checks,'ok':all(checks.values()),'host_pid':pid,'host_start_time':(process/'stat').read_text().split(') ')[1].split()[19],'host_binary_sha256':digest(process/'exe'),'service_pid':owner_pid,'service_start_time':(Path('/proc')/str(owner_pid)/'stat').read_text().split(') ')[1].split()[19],'DISPLAY':env['DISPLAY'],'xim_selection_owner':owner,'physical_input':'not_tested'}
+
+def new_graphics_errors(path, identity, offset):
+    stat=path.stat()
+    if (stat.st_dev,stat.st_ino)!=identity or stat.st_size<offset:
+        return {'ok':False,'state':'unknown_log_rotated_or_truncated','allocation_errors':None}
+    with path.open('rb') as stream:
+        stream.seek(offset);count=sum(b'rdp_allocate_shared_memory: Failed' in line for line in stream)
+    return {'ok':count==0,'state':'new_errors' if count else 'no_new_errors_in_observation','allocation_errors':count,'start_cursor':offset,'next_cursor':stat.st_size,'candidate_visibility':'requires_human_confirmation'}
+
+def event_summary(path):
+    result={'Enabled':0,'Disabled':0,'Preedit':0,'Commit':0,'commit_characters':0,'nonempty_preedit_events':0}
+    for line in path.read_text(errors='replace').splitlines():
+        m=re.search(r'\[IME EVENT\] kind=(Enabled|Disabled|Preedit|Commit) chars=(\d+) target=(chat|nested) allowed=(true|false)',line)
+        if not m:continue
+        kind,chars,target,allowed=m.groups();result[kind]+=1
+        if kind=='Commit' and target=='chat' and allowed=='true':result['commit_characters']+=int(chars)
+        if kind=='Preedit' and int(chars)>0:result['nonempty_preedit_events']+=1
+    return result
+
+def human_acceptance(record):
+    missing=[]
+    for phase in PHASES:
+        for entry in ENTRIES:
+            item=record.get(phase,{}).get(entry,{})
+            for field in ('candidate_visible','chinese_committed','no_duplicate'):
+                if item.get(field) is not True:missing.append(phase+'.'+entry+'.'+field)
+    return {'ok':not missing,'missing_confirmations':missing,'source':'explicit user observations; not inferred from events'}
+
+def main(argv=None):
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--project',type=Path,default=Path(__file__).resolve().parents[1]);p.add_argument('--binary',type=Path);p.add_argument('--runtime-pid',type=int);p.add_argument('--event-log',type=Path);p.add_argument('--manual-record',type=Path);p.add_argument('--graphics-log',type=Path,default=Path('/mnt/wslg/weston.log'));p.add_argument('--watch-seconds',type=float,default=0);p.add_argument('--output',type=Path)
+    args=p.parse_args(argv);report={'source':{'ok':False},'model_requests':0,'service_operations':'read_only','automatic_checks_passed':False,'fully_accepted':False}
+    try:
+        report['source']=source_check(args.project,args.binary)
+        if args.runtime_pid:
+            report['runtime']=runtime_check(args.runtime_pid)
+            if args.graphics_log.is_file():
+                stat=args.graphics_log.stat();identity=(stat.st_dev,stat.st_ino);offset=stat.st_size
+                if args.watch_seconds>0:time.sleep(args.watch_seconds)
+                report['graphics']=new_graphics_errors(args.graphics_log,identity,offset)
+            else:report['graphics']={'ok':False,'state':'unavailable','allocation_errors':None}
+        if args.event_log:report['events']=event_summary(args.event_log)
+        if args.manual_record:report['manual']=human_acceptance(json.loads(args.manual_record.read_text()))
+        report['automatic_checks_passed']=report['source']['ok'] and all(report.get(part,{'ok':True})['ok'] for part in ['runtime','graphics'])
+        report['fully_accepted']=bool(args.runtime_pid and report['automatic_checks_passed'] and report.get('manual',{}).get('ok'))
+    except (OSError,ValueError,RuntimeError,StopIteration,subprocess.SubprocessError) as error:
+        report['error']=type(error).__name__+': '+str(error)
+    text=json.dumps(report,ensure_ascii=False,indent=2)+'\n'
+    if args.output:args.output.write_text(text)
+    print(text,end='')
+    return 0 if report['automatic_checks_passed'] and (not args.runtime_pid or report['fully_accepted']) else 2
+
+if __name__=='__main__':sys.exit(main())
+````
+
+## 输出与关联
+```yaml
+output: "agent/yohaku_ime_check.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

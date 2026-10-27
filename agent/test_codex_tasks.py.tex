@@ -1,0 +1,107 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+import json,os,sys,time,subprocess,tempfile,unittest,shutil
+from pathlib import Path
+from unittest.mock import patch
+import yohaku_codex_tasks as t
+import yohaku_agent as a
+R=Path(__file__).resolve().parents[1]
+FIXTURE=r'''
+import os,sys,time,subprocess,json
+from pathlib import Path
+sys.path.insert(0,sys.argv[1]);import yohaku_codex_tasks as t;import yohaku_codex as c
+real=subprocess.Popen
+c.launch=lambda address:real([sys.executable,'-c','import time;time.sleep(120)'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
+def model(initial,tools,emit):
+ child=c.launch('controlled-offline-peer');emit({'event':'status','text':'Codex connected; controlled offline test'})
+ if initial['prompt']=='wait':
+  while True:time.sleep(.05)
+ if initial['prompt']=='fail':raise RuntimeError('controlled failure')
+ time.sleep(.05)
+ return {'text':'controlled reply','diagnostic_path':None}
+c.run=model
+raise SystemExit(t.run_task(sys.argv[2]))
+'''
+class HostTaskTests(unittest.TestCase):
+ def setUp(self):
+  self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.home=Path(self.temp.name)
+  self.env=patch.dict(os.environ,{'HOME':str(self.home)});self.env.start();self.addCleanup(self.env.stop)
+  self.world=self.home/'world';(self.world/'files/chat-runtime-20261025').mkdir(parents=True)
+  shutil.copytree(R/'macros',self.world/'macros')
+  from yohaku_codex_text_service import setup
+  setup(self.world)  # Portable empty seed; never import live request history.
+  self.control=t.Control(self.world);self.baseline=json.loads((self.world/'files/chat-runtime-20261025/requests.json').read_text())['requests']
+  self.real_popen=subprocess.Popen;self.launches=0
+  def spawn(argv,**kwargs):
+   if isinstance(argv,list) and str(R/'agent/yohaku_codex_tasks.py') in argv:
+    self.launches+=1;argv=[sys.executable,'-B','-c',FIXTURE,str(R/'agent'),argv[-1]]
+   return self.real_popen(argv,**kwargs)
+  self.spawn_patch=patch.object(t.subprocess,'Popen',side_effect=spawn);self.spawn_patch.start();self.addCleanup(self.spawn_patch.stop)
+ def start(self,rid,prompt='finish'):return self.control.call('codex_task_start',{'request_id':rid,'prompt':prompt})
+ def status(self,tid):return self.control.call('codex_task_status',{'task_id':tid})
+ def wait(self,tid,predicate=lambda v:v['status'] in t.TERMINAL):
+  end=time.monotonic()+12
+  while time.monotonic()<end:
+   v=self.status(tid)
+   if predicate(v):return v
+   time.sleep(.05)
+  self.fail(str(v))
+ def test_finish_duplicate_failure_and_old_requests_preserved(self):
+  first=self.start('offline-finish');tid=first['task_id'];done=self.wait(tid)
+  self.assertEqual(done['status'],'done');self.assertEqual(done['output'],'controlled reply')
+  duplicate=self.start('offline-finish','different prompt')
+  self.assertTrue(duplicate['duplicate']);self.assertEqual(duplicate['task_id'],tid);self.assertEqual(self.launches,1);self.assertFalse(duplicate['prompt_accepted'])
+  self.assertEqual(self.control.call('codex_task_status',{'request_id':'offline-finish'})['task_id'],tid)
+  failed=self.wait(self.start('offline-error','fail')['task_id']);self.assertEqual(failed['status'],'error');self.assertIn('controlled failure',failed['error'])
+  rows=json.loads((self.world/'files/chat-runtime-20261025/requests.json').read_text())['requests']
+  self.assertEqual(rows[:len(self.baseline)],self.baseline)
+ def test_cancel_native_reap_parallel_and_resubmit(self):
+  b=self.start('offline-stop','wait')['task_id'];self.wait(b,lambda x:x.get('model_phase')=='model_running')
+  c=self.start('offline-parallel')['task_id'];cancel=self.control.call('codex_task_cancel',{'task_id':b})
+  self.assertEqual(cancel['status'],'cancelled');self.assertTrue(cancel['cancel_confirmed']);self.assertTrue(cancel['receipt']['native_cleanup_complete'])
+  self.assertTrue(all(x['reaped'] for x in cancel['receipt']['native']))
+  self.assertEqual(self.wait(c)['status'],'done');self.assertEqual(self.wait(self.start('offline-after')['task_id'])['status'],'done')
+ def test_immediate_cancel_and_invalid_target(self):
+  tid=self.start('offline-early','wait')['task_id'];got=self.control.call('codex_task_cancel',{'task_id':tid})
+  self.assertTrue(got['cancel_confirmed'],got)
+  with self.assertRaises(ValueError):self.control.call('codex_task_cancel',{'task_id':str(os.getpid())})
+  self.assertEqual(os.getpid(),int(os.getpid()))
+ def test_unknown_submission_never_relaunches(self):
+  rid='offline-unknown';tid='model-task-'+__import__('hashlib').sha256((str(self.world)+'\0'+rid).encode()).hexdigest()[:32]
+  self.control.object.command({'command':'chat_submit','id':rid,'prompt':'no model','kind':'independent-model','target':'independent-host-codex'})
+  t.atomic(t.task_path(tid),{'task_id':tid,'world':str(self.world),'request_id':rid,'launch':'spawned','pid':999999999,'start':'none'})
+  duplicate=self.start(rid);self.assertEqual(self.launches,0);self.assertTrue(duplicate['duplicate']);self.assertEqual(duplicate['execution'],'unknown')
+ def test_host_tasks_are_native_scoped_and_require_permissions(self):
+  for native,perms in [(False,{'read':True,'write':True,'run':True}),(True,{'read':True,'write':False,'run':True}),(True,{'read':True,'write':True,'run':False})]:
+   tools=a.Tools(lambda _:None,permissions=perms,native=native);tools.enable_model_management({'protocol':'codex-local'})
+   self.assertNotIn('codex_task_start',{d['name'] for d in tools.definitions})
+  ordinary=a.Tools(lambda _:None,permissions={'read':True,'write':True,'run':True})
+  self.assertFalse(any(d['name'].startswith('codex_task_') for d in ordinary.definitions))
+
+ def test_native_tools_bind_initial_world_without_rpc_disguise(self):
+  def forbidden_context():raise AssertionError('must use initial native world binding')
+  tools=a.Tools(lambda request:{},context=forbidden_context,permissions={'read':True,'write':True,'run':True})
+  tools.enable_model_management({'protocol':'codex-local'});tools.bootstrap({'root':str(self.world)})
+  with patch.object(t,'Control') as cls:
+   cls.return_value.call.return_value={'status':'controlled'}
+   reply=tools.call('codex_task_status',{'request_id':'recover-lost-receipt'})
+   self.assertTrue(reply['ok']);cls.assert_called_once_with(str(self.world))
+
+if __name__=='__main__':unittest.main()
+````
+
+## 输出与关联
+```yaml
+output: "agent/test_codex_tasks.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

@@ -30,7 +30,7 @@ for line in sys.stdin:
  if 'id' not in v:continue
  result={}
  if method=='config/read':
-  result={'config':{'features':{'shell_tool':False,'apps':False,'plugins':False},'windows':{'sandbox':'elevated'},'hooks':{event:[] for event in ('PreToolUse','PermissionRequest','PostToolUse','PreCompact','PostCompact','SessionStart','SessionEnd','UserPromptSubmit','SubagentStart','SubagentStop','Stop','Interrupt')}}}
+  result={'config':{'features':{'shell_tool':False,'apps':False,'plugins':False},'windows':{'sandbox':'elevated'},'hooks':{event:[] for event in ('PreToolUse','PermissionRequest','PostToolUse','PreCompact','PostCompact','SessionStart','SessionEnd','UserPromptSubmit','SubagentStart','SubagentStop','Stop','Interrupt','PreModelRequest','PostModelRequest')}}}
   if mode=='inherited':result['config']['mcp_servers']={'unsafe':{'command':'host-writer'}}
   if mode=='engine-unset':result['config'].pop('windows')
   if mode=='engine-unelevated':result['config']['windows']['sandbox']='unelevated'
@@ -173,6 +173,32 @@ class CodexTests(unittest.TestCase):
                 peer.setup_windows(timeout=.03)
         finally:peer.close()
         self.assertIsNotNone(peer.child.returncode)
+
+    def test_account_routing_discovery_retry_is_read_only_and_bounded(self):
+        peer=unittest.mock.Mock()
+        transient=c.CodexError('Codex account/read failed: workspace routing discovery timed out')
+        peer.request.side_effect=[transient,{'account':{'type':'chatgpt'}}]
+        with patch.object(c.time,'sleep'):
+            self.assertEqual(c.read_account(peer),{'account':{'type':'chatgpt'}})
+        self.assertEqual(peer.request.call_args_list,[unittest.mock.call('account/read',{'refreshToken':False})]*2)
+        peer.reset_mock();peer.request.side_effect=transient
+        with patch.object(c.time,'sleep'),self.assertRaises(c.CodexError):c.read_account(peer)
+        self.assertEqual(peer.request.call_count,3)
+        peer.reset_mock();peer.request.side_effect=c.CodexError('different error')
+        with patch.object(c.time,'sleep'),self.assertRaises(c.CodexError):c.read_account(peer)
+        self.assertEqual(peer.request.call_count,1)
+
+    def test_connect_recreates_failed_routing_server_before_any_thread(self):
+        first=unittest.mock.Mock();second=unittest.mock.Mock()
+        first.initialize.side_effect=c.CodexError('Codex account/read failed: workspace routing discovery failed')
+        second.initialize.return_value={'model':'fixture'}
+        with patch.object(c,'launch'),patch.object(c,'Connection',side_effect=[first,second]),patch.object(c.time,'sleep'):
+            self.assertEqual(c.connect('/fixture/codex'),(second,{'model':'fixture'}))
+        first.close.assert_called_once();second.close.assert_not_called()
+        peer=unittest.mock.Mock();peer.initialize.side_effect=c.CodexError('other failure')
+        with patch.object(c,'launch') as launch,patch.object(c,'Connection',return_value=peer),self.assertRaises(c.CodexError):
+            c.connect('/fixture/codex')
+        self.assertEqual(launch.call_count,1);peer.close.assert_called_once()
 
     def test_empty_serialized_hook_defaults_are_not_executable_hooks(self):
         config={'features':{'shell_tool':False,'apps':False,'plugins':False},'windows':{'sandbox':'elevated'}}

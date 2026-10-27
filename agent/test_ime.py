@@ -1,0 +1,95 @@
+import os
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import MagicMock, patch
+import yohaku_ime as ime
+
+
+class ImeLifecycleTests(unittest.TestCase):
+    def test_live_service_is_never_replaced_or_installed(self):
+        with patch.object(ime,'XimSelection') as selection, patch.object(ime,'bus_owner',return_value=True), patch.object(ime,'install') as install, patch.object(ime,'command') as command:
+            selection.return_value.owner.return_value = 123
+            self.assertIn('reused',ime.ensure_x11_ime({'DISPLAY':':7','DBUS_SESSION_BUS_ADDRESS':'unix:path=/bus'}))
+            install.assert_not_called()
+            command.assert_not_called()
+            selection.return_value.close.assert_called_once()
+
+    def test_partial_service_is_not_replaced(self):
+        for owner, bus in [(0,True),(123,False)]:
+            with self.subTest(owner=owner,bus=bus), patch.object(ime,'XimSelection') as selection, patch.object(ime,'bus_owner',return_value=bus), patch.object(ime,'install') as install, patch.object(ime,'command',return_value='0'):
+                selection.return_value.owner.return_value = owner
+                with self.assertRaisesRegex(RuntimeError,'refusing to replace'):
+                    ime.ensure_x11_ime({'DISPLAY':':7','DBUS_SESSION_BUS_ADDRESS':'unix:path=/bus'})
+                install.assert_not_called()
+
+    def test_absent_service_is_started_and_both_endpoints_checked(self):
+        with patch.object(ime,'XimSelection') as selection, patch.object(ime,'bus_owner',side_effect=[False,True]), patch.object(ime,'install') as install, patch.object(ime,'command') as command:
+            selection.return_value.owner.return_value = 0
+            ime.ensure_x11_ime({'DISPLAY':':7','DBUS_SESSION_BUS_ADDRESS':'unix:path=/bus'})
+            install.assert_called_once()
+            command.assert_called_once()
+            self.assertEqual(command.call_args.args[0],['systemctl','--user','start',ime.UNIT])
+            selection.return_value.wait.assert_called_once_with(8)
+
+    def test_missing_readiness_is_not_success(self):
+        with patch.object(ime,'XimSelection') as selection, patch.object(ime,'bus_owner',return_value=False), patch.object(ime,'install'), patch.object(ime,'command'):
+            selection.return_value.owner.return_value = 0
+            selection.return_value.wait.side_effect = RuntimeError('XIM missing')
+            with self.assertRaisesRegex(RuntimeError,'XIM missing'):
+                ime.ensure_x11_ime({'DISPLAY':':7','DBUS_SESSION_BUS_ADDRESS':'unix:path=/bus'})
+            selection.return_value.close.assert_called_once()
+
+    def test_owned_service_waits_for_xim_without_restart(self):
+        with patch.object(ime,'XimSelection') as selection, patch.object(ime,'bus_owner',return_value=True), patch.object(ime,'install') as install, patch.object(ime,'command',side_effect=['17','u 17']):
+            selection.return_value.owner.return_value = 0
+            self.assertIn('pending',ime.ensure_x11_ime({'DISPLAY':':7','DBUS_SESSION_BUS_ADDRESS':'unix:path=/bus'}))
+            selection.return_value.wait.assert_called_once_with(8)
+            install.assert_not_called()
+
+    def test_unit_has_independent_lifetime_and_exit_evidence(self):
+        unit = ime.unit_text('/config/session.env','/usr/bin/fcitx5')
+        for required in ['Type=dbus','BusName=org.fcitx.Fcitx5','-D --disable=wayland,waylandim','Restart=always','StartLimitBurst=3','WantedBy=default.target']:
+            self.assertIn(required,unit)
+        for prohibited in [' -k ', ' --keep', '--replace','PartOf=','BindsTo=','KillMode=none']:
+            self.assertNotIn(prohibited,unit)
+
+    def test_environment_is_whitelisted_and_never_contains_credentials(self):
+        output = ime.environment_text({'DISPLAY':':7','XDG_RUNTIME_DIR':'/run/user/1','DBUS_SESSION_BUS_ADDRESS':'unix:path=/bus','API_KEY':'synthetic-secret','WAYLAND_DISPLAY':'wayland-0'})
+        self.assertNotIn('synthetic-secret',output)
+        self.assertNotIn('WAYLAND_DISPLAY',output)
+        with self.assertRaises(ValueError):
+            ime.environment_text({'DISPLAY':':7\nExecStart=bad'})
+
+    def test_owned_but_disconnected_service_remains_an_error(self):
+        with patch.object(ime,'XimSelection') as selection, patch.object(ime,'bus_owner',return_value=True), patch.object(ime,'install') as install, patch.object(ime,'command',side_effect=['17','u 17']):
+            selection.return_value.owner.return_value = 0
+            selection.return_value.wait.side_effect = RuntimeError('XIM selection did not become ready')
+            with self.assertRaisesRegex(RuntimeError, 'XIM selection did not become ready'):
+                ime.ensure_x11_ime({'DISPLAY':':7','DBUS_SESSION_BUS_ADDRESS':'unix:path=/bus'})
+            install.assert_not_called()
+            selection.return_value.wait.assert_called_once_with(8)
+            selection.return_value.close.assert_called_once()
+
+    def test_user_unit_is_not_overwritten(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)/'systemd/user'/ime.UNIT
+            path.parent.mkdir(parents=True)
+            path.write_text('user service\n')
+            with patch.object(ime.shutil,'which',return_value='/usr/bin/fcitx5'):
+                with self.assertRaisesRegex(RuntimeError,'refusing to overwrite'):
+                    ime.install({'HOME':directory,'XDG_CONFIG_HOME':directory})
+            self.assertEqual(path.read_text(),'user service\n')
+
+    def test_readiness_drains_events_and_rechecks_owner_without_fixed_sleep(self):
+        selection = object.__new__(ime.XimSelection)
+        selection.connection = 1
+        selection.library = MagicMock()
+        selection.library.XPending.side_effect = [1,0]
+        with patch.object(selection,'owner',side_effect=[0,42]), patch.object(ime.select,'select') as select_wait:
+            selection.wait(1)
+            select_wait.assert_not_called()
+
+
+if __name__ == '__main__':
+    unittest.main()

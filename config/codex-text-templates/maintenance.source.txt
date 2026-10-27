@@ -1,0 +1,29 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+node: {"id": "codex-text-maintenance", "name": "Codex text maintenance", "description": "Local observations, private login and guarded updates.", "entry": false, "links": []}
+---
+
+## 正文
+````text
+# Codex text maintenance
+
+Use each installation's own loaded hashes, timestamped readiness and task authority. Historical acceptance elsewhere cannot prove this installation healthy. Preserve current sessions, terminals, tasks and drafts.
+
+Use the original Linux Codex installation selected by the owner. Dedicated Linux login lives under the current user's ~/.local/state/yohaku/codex-linux-login; provider selection is ~/.config/yohaku/codex-provider.json. These files are private and never part of the source package. A CLI login-status message only proves stored credentials exist. Compare account/read, the real executable/user/environment, and current connection diagnostics before requesting a new login. Windows adapter messages describe a separate connector.
+
+Text page edits must preserve the Loom route, expected whole-source revision, and newer drafts. Unknown results are queried, never automatically replayed. Read details for raw worker/process observations; the normal Stop reason remains there. The update path uses a fixed reviewed payload, candidate-source hashes, host-dependency hashes, workspace --identity and conflict checks. Do not delete .loom records or bypass ownership to create a candidate.
+
+The internal UPDATE page exposes draft, prepare_candidate, check, plan, activate, status and rollback. Only explicit activate or rollback changes installed files. See the update guide page for ordered steps. Keep each request_id unique. If the result is unknown, inspect the original plan/request before deciding a new action.
+````
+
+## 输出与关联
+```yaml
+output: "files/codex-text/MAINTENANCE.md"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

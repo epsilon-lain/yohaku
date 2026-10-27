@@ -1,0 +1,94 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+`````text
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+node: {"id": "codex-text-daily-entry", "name": "Codex text operator page", "description": "Read-only display helper; opening it never sends a model request.", "entry": true, "links": []}
+---
+
+## 正文
+````text
+#!/usr/bin/python3
+"""Print the current-world Codex text operator page as text-only.
+
+The Techne entry "Codex Text Operator" registers this as a non-Wayland tool.
+Running it only prints the operator page; it never writes files, never edits the
+page's [control] block and never starts a Codex task.
+"""
+import sys
+from pathlib import Path
+
+PAGE = 'files/codex-text/operators/deepseek-trial.md'
+SOURCE = PAGE + '.tex'
+
+
+def body(path):
+    text = path.read_text(encoding='utf-8')
+    if not text.startswith('---\n'):
+        return text
+    end = text.find('\n---\n', 4)
+    if end < 0:
+        return text
+    rest = text[end + len('\n---\n'):]
+    start = rest.find('```')
+    if start < 0:
+        return rest
+    nl = rest.find('\n', start)
+    stop = rest.find('\n```', nl)
+    return rest[nl + 1:] if stop < 0 else rest[nl + 1:nl + 1 + stop - nl - 1]
+
+
+def main(argv):
+    root = Path(argv[1]) if len(argv) > 1 else Path(__file__).resolve().parents[2]
+    page = root / PAGE
+    source = root / SOURCE
+    print('Codex 文本操作器（日常运行页，只读展示）')
+    print('世界:', root)
+    if page.exists():
+        print('页面:', page)
+        print('-' * 60)
+        print(body(page).rstrip('\n'))
+    elif source.exists():
+        print('页面尚未生成，读取源:', source)
+        print('-' * 60)
+        print(body(source).rstrip('\n'))
+    else:
+        print('找不到运行页:', page, file=sys.stderr)
+        return 2
+    print('-' * 60)
+    print('在 [input] 写内容，把 [control] 的 draft 改成 ka 并保存即派发；停止写 stop。')
+    print('本入口只显示页面，不派发任务，也不运行离线验收。')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
+````
+
+## 输出与关联
+```yaml
+output: "files/codex-text/open-operator.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```
+`````
+
+## 输出与关联
+```yaml
+output: "config/codex-text-templates/open-operator.source.txt"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

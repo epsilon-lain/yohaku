@@ -1,0 +1,332 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+
+struct ChatSession {
+    answer: Option<String>,
+    turn_tool_failed: bool,
+    tool_summary: String,
+    config: Value,
+    key: String,
+    input: Editor,
+    logs: Vec<String>,
+    log_offset: usize,
+    status: String,
+    history: Value,
+    root: String,
+}
+impl AgentPanel {
+    fn identity(&self) -> &str {
+        if self.route_error.is_some() { return "Agent entry unavailable"; }
+        if self.session_id.contains("\ncodex:") { "Codex / codex-local" } else { "Yohaku Agent / direct" }
+    }
+    fn select_session(&mut self, root: &str, backend: &str, config: Value) -> Result<(), String> {
+        if self.running { return Err("Finish or stop the current turn before switching Agent".into()); }
+        let key = if backend == "agent" { "agent".into() } else { format!("codex:{}", config["codex_entry"].as_str().ok_or("Missing Codex entry")?) };
+        let identifier = format!("{root}\n{key}");
+        if identifier != self.session_id {
+            let saved = ChatSession {
+                answer: self.answer.take(),
+                turn_tool_failed: std::mem::take(&mut self.turn_tool_failed),
+                tool_summary: std::mem::take(&mut self.tool_summary),
+                config: std::mem::replace(&mut self.config, config.clone()),
+                key: std::mem::take(&mut self.key), input: std::mem::take(&mut self.input),
+                logs: std::mem::take(&mut self.logs), log_offset: self.log_offset,
+                status: std::mem::take(&mut self.status), history: std::mem::replace(&mut self.history, json!([])),
+                root: std::mem::replace(&mut self.history_root, root.into()),
+            };
+            if !self.session_id.is_empty() { self.sessions.insert(self.session_id.clone(), saved); }
+            self.session_id = identifier;
+            self.log_offset = 0;
+            if let Some(saved) = self.sessions.remove(&self.session_id) {
+                self.answer = saved.answer;
+                self.turn_tool_failed = saved.turn_tool_failed;
+                self.tool_summary = saved.tool_summary;
+                self.config = saved.config; self.key = saved.key; self.input = saved.input;
+                self.logs = saved.logs; self.log_offset = saved.log_offset; self.status = saved.status;
+                self.history = saved.history; self.history_root = saved.root;
+            }
+        }
+        if self.config != config {
+            self.config = config;
+            self.key.clear();
+            self.history = json!([]);
+            self.answer = None;
+            self.status = "Entry configuration reloaded; new model history".into();
+        }
+        self.copy_ticket = self.copy_ticket.wrapping_add(1);
+        self.copy_status.clear();
+        self.route_error = None;
+        self.clear_preedit();
+        self.field = None;
+        self.log_focus = false;
+        self.log_selected_all = false;
+        self.chat_open = true;
+        self.chat_focus = true;
+        Ok(())
+    }
+    fn world_entries(root: &str) -> Result<Value, String> {
+        let text = read_settings(std::path::Path::new(root))?.ok_or("Missing memory/socius.json; configure chat.backend and chat.provider")?;
+        parse_settings(&text)
+    }
+    fn open_default(&mut self, root: &str) -> Result<(), String> {
+        let settings = Self::world_entries(root)?;
+        let backend = settings["chat"]["backend"].as_str().ok_or("Missing chat.backend in memory/socius.json")?;
+        let config = yohaku::socius::entry_config(&settings, &self.legacy_config, backend)?;
+        self.select_session(root, backend, config)
+    }
+    pub fn connect_local_codex(&mut self, connection: Value, panel: &Panel) {
+        let result = (|| {
+            if connection["protocol"] != "codex-local" { return Err("Invalid Codex connector result".into()); }
+            let mut config = self.legacy_config.clone();
+            config.as_object_mut().ok_or("Invalid host configuration")?.remove("api_key");
+            config.as_object_mut().unwrap().remove("credential_source");
+            for key in ["protocol", "codex_entry"] { config[key] = connection[key].clone(); }
+            config["name"] = json!("Codex");
+            let settings=Self::world_entries(&panel.root)?;
+            yohaku::socius::apply_task_limits(&settings,&mut config);
+            self.select_session(&panel.root, "codex-local", config)
+        })();
+        match result {
+            Ok(()) => self.status = "Codex session ready; Chat default is unchanged".into(),
+            Err(error) => self.status = error,
+        }
+    }
+    fn save_entry_config(&mut self) -> bool {
+        if self.session_id.is_empty() { return false; }
+        if self.config.get("permissions") != self.legacy_config.get("permissions") {
+            let result = (|| -> Result<(), String> {
+                let current = std::fs::read_to_string(&self.config_path).map_err(|error|error.to_string())?;
+                let mut saved: Value = serde_json::from_str(&current).map_err(|error|error.to_string())?;
+                if saved.get("permissions") != self.legacy_config.get("permissions") { return Err("Host permissions changed; reopen settings before saving".into()); }
+                saved["permissions"] = self.config["permissions"].clone();
+                std::fs::write(self.config_path.with_extension("update.json"),serde_json::to_vec_pretty(&saved).unwrap()).map_err(|error|error.to_string())?;
+                std::fs::rename(self.config_path.with_extension("update.json"),&self.config_path).map_err(|error|error.to_string())?;
+                self.legacy_config["permissions"] = self.config["permissions"].clone();
+                Ok(())
+            })();
+            if let Err(error)=result { self.status=error; return true; }
+        }
+        if self.config["protocol"] == "codex-local" {
+            self.status = "Codex session settings updated; account and Chat default unchanged".into();
+            return true;
+        }
+        let result = (|| {
+            let mut settings = Self::world_entries(&self.history_root)?;
+            let mut provider = serde_json::Map::new();
+            for key in ["protocol","base_url","model","api_key_env","credential_source","max_tokens","timeout","request_options","name","personality"] {
+                if let Some(value) = self.config.get(key) { provider.insert(key.into(), value.clone()); }
+            }
+            settings["chat"]["provider"] = Value::Object(provider);
+            yohaku::socius::entry_config(&settings,&self.legacy_config,"agent")?;
+            self.entry_save = Some((settings, self.ui_text.clone()));
+            Ok::<(),String>(())
+        })();
+        self.status = match result { Ok(()) => "Saving world Agent settings...".into(), Err(error) => error };
+        true
+    }
+}
+
+#[cfg(test)]
+mod entry_tests {
+    use super::*;
+    fn settings() -> Value {
+        let mut settings = defaults(default_macros());
+        settings["chat"]["backend"] = json!("agent");
+        settings["chat"]["provider"] = json!({"protocol":"chat","base_url":"http://127.0.0.1:1","model":"offline"});
+        settings["codex_entry"] = json!("/fixture/codex");
+        settings
+    }
+    pub(super) fn root(label: &str) -> std::path::PathBuf {
+        let root = std::env::temp_dir().join(format!("yohaku-entries-{label}-{}-{}",std::process::id(),std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos()));
+        std::fs::create_dir_all(root.join("memory")).unwrap();
+        std::fs::write(root.join(SETTINGS_PATH),serde_json::to_vec(&settings()).unwrap()).unwrap();
+        root
+    }
+    #[test]
+    fn entry_sessions_keep_drafts_history_identity_and_default_across_switches() {
+        let root = root("sessions");
+        let root_text = root.to_str().unwrap();
+        let mut agent = AgentPanel::new();
+        let legacy = agent.legacy_config.clone();
+        agent.open_default(root_text).unwrap();
+        assert_eq!(agent.config["protocol"],"chat");
+        agent.input.insert("agent draft");agent.history=json!([{"agent":"history"}]);
+        agent.logs.push("agent log".into());
+        let mut config=legacy.clone();config["protocol"]=json!("codex-local");config["codex_entry"]=json!("/fixture/codex");
+        agent.select_session(root_text,"codex-local",config.clone()).unwrap();
+        assert!(agent.identity().starts_with("Codex"));
+        assert!(agent.input.text.is_empty());
+        agent.input.insert("codex draft");agent.history=json!([{"codex":"history"}]);
+        agent.open_default(root_text).unwrap();
+        assert_eq!(agent.input.text,"agent draft");assert_eq!(agent.history[0]["agent"],"history");
+        assert_eq!(agent.logs,vec!["agent log"]);assert!(agent.identity().starts_with("Yohaku Agent"));
+        agent.select_session(root_text,"codex-local",config).unwrap();
+        assert_eq!(agent.input.text,"codex draft");assert_eq!(agent.history[0]["codex"],"history");
+        agent.running=true;
+        assert!(agent.open_default(root_text).unwrap_err().contains("current turn"));
+        assert!(agent.identity().starts_with("Codex"));
+        agent.running=false;
+        assert_eq!(agent.legacy_config,legacy);
+        assert_eq!(SelfSettings::read(&root)["chat"]["backend"],"agent");
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn entry_techne_limits_and_runtime_context_use_the_current_world() {
+        let root=root("limits");let mut s=settings();
+        s["chat"]["limits"]=json!({"turn_timeout_long":true,"request_max_retries":1});
+        std::fs::write(root.join(SETTINGS_PATH),serde_json::to_vec(&s).unwrap()).unwrap();
+        let loom=std::env::current_dir().unwrap().join("bin/loom-linux-x86_64");
+        let panel=Panel::new(root.clone(),loom).unwrap();let mut agent=AgentPanel::new();
+        agent.connect_local_codex(json!({"protocol":"codex-local","codex_entry":"/offline/codex"}),&panel);
+        assert_eq!(agent.config["turn_timeout_long"],true);
+        assert_eq!(agent.config["request_max_retries"],1);
+        let context=agent.visible_context(&panel,"techne");
+        assert_eq!(context["runtime"]["world"],root.to_str().unwrap());
+        assert_eq!(context["runtime"]["host_pid"],std::process::id());
+        assert_eq!(context["runtime"]["cross_worker_resume"],false);
+        assert!(context["runtime"]["executable_sha256"].as_str().is_some_and(|s|s.len()==64));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    struct SelfSettings;
+    impl SelfSettings { fn read(root: &std::path::Path) -> Value { serde_json::from_slice(&std::fs::read(root.join(SETTINGS_PATH)).unwrap()).unwrap() } }
+    #[test]
+    fn entry_reload_missing_invalid_and_explicit_codex_never_fallback() {
+        let root=root("reload");let root_text=root.to_str().unwrap();let mut agent=AgentPanel::new();
+        agent.open_default(root_text).unwrap();
+        let mut next=settings();next["chat"]["provider"]["model"]=json!("reloaded");
+        std::fs::write(root.join(SETTINGS_PATH),serde_json::to_vec(&next).unwrap()).unwrap();
+        agent.open_default(root_text).unwrap();assert_eq!(agent.config["model"],"reloaded");
+        next["chat"]["backend"]=json!("codex-local");
+        std::fs::write(root.join(SETTINGS_PATH),serde_json::to_vec(&next).unwrap()).unwrap();
+        agent.open_default(root_text).unwrap();assert_eq!(agent.config["protocol"],"codex-local");
+        next.as_object_mut().unwrap().remove("codex_entry");
+        std::fs::write(root.join(SETTINGS_PATH),serde_json::to_vec(&next).unwrap()).unwrap();
+        assert!(agent.open_default(root_text).is_err());assert_eq!(agent.config["protocol"],"codex-local");
+        std::fs::write(root.join(SETTINGS_PATH),"bad").unwrap();assert!(agent.open_default(root_text).is_err());
+        std::fs::remove_file(root.join(SETTINGS_PATH)).unwrap();assert!(agent.open_default(root_text).is_err());
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn entry_native_direct_worker_roundtrip_uses_real_workspace_rpc_without_model() {
+        let root=root("native");std::fs::create_dir_all(root.join("files")).unwrap();
+        std::fs::write(root.join("files/guide.txt"),"offline native guide\n").unwrap();
+        let receipt=root.join("receipt.json");
+        let mut fixture=Command::new("python3").args(["-B","agent/test_entries.py","serve",receipt.to_str().unwrap()]).stdout(Stdio::piped()).stderr(Stdio::inherit()).spawn().unwrap();
+        let mut reader=BufReader::new(fixture.stdout.take().unwrap());let mut line=String::new();reader.read_line(&mut line).unwrap();
+        let port:u16=line.trim().parse().unwrap();let mut settings=settings();
+        settings["chat"]["provider"]["base_url"]=json!(format!("http://127.0.0.1:{port}"));
+        settings["chat"]["limits"]=json!({"turn_timeout":7});
+        std::fs::write(root.join(SETTINGS_PATH),serde_json::to_vec(&settings).unwrap()).unwrap();
+        let loom=std::env::var_os("YOHAKU_TEST_LOOM").map(std::path::PathBuf::from).unwrap_or_else(||std::env::current_dir().unwrap().join("bin/loom-linux-x86_64"));
+        let mut panel=Panel::new(root.to_str().unwrap().into(),loom).unwrap();
+        let mut agent=AgentPanel::new();agent.open_default(root.to_str().unwrap()).unwrap();agent.config["turn_timeout"]=json!(999);agent.input.insert("offline fixture task");agent.start(&mut panel,"files");
+        let deadline=std::time::Instant::now()+std::time::Duration::from_secs(15);
+        while agent.running && std::time::Instant::now()<deadline { panel.update();agent.update(&mut panel,"files");std::thread::yield_now(); }
+        let _=fixture.kill();let _=fixture.wait();
+        assert!(!agent.running,"{} {:?}",agent.status,agent.logs);
+        // The real Agent worker reports the current world limit before its first
+        // tool. The stale 999 in the panel is replaced by the configured 7 seconds.
+        assert_eq!(agent.turn_budget,Some(TurnBudget::Limited { remaining: 7, total: 7 }));
+        assert!(agent.logs.iter().any(|line|line.contains("OFFLINE_NATIVE_TOOL_ROUNDTRIP_OK")),"{} {:?}",agent.status,agent.logs);
+        let evidence:Value=serde_json::from_slice(&std::fs::read(receipt).unwrap()).unwrap();
+        assert_eq!(evidence["requests"],2);assert_eq!(evidence["tool_returned"],true);assert_eq!(evidence["model_service_called"],false);
+        assert_eq!(std::fs::read_to_string(root.join("files/guide.txt")).unwrap(),"offline native guide\n");
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn entry_native_codex_control_peer_roundtrip_without_model() {
+        let root=root("codex-control");std::fs::create_dir_all(root.join("files")).unwrap();
+        std::fs::write(root.join("files/fixture.txt"),"confirmed native Codex tool result").unwrap();
+        let loom=std::env::current_dir().unwrap().join("bin/loom-linux-x86_64");
+        let mut panel=Panel::new(root.clone(),loom).unwrap();let mut agent=AgentPanel::new();agent.config.as_object_mut().unwrap().remove("max_rounds");agent.legacy_config=agent.config.clone();
+        agent.connect_local_codex(json!({"protocol":"codex-local","codex_entry":"/offline/control-peer"}),&panel);
+        agent.config["model"]=json!("offline-model");
+        let initial=json!({"config":agent.config,"prompt":"offline controlled peer","context":agent.visible_context(&panel,"techne"),"history":[]});
+        let mut command=Command::new("python3");
+        command.args(["-B","-c","import sys;sys.path.insert(0,'agent');import yohaku_agent as a;import yohaku_codex as c;from test_ai_limits import connection_fixture;c.connect=connection_fixture(2);a.wire()"])
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::null());
+        assert!(agent.launch_worker(command,initial,&mut panel));
+        let deadline=std::time::Instant::now()+std::time::Duration::from_secs(15);
+        while agent.running && std::time::Instant::now()<deadline {panel.update();agent.update(&mut panel,"techne");std::thread::yield_now();}
+        assert!(!agent.running,"{} {:?}",agent.status,agent.logs);
+        assert!(agent.status.starts_with("AI turn ended") && agent.status.contains("ready for next message"),"{} {:?}",agent.status,agent.logs);
+        assert_eq!(agent.logs.iter().filter(|s|s.contains("Tool yohaku_read_text: OK")).count(),2);
+        assert!(agent.logs.iter().any(|s|s.contains("Offline loop complete")));
+        assert_eq!(agent.turn_budget,Some(TurnBudget::Unlimited));
+        assert_eq!(std::fs::read_to_string(root.join("files/fixture.txt")).unwrap(),"confirmed native Codex tool result");
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn entry_schema_rejects_world_policy_and_plaintext_credentials() {
+        let legacy=json!({"permissions":{"write":false,"run":false},"api_key":"TEST_ONLY","protocol":"codex-local","codex_entry":"/old/codex"});
+        let mut settings=settings();
+        let config=yohaku::socius::entry_config(&settings,&legacy,"agent").unwrap();
+        assert_eq!(config["permissions"],legacy["permissions"]);
+        assert!(config.get("api_key").is_none() && config.get("codex_entry").is_none());
+        for key in ["permissions","api_key","codex_entry","max_tool_calls"] {
+            settings["chat"]["provider"][key]=json!("not allowed");
+            assert!(yohaku::socius::validate_settings(&settings).is_err());
+            settings["chat"]["provider"].as_object_mut().unwrap().remove(key);
+        }
+    }
+
+    // Both live connector shapes start with "time budget: " and may report either
+    // a finite remaining/total pair or a distinct unlimited state. Parsing must keep
+    // both finite integers distinct and never invent a zero countdown for unlimited.
+    #[test]
+    fn entry_turn_budget_parses_real_connector_status() {
+        assert_eq!(parse_turn_budget("time budget: 900s of 900s remain; elapsed 0s; Stop remains available"),
+            Some(TurnBudget::Limited { remaining: 900, total: 900 }));
+        assert_eq!(parse_turn_budget("time budget: 895s of 900s remain; elapsed 5s; Stop remains available"),
+            Some(TurnBudget::Limited { remaining: 895, total: 900 }));
+        assert_eq!(parse_turn_budget("time budget: 7s of 7s remain; elapsed 0s; Stop remains available"),
+            Some(TurnBudget::Limited { remaining: 7, total: 7 }));
+        assert_eq!(parse_turn_budget("time budget: 86400s of 86400s remain; elapsed 0s; Stop remains available"),
+            Some(TurnBudget::Limited { remaining: 86400, total: 86400 }));
+        assert_eq!(parse_turn_budget("time budget: unlimited; elapsed 5s; source=worker default: unlimited"),
+            Some(TurnBudget::Unlimited));
+        // Non-budget status lines must not produce an invented budget.
+        assert_eq!(parse_turn_budget("Model request attempt 2/3 failed: SSLEOFError; retry pending; Stop available"),None);
+        assert_eq!(parse_turn_budget("No total turn limit selected; socket timeout=120s; Stop remains available"),None);
+        // Every malformed piece below returns None instead of panicking or guessing.
+        for bad in ["", "time budget: ", "time budget: of 900s", "time budget: 900",
+            "time budget: 900m of 900m remain", "time budget: 0s of 0s remain",
+            "time budget: -5s of 900s remain", "time budget: 901s of 900s remain",
+            "time budget: 999999999999s of 999999999999s remain",
+            "time budget: unlimitedly; elapsed 5s",
+            "budget: 900s of 900s remain", "time budget 900s"] {
+            assert_eq!(parse_turn_budget(bad),None,"{}",bad);
+        }
+    }
+
+    #[test]
+    fn entry_turn_budget_new_turn_resets_mirror() {
+        let mut a = AgentPanel::new();
+        a.turn = 4;
+        a.turn_budget = Some(TurnBudget::Limited { remaining: 120, total: 900 });
+        assert_eq!(a.begin_turn(), 5);
+        assert_eq!(a.turn_budget, None);
+        let status = "AI processing | waiting for a new report";
+        assert_eq!(budget_status(status.into(), a.turn_budget, std::time::Instant::now(), true), status);
+    }
+
+}
+````
+
+## 输出与关联
+```yaml
+output: "examples/yohaku_workspace/agent_entries.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

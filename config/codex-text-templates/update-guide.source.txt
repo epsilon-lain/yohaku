@@ -1,0 +1,33 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+node: {"id": "yohaku-update-guide", "name": "Yohaku internal update guide", "description": "Prepare, check, explicitly activate, query and roll back.", "entry": true, "links": []}
+---
+
+## 正文
+````text
+# Internal candidate preparation and explicit activation
+
+A first-time owner must build this source checkout, install the blank pages, enable the trusted text/updater configs for their own local world, and prepare a Develop source copy. Building/starting does not import another installation's account or world.
+
+1. Save reviewed implementation tex sources in the development copy. Build its candidate workspace programs before preparing the manifest. The checked-in empty manifest is only a seed and cannot pass check.
+2. Save UPDATE with action=prepare_candidate and a new unique request_id. The trusted updater synchronizes the fixed payload on each tex source's registered Loom root. It validates source/output bytes, hashes, both workspace identities and host dependencies, then generates and registers config/host-update-v3.json in the fixed development bundle.
+3. Read UPDATE-RESULT; match request_id, request_revision, observed_at and phase=candidate_ready. Copy candidate_manifest_sha256 into a new action=check request with a new plan id and request_id. Check creates an immutable snapshot and rollback backup; it does not activate.
+4. Query action=plan for that id, then explicitly save action=activate with that same id and a new request_id. This is the installation decision. Query status and plan afterward with new request_ids; compare the actual loaded operator/agent/workspace hashes and program/build/capability identities.
+5. If needed, explicitly request rollback with the original plan id and a new request_id. Later edits trigger conflict refusal; do not force them away. Roll back a chain newest-first.
+
+All actions reuse the existing fixed implementation. Pages cannot choose arbitrary host paths, commands or accounts. Keep candidate ownership, source hashes, dependency checks, CAS and quiescence checks. Do not hand-copy a host binary and claim the internal entry was used. An error or missing response means inspect the original request/plan, not replay activate or a model submission.
+
+The preserved updater's manifest feedback_version is its legacy save-feedback/1 compatibility marker. Current operator receipt/loaded code identifies save-feedback/2, which declares /1 compatibility. Do not treat the manifest compatibility marker as the actual loaded feedback version.
+````
+
+## 输出与关联
+```yaml
+output: "files/codex-text/HOST-UPDATE-GUIDE.md"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

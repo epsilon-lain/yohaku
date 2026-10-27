@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":18253,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/src/tracking.rs","sha256":"8e1c0fb25d579954397f222970ccc6500d595d9d7e169cdbd6f282dfdf670b1e"}
 ---
 
 ## 正文
-```text
+````text
 use crate::engine::{build_locked, macro_path, output_path, stage};
 use crate::mapping::digest;
 use crate::{parse_file, BuildResult, LoomError, Result, SourceMap};
@@ -555,9 +554,14 @@ impl Watcher {
         result.map(Some)
     }
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "loom-src/src/tracking.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

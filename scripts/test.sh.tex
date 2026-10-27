@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":446,"path":"/root/projects/yohaku/release-prep/yohaku/scripts/test.sh","sha256":"91ca596458aa71b80ab0756780c32c42818340082eb7d528c76930ffbc6c8c69"}
 ---
 
 ## 正文
-```text
+````text
 #!/bin/sh
 set -eu
 project_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
@@ -14,12 +13,18 @@ cd "$project_dir"
 python3 scripts/sync_sources.py --check
 cargo test --offline --locked --lib --test workspace -- --test-threads=1
 cargo test --offline --locked --example yohaku_compositor -- --test-threads=1
+cargo test --offline --locked --example yohaku_terminal_window -- --test-threads=1
 PYTHONPATH=agent python3 -B -m unittest discover -s agent -p 'test_*.py'
 cd loom-src
 CARGO_TARGET_DIR="$project_dir/target/loom" cargo test --offline --locked
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "scripts/test.sh"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

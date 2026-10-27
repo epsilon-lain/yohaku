@@ -26,11 +26,29 @@ def lines(text):
     return result
 
 
+class RangeError(ValueError):
+    """Out-of-range coordinate with program-computed document metrics."""
+    def __init__(self, message, line_count, eof_line, eof_column):
+        self.line_count = line_count
+        self.eof_line = eof_line
+        self.eof_column = eof_column
+        super().__init__(
+            f'{message}; document has {line_count} lines, last position is '
+            f'{eof_line}:{eof_column}; read the range again or omit '
+            f'end_line/end_column to page')
+
+
+def metrics(table):
+    return len(table), len(table[-1][1])+1
+
+
 def position(table, line, column):
     if type(line) is not int or type(column) is not int or line < 1 or column < 1:
         raise ValueError('Line and column must be positive integers starting at 1')
-    if line > len(table) or column > len(table[line-1][1])+1:
-        raise ValueError('Text coordinate is outside the document; read the range again')
+    line_count, eof_column = metrics(table)
+    if line > line_count or column > len(table[line-1][1])+1:
+        raise RangeError(f'Text coordinate {line}:{column} is outside the document',
+                         line_count, line_count, eof_column)
     return table[line-1][0]+column-1
 
 
@@ -38,7 +56,9 @@ def bounds(table, start_line, start_column, end_line, end_column):
     start = position(table, start_line, start_column)
     end = position(table, end_line, end_column)
     if end < start:
-        raise ValueError('Range end must not precede its start')
+        line_count, eof_column = metrics(table)
+        raise RangeError('Range end must not precede its start',
+                         line_count, line_count, eof_column)
     return start, end
 
 
@@ -47,12 +67,14 @@ def read(text, start_line=1, start_column=1, end_line=None, end_column=None):
     position(table, start_line, start_column)
     if end_line is None:
         end_line = min(start_line+79, len(table))
-    if type(end_line) is not int or not 1 <= end_line <= len(table):
-        raise ValueError('End line is outside the document')
+    line_count, eof_column = metrics(table)
+    if type(end_line) is not int or not 1 <= end_line <= line_count:
+        raise RangeError(f'End line {end_line} is outside the document',
+                         line_count, line_count, eof_column)
     if end_column is None:
         # Default pages include their final newline when there is one. The
         # returned end can therefore be the next line's first column.
-        if end_line < len(table):
+        if end_line < line_count:
             end_line, end_column = end_line+1, 1
         else:
             end_column = len(table[end_line-1][1])+1
@@ -60,11 +82,13 @@ def read(text, start_line=1, start_column=1, end_line=None, end_column=None):
     selected = text[start:end]
     if len(selected.encode('utf-8')) > MAX_RANGE_BYTES:
         raise ValueError('Requested range exceeds 128 KiB; request fewer lines or columns')
+    has_more = end < len(text)
     return {
         'start_line':start_line, 'start_column':start_column,
         'end_line':end_line, 'end_column':end_column, 'text':selected,
-        'line_count':len(table), 'eof_line':len(table),
-        'eof_column':len(table[-1][1])+1, 'has_more':end < len(text),
+        'line_count':line_count, 'eof_line':line_count,
+        'eof_column':eof_column, 'has_more':has_more,
+        'next':({'start_line':end_line,'start_column':end_column} if has_more else None),
         'coordinates':'1-based Unicode characters; start inclusive, end exclusive',
     }
 

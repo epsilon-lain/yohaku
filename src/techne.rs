@@ -25,10 +25,10 @@ pub fn parse_registry(text: &str) -> Result<Value, String> {
     let mut ids = Vec::new();
     for tool in tools {
         let obj = tool.as_object().ok_or("Each tool must be an object")?;
-        if obj.len() != 5
+        if (obj.len() != 5 && obj.len() != 6) || !["id","name","program","args","wayland"].iter().all(|k| obj.contains_key(*k))
             || obj
                 .keys()
-                .any(|k| !["id", "name", "program", "args", "wayland"].contains(&k.as_str()))
+                .any(|k| !["id", "name", "program", "args", "wayland", "parameters"].contains(&k.as_str()))
         {
             return Err("Tool fields: id, name, program, args, wayland".into());
         }
@@ -77,6 +77,7 @@ pub fn parse_registry(text: &str) -> Result<Value, String> {
         {
             return Err("args: at most 40 strings, 8 KiB each".into());
         }
+        validate_parameter_values(tool, &json!({}))?;
         if !tool["wayland"].is_boolean() {
             return Err("wayland must be boolean".into());
         }
@@ -107,4 +108,65 @@ pub fn read_registry(root: &Path) -> Result<Option<String>, String> {
         return Err("Tool registry exceeds 64 KiB".into());
     }
     Ok(Some(text))
+}
+
+pub fn validate_parameter_values(entry: &Value, values: &Value) -> Result<(), String> {
+    let values = values.as_object().ok_or("parameters must be an object")?;
+    let empty = vec![];
+    let specs = match entry.get("parameters") {
+        Some(v) => v.as_array().ok_or("parameters must be an array")?,
+        None => &empty,
+    };
+    if specs.len() > 16 || specs.len() + entry["args"].as_array().ok_or("args")?.len() > 40 {
+        return Err("Too many parameters".into());
+    }
+    if !specs.is_empty() && entry["program"].as_str().unwrap_or("").starts_with("builtin:") {
+        return Err("Builtins do not accept parameters".into());
+    }
+    let mut names = Vec::new();
+    for spec in specs {
+        let obj = spec.as_object().ok_or("Parameter must be an object")?;
+        if obj.len()!=3 || !["name","type","default"].iter().all(|k| obj.contains_key(*k)) || (spec["type"]!="world_file" && spec["type"]!="world_output") {
+            return Err("Parameter fields: name, type=world_file|world_output, default".into());
+        }
+        let name = spec["name"].as_str().ok_or("Parameter name")?;
+        if name.is_empty() || name.len()>40 || !name.bytes().all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b==b'_') || names.contains(&name) {
+            return Err("Invalid parameter name".into());
+        }
+        names.push(name);
+        for value in [Some(&spec["default"]), values.get(name)].into_iter().flatten() {
+            let s = value.as_str().ok_or("Parameter must be text")?;
+            if s.is_empty() || s.len()>8192 || s.contains('\0') || Path::new(s).components().any(|c| !matches!(c, Component::Normal(_))) {
+                return Err("Parameter must be a relative world file path".into());
+            }
+        }
+    }
+    if values.keys().any(|k| !names.contains(&k.as_str())) { return Err("Unknown parameter".into()); }
+    Ok(())
+}
+
+#[cfg(test)]
+mod parameter_tests {
+    use super::*;
+    #[test]
+    fn declarations_and_values_preserve_legacy_and_reject_invalid_input() {
+        let old=defaults(); assert!(parse_registry(&old.to_string()).is_ok());
+        let mut entry=old["tools"][1].clone();
+        entry["parameters"]=json!([{"name":"input","type":"world_file","default":"files/a.txt"}]);
+        assert!(validate_parameter_values(&entry,&json!({"input":"files/中文 space;$(echo bad).txt"})).is_ok());
+        for value in [json!([]),json!({"other":"x"}),json!({"input":false}),json!({"input":"/etc/passwd"}),json!({"input":"../x"})] {
+            assert!(validate_parameter_values(&entry,&value).is_err());
+        }
+    }
+    #[test]
+    fn candidate_python_parameter_suite() {
+        let result=std::process::Command::new("/usr/bin/python3")
+            .args(["-B","-m","unittest","discover","-s","agent","-p","test_tools.py","-v"]).output().unwrap();
+        if let Ok(path)=std::env::var("YOHAKU_DEVELOPMENT") {
+            if path=="1" { std::fs::write("parameter-python-tests.log", [&result.stdout[..],&result.stderr[..]].concat()).unwrap(); }
+        }
+        println!("{}",String::from_utf8_lossy(&result.stdout));
+        println!("{}",String::from_utf8_lossy(&result.stderr));
+        assert!(result.status.success());
+    }
 }

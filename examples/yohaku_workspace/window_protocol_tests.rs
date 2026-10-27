@@ -27,6 +27,7 @@ struct TestClient {
     buffer: Option<client_buffer::WlBuffer>,
     sizes: Vec<(i32, i32, Vec<u32>)>,
     button_serial: u32,
+    pointer_events:Vec<(u8,f64,f64)>,
     closed: bool,
 }
 impl Dispatch<wl_registry::WlRegistry, ()> for TestClient {
@@ -127,6 +128,10 @@ impl Dispatch<client_pointer::WlPointer, ()> for TestClient {
         _: &Connection,
         _: &QueueHandle<Self>,
     ) {
+        match &event {
+            client_pointer::Event::Button {state,..}=>s.pointer_events.push((if *state==wayland_client::WEnum::Value(client_pointer::ButtonState::Pressed){1}else{3},0.,0.)),
+            client_pointer::Event::Motion {surface_x,surface_y,..}=>s.pointer_events.push((2,*surface_x,*surface_y)),_=>()
+        }
         if let client_pointer::Event::Button { serial, state, .. } = event {
             if state == wayland_client::WEnum::Value(client_pointer::ButtonState::Pressed) {
                 s.button_serial = serial;
@@ -191,8 +196,11 @@ fn real_wayland_client_receives_resize_maximize_restore_and_close_and_rejects_fo
             shm_state: ShmState::new::<App>(&dh, vec![]),
             seat_state: seats,
             data_device_state: DataDeviceState::new::<App>(&dh),
+            clipboard: nested_clipboard::Bridge::new(&dh),
+            clipboard_test_focus:false,
             _decoration_state: XdgDecorationState::new::<App>(&dh),
             _output_manager: OutputManagerState::new_with_xdg_output::<App>(&dh),
+            text_input: text_input::TextInput::new(&dh),
             window_requests: Vec::new(),
             seat,
         };
@@ -257,7 +265,10 @@ fn real_wayland_client_receives_resize_maximize_restore_and_close_and_rejects_fo
                         }
                         Action::Motion(x, y) => {
                             cursor = (x, y);
-                            manager.motion(cursor, area);
+                            if !manager.motion(cursor, area) {
+                                pointer.motion(&mut state,manager.under(cursor),&MotionEvent{location:cursor.into(),serial:SERIAL_COUNTER.next_serial(),time:2});
+                                pointer.frame(&mut state);
+                            }
                         }
                         Action::Release => {
                             manager.release();
@@ -348,6 +359,15 @@ fn real_wayland_client_receives_resize_maximize_restore_and_close_and_rejects_fo
         (768, 480)
     );
     let initial = server.action(Action::Snapshot);
+    // Verify actual wire press/move/release, not just manager bookkeeping.
+    let r=initial.rect;
+    server.action(Action::Press((r.x+100) as f64,(r.y+100) as f64));
+    server.action(Action::Motion((r.x+120) as f64,(r.y+130) as f64));
+    server.action(Action::Release); round(&mut queue,&mut client);
+    let pressed=client.pointer_events.iter().position(|e|e.0==1).unwrap();
+    let moved=client.pointer_events.iter().position(|e|e.0==2).unwrap();
+    let released=client.pointer_events.iter().position(|e|e.0==3).unwrap();
+    assert!(pressed<moved && moved<released,"actual pointer order {:?}",client.pointer_events);
     // A resize without a valid pointer serial must have no effect.
     top.resize(
         client.seat.as_ref().unwrap(),

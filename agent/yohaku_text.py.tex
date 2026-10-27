@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":4065,"path":"/root/projects/yohaku/release-prep/yohaku/agent/yohaku_text.py","sha256":"6220055947c73adfb2096545970d5aa5ec78224d90b043ffc1ab6e8ddf6ee5c7"}
 ---
 
 ## 正文
-```text
+````text
 #!/usr/bin/env python3
 """Human text-address interface for the same tools exposed to Yohaku's AI.
 
@@ -99,9 +98,14 @@ def main(argv=None):
 
 if __name__ == '__main__':
     sys.exit(main())
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "agent/yohaku_text.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

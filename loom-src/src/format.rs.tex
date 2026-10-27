@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":13224,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/src/format.rs","sha256":"3c806791ad6800bec7f01ef2a61b08d06d846c0be724242e9ba091f7838e3f8d"}
 ---
 
 ## 正文
-```text
+````text
 use crate::{LoomError, Result};
 use serde::de::{self, MapAccess, SeqAccess, Visitor};
 use serde::{Deserialize, Deserializer};
@@ -413,9 +412,14 @@ pub(crate) fn parse_text(path: PathBuf, original: String) -> Result<Document> {
         routing_line: routing.first_line,
     })
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "loom-src/src/format.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

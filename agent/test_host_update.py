@@ -1,0 +1,190 @@
+"""Host update regression: real Rust/Loom fixture; no model or production host."""
+import hashlib,json,os,shutil,subprocess,tempfile,unittest
+from pathlib import Path
+from unittest.mock import patch
+import yohaku_host_update as u
+import yohaku_codex_text_service as service
+import yohaku_agent as agent
+ROOT=Path(__file__).resolve().parents[1]
+class UpdateTests(unittest.TestCase):
+ def setUp(self):
+  self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+  self.base=Path(self.temp.name);self.world=self.base/'world';self.project=self.base/'host'
+  self.project.mkdir();(self.project/'Cargo.toml').write_text('fixture')
+  shutil.copytree(ROOT/'macros',self.project/'macros')
+  self.env=patch.dict(os.environ,{'HOME':str(self.base/'home')});self.env.start();self.addCleanup(self.env.stop)
+  service.setup(self.world)
+  self.bundle=self.world/'files/yohaku-default'
+  for n in u.PAYLOAD:
+   p=self.bundle/n;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes((ROOT/n).read_bytes())
+   if n.startswith('bin/'):p.chmod(0o755)
+   if not n.startswith('bin/'):
+    Path(str(p)+'.tex').write_bytes(Path(str(ROOT/n)+'.tex').read_bytes())
+   t=self.project/n;t.parent.mkdir(parents=True,exist_ok=True);t.write_bytes(b'old')
+  for n in ('bin/yohaku_workspace','bin/loom-linux-x86_64'):
+   shutil.copy2(ROOT/n,self.project/n)
+  self.initial={n:(self.project/n).read_bytes() for n in u.PAYLOAD}
+  self.manifest=self.bundle/'config/host-update-v3.json'
+  self.manifest.write_text(json.dumps({'version':'codex-text/3','files':{n:u.sha(self.bundle/n) for n in u.PAYLOAD},'sources':{n:u.sha(Path(str(self.bundle/n)+'.tex')) for n in u.PAYLOAD if not n.startswith('bin/')}}))
+  self.up=u.Updater(self.world,self.project)
+ def prepare(self):return self.up.call({'action':'check','id':'v3','manifest_sha256':u.sha(self.manifest)})
+ def test_dependency_hash_never_overwrites_manifest_digest(self):
+  value=json.loads(self.manifest.read_text());value['dependencies']={'bin/loom-linux-x86_64':u.sha(self.project/'bin/loom-linux-x86_64')}
+  self.manifest.write_text(json.dumps(value));digest=u.sha(self.manifest)
+  self.assertEqual(self.up.prepare('digest-check',digest)['manifest'],digest)
+ def test_prepare_candidate_internal_action_syncs_and_registers_fixed_manifest(self):
+  for n in u.DEPENDENCIES:
+   src=ROOT/n;dst=self.project/n;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
+  shutil.copytree(ROOT/'macros',self.bundle/'macros',dirs_exist_ok=True)
+  # setUp already builds a self-contained candidate from published source pairs.
+  for index,name in enumerate(n for n in u.PAYLOAD if not n.startswith('bin/')):
+   if index % 2 == 0:
+    source=Path(str(self.bundle/name)+'.tex')
+    source.write_text(source.read_text().replace('output: '+json.dumps(name),'output: '+json.dumps('files/yohaku-default/'+name)))
+  manifest_source=self.bundle/'config/host-update-v3.json.tex'
+  manifest_source.write_text("""---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+```text
+{}
+```
+
+## 输出与关联
+```yaml
+output: "config/host-update-v3.json"
+```
+""")
+  loom=self.project/'bin/loom-linux-x86_64'
+  synced=subprocess.run([str(loom),'sync',str(manifest_source),'--root',str(self.bundle),'--json'],capture_output=True,text=True)
+  self.assertEqual(synced.returncode,0,synced.stdout+synced.stderr)
+  values={u.SOURCE:{'text':'source-revision','body':json.dumps({'action':'prepare_candidate','request_id':'candidate-1'})},u.RECEIPT:{'text':'receipt-revision','body':'{}'}}
+  def execute(request):
+   if request['command']=='read':return values[request['source']]
+   if request['command']=='save':
+    value=json.loads(request['text']);values[request['source']]={'text':request['text'],'body':request['text']};return {'saved':True}
+   raise AssertionError(request)
+  with patch.object(u,'ROOT',self.project):result=u.after_save(self.world,execute)
+  self.assertEqual(result.get('phase'),'candidate_ready',result);self.assertEqual(result.get('request_id'),'candidate-1',result)
+  self.assertEqual(result['candidate_manifest_sha256'],u.sha(self.manifest))
+  self.assertGreater(result['loom_roots'][str(self.world)],0)
+  self.assertGreater(result['loom_roots'][str(self.bundle)],0)
+  self.assertEqual(result['loom_root'],str(self.bundle.resolve()));self.assertEqual(result['candidate_files'],len(u.PAYLOAD))
+  manifest_map=Path(result['manifest_map_path']);self.assertTrue(manifest_map.is_file())
+  owner=json.loads(manifest_map.read_text())
+  self.assertEqual(owner['source'],str(manifest_source.resolve()))
+  self.assertEqual(owner['output'],str(self.manifest.resolve()))
+  value=json.loads(self.manifest.read_text());self.assertEqual(set(value['dependencies']),set(u.DEPENDENCIES))
+  self.assertEqual(set(value['files']),set(u.PAYLOAD));self.assertEqual(len(value['sources']),len(u.PAYLOAD)-2)
+ def test_prepare_candidate_refuses_wrong_output_route_without_replacing_manifest(self):
+  for n in u.DEPENDENCIES:
+   src=ROOT/n;dst=self.project/n;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
+  shutil.copytree(ROOT/'macros',self.bundle/'macros',dirs_exist_ok=True)
+  # setUp already builds a self-contained candidate from published source pairs.
+  source=self.bundle/'config/host-update-v3.json.tex'
+  source.write_text("""---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+```text
+{}
+```
+
+## 输出与关联
+```yaml
+output: "config/elsewhere.json"
+```
+""")
+  before=self.manifest.read_bytes()
+  with self.assertRaisesRegex(ValueError,'ownership mismatch'):self.up.prepare_candidate()
+  self.assertEqual(self.manifest.read_bytes(),before)
+ def test_draft_no_service_or_plan(self):
+  with patch.object(self.up,'service',side_effect=AssertionError('must not run')):
+   self.assertFalse(self.up.call({'action':'draft'})['executed'])
+  self.assertFalse((self.up.state/'v3').exists())
+ def test_hash_and_pending_control_refused(self):
+  with self.assertRaisesRegex(ValueError,'manifest hash'):self.up.prepare('bad','0'*64)
+  ws=agent.Workspace(self.world,ROOT/'bin/loom-linux-x86_64',ROOT/'bin/yohaku_workspace')
+  doc=ws.execute({'command':'read','source':'files/codex-text/operators/deepseek-trial.md.tex'})
+  ws.execute({'command':'save','source':'files/codex-text/operators/deepseek-trial.md.tex','expected':doc['text'],'body_only':True,'text':doc['body'].replace('[control]\ndraft','[control]\nka')})
+  with self.assertRaisesRegex(ValueError,'Pending control'):self.prepare()
+ def test_prepare_is_snapshot_duplicate_rejected(self):
+  plan=self.prepare();self.assertEqual(plan['phase'],'prepared')
+  n=u.PAYLOAD[0];(self.bundle/n).write_text('changed')
+  self.assertEqual(u.sha(self.up.state/'v3/payload'/n),plan['files'][n])
+  with self.assertRaisesRegex(ValueError,'Plan already exists'):self.prepare()
+ def test_concurrent_target_refused_before_stop(self):
+  self.prepare();(self.project/u.PAYLOAD[0]).write_text('newer')
+  with patch.object(self.up,'service',side_effect=AssertionError('must not stop')):
+   with self.assertRaisesRegex(ValueError,'Concurrent'):self.up.activate('v3')
+ def test_partial_failure_unknown_no_replay_and_rollback(self):
+  self.prepare()
+  def call(mode):
+   if mode=='status':return {'running':True}
+   if mode=='stop':return {'stopped':True}
+   if mode=='ensure':raise ValueError('controlled startup failure')
+  with patch.object(self.up,'service',side_effect=call):
+   with self.assertRaisesRegex(ValueError,'controlled startup'):self.up.activate('v3')
+  self.assertEqual(self.up.load('v3')[1]['phase'],'unknown')
+  with patch.object(self.up,'service',side_effect=AssertionError('no replay')):
+   self.assertFalse(self.up.activate('v3')['replay_allowed'])
+  with patch.object(self.up,'service',return_value={'stopped':True,'running':False}):
+   self.assertEqual(self.up.rollback('v3')['phase'],'rolled_back')
+  for n in u.PAYLOAD:self.assertEqual((self.project/n).read_bytes(),self.initial[n])
+ def test_rollback_conflict_preserves_newer_file(self):
+  self.prepare();dest,p=self.up.load('v3');p['phase']='unknown';u.record(dest/'plan.json',p)
+  n=u.PAYLOAD[0];(self.project/n).write_bytes(b'human change')
+  with self.assertRaisesRegex(ValueError,'Rollback conflict'):self.up.rollback('v3')
+  self.assertEqual((self.project/n).read_bytes(),b'human change')
+ def test_real_service_activate_loaded_cli_and_rollback(self):
+  # Isolated installed project: actual background process, PID, CLI, Loom, readiness.
+  for p in (ROOT/'agent').glob('*.py'):shutil.copy2(p,self.project/'agent'/p.name)
+  for n in ('config','macros'):shutil.copytree(ROOT/n,self.project/n,dirs_exist_ok=True)
+  shutil.copy2(ROOT/'bin/yohaku_chat_workspace',self.project/'bin/yohaku_chat_workspace')
+  op=self.project/'agent/yohaku_codex_text.py'
+  op.write_text(op.read_text().replace("VERSION = 'codex-text/3'","VERSION = 'codex-text/2'"))
+  try:
+   self.assertEqual(self.up.service('ensure')['operator_version'],'codex-text/2')
+   plan=self.prepare()
+   final=self.up.activate('v3');self.assertEqual(final['phase'],'active')
+   self.assertEqual(final['service']['operator_version'],'codex-text/3')
+   self.assertEqual(final['service']['workspace_sha256'],plan['files']['bin/yohaku_workspace'])
+   self.assertFalse(self.up.activate('v3')['replay_allowed'])
+   back=self.up.rollback('v3');self.assertEqual(back['phase'],'rolled_back')
+   self.assertEqual(back['service']['operator_version'],'codex-text/2')
+  finally:self.up.service('stop')
+ def test_dispatch_receipt_error_and_duplicate_do_not_replay(self):
+  values={u.SOURCE:{'text':'same-source','body':'{"action":"activate","id":"missing","request_id":"r1"}'},u.RECEIPT:{'text':'receipt','body':'{}'}}
+  writes=[]
+  def execute(r):
+   if r['command']=='read':return values[r['source']]
+   if r['command']=='save':writes.append(json.loads(r['text']));return {'saved':True}
+   raise AssertionError(r)
+  with patch.object(u,'ROOT',self.project),patch.object(u.Updater,'call',side_effect=ValueError('controlled refusal')) as call:
+   first=u.after_save(self.world,execute);second=u.after_save(self.world,execute)
+  self.assertEqual(first['phase'],'error');self.assertEqual(first,second);self.assertEqual(call.call_count,1)
+  self.assertEqual(writes[0]['request_id'],'r1');self.assertFalse(writes[0]['replay_allowed'])
+ def test_candidate_tex_mismatch_and_source_rollback_conflict_refused(self):
+  name='agent/yohaku_agent.py';source=Path(str(self.bundle/name)+'.tex');source.write_text(source.read_text()+'\n')
+  with self.assertRaisesRegex(ValueError,'source manifest'):self.prepare()
+ def test_hook_is_only_explicit_save_with_permission(self):
+  calls=[]
+  def execute(r):
+   if r['command']=='context':return {'root':str(self.world),'dirty':False}
+   if r['command']=='read':return {'text':'source','body':'{"action":"draft"}','revision':'ignored'}
+   if r['command']=='save':return {'saved':True}
+   raise AssertionError(r)
+  t=agent.Tools(execute,lambda:{'root':str(self.world),'dirty':False},dict(read=True,write=True,run=True))
+  t.host_world_root=str(self.world)
+  with patch.object(u,'after_save',side_effect=lambda *a:calls.append(a) or {'phase':'draft'}):
+   t.call('read_document',{'source':u.SOURCE});self.assertEqual(calls,[])
+   t._checked=lambda *a:{'text':'source','body':'{"action":"draft"}'}
+   r=t.call('write_document',{'source':u.SOURCE,'revision':'x','body_only':True,'text':'{"action":"draft"}'})
+   self.assertTrue(r['ok']);self.assertEqual(len(calls),1)
+if __name__=='__main__':unittest.main()

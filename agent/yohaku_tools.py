@@ -34,7 +34,7 @@ def validate(value):
         raise ToolError('At most 100 tools')
     ids=set()
     for t in entries:
-        if not isinstance(t,dict) or set(t)!={'id','name','program','args','wayland'}:
+        if not isinstance(t,dict) or not {'id','name','program','args','wayland'} <= set(t) or set(t)-{'id','name','program','args','wayland','parameters'}:
             raise ToolError('Each tool needs id, name, program, args and wayland')
         ident=t['id']
         if not isinstance(ident,str) or not 1<=len(ident)<=40 or not all(c in 'abcdefghijklmnopqrstuvwxyz0123456789-_' for c in ident) or ident in ids:
@@ -48,6 +48,7 @@ def validate(value):
             raise ToolError('args must be at most 40 strings, each at most 8 KiB')
         if not isinstance(t['wayland'],bool):
             raise ToolError('wayland must be true or false')
+        validate_parameters(t)
         p=t['program']
         if p.startswith('world:'):
             relative=p[6:]
@@ -66,6 +67,43 @@ def inside(root, name):
         if out.is_symlink():
             raise ToolError('Tool paths must not use world symlinks')
     return out
+
+
+def validate_parameters(entry):
+    specs=entry.get('parameters',[])
+    if not isinstance(specs,list) or len(specs)>16:raise ToolError('At most 16 parameters')
+    names=set()
+    for spec in specs:
+        if not isinstance(spec,dict) or set(spec)!={'name','type','default'}:raise ToolError('Parameter fields: name, type, default')
+        name=spec['name']
+        if not isinstance(name,str) or not 1<=len(name)<=40 or not all(c in 'abcdefghijklmnopqrstuvwxyz0123456789_' for c in name) or name in names:raise ToolError('Invalid parameter name')
+        names.add(name)
+        if spec['type'] not in ('world_file','world_output'):raise ToolError('Only world_file/world_output parameters are supported')
+        if not isinstance(spec['default'],str) or not spec['default'] or len(spec['default'].encode())>8192 or '\0' in spec['default']:raise ToolError('Invalid parameter default')
+        default=Path(spec['default'])
+        if default.is_absolute() or '..' in default.parts:raise ToolError('Use a relative world file default')
+    if entry['program'].startswith('builtin:') and specs:raise ToolError('Builtins do not accept parameters')
+    if len(entry['args'])+len(specs)>40:raise ToolError('At most 40 combined arguments')
+
+
+def parameter_args(root,entry,parameters=None):
+    validate_parameters(entry)
+    if parameters is None:parameters={}
+    if not isinstance(parameters,dict):raise ToolError('parameters must be an object')
+    specs=entry.get('parameters',[])
+    if set(parameters)-{s['name'] for s in specs}:raise ToolError('Unknown parameter')
+    result=[]
+    for spec in specs:
+        value=parameters.get(spec['name'],spec['default'])
+        if not isinstance(value,str) or not value or len(value.encode())>8192 or '\0' in value:raise ToolError('Invalid parameter value')
+        path=inside(root,value)
+        if spec['type']=='world_file':
+            if not path.is_file():raise ToolError('Parameter must name an existing world file')
+        elif not path.parent.is_dir() or (path.exists() and not path.is_file()):
+            raise ToolError('Output requires an existing world directory and a regular-file destination')
+        result.append('/world/'+str(path.relative_to(root)))
+    return result
+
 
 def world(path):
     root=Path(path).resolve(strict=True)
@@ -108,8 +146,9 @@ def resolve_program(root, program):
         target=str(host)
     return target,mounts
 
-def command(root, entry, socket_path=None):
+def command(root, entry, socket_path=None, parameters=None):
     validate({'format':'yohaku-tools/1','tools':[entry]})
+    supplied=parameter_args(root,entry,parameters)
     target,extra=resolve_program(root,entry['program'])
     development_env={}
     if entry['program']=='builtin:dev':
@@ -158,7 +197,7 @@ def command(root, entry, socket_path=None):
         if not stat.S_ISSOCK(sock.stat().st_mode):raise ToolError('Not a Wayland socket')
         args+=['--ro-bind',str(sock),'/run/yohaku/wayland-0'];env['WAYLAND_DISPLAY']='wayland-0'
     for k,v in env.items():args+=['--setenv',k,v]
-    argv=['-B','/opt/yohaku/dev-runtime.py',*entry['args']] if entry['program']=='builtin:dev' else entry['args']
+    argv=['-B','/opt/yohaku/dev-runtime.py',*entry['args']] if entry['program']=='builtin:dev' else [*entry['args'],*supplied]
     args+=['--chdir','/world','--',target,*argv]
     return args
 
@@ -241,10 +280,10 @@ print('YOHAKU_SANDBOX_OK')
             raise ToolError('Sandbox unavailable or boundary check failed. Tool not started. '+r.stderr.strip()[:1200])
     return {'ok':True,'filesystem':'world-only writable data; read-only system runtime','network':'isolated','host_environment':'cleared'}
 
-def run(root, ident, socket_path):
+def run(root, ident, socket_path, parameters=None):
     entry=next((t for t in read_registry(root)['tools'] if t['id']==ident),None)
     if entry is None:raise ToolError('Unknown tool id')
-    args=command(root,entry,socket_path)
+    args=command(root,entry,socket_path,parameters)
     emit('status',text='Checking sandbox...')
     check(root) # Mandatory for every launch, with no alternative execution path.
     log_path,log=create_log(root,ident)
@@ -286,10 +325,17 @@ def run(root, ident, socket_path):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root',default=str(PACKAGE/'worlds/default'))
-    p.add_argument('--socket');p.add_argument('--path');p.add_argument('mode',choices=['check','list','plan','run','discover','import-address']);p.add_argument('id',nargs='?')
+    p.add_argument('--socket');p.add_argument('--path');p.add_argument('mode',choices=['check','list','plan','run','discover','import-address','inspect']);p.add_argument('id',nargs='?')
+    p.add_argument('--parameters',default='{}')
     a=p.parse_args()
     try:
+        parameters=json.loads(a.parameters)
+        if not isinstance(parameters,dict):raise ToolError('parameters must be an object')
         root=world(a.root)
+        if a.mode=='inspect':
+            from yohaku_apps import inspect_tool
+            if not a.path:raise ToolError('Provide an explicit executable path')
+            emit('inspection',result=inspect_tool(a.path,root));return 0
         if a.mode in ('discover','import-address'):
             import yohaku_apps
             if a.mode=='discover':
@@ -302,8 +348,8 @@ def main():
         if not a.id:raise ToolError('Choose a tool id')
         if a.mode=='plan':
             entry=next(t for t in read_registry(root)['tools'] if t['id']==a.id)
-            emit('plan',argv=command(root,entry,a.socket));return 0
-        return run(root,a.id,a.socket)
+            emit('plan',argv=command(root,entry,a.socket,parameters));return 0
+        return run(root,a.id,a.socket,parameters)
     except (ToolError,OSError,ValueError,KeyError,StopIteration) as e:
         emit('error',text=str(e));return 1
 

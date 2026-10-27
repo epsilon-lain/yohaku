@@ -1,0 +1,286 @@
+"""Host-owned independent Codex tasks bound one-to-one to existing Rust chat requests.
+
+Business status/output/error live ONLY in the Loom chat object. Private records
+hold ownership, process identity and cleanup evidence, never account credentials.
+"""
+import contextlib
+import fcntl
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+
+ROOT=Path(__file__).resolve().parents[1]
+VERSION='host-codex-tasks-20261026-v1'
+TERMINAL={'done','error','cancelled','unknown'}
+
+
+def state_root():
+    p=Path.home()/'.local/state/yohaku/model-tasks';p.mkdir(mode=0o700,parents=True,exist_ok=True)
+    if p.is_symlink() or p.stat().st_uid!=os.getuid() or p.stat().st_mode&0o077:raise ValueError('Task state must be private and owned')
+    return p
+
+
+def atomic(path,value):
+    fd,temp=tempfile.mkstemp(prefix='.task-',dir=path.parent)
+    try:
+        with os.fdopen(fd,'w') as f:json.dump(value,f,ensure_ascii=False);f.flush();os.fsync(f.fileno())
+        os.replace(temp,path)
+    finally:
+        if os.path.exists(temp):os.unlink(temp)
+
+
+def task_path(task_id):
+    if not isinstance(task_id,str) or not re.fullmatch(r'model-task-[0-9a-f]{32}',task_id):raise ValueError('Invalid task id; no process targeted')
+    return state_root()/(task_id+'.json')
+
+
+@contextlib.contextmanager
+def locked(task_id):
+    p=task_path(task_id)
+    fd=os.open(str(p)+'.lock',os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+    try:fcntl.flock(fd,fcntl.LOCK_EX);yield p
+    finally:os.close(fd)
+
+
+def read_record(task_id):
+    p=task_path(task_id)
+    if not p.is_file() or p.is_symlink():raise ValueError('Unknown task id; no process targeted')
+    return json.loads(p.read_text())
+
+
+def patch_record(task_id,**fields):
+    with locked(task_id) as path:
+        value=read_record(task_id);value.update(fields);atomic(path,value);return value
+
+
+def identity(pid):
+    try:
+        s=(Path('/proc')/str(pid)/'stat').read_text().split(') ')[1].split()
+        return {'pid':pid,'start':s[19],'state':s[0]}
+    except (OSError,ValueError,IndexError):return None
+
+
+def alive(record):
+    current=identity(record.get('pid'))
+    return bool(current and current['start']==record.get('start') and current['state']!='Z')
+
+
+class Object:
+    def __init__(self,world):
+        self.world=Path(world).resolve(strict=True)
+        source=self.world/'files/chat-runtime-20261025/requests.json.tex'
+        if not source.is_file() or source.resolve()!=source:raise ValueError('World chat object source must exist without symlinks')
+        # Execute only this reviewed host copy, never import executable code from the world.
+        spec=importlib.util.spec_from_file_location('yohaku_host_chat_object',ROOT/'agent/yohaku_chat_object.py')
+        self.adapter=importlib.util.module_from_spec(spec);spec.loader.exec_module(self.adapter)
+        self.adapter.WORLD=self.world;self.adapter.WORKSPACE=ROOT/'bin/yohaku_chat_workspace'
+        self.adapter.LOOM=ROOT/'bin/loom-linux-x86_64';self.adapter.MACROS=self.world/'macros'
+    @contextlib.contextmanager
+    def prepared(self):
+        import shutil
+        temp=self.adapter.prepare()
+        try:yield temp
+        finally:shutil.rmtree(temp,ignore_errors=True)
+    def command(self,request):
+        with self.prepared() as temp:return self.adapter.workspace(temp,request)
+    def request(self,request_id):return self.command({'command':'chat_status','id':request_id})['request']
+
+
+class Control:
+    def __init__(self,world):self.object=Object(world)
+    def call(self,name,args):
+        # Existing adapter owns operation routing; it delegates only explicit host_* operations.
+        op={'op':{'codex_task_start':'host_start','codex_task_status':'host_status','codex_task_cancel':'host_cancel'}[name],**args}
+        self.object.adapter.HOST_TASK_CLIENT=self
+        try:return self.object.adapter.execute(op,None)
+        except RuntimeError as error:raise ValueError('Chat operation failed or outcome unknown; query by request_id before any new submission: '+str(error)[:600]) from None
+    def dispatch(self,op):
+        return {'host_start':self.start,'host_status':self.status,'host_cancel':self.cancel}[op['op']](op)
+    def task_id_for(self,request_id):
+        if not isinstance(request_id,str) or not re.fullmatch(r'[A-Za-z0-9_.:-]{1,128}',request_id):raise ValueError('Invalid request_id')
+        return 'model-task-'+hashlib.sha256((str(self.object.world)+'\0'+request_id).encode()).hexdigest()[:32]
+    def owned(self,task_id):
+        value=read_record(task_id)
+        if value['world']!=str(self.object.world):raise ValueError('Task belongs to another world; no process targeted')
+        return value
+    def start(self,args):
+        request_id=args['request_id']
+        if not isinstance(request_id,str) or not re.fullmatch(r'[A-Za-z0-9_.:-]{1,128}',request_id):raise ValueError('Use a unique ASCII request_id of 1..128 characters')
+        tid=self.task_id_for(request_id)
+        duplicate=False;accepted=True
+        with locked(tid) as path:
+            if path.exists():
+                self.owned(tid);original=self.object.request(request_id)
+                return {**self.status({'task_id':tid}),'duplicate':True,'started_new_process':False,'prompt_accepted':args.get('prompt',original['prompt'])==original['prompt']}
+            if 'prompt' in args:
+                submission=self.object.command({'command':'chat_submit','id':request_id,'prompt':args['prompt'],'kind':'independent-model','target':'independent-host-codex','context':None,'history':[],'config':{}})
+                duplicate=bool(submission.get('duplicate'));accepted=submission['request']['prompt']==args['prompt']
+            request=self.object.request(request_id)
+            if request.get('kind')!='independent-model' or request.get('target')!='independent-host-codex':raise ValueError('Only explicitly submitted independent-model requests can be claimed; construction requests unchanged')
+            if request['status']!='queued':raise ValueError('Request is not queued and has no owned task binding; inspect it, do not replay')
+            # Persist identity before claim or launch. A crash in this interval is unknown, never a retry permit.
+            record={'task_id':tid,'world':str(self.object.world),'request_id':request_id,'version':VERSION,'pid':None,'start':None,'launch':'preparing','created':time.time(),'native':[]}
+            atomic(path,record)
+            claim=self.object.command({'command':'chat_claim','id':request_id,'runner':tid,'target':'independent-host-codex'})
+            if not claim.get('request'):
+                record['launch']='claim_unknown';atomic(path,record);raise ValueError('Claim not obtained; task id reserved, inspect status; no automatic replay')
+            record.update(token=claim['token'],launch='claimed');atomic(path,record)
+            # No caller argv, config path, login or model override is accepted.
+            try:
+                log=(state_root()/(tid+'.log')).open('ab')
+                try:child=subprocess.Popen([sys.executable,'-B',str(ROOT/'agent/yohaku_codex_tasks.py'),'run',tid],stdin=subprocess.DEVNULL,stdout=log,stderr=log,cwd=ROOT,start_new_session=True)
+                finally:log.close()
+                process=identity(child.pid)
+                record.update(pid=child.pid,start=process['start'] if process else None,launch='spawned');atomic(path,record)
+                threading.Thread(target=child.wait,daemon=True).start()
+            except OSError:
+                record['launch']='launch_failed';atomic(path,record)
+                self.object.command({'command':'chat_update','id':request_id,'token':record['token'],'status':'unknown','error':'Host launch failed after claim; no model replay'})
+                raise ValueError('Task launch failed after claim; reserved task must be inspected; no automatic retry') from None
+        return {**self.status({'task_id':tid}),'duplicate':duplicate,'prompt_accepted':accepted,'started_new_process':True}
+    def status(self,args):
+        tid=args.get('task_id') or self.task_id_for(args.get('request_id'));record=self.owned(tid)
+        if args.get('request_id') and args['request_id']!=record['request_id']:raise ValueError('Task/request binding mismatch')
+        end=time.monotonic()+min(5000,max(0,args.get('wait_ms',0)))/1000
+        while True:
+            request=self.object.request(record['request_id'])
+            if request['status'] in TERMINAL or time.monotonic()>=end:break
+            time.sleep(.1);record=self.owned(tid)
+        record=self.owned(tid)
+        receipt=record.get('receipt');running=alive(record)
+        reply=request.get('reply') or {};text=reply.get('text','') if isinstance(reply,dict) else ''
+        if not isinstance(text,str):text=''
+        cursor=max(0,args.get('cursor',0));limit=min(16384,max(1,args.get('max_chars',4096)));chunk=text[cursor:cursor+limit]
+        uncertain=not running and not receipt and record.get('launch') not in ('preparing','claimed')
+        return {'task_id':tid,'request_id':record['request_id'],'object':request.get('object'),'version':VERSION,
+                'status':request['status'],'status_source':'Rust chat object','execution':'unknown' if uncertain else ('running' if running else 'ended' if receipt else record['launch']),
+                'model_phase':record.get('model_phase'),'model_settings':record.get('model_settings'),'turn_settings':record.get('turn_settings'),'output':chunk,'next_cursor':cursor+len(chunk),'has_more':cursor+len(chunk)<len(text),
+                'error':request.get('error'),'cancel':request.get('cancel'),'worker':request.get('worker'),'receipt':receipt,
+                'replay_allowed':False,'construction_session_affected':False}
+    def cancel(self,args):
+        tid=args['task_id'];record=self.owned(tid);request=self.object.request(record['request_id'])
+        if request['status'] in TERMINAL:return {**self.status({'task_id':tid}),'cancel_accepted':False,'reason':'already terminal; no process signalled'}
+        self.object.command({'command':'chat_stop','id':record['request_id'],'by':'host-task-api'})
+        # Only a process identity created by start() can receive this signal.
+        record=self.owned(tid)
+        if alive(record) and record.get('model_phase'):
+            try:os.kill(record['pid'],signal.SIGTERM)
+            except ProcessLookupError:pass
+        end=time.monotonic()+15
+        while time.monotonic()<end:
+            current=self.status({'task_id':tid})
+            if current['status'] in TERMINAL and not alive(self.owned(tid)):
+                receipt=current.get('receipt') or {}
+                return {**current,'cancel_accepted':True,'cancel_confirmed':current['status']=='cancelled' and receipt.get('native_cleanup_complete') is True}
+            time.sleep(.1)
+        return {**self.status({'task_id':tid}),'cancel_accepted':True,'cancel_confirmed':False,'reason':'cleanup not confirmed within bounded wait; inspect task; do not replay'}
+
+
+def run_task(tid):
+    import yohaku_agent as agent
+    import yohaku_codex as codex
+    from yohaku_provider_transport import resolve_turn_config
+    # start() holds this lock until the process binding is durable.
+    with locked(tid) as path:record=read_record(tid)
+    obj=Object(record['world']);request=obj.request(record['request_id']);children=[];stop=threading.Event();cancelled=False
+    class Cancelled(Exception):pass
+    def interrupt(*_):raise Cancelled('Independent model task cancelled')
+    signal.signal(signal.SIGTERM,interrupt);signal.signal(signal.SIGINT,interrupt)
+    def monitor():
+        heartbeat=time.monotonic()
+        while not stop.wait(.2):
+            try:
+                current=obj.request(record['request_id'])
+                if current['status']=='stopping':os.kill(os.getpid(),signal.SIGTERM);return
+                if time.monotonic()-heartbeat>=30:
+                    obj.command({'command':'chat_update','id':record['request_id'],'token':record['token'],'last_status':'independent host Codex task running'})
+                    heartbeat=time.monotonic()
+            except Exception:
+                # A failed object read is not cancellation or success. Native completion still must commit.
+                continue
+    def emit(event):
+        kind=event.get('event')
+        fields={}
+        if kind in ('model_settings','turn_settings'):fields[kind]=event
+        if kind=='status' and event.get('text','').startswith('Codex connected;'):fields['model_phase']='model_running'
+        if fields:patch_record(tid,**fields)
+    original=codex.launch
+    def tracked(address):
+        child=original(address);children.append(child)
+        patch_record(tid,native=[identity(c.pid) for c in children if identity(c.pid)])
+        return child
+    codex.launch=tracked
+    result=None;error=None;cleanup=[]
+    monitor_thread=threading.Thread(target=monitor,daemon=True)
+    try:
+        if request['status']=='stopping':raise Cancelled('Stopped before launch')
+        config=agent.read_config();config.update(protocol='codex-local',permissions={g:g=='read' for g in agent.GROUPS})
+        context={'root':str(obj.world),'page':'independent-host-model-task','draft':None,'dirty':False,'task_id':tid,'request_id':record['request_id']}
+        initial={'config':config,'context':context,'history':[],'prompt':request['prompt']}
+        initial['config']=resolve_turn_config(initial,ROOT)
+        workspace=agent.Workspace(obj.world,ROOT/'bin/loom-linux-x86_64',ROOT/'bin/yohaku_workspace')
+        tools=agent.Tools(workspace.execute,lambda:context,config['permissions'],native=False)
+        patch_record(tid,model_phase='connecting');monitor_thread.start()
+        result=codex.run(initial,tools,emit)
+    except (Exception,KeyboardInterrupt) as exc:
+        error=str(exc)[:4096]
+    finally:
+        # Cancellation during cleanup cannot interrupt reaping owned native processes.
+        signal.signal(signal.SIGTERM,signal.SIG_IGN);signal.signal(signal.SIGINT,signal.SIG_IGN)
+        stop.set()
+        if monitor_thread.is_alive():monitor_thread.join(3)
+        for child in children:
+            if child.poll() is None:
+                try:os.killpg(child.pid,signal.SIGTERM)
+                except ProcessLookupError:pass
+                try:child.wait(timeout=3)
+                except subprocess.TimeoutExpired:
+                    try:os.killpg(child.pid,signal.SIGKILL)
+                    except ProcessLookupError:pass
+                    child.wait(timeout=3)
+            cleanup.append({'pid':child.pid,'exit_code':child.returncode,'reaped':child.returncode is not None})
+        for child in children:
+            for pipe in (child.stdin,child.stdout,child.stderr):
+                if pipe is not None and not pipe.closed:pipe.close()
+        codex.launch=original
+    diagnostic_path=(result or {}).get('diagnostic_path')
+    if not diagnostic_path and error:
+        matched=re.search(r'diagnostic: ([^\s]+\.json)',error)
+        if matched:diagnostic_path=matched.group(1)
+    codex_evidence={}
+    if diagnostic_path:
+        location=Path(diagnostic_path)
+        expected=Path.home()/'.local/state/yohaku/codex-diagnostics'
+        if location.parent==expected and location.is_file() and not location.is_symlink():
+            diagnostic=json.loads(location.read_text())
+            codex_evidence={key:diagnostic.get(key) for key in ('thread_id','turn_id','effective_model','effective_turn_budget','status','failure_stage')}
+            codex_evidence['diagnostic_path']=diagnostic_path
+    receipt={'native':cleanup,'native_cleanup_complete':all(x['reaped'] for x in cleanup),'runner_pid':os.getpid(),'codex':codex_evidence,'finished':time.time(),'version':VERSION}
+    # Durable execution evidence precedes business commit; never re-run a model after an uncertain commit.
+    patch_record(tid,receipt=receipt,model_phase='finished',pending_result=result,pending_error=error)
+    current=obj.request(record['request_id']);cancelled=current['status']=='stopping'
+    status='cancelled' if cancelled else 'done' if result is not None else 'error'
+    reply=None if cancelled or result is None else {'text':result.get('text',''),'provenance':'independent-host-codex','task_id':tid,'diagnostic_path':result.get('diagnostic_path')}
+    worker={'runner':tid,'task_id':tid,'pid':os.getpid(),'mode':'host-codex','child':receipt}
+    try:
+        final=obj.command({'command':'chat_update','id':record['request_id'],'token':record['token'],'status':status,'reply':reply,'error':'stop' if cancelled else error,'worker':worker,'cancel_result':'independent native process closed and reaped' if cancelled else None,'_respect_stop':True})
+        patch_record(tid,commit_confirmed=True,pending_result=None,pending_error=None)
+    except Exception as exc:
+        patch_record(tid,commit_confirmed=False,commit_error=type(exc).__name__)
+        # Leave durable result for inspection. Do not re-execute or invent a terminal state.
+        return 2
+    return 0
+
+
+if __name__=='__main__':
+    if len(sys.argv)!=3 or sys.argv[1]!='run':raise SystemExit('Internal task runner only')
+    raise SystemExit(run_task(sys.argv[2]))

@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":8695,"path":"/root/projects/yohaku/release-prep/yohaku/src/workspace_nodes.rs","sha256":"d6b8b5f715c4564122f07e52f101774e8b450dd2b6e91bbe93f91b03a984b1d9"}
 ---
 
 ## 正文
-```text
+````text
 use super::{Result, Workspace, atomic, contained, io, string};
 use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
@@ -28,7 +27,7 @@ fn bounded(request: &Value, key: &str, default: u64, maximum: u64) -> Result<usi
     Ok(value as usize)
 }
 
-fn metadata(header: &Value, source: &str, registered: bool) -> Result<Option<Value>> {
+pub(super) fn metadata(header: &Value, source: &str, registered: bool) -> Result<Option<Value>> {
     let Some(node) = header.get("node") else { return Ok(None) };
     let id = string(node, "id")?;
     let name = string(node, "name")?;
@@ -61,8 +60,44 @@ fn summary(node: &Value) -> Value {
     result
 }
 
+pub(super) fn node_exclusions(root: &std::path::Path) -> Result<Vec<std::path::PathBuf>> {
+    let path = contained(root, "memory/node-index-policy.json")?;
+    let metadata = match fs::symlink_metadata(&path) {
+        Ok(value) => value,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(Vec::new()),
+        Err(error) => return Err(io(error)),
+    };
+    if !metadata.is_file() || metadata.len() > 65536 {
+        return Err("Node index policy must be a regular file no larger than 64 KiB".into());
+    }
+    let bytes = fs::read(path).map_err(io)?;
+    if bytes.len() > 65536 { return Err("Node index policy exceeds 64 KiB".into()) }
+    let value: Value = serde_json::from_slice(&bytes).map_err(|_| "Invalid node index policy JSON")?;
+    let object = value.as_object().ok_or("Node index policy must be an object")?;
+    if object.len() != 2 || value["format"] != "yohaku-node-index-policy/1" || !object.contains_key("exclude_paths") {
+        return Err("Node index policy requires format=yohaku-node-index-policy/1 and exclude_paths".into());
+    }
+    let paths = value["exclude_paths"].as_array().ok_or("Node exclude_paths must be an array")?;
+    if paths.len() > 128 { return Err("Node exclude_paths supports at most 128 paths".into()) }
+    let mut result = Vec::new();
+    for value in paths {
+        let text = value.as_str().ok_or("Node exclusion must be a literal files/... path")?;
+        if text.len() > 1024 || text.contains('\\') || text.split('/').any(|part| part.is_empty() || part == "." || part == "..") {
+            return Err("Node exclusion must be a literal files/... path".into());
+        }
+        let relative = super::relative(text)?;
+        if !relative.starts_with("files") || relative == std::path::Path::new("files") {
+            return Err("Node exclusion must be below files/, not the whole world".into());
+        }
+        contained(root, text)?;
+        if !result.contains(&relative) { result.push(relative); }
+    }
+    Ok(result)
+}
+
 impl Workspace {
     pub(super) fn node_query(&self, request: &Value) -> Result<Value> {
+        let excluded = node_exclusions(&self.root)?;
         let mut pending = vec![contained(&self.root, "files")?];
         let mut candidates: BTreeMap<String, Vec<Value>> = BTreeMap::new();
         let mut issues = Vec::new();
@@ -78,6 +113,9 @@ impl Workspace {
             for entry in entries {
                 scanned += 1;
                 if scanned > 20000 { return Err("Node scan exceeds 20000 entries; use a smaller world".into()) }
+                let path = entry.path();
+                let relative = path.strip_prefix(&self.root).map_err(io)?;
+                if excluded.iter().any(|excluded| relative.starts_with(excluded)) { continue }
                 let kind = entry.file_type().map_err(io)?;
                 let name = entry.file_name();
                 if kind.is_symlink() || matches!(name.to_str(), Some(".git" | ".loom" | ".yohaku" | "target" | "__pycache__")) { continue }
@@ -96,6 +134,8 @@ impl Workspace {
                 }
             }
         }
+        let duplicate_sources: BTreeMap<String, Vec<Value>> = candidates.iter().filter(|(_,items)| items.len()>1)
+            .map(|(id,items)| (id.clone(),items.iter().map(|node| node["location"]["path"].clone()).collect())).collect();
         let duplicates: BTreeSet<String> = candidates.iter().filter(|(_, nodes)| nodes.len() > 1).map(|(id, _)| id.clone()).collect();
         let mut nodes = BTreeMap::new();
         for (id, mut items) in candidates {
@@ -156,15 +196,41 @@ impl Workspace {
             }
             _ => return Err("Unknown node command".into()),
         };
+        // Batch lookup for a note result page, reusing this exact active graph.
+        // No second graph scanner or persisted note content.
+        if command == "node_index" {
+            if let Some(requested) = request.get("resolve_ids") {
+                let ids = requested.as_array().filter(|v| v.len() <= 100).ok_or("resolve_ids must be an array of at most 100 IDs")?;
+                let mut resolved = serde_json::Map::new();
+                for value in ids {
+                    let id = value.as_str().filter(|s| identifier(s)).ok_or("Invalid resolve ID")?;
+                    let value = if let Some(node) = nodes.get(id) {
+                        let incoming: Vec<Value> = nodes.values().flat_map(|from| {
+                            from["links"].as_array().unwrap().iter().filter(move |link| link["target"] == id)
+                                .map(move |link| json!({"id":from["id"],"relation":link["relation"],"source":from["location"]["path"]}))
+                        }).collect();
+                        json!({"status":"resolved","node":summary(node),"incoming":incoming.iter().take(8).collect::<Vec<_>>(),"incoming_count":incoming.len(),"incoming_truncated":incoming.len()>8})
+                    } else if let Some(sources) = duplicate_sources.get(id) {
+                        json!({"status":"ambiguous","sources":sources.iter().take(8).collect::<Vec<_>>(),"source_count":sources.len(),"sources_truncated":sources.len()>8})
+                    } else { json!({"status":"missing"}) };
+                    resolved.insert(id.to_owned(),value);
+                }
+                result["resolutions"] = json!(resolved);
+            }
+        }
         result["issues"] = index["issues"].clone();
         result["issue_count"] = index["issue_count"].clone();
         Ok(result)
     }
 }
-
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "src/workspace_nodes.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

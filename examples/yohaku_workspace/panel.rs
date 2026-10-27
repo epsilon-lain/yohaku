@@ -371,9 +371,11 @@ impl Panel {
         self.agent_replies = controls;
         agent
     }
-    pub fn cancel_agent(&mut self) {
+    pub fn cancel_agent(&mut self) -> usize {
+        let before=self.agent_pending.len();
         self.agent_pending.retain(|(id, _)| *id >= u64::MAX - 1);
         self.agent_active = false;
+        before-self.agent_pending.len()
     }
     fn start_prompt(&mut self, prompt: Prompt) {
         if !self.busy && self.can_leave() {
@@ -974,7 +976,7 @@ fn input_path(text: &str) -> String {
     }
 }
 pub(super) fn clipboard() -> Result<String, String> {
-    super::host_clipboard::read()
+    super::host_clipboard::read_for_paste()
 }
 
 #[cfg(test)]
@@ -1076,7 +1078,7 @@ pub(super) mod tests {
         Panel {
             tx,
             rx,
-            root: "/root/projects/yohaku/worlds/default".into(),
+            root: "/tmp/yohaku-fixture/world".into(),
             files: vec![
                 json!({"name":"demo.py","source":"files/demo.py.tex","source_exists":true}),
             ],
@@ -1275,8 +1277,8 @@ pub(super) mod tests {
     #[test]
     fn windows_paths_are_converted_for_wsl_without_shell_interpolation() {
         assert_eq!(
-            input_path(r#""C:\Users\elonl\Downloads\demo.py""#),
-            "/mnt/c/Users/elonl/Downloads/demo.py"
+            input_path(r#""C:\Users\example\Downloads\demo.py""#),
+            "/mnt/c/Users/example/Downloads/demo.py"
         );
         assert_eq!(
             input_path(" /home/lain/a $(echo hi).py "),

@@ -8,6 +8,12 @@ fn main() {
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
+            "--identity" => {
+                println!("{}", json!({"format":"yohaku-workspace-runtime/1",
+                    "program":"yohaku_workspace", "build_id":"codex-text-v3-snapshot-20261026",
+                    "capabilities":["atomic-source-read", "chat-objects-v1"]}));
+                return;
+            }
             "--root" => root = args.next().expect("--root requires a path"),
             "--loom" => loom = args.next().expect("--loom requires a path"),
             _ => {

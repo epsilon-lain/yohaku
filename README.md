@@ -14,7 +14,10 @@ original material is all rights reserved. See [LICENSE](LICENSE) and
   and a rebuildable `.tex`-derived index; no plugin required.
 - Versioned Unicode line/column reads and guarded coordinate edits.
 - Registered tools with actual exit codes/logs in an offline bubblewrap sandbox.
-- Existing optional model connectors; no new model service or vector database.
+- Existing optional model connectors, guarded independent Codex tasks and model selection.
+- Native terminal sessions/windows, scoped clipboard transfer and nested text input.
+- codex-text/3 content/send/stop pages with save-feedback/2 operation-scoped receipts.
+- A fixed internal candidate prepare/check/activate/status/rollback workflow.
 
 ## Requirements
 
@@ -39,7 +42,8 @@ python3 scripts/init_config.py
 ```
 
 The build script compiles Loom from `loom-src` with its bundled dependencies,
-then the compositor, workspace CLI and sample tool window. Locally built
+then the compositor, workspace CLI, terminal window and sample tool window. The
+chat-workspace name is a second local copy of the same identified workspace CLI. Locally built
 executables go into ignored `bin/` paths. No precompiled executable is committed.
 Other Yohaku dependencies use `Cargo.lock` and the normal Cargo cache; fetching
 them may require network access on a new machine. With an existing complete
@@ -56,6 +60,20 @@ provide your own key through the configured environment variable or session UI.
 Never commit it. The experimental local Codex connector requires a separately
 installed compatible runtime and explicit human setup/login. Clean-config
 verification does not authenticate or exercise a provider.
+
+The text service and trusted host updater ship disabled in their portable configs.
+Their blank templates contain no request history, login or machine-specific hashes.
+For first-time opt-in setup, permissions, candidate preparation and rollback, see
+[docs/INTERNAL-UPDATE.md](docs/INTERNAL-UPDATE.md). Building or installing draft
+pages does not send a model request. Each text send is an independent model task;
+ordinary Socius chat remains a separate route. A saved revision, an accepted
+submission and a completed execution are separate facts. Unknown outcomes must
+be queried before another explicit operation.
+
+The current source snapshot includes the actually loaded codex-text/3 and
+save-feedback/2 Python implementation. Historical real-model acceptance on the
+original installation is recorded separately from this checkout's offline
+build/tests in VERIFICATION.md. No account or authenticated session is supplied.
 
 ## Minimal node demo
 
@@ -120,9 +138,10 @@ node links never add implicit Loom dependencies. See `loom-src/FORMAT.md` and
 - Tool launches use fixed registered arguments. Unfinished parameter changes
   in the private development world remain untouched and are not advertised as
   released functionality. Develop support remains experimental.
-- The full Python suite currently has two preexisting application-discovery
-  expectation failures. They are recorded in VERIFICATION.md, not hidden by
-  excluding tests. These are separate from node/RPC and source-build checks.
+- The initial snapshot's two application-discovery fixture failures are preserved
+  as historical results in VERIFICATION.md. The refreshed fixtures isolate native
+  discovery and assert the current ELF rejection; current results are reported
+  separately. No real model, clipboard desktop or physical IME test is implied.
 - `apply_update.py` is retained for compatibility tests, not as an upgrade
   payload for arbitrary installations. Build this checkout independently;
   do not use it to replace another running directory.

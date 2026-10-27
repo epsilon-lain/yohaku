@@ -1,0 +1,13 @@
+{
+  "format": "yohaku-host-update-config/1",
+  "enabled_by_default": false,
+  "launch_on_yohaku_start": false,
+  "world": "worlds/default",
+  "source": "files/codex-text/UPDATE.json.tex",
+  "required_permissions": [
+    "read",
+    "write",
+    "run"
+  ],
+  "automatic_install": false
+}

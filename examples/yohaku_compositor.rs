@@ -4,6 +4,11 @@ use std::{os::unix::io::OwnedFd, sync::Arc};
 mod agent_panel;
 #[path = "yohaku_workspace/clipboard.rs"]
 mod host_clipboard;
+#[path="yohaku_workspace/nested_clipboard.rs"]
+mod nested_clipboard;
+#[cfg(test)]
+#[path="yohaku_workspace/clipboard_protocol_tests.rs"]
+mod clipboard_protocol_tests;
 #[path = "yohaku_workspace/text_font.rs"]
 mod text_font;
 #[allow(dead_code)] // Keep the upstream backend API intact in the small local adapter.
@@ -18,6 +23,11 @@ mod tool_windows;
 mod window_protocol_tests;
 #[path = "yohaku_workspace/panel.rs"]
 mod workspace_panel;
+#[path = "yohaku_workspace/text_input.rs"]
+mod text_input;
+#[cfg(test)]
+#[path = "yohaku_workspace/text_input_tests.rs"]
+mod text_input_tests;
 
 use ::winit::platform::pump_events::PumpStatus;
 use smithay::{
@@ -181,7 +191,9 @@ impl XdgDecorationHandler for App {
 }
 
 impl SelectionHandler for App {
-    type SelectionUserData = ();
+    type SelectionUserData = nested_clipboard::Reply;
+    fn new_selection(&mut self, ty: smithay::wayland::selection::SelectionTarget, source: Option<smithay::wayland::selection::SelectionSource>, _seat: Seat<Self>) {self.clipboard.selected(ty,source);}
+    fn send_selection(&mut self, _ty: smithay::wayland::selection::SelectionTarget, mime:String, fd:OwnedFd, _seat:Seat<Self>, data:&Self::SelectionUserData) {self.clipboard.send(&_seat,mime,fd,data);}
 }
 
 impl DataDeviceHandler for App {
@@ -206,6 +218,11 @@ impl CompositorHandler for App {
 
     fn commit(&mut self, surface: &WlSurface) {
         on_commit_buffer_handler::<Self>(surface);
+        #[cfg(test)]
+        if self.clipboard_test_focus {
+            let k=self.seat.get_keyboard().unwrap();
+            k.set_focus(self,Some(surface.clone()),SERIAL_COUNTER.next_serial());
+        }
     }
 }
 
@@ -225,7 +242,10 @@ impl SeatHandler for App {
         &mut self.seat_state
     }
 
-    fn focus_changed(&mut self, _seat: &Seat<Self>, _focused: Option<&WlSurface>) {}
+    fn focus_changed(&mut self, _seat: &Seat<Self>, focused: Option<&WlSurface>) {
+        self.text_input.set_focus(focused.cloned());
+        self.clipboard.focus(_seat,focused);
+    }
     fn cursor_image(
         &mut self,
         _seat: &Seat<Self>,
@@ -240,8 +260,11 @@ struct App {
     shm_state: ShmState,
     seat_state: SeatState<Self>,
     data_device_state: DataDeviceState,
+    clipboard: nested_clipboard::Bridge,
+    #[cfg(test)] clipboard_test_focus: bool,
     _decoration_state: XdgDecorationState,
     _output_manager: OutputManagerState,
+    text_input: text_input::TextInput,
     window_requests: Vec<tool_windows::Request>,
 
     seat: Seat<Self>,
@@ -425,8 +448,11 @@ pub fn run_winit() -> Result<(), Box<dyn std::error::Error>> {
             shm_state,
             seat_state,
             data_device_state: DataDeviceState::new::<App>(&dh),
+            clipboard: nested_clipboard::Bridge::new(&dh),
+            #[cfg(test)] clipboard_test_focus:false,
             _decoration_state: XdgDecorationState::new::<App>(&dh),
             _output_manager: OutputManagerState::new_with_xdg_output::<App>(&dh),
+            text_input: text_input::TextInput::new(&dh),
             window_requests: Vec::new(),
             seat,
         }
@@ -491,6 +517,11 @@ pub fn run_winit() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap_or_else(|| "bin/loom-linux-x86_64".into());
     let mut local_space = workspace_panel::Panel::new(root, loom)?;
     let mut agents = agent_panel::AgentPanel::new();
+    if let Some(path) = std::env::var_os("YOHAKU_CHAT_RESTORE") {
+        if let Err(error) = agents.restore_chat_export(std::path::Path::new(&path), &local_space.root) {
+            eprintln!("Could not restore saved chat: {error}");
+        }
+    }
     let mut tools = tool_panel::ToolPanel::new(tool_socket);
 
     let keyboard = state
@@ -509,8 +540,24 @@ pub fn run_winit() -> Result<(), Box<dyn std::error::Error>> {
             agents.connect_local_codex(connection, &local_space);
         }
         let view_size = backend.window_size();
-        let ime_area = if tools.takes_keyboard() { None } else {
-            agents.ime_cursor_area(view_size.w, view_size.h, shell_width)
+        let nested_focus = if window_focused && active_page == "workspace" && !agents.takes_keyboard() && !tools.takes_keyboard() {
+            keyboard.current_focus()
+        } else { None };
+        state.text_input.set_focus(nested_focus);
+        let nested_ime_area = state.text_input.cursor().and_then(|(surface, rectangle)| {
+            windows.items.iter().find(|window| window.id() == &surface).map(|window| {
+                let (x, y) = window.origin();
+                (x + rectangle[0], y + rectangle[1], rectangle[3].max(1))
+            })
+        });
+        let tool_ime_area = if active_page == "techne" && !agents.takes_keyboard() {
+            tools.search_ime_area(shell_width + 32)
+        } else { None };
+        if !window_focused || tool_ime_area.is_none() { tools.clear_search_preedit(); }
+        let ime_area = if !window_focused { None } else if tool_ime_area.is_some() {
+            tool_ime_area
+        } else if tools.takes_keyboard() { None } else {
+            agents.ime_cursor_area(view_size.w, view_size.h, shell_width).or(nested_ime_area)
         };
         if ime_allowed != ime_area.is_some() {
             eprintln!(
@@ -571,6 +618,7 @@ tools_takes_keyboard={}; ime_area={:?}; page={}",
             }
             WinitEvent::Focus(false) => {
                 eprintln!("[IME DISABLE SOURCE] window lost focus; ime_allowed={ime_allowed}");
+                tools.clear_search_preedit();
                 window_focused = false;
                 // Diagnostic only: preserve IME state across focus changes.
                 windows.cancel();
@@ -587,22 +635,35 @@ tools_takes_keyboard={}; ime_area={:?}; page={}",
                 }
             }
             WinitEvent::Ime(event) => {
-                eprintln!(
-                    "[IME EVENT] {event:?}, allowed={ime_allowed}, takes_keyboard={}",
-                    tools.takes_keyboard()
-                );
-                if ime_allowed && !tools.takes_keyboard() {
-                    agents.ime(event);
+                let (kind, chars) = match &event {
+                    ::winit::event::Ime::Enabled => ("Enabled", 0),
+                    ::winit::event::Ime::Disabled => ("Disabled", 0),
+                    ::winit::event::Ime::Preedit(text, _) => ("Preedit", text.chars().count()),
+                    ::winit::event::Ime::Commit(text) => ("Commit", text.chars().count()),
+                };
+                let tool_search = active_page == "techne" && tools.search_text_focus();
+                let target = if tool_search { "techne-search" } else if agents.takes_keyboard() { "chat" } else { "nested" };
+                eprintln!("[IME EVENT] kind={kind} chars={chars} target={target} allowed={ime_allowed}");
+                if window_focused && ime_allowed && tool_search {
+                    tools.search_ime(event);
+                } else if ime_allowed && !tools.takes_keyboard() {
+                    if agents.takes_keyboard() {
+                        agents.ime(event);
+                    } else {
+                        state.text_input.ime(&event);
+                    }
                 }
             }
             WinitEvent::Text(text) => {
-                eprintln!(
-                    "[TEXT EVENT] text={text:?}, allowed={ime_allowed}, takes_keyboard={}",
-                    tools.takes_keyboard()
-                );
-                if ime_allowed && !tools.takes_keyboard() {
-                    agents.ime(::winit::event::Ime::Commit(text));
-                    skip_text_key = true;
+                if window_focused && ime_allowed && active_page == "techne" && tools.search_text_focus() {
+                    skip_text_key = tools.search_commit_fallback(&text);
+                } else if ime_allowed && !tools.takes_keyboard() {
+                    if agents.takes_keyboard() {
+                        agents.ime(::winit::event::Ime::Commit(text));
+                        skip_text_key = true;
+                    } else {
+                        skip_text_key = state.text_input.ime(&::winit::event::Ime::Commit(text));
+                    }
                 }
             }
             WinitEvent::Input(event) => match event {
@@ -1239,6 +1300,7 @@ tools_takes_keyboard={}; ime_area={:?}; page={}",
             }
 
             display.dispatch_clients(&mut state)?;
+            state.clipboard.tick(&state.seat);
             display.flush_clients()?;
         }
 

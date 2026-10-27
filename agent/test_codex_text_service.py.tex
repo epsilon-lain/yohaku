@@ -1,0 +1,68 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+import json,os,tempfile,unittest,hashlib,time
+from pathlib import Path
+from unittest.mock import patch
+import yohaku_codex_text_service as s
+import yohaku_agent as a
+import yohaku_codex_tasks as tasks
+R=Path(__file__).resolve().parents[1]
+class ServiceTests(unittest.TestCase):
+ def setUp(self):
+  self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup);self.home=Path(self.tmp.name);self.world=self.home/'world'
+  self.env=patch.dict(os.environ,{'HOME':str(self.home)});self.env.start();self.addCleanup(self.env.stop)
+ def test_new_world_routes_registration_and_existing_history_preserved(self):
+  installed=s.setup(self.world);self.assertTrue(all(x.get('installed') for x in installed['templates']))
+  control=tasks.Control(self.world);control.object.command({'command':'chat_submit','id':'existing-preserve','prompt':'do not execute','kind':'chat'})
+  before={p:str(__import__('hashlib').sha256(p.read_bytes()).hexdigest()) for p in self.world.glob('files/**/*.tex')}
+  again=s.setup(self.world);self.assertTrue(all(x.get('preserved') for x in again['templates']))
+  self.assertEqual(before,{p:hashlib.sha256(p.read_bytes()).hexdigest() for p in before})
+  ws=a.Workspace(self.world,R/'bin/loom-linux-x86_64',R/'bin/yohaku_workspace')
+  self.assertIn('Codex',ws.execute({'command':'node_get','id':'codex-text-guide'})['node']['name'])
+ def test_service_reuse_heartbeat_version_and_bounded_stop(self):
+  s.setup(self.world);first=s.ensure(self.world)
+  try:
+   second=s.ensure(self.world);self.assertEqual(first['pid'],second['pid']);self.assertFalse(second['started_new_process'])
+   self.assertEqual(second['operator_version'],'codex-text/3');self.assertTrue(second['healthy']);self.assertEqual(second['project'],str(R))
+   deadline=time.monotonic()+10
+   projection=self.world/'files/codex-text/READINESS.json'
+   while not projection.is_file() and time.monotonic()<deadline:time.sleep(.1)
+   observed=json.loads(projection.read_text())
+   self.assertEqual(observed['format'],'codex-text-readiness/1')
+   self.assertEqual(observed['world'],str(self.world.resolve()))
+   self.assertTrue(observed['sources']['files/codex-text/operators/deepseek-trial.md.tex']['connected'])
+   self.assertLess(time.time()-observed['observed_at'],15)
+   ws=a.Workspace(self.world,R/'bin/loom-linux-x86_64',R/'bin/yohaku_workspace')
+   node=ws.execute({'command':'node_get','id':'codex-text-trial'})['node']
+   self.assertEqual(node['location']['path'],'files/codex-text/operators/deepseek-trial.md.tex')
+   self.assertIn('[control]\ndraft\n[/control]',ws.execute({'command':'read','source':node['location']['path']})['body'])
+   time.sleep(.2);self.assertIn('codex-text/3',Path(first['log_path']).read_text())
+  finally:
+   stopped=s.stop_service(self.world);self.assertTrue(stopped['stopped']);self.assertFalse(stopped.get('running'))
+ def test_existing_output_without_source_is_preserved_and_refused(self):
+  target=self.world/'files/codex-text/OPERATOR.md';target.parent.mkdir(parents=True);target.write_text('unsaved imported output')
+  with self.assertRaisesRegex(ValueError,'Output exists'):s.setup(self.world)
+  self.assertEqual(target.read_text(),'unsaved imported output')
+ def test_launcher_config_is_disabled_without_explicit_enable(self):
+  self.assertFalse(s.ensure_configured(self.home)['enabled'])
+  with patch.object(s,'ROOT',self.home):
+   (self.home/'config').mkdir();(self.home/'config/codex-text-service.json').write_text(json.dumps({'enabled_by_default':True,'launch_on_yohaku_start':True,'world':'../outside','required_permissions':['read','write','run']}))
+   with self.assertRaisesRegex(ValueError,'inside'):s.ensure_configured(self.home)
+if __name__=='__main__':unittest.main()
+````
+
+## 输出与关联
+```yaml
+output: "agent/test_codex_text_service.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

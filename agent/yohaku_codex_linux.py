@@ -13,6 +13,7 @@ import tempfile
 
 # Import the existing bridge module only when needed; avoid import cycles.
 import yohaku_apps as apps
+import yohaku_codex_provider as provider
 
 PROFILE='yohaku-control'
 PROBE='''import json,pathlib,sys
@@ -86,7 +87,7 @@ def _safe_auth_copy(target):
     finally:os.close(fd)
 
 
-def launch(address):
+def launch(address, selection=None):
     if not is_linux_codex(address):
         raise ValueError('Choose a native x86_64 Linux Codex ELF executable')
     executable=apps.address_path(address)
@@ -95,24 +96,40 @@ def launch(address):
     cache=Path.home()/'.cache/yohaku'
     cache.mkdir(mode=0o700,parents=True,exist_ok=True)
     runtime=tempfile.TemporaryDirectory(prefix='codex-bridge-',dir=cache)
+    relay=None
     try:
         outer=Path(runtime.name);home=outer/'state';cwd=outer/'control'
         home.mkdir(mode=0o700);cwd.mkdir(mode=0o700);(home/'tmp').mkdir(mode=0o700)
         (cwd/'read-control').write_text('yohaku-readable-control')
         (outer/'outside-read').write_text('outside-canary')
-        (home/'config.toml').write_text(_runtime_config(executable,cwd))
+        selection=provider.load() if selection is None else dict(selection)
+        relay=provider.Relay(selection['deepseek_key']) if selection['active']=='deepseek' else None
+        policy=_runtime_config(executable,cwd)
+        if relay is not None:
+            (home/'models.json').write_text(json.dumps(provider.catalog()))
+            policy=provider.runtime_config(home,relay.base_url,policy)
+        policy+='\n[shell_environment_policy]\ninherit = \"none\"\nignore_default_excludes = false\n'
+        (home/'config.toml').write_text(policy)
         (home/'config.toml').chmod(0o600)
-        _safe_auth_copy(home/'auth.json')
+        if relay is None:
+            policy='model_provider = "openai"\n'+policy
+            (home/'config.toml').write_text(policy)
+            _safe_auth_copy(home/'auth.json')
         env={'PATH':'/usr/bin:/bin:/usr/sbin:/sbin','HOME':str(home),'CODEX_HOME':str(home),
              'TMPDIR':str(home/'tmp'),'LANG':'C.UTF-8','PYTHONDONTWRITEBYTECODE':'1'}
+        if relay is not None:env[provider.ENV_KEY]=relay.token
         child=subprocess.Popen([str(executable),'app-server','--listen','stdio://'],env=env,cwd=cwd,
-                               stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,start_new_session=True)
+                               stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,start_new_session=True)
+        child.yohaku_provider_relay=relay
         child.yohaku_linux=True
         child.yohaku_runtime=runtime
         child.yohaku_info={'cwd':str(cwd),'outside':str(outer),'readProbe':str(outer/'outside-read'),
                            'python':python,'executable':str(executable)}
+        child.yohaku_info['provider']=selection['active']
+        child.yohaku_info['selected_model']=provider.MODEL if relay is not None else selection.get('openai_model')
         return child
     except BaseException:
+        if relay is not None:relay.close()
         runtime.cleanup()
         raise
 
@@ -138,6 +155,8 @@ def verify_boundaries(connection):
 
 
 def cleanup(child):
+    relay=getattr(child,'yohaku_provider_relay',None)
+    if relay is not None:relay.close()
     runtime=getattr(child,'yohaku_runtime',None)
     if runtime is not None:runtime.cleanup()
 

@@ -23,4 +23,3 @@ libc = "0.2"
 
 [profile.release]
 strip = true
-

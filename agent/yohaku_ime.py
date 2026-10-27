@@ -1,0 +1,167 @@
+"""Keep the X11 input service independent of Yohaku and tool process groups."""
+import ctypes
+import ctypes.util
+import os
+from pathlib import Path
+import select
+import shutil
+import subprocess
+import time
+
+UNIT = 'yohaku-fcitx-x11.service'
+MARKER = '# Managed by Yohaku X11 IME lifecycle support\n'
+
+
+def session_environment(env):
+    result = dict(env)
+    runtime = Path(env.get('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}'))
+    result['XDG_RUNTIME_DIR'] = str(runtime)
+    if not result.get('DBUS_SESSION_BUS_ADDRESS'):
+        if not (runtime/'bus').is_socket():
+            raise RuntimeError('X11 IME requires the existing user session bus; no bus was started.')
+        result['DBUS_SESSION_BUS_ADDRESS'] = 'unix:path='+str(runtime/'bus')
+    return result
+
+
+def command(arguments, env):
+    result = subprocess.run(arguments, env=env, capture_output=True, text=True, timeout=20)
+    if result.returncode:
+        raise RuntimeError(f'IME service operation failed ({Path(arguments[0]).name}, exit={result.returncode}); inspect journalctl --user -u {UNIT}')
+    return result.stdout.strip()
+
+
+def bus_owner(env):
+    result = command(['busctl','--user','call','org.freedesktop.DBus','/org/freedesktop/DBus',
+                      'org.freedesktop.DBus','NameHasOwner','s','org.fcitx.Fcitx5'], env)
+    return result == 'b true'
+
+
+def unit_text(environment_file, executable):
+    return MARKER+f'''[Unit]
+Description=Yohaku X11 Fcitx service (independent of application lifetime)
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=dbus
+BusName=org.fcitx.Fcitx5
+EnvironmentFile={environment_file}
+UnsetEnvironment=WAYLAND_DISPLAY WAYLAND_SOCKET
+ExecStart={executable} -D --disable=wayland,waylandim
+Restart=always
+RestartSec=2
+TimeoutStartSec=15
+TimeoutStopSec=5
+
+[Install]
+WantedBy=default.target
+'''
+
+
+def environment_text(env):
+    rows = []
+    for name in ['DISPLAY','XAUTHORITY','XDG_RUNTIME_DIR','DBUS_SESSION_BUS_ADDRESS']:
+        if name not in env:
+            continue
+        value = env[name]
+        if any(character in value for character in '\r\n\0'):
+            raise ValueError('Invalid X11 session environment value')
+        rows.append(name+'="'+value.replace('\\','\\\\').replace('"','\\"')+'"')
+    return '\n'.join(rows)+'\n'
+
+
+def install(env):
+    config = Path(env.get('XDG_CONFIG_HOME', str(Path(env['HOME'])/'.config')))
+    directory = config/'systemd/user'
+    directory.mkdir(parents=True, exist_ok=True)
+    environment_file = config/'yohaku/ime-x11.env'
+    environment_file.parent.mkdir(parents=True, exist_ok=True)
+    executable = shutil.which('fcitx5', path=env.get('PATH'))
+    if not executable:
+        raise RuntimeError('Fcitx5 is not installed; Yohaku did not install anything.')
+    path = directory/UNIT
+    if path.exists() and not path.read_text().startswith(MARKER):
+        raise RuntimeError('Existing IME unit is not Yohaku-managed; refusing to overwrite it.')
+    text = unit_text(str(environment_file), executable)
+    changed = not path.exists() or path.read_text() != text
+    environment_file.write_text(environment_text(env))
+    environment_file.chmod(0o600)
+    if changed:
+        path.write_text(text)
+        command(['systemctl','--user','daemon-reload'], env)
+    command(['systemctl','--user','enable',UNIT], env)
+    return path
+
+
+class XimSelection:
+    def __init__(self, display):
+        self.library = ctypes.CDLL(ctypes.util.find_library('X11'))
+        for name, arguments, result in [
+            ('XOpenDisplay',[ctypes.c_char_p],ctypes.c_void_p),
+            ('XDefaultRootWindow',[ctypes.c_void_p],ctypes.c_ulong),
+            ('XInternAtom',[ctypes.c_void_p,ctypes.c_char_p,ctypes.c_int],ctypes.c_ulong),
+            ('XGetSelectionOwner',[ctypes.c_void_p,ctypes.c_ulong],ctypes.c_ulong),
+            ('XSelectInput',[ctypes.c_void_p,ctypes.c_ulong,ctypes.c_long],ctypes.c_int),
+            ('XPending',[ctypes.c_void_p],ctypes.c_int),
+            ('XNextEvent',[ctypes.c_void_p,ctypes.c_void_p],ctypes.c_int),
+            ('XConnectionNumber',[ctypes.c_void_p],ctypes.c_int),
+            ('XCloseDisplay',[ctypes.c_void_p],ctypes.c_int),
+        ]:
+            function = getattr(self.library,name)
+            function.argtypes, function.restype = arguments, result
+        self.connection = self.library.XOpenDisplay(display.encode())
+        if not self.connection:
+            raise RuntimeError('Cannot connect to the configured X11 display for IME readiness.')
+        self.atom = self.library.XInternAtom(self.connection,b'@server=fcitx',0)
+        self.library.XSelectInput(self.connection,self.library.XDefaultRootWindow(self.connection),1 << 22)
+
+    def owner(self):
+        return self.library.XGetSelectionOwner(self.connection,self.atom)
+
+    def wait(self, timeout):
+        deadline = time.monotonic()+timeout
+        event = (ctypes.c_long*24)()
+        while True:
+            if self.owner():
+                return
+            remaining = deadline-time.monotonic()
+            if remaining <= 0:
+                raise RuntimeError('Fcitx D-Bus service started but XIM selection did not become ready; no client success is claimed.')
+            while self.library.XPending(self.connection):
+                self.library.XNextEvent(self.connection,ctypes.byref(event))
+            if self.owner():
+                return
+            select.select([self.library.XConnectionNumber(self.connection)],[],[],remaining)
+
+    def close(self):
+        self.library.XCloseDisplay(self.connection)
+
+
+def ensure_x11_ime(env):
+    session = session_environment(env)
+    selection = XimSelection(session['DISPLAY'])
+    try:
+        owns_bus, owns_xim = bus_owner(session), bool(selection.owner())
+        if owns_bus and owns_xim:
+            return 'existing service reused (not restarted)'
+        if owns_bus and not owns_xim:
+            service_pid = command(['systemctl','--user','show',UNIT,'-p','MainPID','--value'], session)
+            bus_pid = command(['busctl','--user','call','org.freedesktop.DBus','/org/freedesktop/DBus',
+                               'org.freedesktop.DBus','GetConnectionUnixProcessID','s','org.fcitx.Fcitx5'], session)
+            if service_pid.isdigit() and int(service_pid) > 0 and bus_pid == 'u '+service_pid:
+                selection.wait(8)
+                return f'{UNIT} ready after pending XIM initialization'
+        if owns_bus or owns_xim:
+            raise RuntimeError('Existing Fcitx has only D-Bus or XIM on this display; refusing to replace it. Inspect session/display connection.')
+        install(session)
+        command(['systemctl','--user','start',UNIT], session)
+        selection.wait(8)
+        if not bus_owner(session):
+            raise RuntimeError('Fcitx lost its D-Bus name while XIM was starting.')
+        return f'{UNIT} ready (D-Bus + XIM); remains running when Yohaku exits'
+    finally:
+        selection.close()
+
+
+if __name__ == '__main__':
+    print(ensure_x11_ime(os.environ))

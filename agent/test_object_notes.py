@@ -1,0 +1,164 @@
+"""Object-note regressions use actual CLI/Loom; native mode uses controlled RPC/Codex frames, no model."""
+import json,sys,tempfile,unittest
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).parent))
+import yohaku_agent as agent
+import yohaku_codex as codex
+
+class ObjectNotes(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory(prefix='object-notes-');self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name)/'world';self.workspace=agent.Workspace(self.root,agent.ROOT/'bin/loom-linux-x86_64')
+        self.tools=agent.Tools(self.workspace.execute)
+    def call(self,tool_name,**args):
+        value=self.tools.call(tool_name,args);self.assertTrue(value['ok'],value);return value['result']
+    def document(self,name='module',summary='笔记独有词 中文😀 set_selection_bytes',node=True,links=(),directory='project',**extra):
+        args=dict(name=name+'.txt',directory=directory,body='BODY_ONLY\n## AI 笔记\n```yaml\nsummary: fake_body_memory\n```\n',notes=dict(source_version=1,writer='fixture',summary=summary,**extra))
+        if node:args['node']=dict(id=name,name='Object '+name,description='Description '+name,links=list(links))
+        return self.call('create_document',**args)['source']
+    def verify(self,match,query=None):
+        read=self.call('read_range',**match['location']);self.assertEqual(read['text'],match['text']);self.assertEqual(read['revision'],match['revision'])
+        if match['match_location']:
+            self.assertEqual(self.call('read_range',**match['match_location'])['text'],query)
+        self.assertEqual(match['kind'],'creation_note')
+    def test_actual_note_only_body_fake_heading_and_plain_files_do_not_leak(self):
+        source=self.document()
+        self.call('create_document',name='no-notes.txt',directory='project',body='## AI 笔记\n```yaml\nsummary: fake_body_memory\n```\n')
+        self.call('write_text',path='memory/plain.txt',revision=None,text='笔记独有词\n## AI 笔记\nsummary: fake_body_memory')
+        for query in ['笔记独有词','中文😀','set_selection_bytes']:
+            result=self.call('search_notes',path='files',query=query)
+            self.assertFalse(result['incomplete']);self.assertEqual([m['source'] for m in result['matches']],[source])
+            self.verify(result['matches'][0],query)
+        for query in ['BODY_ONLY','fake_body_memory']:
+            result=self.call('search_notes',path='files',query=query);self.assertFalse(result['incomplete']);self.assertEqual(result['matches'],[])
+            self.assertTrue(self.call('search_text',path='files',query=query)['matches'])
+    def test_actual_optional_fields_metadata_and_escaped_yaml_values(self):
+        source=self.document(tags=['标签中文'],aliases=['buffer_alias'])
+        for query in ['标签中文','buffer_alias','Object module','Description module']:
+            result=self.call('search_notes',path=source,query=query);m=result['matches'][0];self.verify(m,query)
+            self.assertTrue(m['matched_fields']);self.assertEqual(m['object']['id'],'module')
+        raw=self.call('read_document',source=source);encoded=raw['text'].replace('中文😀',r'\u4e2d\u6587\U0001f600')
+        self.call('write_document',source=source,revision=raw['revision'],text=encoded,body_only=False)
+        m=self.call('search_notes',path=source,query='中文😀')['matches'][0]
+        self.verify(m);self.assertIsNone(m['match_location']);self.assertIn('中文😀',m['matched_fields'][0]['text'])
+    def test_framing_before_body_before_routing_crlf_and_long_fences(self):
+        source=self.document();original=self.call('read_document',source=source)
+        head,note=original['text'].rsplit('\n## AI 笔记\n',1);note='## AI 笔记\n'+note
+        note=note.replace('```yaml','````yaml').replace('\n```\n','\n````\n')
+        for where in ['before_body','before_routing','after_routing']:
+            if where=='before_body':text=head.replace('## 正文',note+'\n## 正文',1)
+            elif where=='before_routing':text=head.replace('## 输出与关联',note+'\n## 输出与关联',1)
+            else:text=head+'\n'+note
+            text=text.replace('\n','\r\n')
+            current=self.call('read_document',source=source)
+            self.call('write_document',source=source,revision=current['revision'],text=text,body_only=False)
+            result=self.call('search_notes',path=source,query='笔记独有词');self.assertFalse(result['incomplete'],result)
+            self.assertEqual(len(result['matches']),1);self.verify(result['matches'][0],'笔记独有词')
+    def test_paging_updates_reload_and_derived_index_rebuild(self):
+        sources=[self.document(name='item'+str(i),summary='old_memory😀') for i in range(3)]
+        found=[];args=dict(path='files/project',query='old_memory😀',limit=1)
+        while args:
+            page=self.call('search_notes',**args);found+=page['matches'];args=page['next']
+            self.assertFalse(page['incomplete']);self.assertLessEqual(len(found),3)
+        self.assertEqual(len({m['source'] for m in found}),3)
+        first=next(m for m in found if m['source']==sources[0]);self.verify(first,'old_memory😀')
+        raw=self.call('read_document',source=sources[0]);self.call('patch_document',source=sources[0],revision=raw['revision'],old='old_memory😀',new='new_memory中文',body_only=False)
+        self.assertEqual(self.call('search_notes',path=sources[0],query='old_memory😀')['matches'],[])
+        m=self.call('search_notes',path=sources[0],query='new_memory中文')['matches'][0];self.verify(m,'new_memory中文');self.assertNotEqual(m['revision'],first['revision'])
+        (self.root/'.yohaku/nodes.json').write_text('corrupt derived cache')
+        self.tools=agent.Tools(agent.Workspace(self.root,agent.ROOT/'bin/loom-linux-x86_64').execute)
+        again=self.call('search_notes',path=sources[0],query='new_memory中文')['matches'][0];self.verify(again,'new_memory中文');self.assertEqual(again['revision'],m['revision'])
+    def test_multi_parent_cycles_tests_and_missing_links_are_declared_not_folders(self):
+        child=self.document(name='child',links=[dict(relation='related',target='parentA'),dict(relation='tests',target='testcase'),dict(relation='related',target='missing')])
+        for name in ['parentA','parentB']:self.document(name=name,summary='parent',links=[dict(relation='contains',target='child')])
+        self.document(name='testcase',summary='testing',links=[dict(relation='related',target='child')])
+        m=self.call('search_notes',path=child,query='set_selection_bytes')['matches'][0]
+        self.assertEqual(m['object']['status'],'resolved')
+        self.assertEqual({i['id'] for i in m['object']['incoming'] if i['relation']=='contains'},{'parentA','parentB'})
+        node=self.call('get_node',id=m['node_id'])['node'];self.assertEqual(node['location']['path'],child)
+        self.assertTrue(any(link['status']=='missing' for link in node['links']))
+        walked=self.call('walk_nodes',id='child',max_depth=3,limit=10)['nodes'];self.assertEqual(len({x['node']['id'] for x in walked}),len(walked))
+    def test_absent_duplicate_invalid_and_unparseable_documents_are_explicit(self):
+        no=self.document(name='no',node=False);m=self.call('search_notes',path=no,query='笔记独有词')['matches'][0]
+        self.assertIsNone(m['node_id']);self.assertEqual(m['object']['status'],'no_node');self.assertNotIn('id',m['object'])
+        dup=self.document(name='dup');other=self.document(name='other')
+        path=self.root/other;path.write_text(path.read_text().replace('"id":"other"','"id":"dup"').replace('"id": "other"','"id": "dup"'))
+        m=self.call('search_notes',path=dup,query='笔记独有词')['matches'][0]
+        self.assertEqual(m['node_id'],'dup');self.assertEqual(m['object']['status'],'ambiguous');self.assertEqual(m['object']['duplicate_source_count'],2)
+        bad=self.document(name='invalid');p=self.root/bad;p.write_text(p.read_text().replace('Object invalid',''))
+        m=self.call('search_notes',path=bad,query='笔记独有词')['matches'][0];self.assertEqual(m['object']['status'],'invalid_node');self.assertIn('error',m['object']);self.assertEqual(m['node_id'],'invalid')
+        (self.root/'files/project/broken.tex').write_text('broken 笔记独有词')
+        result=self.call('search_notes',path='files/project',query='definitely_absent')
+        self.assertEqual(result['matches'],[]);self.assertTrue(result['incomplete']);self.assertTrue(result['note_issues'])
+    def test_active_policy_excludes_archives_restore_and_cache_not_ordinary_name(self):
+        active=self.document(name='active');self.document(name='archived',directory='history/snapshots');self.document(name='restored',directory='history/restored');self.document(name='cached',directory='project/target');ordinary=self.document(name='ordinary',directory='archive-like')
+        self.call('write_text',path='memory/node-index-policy.json',revision=None,text=json.dumps(dict(format='yohaku-node-index-policy/1',exclude_paths=['files/history/snapshots','files/history/restored'])))
+        result=self.call('search_notes',path='files',query='笔记独有词');self.assertEqual({m['source'] for m in result['matches']},{active,ordinary})
+        for path in ['files/history/snapshots','files/history/restored','files/project/target']:
+            self.assertEqual(self.call('search_notes',path=path,query='笔记独有词')['matches'],[])
+        self.assertIn('笔记独有词',self.call('read_text',path='files/history/restored/restored.txt.tex')['text'])
+    def test_source_change_during_resolution_is_not_returned_as_current(self):
+        source=self.document();changed=False
+        def remote(request):
+            nonlocal changed
+            if request['command']=='node_index' and not changed:
+                p=self.root/source;p.write_text(p.read_text().replace('笔记独有词','new_actual_memory'));changed=True
+            return self.workspace.execute(request)
+        self.tools=agent.Tools(remote)
+        result=self.call('search_notes',path=source,query='笔记独有词');self.assertTrue(result['incomplete']);self.assertEqual(result['matches'],[])
+        self.assertTrue(self.call('search_notes',path=source,query='new_actual_memory')['matches'])
+    def test_bounded_scan_feedback_and_shared_declarations_permissions(self):
+        calls=[]
+        def remote(request):
+            calls.append(request)
+            if request['command']=='directory':return dict(search_scope='active',entries=[dict(path=f'files/{i}.tex',kind='file') for i in range(1001)])
+            return dict(text='',source=request['path'],note_search_supported=True,ai_note={},note_span=None)
+        result=agent.Tools(remote).call('search_notes',dict(path='files',query='absent'))['result']
+        self.assertEqual(result['scanned'],1000);self.assertTrue(result['incomplete']);self.assertTrue(result['scan_limited']);self.assertIsNone(result['next'])
+        direct=next(t for t in self.tools.definitions if t['name']=='search_notes')
+        dynamic=next(t for t in codex.dynamic_definitions(self.tools) if t['name']=='yohaku_search_notes')
+        self.assertEqual(direct['parameters'],dynamic['inputSchema']);self.assertIn('search_notes',agent.SYSTEM)
+        denied=agent.Tools(self.workspace.execute,permissions={'read':False});self.assertFalse(denied.call('search_notes',dict(path='files',query='a'))['ok'])
+        for kwargs in [dict(limit=0),dict(offset=-1),dict(query='a\nb'),dict(context_window=2)]:
+            args=dict(path='files',query='a');args.update(kwargs);self.assertFalse(self.tools.call('search_notes',args)['ok'])
+
+def native():
+    """Actual Python Tools and Codex _run with controlled protocol frames, Rust executes all world RPC."""
+    sequence=0;trace=[]
+    def remote(request):
+        nonlocal sequence
+        sequence+=1
+        print(json.dumps(dict(event='request',tool=tools.active_name,request=request,id=sequence)),flush=True)
+        reply=json.loads(sys.stdin.readline());trace.append(dict(tool=tools.active_name,request=request,reply=reply))
+        if not reply.get('ok'):raise agent.ToolError(reply.get('error','native rejected'))
+        return reply['result']
+    tools=agent.Tools(remote,permissions={'read':True,'write':False,'run':False,'import':False,'delete':False})
+    args=dict(path='files/native.txt.tex',query='native_memory中文')
+    direct=tools.call('search_notes',args);assert direct['ok'],direct
+    match=direct['result']['matches'][0];assert tools.call('read_range',match['location'])['result']['revision']==match['revision']
+    class Diagnostic:
+        def __init__(self):self.data={}
+        def __getattr__(self,name):return lambda *a,**kw:None
+    class Connection:
+        info={'cwd':'/tmp/empty-control'};linux=True
+        def request(self,name,args):
+            if name=='thread/start':
+                assert any(t['name']=='yohaku_search_notes' for t in args['dynamicTools']);assert 'search_notes' in args['developerInstructions']
+                return dict(thread={'id':'thread'},activePermissionProfile={'id':codex.CONTROL_PROFILE})
+            if name=='config/read':return {'config':{}}
+            return {'turn':{'id':'turn'}}
+        def send(self,value):
+            result=json.loads(value['result']['contentItems'][0]['text']);assert result['ok'],result
+            assert result['result']['matches'][0]['source']==match['source']
+        def close(self):pass
+    events=iter([dict(id=1,method='item/tool/call',params=dict(threadId='thread',tool='yohaku_search_notes',arguments=args)),dict(method='turn/completed',params=dict(threadId='thread',turn=dict(id='turn',status='completed')))])
+    codex.connect=lambda *a:(Connection(),dict(model='offline',models=['offline']))
+    codex.verify_config=lambda *a,**kw:None
+    codex.wait_for_turn_event=lambda *a:next(events)
+    result=codex._run(dict(config={'codex_entry':'offline-fixture'},prompt='controlled offline fixture',history=[],context={}),tools,lambda value:None,Diagnostic())
+    assert result['tool_calls']==1
+    print(json.dumps(dict(event='complete',ok=True,trace=trace,model_requests=0,codex_event_source='synthetic protocol frames; no engine, account or provider connection')),flush=True)
+
+if __name__=='__main__':
+    if sys.argv[1:] == ['native']:native()
+    else:unittest.main()

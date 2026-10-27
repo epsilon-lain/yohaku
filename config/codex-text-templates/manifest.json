@@ -1,0 +1,59 @@
+{
+  "format": "codex-text-template-set/1",
+  "templates": [
+    {
+      "asset": "config/codex-text-templates/operator.source.txt",
+      "source": "files/codex-text/OPERATOR.md.tex",
+      "output": "files/codex-text/OPERATOR.md",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/trial.source.txt",
+      "source": "files/codex-text/operators/deepseek-trial.md.tex",
+      "output": "files/codex-text/operators/deepseek-trial.md",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/guide.source.txt",
+      "source": "files/codex-text/README.md.tex",
+      "output": "files/codex-text/README.md",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/maintenance.source.txt",
+      "source": "files/codex-text/MAINTENANCE.md.tex",
+      "output": "files/codex-text/MAINTENANCE.md",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/open-operator.source.txt",
+      "source": "files/codex-text/open-operator.py.tex",
+      "output": "files/codex-text/open-operator.py",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/chat-seed.source.txt",
+      "source": "files/chat-runtime-20261025/requests.json.tex",
+      "output": "files/chat-runtime-20261025/requests.json",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/update.source.txt",
+      "source": "files/codex-text/UPDATE.json.tex",
+      "output": "files/codex-text/UPDATE.json",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/update-result.source.txt",
+      "source": "files/codex-text/UPDATE-RESULT.json.tex",
+      "output": "files/codex-text/UPDATE-RESULT.json",
+      "preserve_existing": true
+    },
+    {
+      "asset": "config/codex-text-templates/update-guide.source.txt",
+      "source": "files/codex-text/HOST-UPDATE-GUIDE.md.tex",
+      "output": "files/codex-text/HOST-UPDATE-GUIDE.md",
+      "preserve_existing": true
+    }
+  ]
+}

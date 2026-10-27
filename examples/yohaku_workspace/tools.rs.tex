@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":57704,"path":"/root/projects/yohaku/release-prep/yohaku/examples/yohaku_workspace/tools.rs","sha256":"594c633c5e100dfa118afecd673a8163fa30357d1105dc174a671a5ec821837f"}
 ---
 
 ## 正文
-```text
+````text
 //! Techne's native launcher UI; every process is owned by the sandbox runner.
 use super::workspace_panel::Panel;
 use serde_json::{Value, json};
@@ -16,7 +15,7 @@ use smithay::{
     utils::Rectangle,
 };
 use std::{
-    io::{BufRead, BufReader},
+    io::{BufRead, BufReader, Write},
     process::{Child, Command, Stdio},
     sync::mpsc::{self, Receiver, SyncSender},
     time::{Duration, Instant},
@@ -28,8 +27,27 @@ use yohaku::{
 const WRITE_ID: u64 = u64::MAX - 1;
 enum Event {
     Runner(u64, Value),
+    RunnerClosed(u64, Result<(), String>),
     Paste(u64, Result<String, String>),
     Apps(u64, Value, bool),
+}
+fn read_runner(stream: impl BufRead, tx: SyncSender<Event>, epoch: u64) {
+    let result = (|| -> Result<(), String> {
+        let mut failure = None;
+        for line in stream.lines() {
+            let line = line.map_err(|error| format!("Runner output read failed: {error}"))?;
+            let value: Value = match serde_json::from_str(&line) {
+                Ok(value) => value,
+                Err(_) => {
+                    failure = Some("Invalid runner JSON event".into());
+                    continue;
+                }
+            };
+            tx.send(Event::Runner(epoch, value)).map_err(|_| "Runner event receiver closed")?;
+        }
+        failure.map_or(Ok(()), Err)
+    })();
+    let _ = tx.send(Event::RunnerClosed(epoch, result));
 }
 pub struct ToolPanel {
     root: String,
@@ -52,6 +70,9 @@ pub struct ToolPanel {
     exit_code: Option<i32>,
     job_log: Option<String>,
     epoch: u64,
+    run_id: Option<String>,
+    launcher_exit: Option<String>,
+    runner_stream: Option<Result<(), String>>,
     tx: SyncSender<Event>,
     rx: Receiver<Event>,
     socket: String,
@@ -63,12 +84,14 @@ pub struct ToolPanel {
     lookup_child: Option<Child>,
     search: Editor,
     search_focused: bool,
+    search_preedit: String,
     address_editor: bool,
     menu: Option<(i32, i32)>,
     last_click: Option<(String, Instant)>,
     open_after_save: Option<String>,
     catalog_status: String,
     pub codex_connection: Option<Value>,
+    terminal_windows: Vec<(String,Child)>,
 }
 impl ToolPanel {
     pub fn new(socket: String) -> Self {
@@ -94,6 +117,9 @@ impl ToolPanel {
             exit_code: None,
             job_log: None,
             epoch: 0,
+            run_id: None,
+            launcher_exit: None,
+            runner_stream: None,
             tx,
             rx,
             socket,
@@ -105,12 +131,14 @@ impl ToolPanel {
             lookup_child: None,
             search: Editor::default(),
             search_focused: false,
+            search_preedit: String::new(),
             address_editor: false,
             menu: None,
             last_click: None,
             open_after_save: None,
             catalog_status: "Scan local apps to include Linux, commands and Windows".into(),
             codex_connection: None,
+            terminal_windows: Vec::new(),
         }
     }
     fn log(&mut self, text: String) {
@@ -166,6 +194,7 @@ impl ToolPanel {
             self.catalog_loaded = false;
             self.catalog.clear();
             self.search.load(String::new());
+            self.search_preedit.clear();
             self.search_focused = false;
             self.menu = None;
             self.last_click = None;
@@ -265,11 +294,7 @@ impl ToolPanel {
                 {
                     match result {
                         Ok(s) => {
-                            let clean: String =
-                                s.chars().filter(|c| !c.is_control()).take(1024).collect();
-                            self.search.insert(&clean);
-                            self.selected = 0;
-                            self.list_top = 0;
+                            self.insert_search_text(&s);
                         }
                         Err(e) => self.status = e,
                     }
@@ -289,30 +314,40 @@ impl ToolPanel {
                         Err(e) => self.status = e,
                     }
                 }
-                Event::Runner(epoch, v) if epoch == self.epoch => {
-                    match v["event"].as_str().unwrap_or("") {
-                        "running" if self.child.is_some() => {
+                Event::Runner(epoch, value) if epoch == self.epoch => {
+                    let pending = matches!(self.state.as_str(), "starting" | "running");
+                    match value["event"].as_str().unwrap_or("") {
+                        "running" if pending => {
                             self.state = "running".into();
                             self.status = format!("Running {} inside this world", self.active);
-                            self.show_workspace = v["wayland"] == true;
-                            self.job_log = v["log_path"].as_str().map(str::to_owned);
+                            self.show_workspace = value["wayland"] == true;
+                            self.job_log = value["log_path"].as_str().map(str::to_owned);
                         }
-                        "status" if self.child.is_some() => {
-                            self.status = v["text"].as_str().unwrap_or("").into()
+                        "status" if pending => {
+                            self.status = value["text"].as_str().unwrap_or("").into();
                         }
-                        "error" => {
+                        "error" if pending => {
                             self.state = "failed".into();
-                            self.status = v["text"].as_str().unwrap_or("Tool failed").into();
+                            self.status = value["text"].as_str().unwrap_or("Tool failed").into();
                             self.log(self.status.clone());
                         }
-                        "log" => self.log(v["text"].as_str().unwrap_or("").into()),
-                        "exit" => {
-                            self.state = if v["code"] == 0 { "finished" } else { "failed" }.into();
-                            self.status = format!("Tool {} exited: {}", self.active, v["code"]);
-                            self.exit_code = v["code"].as_i64().map(|n| n as i32);
+                        "log" => self.log(value["text"].as_str().unwrap_or("").into()),
+                        "exit" if self.exit_code.is_none() => {
+                            if let Some(code) = value["code"].as_i64().and_then(|code| i32::try_from(code).ok()) {
+                                self.state = if code == 0 { "finished" } else { "failed" }.into();
+                                self.status = format!("Tool {} exited: {code}", self.active);
+                                self.exit_code = Some(code);
+                                self.show_workspace = false;
+                            } else {
+                                self.state = "failed".into();
+                                self.status = "Invalid target exit event; exit code is unknown".into();
+                            }
                         }
                         _ => (),
                     }
+                }
+                Event::RunnerClosed(epoch, result) if epoch == self.epoch => {
+                    self.runner_stream = Some(result);
                 }
                 _ => (),
             }
@@ -323,14 +358,27 @@ impl ToolPanel {
             }
         }
         if let Some(child) = self.child.as_mut() {
-            if let Ok(Some(code)) = child.try_wait() {
-                self.child = None;
-                self.show_workspace = false;
-                if self.state == "starting" || self.state == "running" {
-                    self.state = if code.success() { "finished" } else { "failed" }.into();
-                    self.status = format!("Tool ended: {code}");
-                    self.exit_code = code.code();
+            match child.try_wait() {
+                Ok(Some(code)) => {
+                    self.child = None;
+                    self.launcher_exit = Some(code.to_string());
                 }
+                Ok(None) => (),
+                Err(error) => {
+                    if matches!(self.state.as_str(), "starting" | "running") {
+                        self.status = format!("Unable to observe launcher exit: {error}");
+                    }
+                }
+            }
+        }
+        if let (Some(launcher), Some(stream)) = (&self.launcher_exit, &self.runner_stream) {
+            self.show_workspace = false;
+            if self.exit_code.is_none() && matches!(self.state.as_str(), "starting" | "running") {
+                self.state = "failed".into();
+                self.status = match stream {
+                    Ok(()) => format!("Tool connection ended without an exit event: {launcher}"),
+                    Err(error) => format!("{error}; launcher {launcher}; target exit unknown"),
+                };
             }
         }
     }
@@ -381,7 +429,7 @@ impl ToolPanel {
         let root = self.root.clone();
         let tx = self.tx.clone();
         self.catalog_status = if codex {
-            "Connecting existing Windows Codex; checking login and read-only execution..."
+            "Connecting Codex; checking login and read-only execution..."
         } else if development {
             "Preparing the Loom-managed Yohaku development copy..."
         } else if address.is_some() {
@@ -482,6 +530,7 @@ impl ToolPanel {
         &self.active
     }
     pub fn blur(&mut self) {
+        self.search_preedit.clear();
         self.search_focused = false;
         self.menu = None;
         self.last_click = None;
@@ -607,7 +656,13 @@ impl ToolPanel {
         panel.queue_agent(WRITE_ID,json!({"command":"write_text","path":REGISTRY_PATH,"text":text,"expected":expected,"__world_root":panel.root}));
     }
     pub fn run(&mut self, id: &str, panel: &Panel) -> Result<Value, String> {
-        if self.child.is_some() {
+        self.run_parameters(id, &json!({}), panel)
+    }
+    fn run_parameters(&mut self, id: &str, parameters: &Value, panel: &Panel) -> Result<Value, String> {
+        if !parameters.is_object() || parameters.as_object().unwrap().values().any(|v| !v.is_string()) {
+            return Err("parameters must be an object of strings".into());
+        }
+        if self.child.is_some() || (self.run_id.is_some() && self.runner_stream.is_none() && self.state != "stopped") {
             return Err("Stop the current tool before launching another".into());
         }
         if self.pending.is_some() {
@@ -624,6 +679,8 @@ impl ToolPanel {
         {
             return Err("Unknown tool id".into());
         }
+        let entry = registry["tools"].as_array().unwrap().iter().find(|t| t["id"] == id).unwrap();
+        yohaku::techne::validate_parameter_values(entry, parameters)?;
         self.registry = registry;
         self.root = panel.root.clone();
         self.epoch += 1;
@@ -635,6 +692,8 @@ impl ToolPanel {
                 &panel.root,
                 "--socket",
                 &self.socket,
+                "--parameters",
+                &parameters.to_string(),
                 "run",
                 id,
             ])
@@ -648,16 +707,10 @@ impl ToolPanel {
         let stdout = child.stdout.take().unwrap();
         let tx = self.tx.clone();
         let epoch = self.epoch;
-        std::thread::spawn(move || {
-            for line in BufReader::new(stdout).lines() {
-                let Some(v) = line.ok().and_then(|s| serde_json::from_str(&s).ok()) else {
-                    break;
-                };
-                if tx.send(Event::Runner(epoch, v)).is_err() {
-                    break;
-                }
-            }
-        });
+        std::thread::spawn(move || read_runner(BufReader::new(stdout), tx, epoch));
+        self.launcher_exit = None;
+        self.runner_stream = None;
+        self.run_id = Some(format!("{}-{}-{}", std::process::id(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap_or_default().as_nanos(), self.epoch));
         self.child = Some(child);
         self.active = id.into();
         self.state = "starting".into();
@@ -666,7 +719,7 @@ impl ToolPanel {
         self.logs.clear();
         self.status = "Checking sandbox before tool launch...".into();
         Ok(
-            json!({"tool_id":id,"state":"starting","note":"Startup requested; call tool_status to check success"}),
+            json!({"tool_id":id,"run_id":self.run_id,"state":"starting","note":"Startup requested; call tool_status to check success"}),
         )
     }
     pub fn stop(&mut self) {
@@ -679,11 +732,48 @@ impl ToolPanel {
         self.state = "stopped".into();
         self.show_workspace = false;
     }
+    fn inspect_tool(&self, address: &str, panel: &Panel) -> Result<Value, String> {
+        let result = Command::new("/usr/bin/python3")
+            .args(["-B", "agent/yohaku_tools.py", "--root", &panel.root, "--path", address, "inspect"])
+            .env_clear().env("PATH", "/usr/bin:/bin").output().map_err(|error| error.to_string())?;
+        let value: Value = serde_json::from_slice(&result.stdout).map_err(|_| "Invalid tool inspection response")?;
+        if !result.status.success() || value["event"] != "inspection" {
+            return Err(value["text"].as_str().unwrap_or("Tool inspection failed").into());
+        }
+        Ok(value["result"].clone())
+    }
+    fn terminal_request(&self, request: &Value, panel: &Panel) -> Result<Value, String> {
+        let mut clean = request.clone();
+        if let Some(object) = clean.as_object_mut() {
+            object.remove("__agent_tool");
+            object.remove("__world_root");
+        }
+        let mut child = Command::new("/usr/bin/python3")
+            .args(["-B", "agent/yohaku_terminal.py", "--root", &panel.root, "request"])
+            .env_clear().env("PATH", "/usr/bin:/bin")
+            .stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::null())
+            .spawn().map_err(|e| e.to_string())?;
+        let mut input = child.stdin.take().ok_or("Missing terminal request pipe")?;
+        writeln!(input, "{clean}").map_err(|e| e.to_string())?;
+        drop(input);
+        let output = child.wait_with_output().map_err(|e| e.to_string())?;
+        let value: Value = serde_json::from_slice(&output.stdout)
+            .map_err(|_| "Terminal response lost; outcome unknown; do not automatically rerun")?;
+        if value["ok"] != true {
+            return Err(value["error"].as_str().unwrap_or("Terminal request failed").into());
+        }
+        Ok(value["result"].clone())
+    }
     pub fn rpc(&mut self, request: &Value, panel: &Panel) -> Value {
+        if request["command"] == "tool_status" && request.get("run_id").is_some_and(|run| run.as_str().is_none() || run.as_str() != self.run_id.as_deref()) {
+            return json!({"ok":false,"error":"Tool run changed while waiting; refusing unrelated status"});
+        }
         let result = match request["command"].as_str().unwrap_or("") {
-            "tool_run" => self.run(request["id"].as_str().unwrap_or(""), panel),
+            "terminal_start" | "terminal_write" | "terminal_read" | "terminal_status" | "terminal_list" | "terminal_interrupt" | "terminal_close" | "terminal_resize" => self.terminal_request(request, panel),
+            "tool_inspect" => self.inspect_tool(request["path"].as_str().unwrap_or(""), panel),
+            "tool_run" => self.run_parameters(request["id"].as_str().unwrap_or(""), request.get("parameters").unwrap_or(&json!({})), panel),
             "tool_status" => Ok(
-                json!({"tool_id":self.active,"state":self.state,"status":self.status,"exit_code":self.exit_code,
+                json!({"tool_id":self.active,"run_id":self.run_id,"state":self.state,"status":self.status,"exit_code":self.exit_code,
                     "log_path":self.job_log,"logs":&self.logs[self.logs.len().saturating_sub(12)..]}),
             ),
             "tool_stop" => {
@@ -700,11 +790,52 @@ impl ToolPanel {
     pub fn takes_keyboard(&self) -> bool {
         self.editor.is_some() || self.search_focused
     }
+    // Techne owns only its focused single-line search input here.
+    pub fn search_text_focus(&self) -> bool {
+        self.search_focused && self.editor.is_none() && self.menu.is_none()
+    }
+    pub fn search_ime_area(&self, left: i32) -> Option<(i32, i32, i32)> {
+        self.search_text_focus().then_some((left + 12, 174, 24))
+    }
+    pub fn clear_search_preedit(&mut self) {
+        self.search_preedit.clear();
+    }
+    fn insert_search_text(&mut self, text: &str) {
+        let used = if self.search.selected_all { 0 } else { self.search.text.chars().count() };
+        let clean: String = text.chars().filter(|c| !c.is_control())
+            .take(1024usize.saturating_sub(used)).collect();
+        if clean.is_empty() { return; }
+        self.search.insert(&clean);
+        self.search_preedit.clear();
+        self.selected = 0;
+        self.list_top = 0;
+        self.last_click = None;
+    }
+    pub fn search_ime(&mut self, event: ::winit::event::Ime) {
+        if !self.search_text_focus() { return; }
+        match event {
+            ::winit::event::Ime::Preedit(text, _) => {
+                self.search_preedit = text.chars().filter(|c| !c.is_control()).take(1024).collect();
+            }
+            ::winit::event::Ime::Commit(text) => {
+                self.search_preedit.clear();
+                self.insert_search_text(&text);
+            }
+            ::winit::event::Ime::Disabled => self.search_preedit.clear(),
+            _ => (),
+        }
+    }
+    pub fn search_commit_fallback(&mut self, text: &str) -> bool {
+        if !self.search_text_focus() || !self.search_preedit.is_empty() { return false; }
+        self.insert_search_text(text);
+        true
+    }
     pub fn hit_modal(&self) -> bool {
         self.editor.is_some() || self.menu.is_some()
     }
     pub fn key(&mut self, sym: Keysym, ctrl: bool, shift: bool, alt: bool, panel: &mut Panel) {
         if sym == Keysym::Escape {
+            self.search_preedit.clear();
             self.editor = None;
             self.search_focused = false;
             self.menu = None;
@@ -712,6 +843,8 @@ impl ToolPanel {
             return;
         }
         if self.editor.is_none() {
+            // Let the IME consume composition keys, including Enter.
+            if !self.search_preedit.is_empty() && !ctrl && !alt { return; }
             if ctrl && sym.key_char().is_some_and(|c| c.eq_ignore_ascii_case(&'f')) {
                 self.search_focused = true;
                 self.search.selected_all = true;
@@ -747,9 +880,7 @@ impl ToolPanel {
                         Keysym::End => self.search.home_end(true),
                         _ => {
                             if let Some(c) = sym.key_char().filter(|c| !c.is_control()) {
-                                if self.search.text.len() < 1024 {
-                                    self.search.insert(&c.to_string());
-                                }
+                                self.insert_search_text(&c.to_string());
                             }
                         }
                     }
@@ -828,6 +959,17 @@ impl ToolPanel {
         }
         editor.ensure_visible(14);
     }
+    fn open_terminal_window(&mut self,panel:&Panel) -> Result<(),String> {
+        self.terminal_windows.retain_mut(|(_,child)| matches!(child.try_wait(),Ok(None)));
+        if self.terminal_windows.iter().any(|(root,_)|root==&panel.root) { self.status="Terminal window already open for this world; switch to Yohaku Terminal".into();return Ok(()) }
+        let executable=std::env::current_exe().map_err(|e|e.to_string())?.parent().ok_or("Missing executable directory")?.join("yohaku_terminal_window");
+        if !executable.is_file(){return Err("Build the yohaku_terminal_window example before opening Terminal".into())}
+        let agent=std::env::current_dir().map_err(|e|e.to_string())?.join("agent/yohaku_terminal.py");
+        let mut command=Command::new(executable);command.arg("--root").arg(&panel.root).arg("--agent").arg(agent).env_clear().env("PATH","/usr/bin:/bin");
+        for key in ["DISPLAY","XAUTHORITY","XDG_RUNTIME_DIR","DBUS_SESSION_BUS_ADDRESS","XMODIFIERS","GTK_IM_MODULE","QT_IM_MODULE","LANG","LC_ALL","WSL_INTEROP","WSL_DISTRO_NAME"]{if let Some(value)=std::env::var_os(key){command.env(key,value);}}
+        command.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::inherit());
+        let child=command.spawn().map_err(|e|e.to_string())?;self.terminal_windows.push((panel.root.clone(),child));self.status="Terminal window opened. Closing it detaches; sessions remain alive.".into();Ok(())
+    }
     pub fn click(&mut self, x: f64, y: f64, left: i32, width: i32, panel: &mut Panel) {
         if self.editor.is_some() {
             return;
@@ -840,7 +982,9 @@ impl ToolPanel {
         }
         let x = x as i32 - left;
         let y = y as i32;
+        if (30..70).contains(&y) && x>=width-145 && x<width-12 { if let Err(e)=self.open_terminal_window(panel){self.status=e;} return; }
         self.search_focused = false;
+        self.search_preedit.clear();
         if (136..174).contains(&y) && x >= 0 && x < width - 12 {
             if x >= width - 100 {
                 self.search.load(String::new());
@@ -938,6 +1082,8 @@ impl ToolPanel {
         let white = Color32F::new(1., 1., 1., 1.);
         let right = left + width;
         super::draw_shell_text_on(f, "Techne / local tools", left, 38, 3, right, (dark, white))?;
+        f.clear(blue,&[Rectangle::new((right-145,30).into(),(133,40).into())])?;
+        super::draw_shell_text_on(f,"Terminal",right-135,38,2,right-12,(dark,blue))?;
         let open_label = if self
             .rows()
             .get(self.selected)
@@ -977,7 +1123,9 @@ impl ToolPanel {
         } else {
             let mut text = self.search.text.clone();
             if self.search_focused {
-                text.insert(self.search.cursor.min(text.len()), '|');
+                let cursor = self.search.cursor.min(text.len());
+                text.insert_str(cursor, &self.search_preedit);
+                text.insert(cursor + self.search_preedit.len(), '|');
             }
             text
         };
@@ -1018,7 +1166,7 @@ impl ToolPanel {
                 )],
             )?;
             let mark = if item["action"] == "codex" {
-                " [Windows / Connect Chat]"
+                " [Codex / separate session]"
             } else if item["origin"] == "Windows" {
                 " [Windows / adapter needed]"
             } else if item["registered"] == true {
@@ -1306,6 +1454,67 @@ mod tests {
         let _ = std::fs::remove_dir_all(base);
     }
     #[test]
+    #[ignore = "requires outer Linux controller; sandboxed child is tested, no nested user namespace"]
+    fn terminal_native_e2e_real_process_and_fresh_client() {
+        let (base, panel) = panel("terminal-native");
+        let mut server = Command::new("/usr/bin/python3")
+            .args(["-B", "agent/yohaku_terminal.py", "--root", &panel.root, "serve"])
+            .env_clear().stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::inherit()).spawn().unwrap();
+        std::thread::sleep(Duration::from_millis(200));
+        let mut tools = ToolPanel::new(String::new());
+        let start = tools.rpc(&json!({"__agent_tool":"terminal_start","__world_root":"ignored",
+            "command":"terminal_start","program":"/usr/bin/python3","args":["-u","-c","print('native prompt',flush=True);print(input());raise SystemExit(7)"]}), &panel);
+        assert_eq!(start["ok"], true, "{start}");
+        let id = &start["result"]["session_id"];
+        let mut fresh = ToolPanel::new(String::new());
+        let listed = fresh.rpc(&json!({"command":"terminal_list"}), &panel);
+        assert_eq!(listed["result"]["sessions"][0]["session_id"], *id);
+        let written = fresh.rpc(&json!({"command":"terminal_write","session_id":id,"text":"世界 native 😀\n"}), &panel);
+        assert_eq!(written["ok"], true, "{written}");
+        let mut cursor = json!(0); let mut output = String::new();
+        let deadline = Instant::now()+Duration::from_secs(10);
+        loop {
+            let read = fresh.rpc(&json!({"command":"terminal_read","session_id":id,"cursor":cursor,"max_bytes":13,"wait_ms":100}), &panel);
+            assert_eq!(read["ok"], true, "{read}");
+            cursor = read["result"]["next_cursor"].clone();
+            output.push_str(read["result"]["text"].as_str().unwrap());
+            if read["result"]["output_complete"] == true && read["result"]["has_more"] == false {
+                assert_eq!(read["result"]["exit_code"],7); break;
+            }
+            assert!(Instant::now()<deadline);
+        }
+        assert!(output.contains("世界 native 😀"));
+        assert_eq!(fresh.rpc(&json!({"command":"terminal_close","session_id":id}), &panel)["ok"],true);
+        assert_eq!(fresh.rpc(&json!({"command":"terminal_status","session_id":id}), &panel)["ok"],false);
+        server.kill().unwrap();server.wait().unwrap();
+        std::fs::remove_dir_all(base).unwrap();
+    }
+    #[test]
+    fn window_protocol_tests_parameter_rpc_rejects_invalid_requests_before_starting() {
+        let (base, mut p) = panel("parameter-rpc");
+        let mut t = ToolPanel::new(String::new());
+        ready(&mut t, &mut p);
+        for parameters in [json!([]), json!({"unknown":"files/a"}), json!({"input":false})] {
+            let response=t.rpc(&json!({"command":"tool_run","id":"python","parameters":parameters}),&p);
+            assert_eq!(response["ok"],false);
+            assert!(t.child.is_none());
+        }
+        let _=std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn window_protocol_tests_explicit_tool_inspection_is_read_only() {
+        let (base, mut panel) = panel("tool-inspection");
+        let mut tools = ToolPanel::new(String::new());
+        ready(&mut tools, &mut panel);
+        let response=tools.rpc(&json!({"command":"tool_inspect","path":"/usr/bin/true"}), &panel);
+        assert_eq!(response["ok"],true, "{response}");
+        assert_eq!(response["result"]["executed"],false);
+        let denied=tools.rpc(&json!({"command":"tool_inspect","path":"/etc/passwd"}), &panel);
+        assert_eq!(denied["ok"],false);
+        assert!(tools.child.is_none());
+        let _=std::fs::remove_dir_all(base);
+    }
+    #[test]
     fn registry_ui_persists_and_refuses_stale_human_edits() {
         let (base, mut p) = panel("config");
         let mut t = ToolPanel::new(String::new());
@@ -1429,6 +1638,7 @@ mod tests {
         let (base, mut p) = panel("job-status");
         let mut t = ToolPanel::new(String::new());
         ready(&mut t, &mut p);
+        t.state = "starting".into();
         t.child = Some(
             Command::new("/usr/bin/python3")
                 .args(["-c", "import time; time.sleep(1)"])
@@ -1515,10 +1725,236 @@ mod tests {
         assert!(t.child.is_none());
         let _ = std::fs::remove_dir_all(base);
     }
+
+    #[test]
+    fn exited_launcher_must_not_overtake_its_unread_exit_event() {
+        let (base, mut panel) = panel("exit-race");
+        let mut tools = ToolPanel::new(String::new());
+        ready(&mut tools, &mut panel);
+        tools.child = Some(Command::new("/usr/bin/true").spawn().unwrap());
+        tools.child.as_mut().unwrap().wait().unwrap();
+        tools.active = "diagnostic".into();
+        tools.state = "running".into();
+        tools.update(&mut panel);
+        assert_eq!(tools.state, "running", "Launcher exit is not stream exhaustion or a target exit");
+        tools.tx.send(Event::Runner(tools.epoch, json!({"event":"exit","code":0}))).unwrap();
+        tools.update(&mut panel);
+        assert_eq!(tools.state, "finished");
+        assert_eq!(tools.exit_code, Some(0));
+        tools.stop();
+        std::fs::remove_dir_all(base).unwrap();
+    }
+
+    #[test]
+    fn stream_end_is_required_and_launcher_success_is_not_target_success() {
+        let (base, mut panel) = panel("missing-exit");
+        let mut tools = ToolPanel::new(String::new());
+        ready(&mut tools, &mut panel);
+        tools.child = Some(Command::new("/usr/bin/true").spawn().unwrap());
+        tools.child.as_mut().unwrap().wait().unwrap();
+        tools.state = "running".into();
+        tools.tx.send(Event::RunnerClosed(tools.epoch, Ok(()))).unwrap();
+        tools.update(&mut panel);
+        assert_eq!(tools.state, "failed");
+        assert_eq!(tools.exit_code, None);
+        assert!(tools.status.contains("without an exit event"));
+        tools.tx.send(Event::Runner(tools.epoch, json!({"event":"running"}))).unwrap();
+        tools.update(&mut panel);
+        assert_eq!(tools.state, "failed");
+        std::fs::remove_dir_all(base).unwrap();
+    }
+
+    #[test]
+    fn stale_runs_and_late_events_cannot_overwrite_confirmed_exit() {
+        let (base, mut panel) = panel("stale-run");
+        let mut tools = ToolPanel::new(String::new());
+        ready(&mut tools, &mut panel);
+        tools.epoch = 3;
+        tools.run_id = Some("current".into());
+        tools.state = "running".into();
+        for event in [Event::Runner(2,json!({"event":"exit","code":9})), Event::RunnerClosed(2,Ok(()))] {
+            tools.tx.send(event).unwrap();
+        }
+        tools.update(&mut panel);
+        assert_eq!(tools.state, "running");
+        assert!(tools.runner_stream.is_none());
+        assert_eq!(tools.rpc(&json!({"command":"tool_status","run_id":"old"}), &panel)["ok"], false);
+        for value in [json!({"event":"exit","code":7}), json!({"event":"running"}), json!({"event":"error","text":"late"}), json!({"event":"exit","code":0})] {
+            tools.tx.send(Event::Runner(3,value)).unwrap();
+        }
+        tools.update(&mut panel);
+        assert_eq!(tools.exit_code, Some(7));
+        assert_eq!(tools.state, "failed");
+        assert!(tools.status.ends_with(": 7"));
+        assert_eq!(tools.rpc(&json!({"command":"tool_status","run_id":"current"}), &panel)["result"]["run_id"], "current");
+        std::fs::remove_dir_all(base).unwrap();
+    }
+
+    #[test]
+    fn reader_delivers_large_output_and_final_unterminated_exit_before_eof() {
+        let (base, mut panel) = panel("reader-tail");
+        let mut tools = ToolPanel::new(String::new());
+        ready(&mut tools, &mut panel);
+        tools.state = "running".into();
+        let mut output = String::new();
+        for number in 0..2048 {
+            output.push_str(&json!({"event":"log","text":format!("line-{number}")}).to_string());
+            output.push('\n');
+        }
+        output.push_str("{\"event\":\"exit\",\"code\":0}");
+        let sender = tools.tx.clone();
+        let epoch = tools.epoch;
+        let reader = std::thread::spawn(move || read_runner(std::io::Cursor::new(output), sender, epoch));
+        let deadline = Instant::now()+Duration::from_secs(10);
+        while tools.runner_stream.is_none() {
+            tools.update(&mut panel);
+            assert!(Instant::now()<deadline);
+            std::thread::yield_now();
+        }
+        reader.join().unwrap();
+        assert_eq!(tools.exit_code, Some(0));
+        assert_eq!(tools.state, "finished");
+        assert_eq!(tools.logs.last().unwrap(), "line-2047");
+        assert_eq!(tools.logs.len(), 400);
+        std::fs::remove_dir_all(base).unwrap();
+    }
+
+    #[test]
+    fn malformed_stream_retains_unknown_exit_diagnostic() {
+        let (base, mut panel) = panel("bad-stream");
+        let mut tools = ToolPanel::new(String::new());
+        ready(&mut tools, &mut panel);
+        tools.state = "running".into();
+        tools.launcher_exit = Some("exit status: 0".into());
+        read_runner(std::io::Cursor::new("not-json\n"),tools.tx.clone(),tools.epoch);
+        tools.update(&mut panel);
+        assert_eq!(tools.state, "failed");
+        assert_eq!(tools.exit_code, None);
+        assert!(tools.status.contains("Invalid runner JSON event"));
+        tools.tx.send(Event::Runner(tools.epoch,json!({"event":"exit","code":"0"}))).unwrap();
+        tools.update(&mut panel);
+        assert_eq!(tools.exit_code, None);
+        std::fs::remove_dir_all(base).unwrap();
+    }
+    #[test]
+    fn entry_codex_catalog_event_routes_connection_without_registering_an_executable() {
+        let mut tools=ToolPanel::new("unused-entry-fixture".into());
+        let mut panel=super::super::workspace_panel::tests::render_panel();
+        tools.root=panel.root.clone();
+        let registry=tools.registry.clone();
+        let connection=json!({"protocol":"codex-local","codex_entry":"/fixture/codex","model":"offline"});
+        tools.tx.send(Event::Apps(tools.catalog_epoch,json!({"event":"codex","config":connection}),false)).unwrap();
+        tools.update(&mut panel);
+        assert_eq!(tools.codex_connection,Some(connection));
+        assert_eq!(tools.registry,registry);
+        assert!(!panel.agent_active);
+    }
+
+    #[test]
+    #[ignore = "outer controller only; attaches the deliberately prepared independent GUI world"]
+    fn terminal_window_existing_session_native_rpc() {
+        let root=std::env::var("YOHAKU_WINDOW_TEST_ROOT").expect("independent fixture world required");
+        assert!(root.contains("/terminal-window-work-20261020/ui-world"));
+        let id=std::env::var("YOHAKU_WINDOW_TEST_SESSION").unwrap();
+        let instance=std::env::var("YOHAKU_WINDOW_TEST_INSTANCE").unwrap();
+        let (_,mut panel)=panel("window-native-attach");panel.root=root;
+        let mut tools=ToolPanel::new(String::new());
+        let list=tools.rpc(&json!({"command":"terminal_list"}),&panel);
+        assert_eq!(list["ok"],true,"{list}");
+        let read=tools.rpc(&json!({"command":"terminal_read","session_id":id,"service_instance":instance,"cursor":0,"max_bytes":65536}),&panel);
+        assert_eq!(read["ok"],true,"{read}");assert_eq!(read["result"]["exit_code"],7);
+        assert_eq!(read["result"]["text"],"READY 中文 😀\nSIZE:(107, 25)\nECHO:a\n");
+        tools.open_terminal_window(&panel).unwrap();
+        assert_eq!(tools.terminal_windows.len(),1);
+        let pid=tools.terminal_windows[0].1.id();tools.open_terminal_window(&panel).unwrap();
+        assert_eq!(tools.terminal_windows.len(),1);assert_eq!(tools.terminal_windows[0].1.id(),pid);
+        let after=tools.rpc(&json!({"command":"terminal_list"}),&panel);
+        assert_eq!(list["result"]["sessions"],after["result"]["sessions"]);
+        let path=std::env::var("YOHAKU_WINDOW_TEST_RESULT").unwrap();
+        std::fs::write(path,json!({"window_pid":pid,"native_read":read,"before":list,"after":after,"new_programs":0}).to_string()).unwrap();
+    }
+    fn techne_search_fixture() -> ToolPanel {
+        let mut t = ToolPanel::new(String::new());
+        t.registry = json!({"format":"yohaku-tools/1","tools":[
+            {"id":"noteapp-app-run","name":"轻笔记应用窗口运行 / Note app",
+             "program":"world:files/demo-note-app/app","args":[],"wayland":true}]});
+        t.search_focused = true;
+        t
+    }
+    #[test]
+    fn techne_search_ime_commits_chinese_and_emoji_without_raw_composition_keys() {
+        let mut t=techne_search_fixture();
+        t.search_ime(::winit::event::Ime::Preedit("qing".into(),Some((4,4))));
+        assert!(t.search.text.is_empty());
+        assert!(!t.search_commit_fallback("q"));
+        let mut p=super::super::workspace_panel::tests::render_panel();
+        t.key(Keysym::Return,false,false,false,&mut p);
+        assert!(t.child.is_none());assert!(t.search.text.is_empty());
+        t.search_ime(::winit::event::Ime::Commit("轻笔记".into()));
+        assert_eq!(t.search.text,"轻笔记");assert_eq!(t.search.cursor,9);
+        assert_eq!(t.rows()[0]["entry"]["id"],"noteapp-app-run");
+        t.search_ime(::winit::event::Ime::Commit("😀".into()));
+        assert_eq!(t.search.cursor,13);assert_eq!(t.search.text,"轻笔记😀");
+        assert!(t.search_preedit.is_empty());
+    }
+    #[test]
+    fn techne_search_matches_chinese_and_existing_english_name_and_deduplicates() {
+        let mut t=techne_search_fixture();
+        t.catalog.push(json!({"entry":t.registry["tools"][0].clone(),"ready":true}));
+        for q in ["轻笔记","Note app","nOtE ApP","demo-note-app"] {
+            t.search.load(q.into());let rows=t.rows();assert_eq!(rows.len(),1,"{q}");
+            assert_eq!(rows[0]["entry"]["id"],"noteapp-app-run");assert_eq!(rows[0]["registered"],true);
+        }
+        t.search.load("没有对应软件".into());assert!(t.rows().is_empty());
+    }
+    #[test]
+    fn techne_search_paste_event_uses_same_query_and_rejects_stale_epoch() {
+        let (base,mut p)=panel("techne-search-paste");let mut t=techne_search_fixture();
+        t.root=p.root.clone();t.initialized=true;t.poll=Instant::now();t.catalog_loaded=true;
+        t.selected=8;t.list_top=4;
+        t.tx.send(Event::Paste(t.edit_epoch,Ok("轻\n笔记".into()))).unwrap();t.update(&mut p);
+        assert_eq!(t.search.text,"轻笔记");assert_eq!(t.selected,0);assert_eq!(t.list_top,0);
+        assert_eq!(t.rows()[0]["entry"]["id"],"noteapp-app-run");
+        t.edit_epoch+=1;t.tx.send(Event::Paste(t.edit_epoch-1,Ok("stale".into()))).unwrap();t.update(&mut p);
+        assert_eq!(t.search.text,"轻笔记");std::fs::remove_dir_all(base).unwrap();
+    }
+    #[test]
+    fn techne_search_focus_fallback_and_unicode_limit() {
+        let mut t=techne_search_fixture();assert_eq!(t.search_ime_area(240),Some((252,174,24)));
+        t.search_focused=false;t.search_ime(::winit::event::Ime::Commit("不接受".into()));
+        assert!(t.search.text.is_empty());assert_eq!(t.search_ime_area(240),None);
+        assert!(!t.search_commit_fallback("不接受"));t.search_focused=true;
+        assert!(t.search_commit_fallback("😀"));assert_eq!(t.search.text,"😀");
+        t.search.selected_all=true;t.search_ime(::winit::event::Ime::Commit("中".repeat(1100)));
+        assert_eq!(t.search.text.chars().count(),1024);assert_eq!(t.search.cursor,3072);
+        t.search_ime(::winit::event::Ime::Commit("文".into()));assert_eq!(t.search.text.chars().count(),1024);
+        t.search.selected_all=true;
+        let mut p=super::super::workspace_panel::tests::render_panel();
+        t.key(Keysym::a,false,false,false,&mut p);
+        assert_eq!(t.search.text,"a");assert_eq!(t.search.cursor,1);
+    }
+
+    #[test]
+    fn techne_search_preedit_draws_before_first_commit_and_blur_clears_it() {
+        let mut t=techne_search_fixture();
+        let mut before=Capture::new(1200,800);t.draw(&mut before,240,940,800).unwrap();
+        t.search_ime(::winit::event::Ime::Preedit("qing".into(),Some((4,4))));
+        let mut after=Capture::new(1200,800);t.draw(&mut after,240,940,800).unwrap();
+        let top=136*1200*3;let end=174*1200*3;
+        assert_ne!(&before.pixels[top..end],&after.pixels[top..end]);
+        assert!(t.search.text.is_empty());t.blur();assert!(t.search_preedit.is_empty());
+        assert_eq!(t.search_ime_area(240),None);
+    }
+
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "examples/yohaku_workspace/tools.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

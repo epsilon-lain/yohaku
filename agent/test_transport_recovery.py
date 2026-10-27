@@ -1,0 +1,374 @@
+"""Offline controlled peers. No provider credentials, models or host tools."""
+import contextlib
+import hashlib
+import http.client
+import io
+import json
+import os
+from pathlib import Path
+import socket
+import struct
+import tempfile
+import threading
+import time
+import types
+import unittest
+from unittest.mock import patch
+import urllib.request
+import ssl
+
+import yohaku_agent as agent
+import yohaku_codex as codex
+import yohaku_codex_provider as relay_module
+import yohaku_provider_transport as transport
+import yohaku_provider_diagnostics as diagnostics
+import yohaku_codex_diagnostics as codex_diagnostics
+from test_agent import response
+from test_ai_limits import fixture_tools
+
+KEY='offline-synthetic-key-only'
+SSE=b'data: {"type":"response.completed","response":{"status":"completed","model":"deepseek-flash"}}\n\n'
+PARTIAL=b'data: {"type":"response.function_call_arguments.delta","delta":"DO_NOT_DELIVER"}\n\n'
+
+class Peer:
+    def __init__(self,actions,sse=False):
+        self.actions=actions;self.sse=sse;self.bodies=[];self.errors=[];self.hold=threading.Event();self.arrived=threading.Event()
+        self.listener=socket.socket();self.listener.bind(('127.0.0.1',0));self.listener.listen();self.listener.settimeout(4)
+        self.port=self.listener.getsockname()[1];self.thread=threading.Thread(target=self.run,daemon=True);self.thread.start()
+    def run(self):
+        try:
+            for action in self.actions:
+                conn,_=self.listener.accept()
+                with conn:
+                    conn.settimeout(2);data=b''
+                    while b'\r\n\r\n' not in data:data+=conn.recv(65536)
+                    header,body=data.split(b'\r\n\r\n',1)
+                    length=next(int(x.split(b':',1)[1]) for x in header.split(b'\r\n') if x.lower().startswith(b'content-length:'))
+                    while len(body)<length:body+=conn.recv(length-len(body))
+                    self.bodies.append(body);self.arrived.set()
+                    if action=='reset':
+                        conn.setsockopt(socket.SOL_SOCKET,socket.SO_LINGER,struct.pack('ii',1,0));continue
+                    if action=='hold':
+                        conn.sendall(b'HTTP/1.1 200 OK\r\nContent-Length: 200\r\n\r\n{');self.hold.wait(3);continue
+                    payload=(SSE if self.sse else json.dumps(response('chat','read_text',{'path':'files/offline'}) if action=='tool' else response('chat')).encode())
+                    if isinstance(action,dict):payload=json.dumps(action).encode()
+                    if action=='cut':payload=PARTIAL if self.sse else json.dumps(response('chat','read_text',{'path':'files/never'})).encode()
+                    if action=='invalid':payload=b'not json'
+                    if action=='semantic':payload=b'data: {"type":"response.incomplete"}\n\n' if self.sse else b'{"choices":[{"finish_reason":"length","message":{"tool_calls":[]}}]}'
+                    count=len(payload)+(10 if action=='cut' else 0)
+                    conn.sendall(('HTTP/1.1 200 OK\r\nContent-Type: '+('text/event-stream' if self.sse else 'application/json')+'\r\nContent-Length: '+str(count)+'\r\nConnection: close\r\n\r\n').encode()+payload)
+        except Exception as error:self.errors.append(type(error).__name__)
+        finally:self.listener.close()
+    def finish(self):
+        self.hold.set();self.thread.join(5)
+        if self.thread.is_alive():raise AssertionError('Peer did not finish')
+        if self.errors:raise AssertionError(self.errors)
+
+class RecoveryTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name);self.stack=contextlib.ExitStack()
+        self.addCleanup(self.temp.cleanup);self.addCleanup(self.stack.close)
+        self.stack.enter_context(patch.object(diagnostics,'DIRECTORY',self.root/'provider'))
+        self.stack.enter_context(patch.object(codex_diagnostics,'DIRECTORY',self.root/'codex'))
+        env={k:v for k,v in os.environ.items() if k.lower() not in ('http_proxy','https_proxy','all_proxy','no_proxy')}
+        self.stack.enter_context(patch.dict(os.environ,env,clear=True))
+        original=socket.getaddrinfo
+        def local_only(host,*args,**kwargs):
+            if host not in ('127.0.0.1','localhost','::1'):raise AssertionError('Offline test attempted remote DNS')
+            return original(host,*args,**kwargs)
+        self.stack.enter_context(patch.object(socket,'getaddrinfo',local_only))
+        self.trace=[]
+        def preserve():
+            folder=os.environ.get('YOHAKU_RECOVERY_EVIDENCE')
+            if not folder:return
+            dest=Path(folder)/self.id().rsplit('.',1)[-1]
+            for sub in ('provider','codex'):
+                for source in (self.root/sub).glob('*.json'):
+                    target=dest/sub/source.name;target.parent.mkdir(parents=True,exist_ok=True)
+                    target.write_bytes(source.read_bytes())
+        self.addCleanup(preserve)
+    def provider(self,peer,**config):
+        return agent.Provider(dict(protocol='chat',base_url='http://127.0.0.1:'+str(peer.port),model='fixture',api_key=KEY,timeout=2,**config))
+    def evidence(self,label,peer,provider):
+        summary=dict(test=label,requests=len(peer.bodies),body_hashes=[hashlib.sha256(x).hexdigest() for x in peer.bodies],recovery=provider.recovery.events)
+        folder=os.environ.get('YOHAKU_RECOVERY_EVIDENCE')
+        if folder:
+            p=Path(folder);p.mkdir(parents=True,exist_ok=True);(p/(label+'.json')).write_text(json.dumps(summary,indent=2))
+    def run_agent(self,p):
+        calls=[]
+        def tool(name,args):calls.append((name,args));return {'ok':True,'result':{'text':'已保存 English 😀\n  indent'}}
+        result=agent.Agent(p,fixture_tools(tool),self.trace.append).run('offline',{})
+        return calls,result
+    def test_before_send_failure_retries_model_only(self):
+        peer=Peer(['done']);p=self.provider(peer);original=socket.create_connection;calls=[]
+        def connect(*a,**kw):
+            calls.append(1)
+            if len(calls)==1:raise ConnectionRefusedError(111,'synthetic before send')
+            return original(*a,**kw)
+        with patch.object(socket,'create_connection',connect):self.assertEqual(self.run_agent(p)[0],[])
+        peer.finish();self.assertEqual(len(calls),2);self.assertEqual(len(peer.bodies),1)
+        self.evidence('before-send',peer,p)
+    def test_reset_before_headers_and_200_cut_never_execute_partial_tool(self):
+        for fault in ['reset','cut']:
+            with self.subTest(fault=fault):
+                peer=Peer([fault,'done']);p=self.provider(peer);calls,result=self.run_agent(p);peer.finish()
+                self.assertEqual(calls,[]);self.assertEqual(len(peer.bodies),2);self.assertEqual(peer.bodies[0],peer.bodies[1])
+                self.assertEqual(p.recovery.events[-1]['http_status'],200 if fault=='cut' else None)
+                self.evidence(fault,peer,p)
+    def test_confirmed_tool_result_and_call_id_survive_retry_without_reexecution(self):
+        peer=Peer(['tool','cut','done']);p=self.provider(peer);calls,result=self.run_agent(p);peer.finish()
+        self.assertEqual(len(calls),1);self.assertEqual(result['tool_calls'],1);self.assertEqual(len(peer.bodies),3)
+        self.assertEqual(peer.bodies[1],peer.bodies[2]);messages=json.loads(peer.bodies[2])['messages']
+        tool=next(x for x in messages if x['role']=='tool');self.assertTrue(tool['tool_call_id']);self.assertIn('已保存',tool['content'])
+        self.assertEqual(len([e for e in self.trace if e.get('event')=='tool_result']),1)
+        self.evidence('confirmed-tool',peer,p)
+    def test_exhaustion_exactly_three_attempts_no_tool_calls(self):
+        peer=Peer(['reset']*3);p=self.provider(peer);calls=[]
+        with self.assertRaises(agent.ToolError):agent.Agent(p,fixture_tools(lambda *a:calls.append(a))).run('offline',{})
+        peer.finish();self.assertEqual((len(peer.bodies),len(calls)),(3,0));self.assertFalse(p.recovery.events[-1]['will_retry'])
+        self.assertEqual(len(list((self.root/'provider').glob('*.json'))),3);self.evidence('exhausted',peer,p)
+    def test_invalid_and_semantic_incomplete_are_not_retried(self):
+        for fault in ['invalid','semantic']:
+            peer=Peer([fault]);p=self.provider(peer)
+            with self.assertRaises(agent.ToolError):p.request([])
+            peer.finish();self.assertEqual(len(peer.bodies),1)
+    def test_cancel_during_backoff_prevents_second_request_and_late_tools(self):
+        peer=Peer(['reset']);p=self.provider(peer)
+        def notify(event):
+            if event.get('event')=='recovery':p.recovery.cancel()
+        p.recovery.notify=notify
+        with self.assertRaises(transport.RecoveryCancelled):p.request([])
+        peer.finish();self.assertEqual(len(peer.bodies),1)
+        with self.assertRaises(transport.RecoveryCancelled):p.request([])
+        self.evidence('stop-backoff',peer,p)
+    def test_cancel_interrupts_active_read_without_retry(self):
+        peer=Peer(['hold']);p=self.provider(peer);errors=[]
+        def run():
+            try:p.request([])
+            except Exception as error:errors.append(error)
+        worker=threading.Thread(target=run);worker.start();self.assertTrue(peer.arrived.wait(2));time.sleep(.05)
+        p.recovery.cancel();worker.join(1);peer.finish()
+        self.assertFalse(worker.is_alive());self.assertIsInstance(errors[0],transport.RecoveryCancelled);self.assertEqual(len(peer.bodies),1)
+    def test_wire_missing_result_is_unknown_not_a_failed_tool_for_model_to_redo(self):
+        peer=Peer(['tool']);p=self.provider(peer)
+        initial=dict(config=p.config,context={},prompt='offline')
+        output=io.StringIO()
+        with patch.object(agent.sys,'stdin',io.StringIO(json.dumps(initial)+'\n')),patch.object(agent.sys,'stdout',output):agent.wire()
+        peer.finish();events=[json.loads(x) for x in output.getvalue().splitlines()]
+        self.assertTrue(events[-1]['tool_outcome_unknown']);self.assertIn('do not replay',events[-1]['text'])
+        self.assertEqual(len([x for x in events if x['event']=='request']),1);self.assertEqual(len(peer.bodies),1)
+    def test_policy_validation_and_certificate_error_not_retried(self):
+        for value in [True,-1,6,'2',None]:
+            with self.assertRaises(ValueError):transport.Recovery({'request_max_retries':value})
+        self.assertFalse(transport.retryable(ssl.SSLCertVerificationError('fixture')))
+        recovery=transport.Recovery();recovery.deadline=time.monotonic()-1
+        with self.assertRaises(transport.RecoveryCancelled):recovery.run(lambda:self.fail('Expired request executed'))
+        with self.assertRaisesRegex(codex.CodexError,'positive integer'):codex.turn_timeout({'turn_timeout_long':True,'turn_timeout':'invalid'})
+    def relay(self,peer):
+        r=relay_module.Relay(KEY);self.addCleanup(r.close)
+        def upstream(trace,*args,**kwargs):return transport.ObservedHTTP(trace,'127.0.0.1',peer.port,timeout=2)
+        self.stack.enter_context(patch.object(relay_module,'ObservedHTTPS',upstream))
+        return r
+    def relay_request(self,r):
+        c=http.client.HTTPConnection('127.0.0.1',r.server.server_port,timeout=5)
+        try:
+            c.request('POST','/responses',body=json.dumps(dict(model=relay_module.MODEL,reasoning={'effort':'high'},input=[{'type':'function_call_output','call_id':'saved-call','output':'已保存'}])),headers={'Authorization':'Bearer '+r.token})
+            response=c.getresponse();return response.status,response.read()
+        finally:c.close()
+    def test_relay_discards_partial_sse_retries_identical_context(self):
+        peer=Peer(['cut','done'],True);r=self.relay(peer);status,body=self.relay_request(r);peer.finish()
+        self.assertEqual((status,body),(200,SSE));self.assertNotIn(b'DO_NOT_DELIVER',body)
+        self.assertEqual(len(peer.bodies),2);self.assertEqual(peer.bodies[0],peer.bodies[1]);self.assertEqual(r.request_count,1)
+        self.evidence('relay-cut',peer,r)
+    def test_relay_exhaustion_never_delivers_partial_parameters(self):
+        peer=Peer(['reset']*3,True);r=self.relay(peer);status,body=self.relay_request(r);self.assertEqual(status,502);self.assertIn('diagnostic_id',json.loads(body)['error']);peer.finish()
+        self.assertEqual(len(peer.bodies),3);self.evidence('relay-exhausted',peer,r)
+    def test_relay_close_cancels_active_read(self):
+        peer=Peer(['hold'],True);r=self.relay(peer);results=[]
+        worker=threading.Thread(target=lambda:results.append(self.relay_request(r)));worker.start()
+        self.assertTrue(peer.arrived.wait(2));time.sleep(.05);started=time.monotonic();r.close();worker.join(2);peer.finish()
+        self.assertLess(time.monotonic()-started,2);self.assertFalse(worker.is_alive());self.assertEqual(len(peer.bodies),1)
+    def test_codex_loop_uses_relay_recovery_and_executes_rpc_once(self):
+        peer=Peer(['cut','done','done'],True);r=self.relay(peer);owner=self
+        class Connection:
+            linux=True;info={'cwd':'offline-control'};child=types.SimpleNamespace(yohaku_provider_relay=r)
+            def __init__(self):self.steps=0;self.sent=[]
+            def request(self,method,params):
+                if method=='thread/start':return dict(thread={'id':'thread'},activePermissionProfile={'id':'yohaku-control'})
+                if method=='config/read':return {'config':{'features':{'shell_tool':False,'apps':False,'plugins':False}}}
+                if method=='turn/start':
+                    owner.assertEqual(owner.relay_request(r),(200,SSE));return {'turn':{'id':'turn'}}
+                raise AssertionError(method)
+            def receive(self,timeout):
+                self.steps+=1
+                if self.steps in (1,2):return dict(id=12,method='item/tool/call',params={'threadId':'thread','turnId':'turn','tool':'yohaku_read_text','arguments':{}})
+                owner.assertEqual(owner.relay_request(r),(200,SSE))
+                return {'method':'turn/completed','params':{'threadId':'thread','turn':{'id':'turn','status':'completed'}}}
+            def send(self,reply):self.sent.append(reply)
+            def close(self):r.close()
+        c=Connection();calls=[];info={'model':relay_module.MODEL,'models':[relay_module.MODEL],'provider':'deepseek','effort':'high'}
+        with patch.object(codex,'connect',return_value=(c,info)):
+            result=codex.run({'config':{},'context':{},'prompt':'offline'},fixture_tools(lambda *a:(calls.append(a) or {'ok':True})),lambda event:None)
+        peer.finish();self.assertEqual(result['tool_calls'],1);self.assertEqual(len(calls),1);self.assertEqual(len(peer.bodies),3);self.assertEqual(len(c.sent),2)
+        self.evidence('codex-relay-rpc',peer,r)
+
+    def test_late_response_after_stop_cannot_dispatch_tools(self):
+        peer=Peer(['tool']);p=self.provider(peer);original=p._request_once
+        def delayed(messages):
+            value=original(messages);p.recovery.cancel();return value
+        calls=[]
+        with patch.object(p,'_request_once',delayed):
+            with self.assertRaises(transport.RecoveryCancelled):agent.Agent(p,fixture_tools(lambda *a:calls.append(a))).run('offline',{})
+        peer.finish();self.assertEqual(calls,[])
+    def test_codex_unknown_result_delivery_is_not_replayed(self):
+        from test_ai_limits import connection_fixture
+        factory=connection_fixture(1);calls=[]
+        def connect(address,diagnostic=None):
+            c,info=factory(address,diagnostic);original=c.send
+            def send(value):
+                if 'result' in value and value.get('id')==1000:raise BrokenPipeError('synthetic result return lost')
+                return original(value)
+            c.send=send;return c,info
+        with patch.object(codex,'connect',side_effect=connect) as connected:
+            with self.assertRaisesRegex(codex.CodexError,'Tool executed; result delivery unknown'):
+                codex.run({'config':{},'prompt':'offline','context':{}},fixture_tools(lambda *a:(calls.append(a) or {'ok':True})),lambda e:None)
+            self.assertEqual(connected.call_count,1)
+        self.assertEqual(len(calls),1)
+    def test_relay_semantic_failure_not_retried_and_evidence_redacted(self):
+        peer=Peer(['semantic'],True);r=self.relay(peer)
+        status,body=self.relay_request(r);self.assertEqual(status,502);self.assertIn('diagnostic_id',json.loads(body)['error']);peer.finish();self.assertEqual(len(peer.bodies),1)
+        records=[json.loads(p.read_text()) for p in (self.root/'provider').glob('*.json')]
+        self.assertEqual(records[0]['backend'],'codex-relay')
+        meta=records[0]['transport']['metadata'];self.assertEqual(meta['confirmed_tool_results'],1)
+        self.assertEqual(meta['last_tool_tool_call_id_sha256'],hashlib.sha256(b'saved-call').hexdigest())
+        text=json.dumps(records,ensure_ascii=False)+json.dumps(r.evidence(),ensure_ascii=False)
+        for secret in (KEY,r.token,'已保存'):self.assertNotIn(secret,text)
+
+    def test_wire_sigterm_during_retry_wait_exits_without_resending(self):
+        import subprocess,sys,signal
+        peer=Peer(['reset']);config=self.provider(peer).config
+        child=subprocess.Popen([sys.executable,'-B',str(Path(agent.__file__).resolve()),'wire'],
+            stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,
+            env={**os.environ,'HOME':str(self.root)})
+        try:
+            child.stdin.write(json.dumps({'config':config,'prompt':'offline','context':{}})+'\n');child.stdin.flush()
+            events=[]
+            while True:
+                line=child.stdout.readline();self.assertTrue(line,'Worker exited before recovery event')
+                event=json.loads(line);events.append(event)
+                if event['event']=='recovery':break
+            child.send_signal(signal.SIGTERM);out,err=child.communicate(timeout=3)
+            events.extend(json.loads(line) for line in out.splitlines())
+            self.assertEqual(child.returncode,0);self.assertEqual(err,'')
+            self.assertEqual(events[-1]['event'],'error');self.assertIn('stopped',events[-1]['text'])
+            self.assertEqual(len(peer.bodies),1)
+        finally:
+            if child.poll() is None:child.kill();child.communicate()
+            peer.finish()
+
+    def test_relay_observation_metadata_is_bounded(self):
+        r=relay_module.Relay(KEY);self.addCleanup(r.close)
+        record={'response_models':[],'completed':False}
+        for index in range(1000):r.observe(('data: '+json.dumps({'response':{'model':'fixture-'+str(index)}})).encode(),record)
+        self.assertEqual(len(record['response_models']),8)
+
+
+    def test_recovered_model_new_id_same_write_pauses_then_new_turn_may_repeat(self):
+        first=response('chat','write_text',{'path':'files/progress','revision':None,'text':'saved'})
+        repeated=json.loads(json.dumps(first));repeated['choices'][0]['message']['tool_calls'][0]['id']='different-call-id'
+        peer=Peer([first,'cut',repeated]);p=self.provider(peer);calls=[]
+        def write(name,args):
+            calls.append((name,args));(self.root/'saved').write_text(args['text']);return {'ok':True,'result':{'saved':True}}
+        try:
+            with self.assertRaisesRegex(transport.ReplayBlocked,'no replay performed'):
+                agent.Agent(p,fixture_tools(write),self.trace.append).run('offline',{})
+            self.assertEqual(len(calls),1);self.assertEqual((self.root/'saved').read_text(),'saved')
+            self.assertEqual(len(peer.bodies),3)
+            messages=json.loads(peer.bodies[2])['messages']
+            self.assertEqual(len([m for m in messages if m.get('role')=='tool']),1)
+        finally:peer.finish()
+        # An intentional repeat in a separate user turn is not permanently deduped.
+        next_peer=Peer([first,'done'])
+        try:agent.Agent(self.provider(next_peer),fixture_tools(write)).run('explicit next user turn',{})
+        finally:next_peer.finish()
+        self.assertEqual(len(calls),2)
+
+    def test_replay_barrier_scope_keeps_reads_and_later_intent_available(self):
+        guard=transport.ToolReplayGuard();effects=[]
+        args={'id':'program','parameters':{'b':'2','a':'1'}}
+        guard.execute('run_tool',args,lambda:effects.append(1))
+        guard.begin_request();guard.arm()
+        guard.execute('tool_status',{},lambda:effects.append('read'))
+        with self.assertRaises(transport.ReplayBlocked):
+            guard.execute('run_tool',{'parameters':{'a':'1','b':'2'},'id':'program'},lambda:effects.append(2))
+        self.assertEqual(effects,[1,'read'])
+        guard.begin_request() # A subsequent non-recovered logical model request.
+        guard.execute('run_tool',args,lambda:effects.append(3));self.assertEqual(effects,[1,'read',3])
+
+    def test_direct_total_budget_cancels_silent_read_without_waiting_network_timeout(self):
+        peer=Peer(['hold']);p=self.provider(peer,turn_timeout=1);started=time.monotonic()
+        try:
+            with self.assertRaisesRegex(transport.RecoveryCancelled,'budget exhausted'):
+                agent.Agent(p,fixture_tools(lambda *a:self.fail('Tool executed')),self.trace.append).run('offline',{})
+            self.assertLess(time.monotonic()-started,1.8)
+            self.assertEqual(len(peer.bodies),1)
+            self.assertTrue(any('of 1s remain' in e.get('text','') for e in self.trace))
+        finally:peer.finish()
+
+    def test_direct_long_preset_is_actual_timer_configuration_without_day_wait(self):
+        peer=Peer(['done']);p=self.provider(peer,turn_timeout_long=True)
+        try:
+            with patch.object(transport.threading,'Timer') as timer:
+                agent.Agent(p,fixture_tools(lambda *a:self.fail('Tool executed')),self.trace.append).run('offline',{})
+                self.assertEqual(timer.call_args.args[0],86400)
+                timer.return_value.cancel.assert_called_once()
+            self.assertTrue(any('of 86400s remain' in e.get('text','') for e in self.trace))
+        finally:peer.finish()
+
+    def test_codex_recovered_new_rpc_id_same_operation_is_not_dispatched(self):
+        peer=Peer(['done','cut','done'],True);r=self.relay(peer);owner=self;calls=[]
+        class Connection:
+            linux=True;info={'cwd':'offline'};child=types.SimpleNamespace(yohaku_provider_relay=r)
+            def __init__(self):self.steps=0
+            def request(self,method,params):
+                if method=='thread/start':return {'thread':{'id':'thread'},'activePermissionProfile':{'id':'yohaku-control'}}
+                if method=='config/read':return {'config':{'features':{'shell_tool':False,'apps':False,'plugins':False}}}
+                if method=='turn/start':owner.assertEqual(owner.relay_request(r),(200,SSE));return {'turn':{'id':'turn'}}
+                raise AssertionError(method)
+            def receive(self,timeout):
+                self.steps+=1
+                if self.steps==2:owner.assertEqual(owner.relay_request(r),(200,SSE))
+                return {'id':self.steps,'method':'item/tool/call','params':{'threadId':'thread','turnId':'turn','tool':'yohaku_run_tool','arguments':{'id':'offline-program'}}}
+            def send(self,reply):pass
+            def close(self):r.close()
+        tools=fixture_tools(lambda *a:(calls.append(a) or {'ok':True,'result':{'state':'running'}}))
+        tools.definitions=[{'name':'run_tool','description':'offline fixture','parameters':{'type':'object'}}]
+        try:
+            with patch.object(codex,'connect',return_value=(Connection(),{'model':relay_module.MODEL,'models':[relay_module.MODEL],'provider':'deepseek','effort':'high'})):
+                with self.assertRaisesRegex(codex.CodexError,'Possible repeated operation'):
+                    codex.run({'config':{},'context':{},'prompt':'offline'},tools,self.trace.append)
+            self.assertEqual(len(calls),1);self.assertEqual(len(peer.bodies),3)
+        finally:peer.finish()
+
+    def test_workspace_timeout_or_malformed_reply_pauses_without_replay(self):
+        import subprocess
+        workspace=agent.Workspace(self.root,'/offline/loom','/offline/workspace')
+        tools=agent.Tools(workspace.execute)
+        for failure in (subprocess.TimeoutExpired('offline',.01),None):
+            with self.subTest(failure=type(failure).__name__):
+                with patch.object(agent.subprocess,'run',side_effect=failure,return_value=types.SimpleNamespace(stdout='incomplete')) as run:
+                    with self.assertRaises(agent.ToolOutcomeUnknown):
+                        tools.call('write_text',{'path':'memory/offline','revision':None,'text':'saved'})
+                    self.assertEqual(run.call_count,1)
+
+    def test_direct_default_preserves_no_total_limit_until_user_selects_one(self):
+        peer=Peer(['done']);p=self.provider(peer)
+        try:
+            with patch.object(transport.threading,'Timer') as timer:
+                agent.Agent(p,fixture_tools(lambda *a:self.fail('Tool executed')),self.trace.append).run('offline',{})
+                timer.assert_not_called()
+            self.assertTrue(any('time budget: unlimited' in e.get('text','') for e in self.trace))
+            self.assertIsNone(p.recovery.deadline)
+        finally:peer.finish()
+
+if __name__=='__main__':unittest.main()

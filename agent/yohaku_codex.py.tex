@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":23263,"path":"/root/projects/yohaku/release-prep/yohaku/agent/yohaku_codex.py","sha256":"0ee389b5481408d63cefa75680b9e386eaa1deb1ae8750148895f319ad7ac108"}
 ---
 
 ## 正文
-```text
+````text
 """Codex app-server transport (Windows and Linux); world tools via Yohaku RPC.
 
 No raw host shell or file-write tool is granted. Each session first verifies
@@ -27,14 +26,17 @@ from collections import deque
 import yohaku_apps as apps
 import yohaku_tools as local
 import yohaku_codex_linux as linux
+import yohaku_codex_diagnostics as diagnostics
 
 class CodexError(Exception):pass
 
 class CodexTimeout(CodexError):pass
 
+class CodexStopped(CodexError):pass
+
 BRIDGE_STAGES={'prepare-auth','compile-host','launch-app-server','native-started'}
 HOOK_EVENTS=frozenset(('PreToolUse','PermissionRequest','PostToolUse','PreCompact','PostCompact',
-    'SessionStart','SessionEnd','UserPromptSubmit','SubagentStart','SubagentStop','Stop','Interrupt'))
+    'SessionStart','SessionEnd','UserPromptSubmit','SubagentStart','SubagentStop','Stop','Interrupt','PreModelRequest','PostModelRequest'))
 
 CONTROL_PROFILE='yohaku-control'
 
@@ -58,6 +60,18 @@ def verify_profile_catalog(connection):
         if not isinstance(cursor,str) or not cursor or cursor in seen:break
         seen.add(cursor)
     raise CodexError('Codex did not expose the Yohaku control permission profile; this version or host policy is unsupported')
+
+def read_account(connection):
+    # The installed app-server can transiently fail routing discovery before
+    # any thread or model turn exists. Retry only that read-only RPC, bounded.
+    for attempt in range(3):
+        try:
+            return connection.request('account/read',{'refreshToken':False})
+        except CodexError as error:
+            if str(error) != 'Codex account/read failed: workspace routing discovery timed out' or attempt == 2:
+                raise
+            time.sleep(0.2)
+
 
 def verify_config(config, platform="windows"):
     if not isinstance(config,dict) or not isinstance(config.get('features'),dict) or config['features'].get('shell_tool') is not False:
@@ -110,10 +124,13 @@ def launch(address):
     exe=native_executable(address)
     script=apps.windows_path(local.PACKAGE/'agent/yohaku_codex_host.ps1')
     command=[str(ps),'-NoLogo','-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',script,'-Executable',apps.windows_path(exe)]
-    return subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,cwd=local.PACKAGE)
+    return subprocess.Popen(command,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=local.PACKAGE)
 
 class Connection:
-    def __init__(self,child):
+    def __init__(self,child,diagnostic=None):
+        self.diagnostic=diagnostic
+        self.stderr_capture=diagnostics.StderrCapture(getattr(child,"stderr",None))
+        if diagnostic is not None:diagnostic.attach(child)
         self.child=child;self.queue=queue.Queue(maxsize=64);self.sequence=0;self.info=None;self.pending=deque()
         self.linux=bool(getattr(child,'yohaku_linux',False))
         self.phase='Linux app-server startup' if self.linux else 'Windows bridge startup'
@@ -134,7 +151,7 @@ class Connection:
                 if not isinstance(value,dict):raise CodexError('Invalid Codex response')
                 self._put(value)
         except (ValueError,OSError,CodexError):self._put({'bridgeError':'Codex returned an invalid or oversized response'})
-        finally:self._put({'bridgeError':'Codex connection closed; check existing Windows login and app-server support'})
+        finally:self._put({'bridgeError':'Codex connection closed; no further event received'})
     def send(self,value):
         try:self.child.stdin.write((json.dumps(value,ensure_ascii=False)+'\n').encode());self.child.stdin.flush()
         except (OSError,ValueError):raise CodexError('Codex connection is no longer available')
@@ -160,6 +177,7 @@ class Connection:
         return CodexTimeout('Codex timeout during '+self.phase+'; last '+platform+' bridge stage: '+self.bridge_stage)
     def request(self,method,params,timeout=30):
         previous=self.phase;self.phase='RPC '+method
+        if self.diagnostic is not None:self.diagnostic.stage('codex_rpc/'+method)
         try:return self._request(method,params,timeout)
         finally:self.phase=previous
     def _request(self,method,params,timeout):
@@ -169,13 +187,15 @@ class Connection:
             if time.monotonic()>=deadline:raise self.timeout_error()
             value=self._receive(deadline-time.monotonic())
             if value.get('id')==ident and 'method' not in value:
-                if 'error' in value:raise CodexError('Codex '+method+' failed: '+str(value['error'].get('message','unsupported request'))[:600])
+                if 'error' in value:
+                    if self.diagnostic is not None:self.diagnostic.rpc_error(method,value['error'])
+                    raise CodexError('Codex '+method+' failed: '+str(value['error'].get('message','unsupported request'))[:600])
                 if not isinstance(value.get('result'),dict):raise CodexError('Invalid Codex RPC result')
                 return value['result']
             if 'id' in value and 'method' in value:
                 if method=='turn/start' and value['method']=='item/tool/call':self.pending.append(value)
                 else:self.deny(value)
-            elif value.get('method','').startswith(('item/','turn/')) or value.get('method')=='windowsSandbox/setupCompleted':self.pending.append(value)
+            elif value.get('method','').startswith(('item/','turn/')) or value.get('method') in ('error','windowsSandbox/setupCompleted'):self.pending.append(value)
             if len(self.pending)>256:raise CodexError('Too many queued Codex events')
     def deny(self,value):
         self.send({'id':value['id'],'error':{'code':-32601,'message':'Only Yohaku world tools are supported; no host approval or permission escalation'}})
@@ -232,7 +252,16 @@ class Connection:
             if self.windows_readiness()!='ready':
                 raise CodexError('Yohaku Windows sandbox needs one-time setup or update. In WSL run: python3 agent/yohaku_codex.py --entry codex setup')
             self.verify_boundaries()
-        account=self.request('account/read',{'refreshToken':False})
+        deepseek=self.linux and self.info.get('provider')=='deepseek'
+        if deepseek:
+            config=self.request('config/read',{'includeLayers':False}).get('config',{})
+            configured=config.get('model_providers',{}).get('deepseek',{})
+            relay=self.child.yohaku_provider_relay
+            if config.get('model_provider')!='deepseek' or config.get('model')!='deepseek-flash' or config.get('model_reasoning_effort')!='high' or configured.get('wire_api')!='responses' or configured.get('requires_openai_auth') is not False or configured.get('base_url')!=relay.base_url or configured.get('env_key')!=linux.provider.ENV_KEY or config.get('shell_environment_policy',{}).get('inherit')!='none':
+                raise CodexError('DeepSeek runtime configuration was not confirmed; no model turn started')
+        account=read_account(self)
+        if deepseek and account.get('requiresOpenaiAuth') is not False:
+            raise CodexError('DeepSeek unexpectedly requires an OpenAI login; no model turn started')
         if account.get('account') is None and account.get('requiresOpenaiAuth',True):
             if self.linux:
                 raise CodexError('Linux Codex is not signed in to Yohaku private account storage. Run: python3 agent/yohaku_codex.py --entry /path/to/linux/codex login')
@@ -240,7 +269,11 @@ class Connection:
         models=self.request('model/list',{'limit':100}).get('data',[])
         model=next((m for m in models if m.get('isDefault')),models[0] if models else {})
         if not isinstance(model.get('id'),str):raise CodexError('Codex returned no model catalog')
-        return {'model':model['id'],'models':[m['id'] for m in models if isinstance(m.get('id'),str)],'auth_type':(account.get('account') or {}).get('type','provider')}
+        result={'model':model['id'],'models':[m['id'] for m in models if isinstance(m.get('id'),str)],'auth_type':(account.get('account') or {}).get('type','provider')}
+        if deepseek:
+            if 'deepseek-flash' not in result['models']:raise CodexError('DeepSeek model missing from the installed Codex catalog')
+            result.update(model='deepseek-flash',provider='deepseek',effort='high')
+        return result
 
     def verify_boundaries(self):
         info=self.info
@@ -255,85 +288,189 @@ class Connection:
             reason={8:'could not read the private control file',9:'did not enforce all read/write boundaries',124:'execution timed out'}.get(result.get('exitCode'),'execution did not return the verified result')
             raise CodexError('Windows Codex permission profile probe '+reason+'; no model turn started')
     def close(self):
+        forced=False
+        if getattr(self.child,'yohaku_provider_relay',None) is not None:self.child.yohaku_provider_relay.recovery.cancel()
         self.closed.set()
         try:self.child.stdin.close()
         except (OSError,ValueError):pass
         try:self.child.wait(timeout=5)
-        except subprocess.TimeoutExpired:self.child.kill();self.child.wait(timeout=3)
+        except subprocess.TimeoutExpired:
+            forced=True;self.child.kill();self.child.wait(timeout=3)
         self.child.stdout.close()
+        self.stderr_capture.join()
+        if self.diagnostic is not None:
+            self.diagnostic.process_closed(self.child,self.stderr_capture,forced)
         if self.linux:linux.cleanup(self.child)
 
-def connect(address):
-    connection=Connection(launch(address))
-    try:return connection,connection.initialize()
-    except BaseException:connection.close();raise
+def connect(address,diagnostic=None):
+    transient = {'Codex account/read failed: workspace routing discovery timed out',
+                 'Codex account/read failed: workspace routing discovery failed'}
+    for attempt in range(3):
+        connection=Connection(launch(address),diagnostic)
+        try:return connection,connection.initialize()
+        except BaseException as error:
+            connection.close()
+            if not isinstance(error,CodexError) or str(error) not in transient or attempt == 2:
+                raise
+            # Routing discovery can remain failed for one app-server lifetime.
+            # No thread, turn or world operation has been started by connect.
+            time.sleep(0.2)
 
-def wait_for_turn_event(connection,deadline,emit):
-    # A quiet model stream is not a failed turn. Keep the existing total limit.
-    # Never resend a turn or tool call: saved work must not be executed twice.
+TURN_TIMEOUT_DEFAULT=None
+TURN_TIMEOUT_LONG=86400
+
+def turn_timeout(config):
+    from yohaku_provider_transport import turn_seconds
+    try:return turn_seconds(config)
+    except ValueError as error:raise CodexError(str(error)) from error
+
+
+def timeout_error(seconds):
+    return 'Codex turn exceeded '+str(seconds)+' seconds; completed file changes remain'
+
+def turn_budget_status(seconds,started,source='worker input config'):
+    elapsed=int(time.monotonic()-started)
+    label=('unlimited; elapsed '+str(elapsed)+'s' if seconds is None else
+           str(max(0,seconds-elapsed))+'s of '+str(seconds)+'s remain; elapsed '+str(elapsed)+'s')
+    return 'time budget: '+label+'; source='+source+'; Stop remains available'
+
+def wait_for_turn_event(connection,deadline,emit,seconds,started,source='worker input config'):
+    # Polling and per-RPC timeouts do not impose or reset a whole-turn limit.
     while True:
-        remaining=deadline-time.monotonic()
-        if remaining<=0:raise CodexError('Codex turn exceeded 900 seconds; completed file changes remain')
-        try:return connection.receive(min(60,remaining))
+        remaining=None if deadline is None else deadline-time.monotonic()
+        if remaining is not None and remaining<=0:raise CodexError(timeout_error(seconds))
+        try:return connection.receive(60 if remaining is None else min(60,remaining))
         except CodexTimeout:
-            if time.monotonic()>=deadline:
-                raise CodexError('Codex turn exceeded 900 seconds; completed file changes remain')
+            if deadline is not None and time.monotonic()>=deadline:raise CodexError(timeout_error(seconds))
             if connection.child.poll() is not None:
                 raise CodexError('Codex process exited while waiting; completed file changes remain')
-            emit({'event':'status','text':'Waiting for Codex events; no completion received. Stop remains available.'})
+            emit({'event':'status','text':turn_budget_status(seconds,started,source)})
+
 
 def dynamic_definitions(tools):
     return [{'type':'function','name':'yohaku_'+tool['name'],'description':tool['description'],'inputSchema':tool['parameters']} for tool in tools.definitions if tool['name']!='import_document']
 
 def run(initial,tools,emit):
+    diagnostic=diagnostics.TurnDiagnostics(initial)
+    try:
+        result=_run(initial,tools,emit,diagnostic)
+        diagnostic.finish('completed')
+        result['diagnostic_path']=diagnostic.location()
+        return result
+    except Exception as error:
+        diagnostic.fail(error)
+        raise CodexError(diagnostic.failure_message()) from error
+    finally:
+        diagnostic.save()
+
+
+def _run(initial,tools,emit,diagnostic):
     import yohaku_agent as agent
+    diagnostic.stage('call_budget')
+    budget=turn_timeout(initial['config'])
+    from yohaku_provider_transport import turn_policy
+    policy=turn_policy(initial['config'])
+    import hashlib
+    identity={'version':'codex-unlimited-20261024-v1','worker_path':__file__,
+              'source_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),**policy}
+    diagnostic.data['effective_turn_budget']=identity
+    diagnostic.save()
+    emit({'event':'turn_settings',**identity})
+    emit({'event':'status','text':turn_budget_status(budget,time.monotonic(),policy['source'])})
+    max_tool_calls=agent.optional_count(initial['config'], 'max_tool_calls')
+    if agent.optional_count(initial['config'], 'max_rounds') is not None:
+        raise CodexError('Codex-local cannot enforce max_rounds; use max_tool_calls or a direct provider protocol; no model turn started')
     address=initial['config'].get('codex_entry','')
-    connection,info=connect(address);count=0;text=[];seen=set();replies={}
+    tools.protocol='codex-local'
+    tools.enable_model_management(dict(initial['config'],protocol='codex-local'))
+    diagnostic.stage('world_bootstrap')
+    context=tools.bootstrap(initial.get('context',{}))
+    diagnostic.stage('connect')
+    connection,info=connect(address,diagnostic);count=0;text=[];seen=set();replies={}
     old={n:signal.getsignal(n) for n in (signal.SIGTERM,signal.SIGINT)}
-    def stop(*_):raise CodexError('Codex turn stopped')
+    def stop(*_):raise CodexStopped('Codex turn stopped')
     for n in old:signal.signal(n,stop)
     try:
-        model=initial['config'].get('model') or info['model']
+        if info.get('provider')=='deepseek':connection.child.yohaku_provider_relay.configure_recovery(initial['config'],emit)
+        model=info['model'] if info.get('provider')=='deepseek' else connection.info.get('selected_model') or initial['config'].get('model') or info['model']
+        effective_provider=connection.info.get('provider',info.get('provider','openai'))
+        tools.model_control.bind(effective_provider,model, 'host private codex-provider.json' if effective_provider=='deepseek' or connection.info.get('selected_model') else 'Codex turn config model')
+        effective_model={'provider':effective_provider,'model':model,'selection_source':tools.model_control.runtime['source'],'scope':'codex-local only; ordinary AI unchanged'}
+        diagnostic.data['effective_model']=effective_model
+        diagnostic.save()
+        emit({'event':'model_settings',**effective_model})
         if model not in info['models']:raise CodexError('Selected model is not in this installed Codex catalog; reconnect or select a listed model')
         definitions=dynamic_definitions(tools)
+        diagnostic.stage('thread/start')
         thread=connection.request('thread/start',{'cwd':connection.info['cwd'],'model':model,'approvalPolicy':'never','permissions':CONTROL_PROFILE,
             'ephemeral':True,'dynamicTools':definitions,'developerInstructions':agent.SYSTEM+'\nUse yohaku_ tools for all world operations. Native paths belong to an empty read-only control workspace. Do not use host shell, native file edits, MCP, or external imports.'})
+        confirmed_model=thread.get('model')
+        confirmed_provider=thread.get('modelProvider')
+        if isinstance(confirmed_model,str) and confirmed_model!=model:
+            raise CodexError('Codex thread/start returned a different model; no model turn started')
+        if effective_provider=='openai' and isinstance(confirmed_provider,str) and confirmed_provider!='openai':
+            raise CodexError('Codex thread/start returned a different provider; no model turn started')
+        effective_model.update(thread_start_model=confirmed_model,thread_start_provider=confirmed_provider)
+        diagnostic.save()
         thread_id=thread.get('thread',{}).get('id')
         if not isinstance(thread_id,str):raise CodexError('Missing Codex thread id')
+        diagnostic.identify(thread_id,None)
         active=thread.get('activePermissionProfile')
         if not isinstance(active,dict) or active.get('id')!=CONTROL_PROFILE:
             raise CodexError('Codex thread did not confirm the Yohaku control permission profile; no model turn started')
+        diagnostic.stage('config/read')
         verify_config(connection.request('config/read',{'includeLayers':False,'cwd':connection.info['cwd']}).get('config'),
                       platform='linux' if connection.linux else 'windows')
         history=initial.get('history',[])
         if not isinstance(history,list):history=[]
         history=[m for m in history[-8:] if isinstance(m,dict) and m.get('role') in ('user','assistant') and isinstance(m.get('content'),str)]
-        prompt=json.dumps({'recent_conversation':history,'context':initial.get('context',{}),'request':initial['prompt']},ensure_ascii=False)
+        prompt=json.dumps({'recent_conversation':history,'context':context,'request':initial['prompt']},ensure_ascii=False)
+        diagnostic.protect(prompt)
+        diagnostic.stage('turn/start')
         turn=connection.request('turn/start',{'threadId':thread_id,'input':[{'type':'text','text':prompt}],
-            'approvalPolicy':'never','permissions':CONTROL_PROFILE,'model':model})
-        turn_id=turn.get('turn',{}).get('id');deadline=time.monotonic()+900
+            'approvalPolicy':'never','permissions':CONTROL_PROFILE,'model':model,
+            **({'effort':info['effort']} if info.get('provider')=='deepseek' else {})})
+        turn_id=turn.get('turn',{}).get('id');started=time.monotonic();deadline=None if budget is None else started+budget
+        if info.get('provider')=='deepseek':connection.child.yohaku_provider_relay.recovery.set_budget(budget)
+        diagnostic.identify(thread_id,turn_id)
+        diagnostic.stage('waiting_for_turn')
         connection.phase='waiting for model turn events'
-        emit({'event':'status','text':'Codex connected; model='+model+'; editing through Yohaku world tools'})
+        emit({'event':'status','text':'Codex connected; provider='+effective_provider+'; model='+model+'; source='+tools.model_control.runtime['source']+'; editing through Yohaku world tools'})
+        emit({'event':'status','text':turn_budget_status(budget,started,policy['source'])})
         while True:
-            value=wait_for_turn_event(connection,deadline,emit)
-            if time.monotonic()>deadline:raise CodexError('Codex turn exceeded 900 seconds; completed file changes remain')
+            value=wait_for_turn_event(connection,deadline,emit,budget,started,policy['source'])
+            if deadline is not None and time.monotonic()>deadline:raise CodexError(timeout_error(budget))
             method=value.get('method','');params=value.get('params',{})
+            diagnostic.observe(value)
             if method=='item/tool/call' and 'id' in value:
-                if params.get('threadId')!=thread_id:
+                if params.get('threadId')!=thread_id or (params.get('turnId') is not None and params['turnId']!=turn_id):
                     connection.deny(value);continue
                 if value['id'] in replies:
                     connection.send(replies[value['id']]);continue
                 name=params.get('tool','');args=params.get('arguments',{})
+                diagnostic.tool_start(value['id'],name)
                 if name not in {d['name'] for d in definitions}:result={'ok':False,'error':'Unsupported tool'}
-                elif count>=100:raise CodexError('Codex tool-call limit reached')
+                elif max_tool_calls is not None and count>=max_tool_calls:
+                    raise CodexError('Codex tool-call limit reached (explicit max_tool_calls='+str(max_tool_calls)+'); completed file changes remain')
                 else:
                     if isinstance(args,str):
                         try:args=json.loads(args)
                         except ValueError:args=None
-                    result=tools.call(name[len('yohaku_'):],args);count+=1
+                    if info.get('provider')=='deepseek':
+                        guard=connection.child.yohaku_provider_relay.recovery.tool_guard
+                        result=guard.execute(name[len('yohaku_'):],args,lambda:tools.call(name[len('yohaku_'):],args))
+                    else:result=tools.call(name[len('yohaku_'):],args)
+                    count+=1
                     emit({'event':'tool_result','name':name,'result':result})
+                diagnostic.stage('tool_result_serialization')
+                diagnostic.tool_executed(result)
                 reply={'id':value['id'],'result':{'contentItems':[{'type':'inputText','text':json.dumps(result,ensure_ascii=False)}],'success':result.get('ok') is True}}
-                replies[value['id']]=reply;connection.send(reply)
+                diagnostic.stage('tool_result_return')
+                replies[value['id']]=reply
+                try:connection.send(reply)
+                except (OSError,CodexError) as error:
+                    raise CodexError('Tool executed; result delivery unknown; inspect saved state; do not replay') from error
+                diagnostic.tool_sent()
             elif 'id' in value and 'method' in value:connection.deny(value)
             elif method=='item/completed':
                 item=params.get('item',{})
@@ -344,11 +481,18 @@ def run(initial,tools,emit):
             elif method=='turn/completed':
                 completed=params.get('turn',{})
                 if params.get('threadId')!=thread_id or (turn_id and completed.get('id')!=turn_id):continue
-                if completed.get('status')!='completed':raise CodexError('Codex turn '+str(completed.get('status'))+'; completed file changes remain')
+                if completed.get('status')!='completed':raise CodexError(diagnostic.turn_failure(completed))
                 final='\n'.join(text)
-                return {'text':final,'history':history+[{'role':'user','content':initial['prompt']},{'role':'assistant','content':final}], 'tool_calls':count}
+                result={'text':final,'history':history+[{'role':'user','content':initial['prompt']},{'role':'assistant','content':final}], 'tool_calls':count}
+                if info.get('provider')=='deepseek':
+                    evidence=connection.child.yohaku_provider_relay.evidence()
+                    result['provider_evidence']=evidence
+                return result
     finally:
-        connection.close()
+        try:
+            if info.get('provider')=='deepseek':
+                emit({'event':'provider_evidence','provider':'deepseek','requests':connection.child.yohaku_provider_relay.evidence()})
+        finally:connection.close()
         for n,handler in old.items():signal.signal(n,handler)
 
 def main():
@@ -374,9 +518,14 @@ def main():
     return 0
 
 if __name__=='__main__':sys.exit(main())
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "agent/yohaku_codex.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

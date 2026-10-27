@@ -12,6 +12,11 @@
       "path": "bin/yohaku-tools",
       "sha256": "186550e969d9a73f4e9bcd7fff14fa81587ed415a413e2e4a5e5e0bfa26c15d9",
       "executable": true
+    },
+    {
+      "path": "bin/yohaku-codex-text-service",
+      "sha256": "a05cc47fc30dc5f2c790c588508bc1c61e00e0ecbb95cf4ee5de0fa4c31c67fc",
+      "executable": true
     }
   ]
 }

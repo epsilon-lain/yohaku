@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":1475,"path":"/root/projects/yohaku/release-prep/yohaku/scripts/sync_sources.py","sha256":"9abc23ecc71c69f742d2609b93fdaac838819b3ffc88f74dbdf0b21ce40df85a"}
 ---
 
 ## 正文
-```text
+````text
 import argparse
 import json
 from pathlib import Path
@@ -42,9 +41,14 @@ def main():
 
 if __name__ == '__main__':
     main()
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "scripts/sync_sources.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

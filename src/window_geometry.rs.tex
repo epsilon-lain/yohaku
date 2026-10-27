@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":10851,"path":"/root/projects/yohaku/release-prep/yohaku/src/window_geometry.rs","sha256":"a4db617734db2779be49c5775e1f2d6481eed6f7149c0b180dfa8b5f5a709463"}
 ---
 
 ## 正文
-```text
+````text
 //! Geometry shared by the native window frame and Wayland configure requests.
 pub const BORDER: i32 = 5;
 pub const TITLE: i32 = 30;
@@ -389,9 +388,14 @@ mod tests {
         assert!(l.rect.w > 0 && l.rect.h > 0);
     }
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "src/window_geometry.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":18257,"path":"/root/projects/yohaku/release-prep/yohaku/agent/test_agent.py","sha256":"f0e1fbf17d2317b220452ce96205d93df3c8e88d7abd4e99e6374a5d352a10e7"}
 ---
 
 ## 正文
-```text
+````text
 import copy
 import http.server
 import io
@@ -23,11 +22,32 @@ from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).parent))
 import yohaku_agent as y
 
+class CreateMetadataBridgeTests(unittest.TestCase):
+    def test_forward_objects_old_calls_and_failures(self):
+        calls=[]
+        tools=y.Tools(lambda request: calls.append(request) or {})
+        for extra in ({}, {'directory':'notes/2026'},
+                      {'notes':{'source_version':1,'writer':'test','summary':'test'}},
+                      {'node':{'id':'n','name':'N','description':'','links':[]}},
+                      {'directory':'files/notes/2026','node':{'id':'n2','name':'N','description':'','links':[]}}):
+            args={'name':'a.md','body':'中',**extra}
+            self.assertTrue(tools.call('create_document',args)['ok'])
+            self.assertEqual(calls[-1],{'command':'create',**args})
+        count=len(calls)
+        for key in ('notes','node'):
+            for value in (None, [], 'bad', True):
+                self.assertFalse(tools.call('create_document',{'name':'a','body':'x',key:value})['ok'])
+        for value in (None, 1, [], True):
+            self.assertFalse(tools.call('create_document',{'name':'a','body':'x','directory':value})['ok'])
+        self.assertEqual(len(calls),count)
+        for result in ({'sync_error':'failed'}, {'loom':{'ok':False}}):
+            self.assertFalse(y.Tools(lambda _:result).call('create_document',{'name':'a','body':''})['ok'])
+
 class Fixture(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='yohaku-ai-')
         self.root=Path(self.temp.name)/'world'
-        self.workspace=y.Workspace(self.root,y.ROOT/'bin/loom-linux-x86_64')
+        self.workspace=y.Workspace(self.root,y.ROOT/'bin/loom-linux-x86_64',os.environ.get('YOHAKU_TEST_BIN'))
         self.tools=y.Tools(self.workspace.execute,lambda:{'root':str(self.root),'page':'files','source':'files/demo.py.tex','dirty':False})
     def tearDown(self):self.temp.cleanup()
     def call(self,name,args=None):
@@ -106,7 +126,8 @@ class ToolTests(Fixture):
         replies=[json.loads(s) for s in r.stdout.splitlines()]
         self.assertEqual(len(replies),3)
         self.assertEqual(replies[0]['result']['protocolVersion'],'2025-06-18')
-        self.assertEqual(len(replies[1]['result']['tools']),24)
+        self.assertEqual(len(replies[1]['result']['tools']),25)
+        self.assertIn('search_notes',{tool['name'] for tool in replies[1]['result']['tools']})
         self.assertIn('read_range',{t['name'] for t in replies[1]['result']['tools']})
         self.assertIn('edit_range',{t['name'] for t in replies[1]['result']['tools']})
         self.assertFalse(replies[2]['result']['isError'])
@@ -134,7 +155,8 @@ class ToolTests(Fixture):
         for invalid in (None,False,[],"all"):
             with self.assertRaises(y.ToolError):y.allowed_tools(invalid)
         self.assertNotIn('read_document',{t['name'] for t in y.allowed_tools({'read':1})})
-        self.assertEqual(len(y.allowed_tools()),25)
+        self.assertTrue(y.allowed_tools())
+        self.assertFalse({t['name'] for t in y.allowed_tools()} & y.GROUPS['run'])
 
     def test_mcp_uses_configured_permissions_and_cannot_create_when_write_is_disabled(self):
         config=Path(self.temp.name)/'ai.json';config.write_text(json.dumps({'permissions':{'write':False,'delete':False,'import':False}}))
@@ -142,7 +164,8 @@ class ToolTests(Fixture):
             {'jsonrpc':'2.0','id':2,'method':'tools/list'}, {'jsonrpc':'2.0','id':3,'method':'tools/call','params':{'name':'create_document','arguments':{'name':'denied.py','body':'no'}}}]
         r=subprocess.run([sys.executable,'-B',str(y.ROOT/'agent/yohaku_agent.py'),'--root',str(self.root),'--config',str(config),'mcp'],input='\n'.join(map(json.dumps,requests))+'\n',text=True,capture_output=True,check=True)
         replies=[json.loads(line) for line in r.stdout.splitlines()]
-        self.assertEqual(len(replies[1]['result']['tools']),13)
+        self.assertEqual(len(replies[1]['result']['tools']),14)
+        self.assertIn('search_notes',{tool['name'] for tool in replies[1]['result']['tools']})
         self.assertTrue(replies[2]['result']['isError'])
         self.assertFalse((self.root/'files/denied.py').exists())
 
@@ -268,10 +291,53 @@ class ProviderTests(Fixture):
             self.assertEqual(events[-1]['event'],'done')
         self.assertEqual((self.root/'files/wire.py').read_text(),'print("wire")')
 
+class DirectoryCreateTests(Fixture):
+    def test_nested_create_read_coordinates_nodes_and_rejections(self):
+        notes={'source_version':1,'writer':'test','summary':'nested'}
+        node={'id':'nested-node','name':'Nested','description':'nested','links':[]}
+        created=self.call('create_document',{'name':'deep.md','directory':'notes/2026/q4','body':'甲\n乙\n','notes':notes,'node':node})
+        self.assertEqual(created['source'],'files/notes/2026/q4/deep.md.tex')
+        self.assertEqual(created['output'],'files/notes/2026/q4/deep.md')
+        self.assertEqual((self.root/'files/notes/2026/q4/deep.md').read_text(),'甲\n乙\n')
+        doc=self.call('read_document',{'source':created['source']})
+        self.assertEqual(doc['body'],'甲\n乙\n')
+        self.assertIn('## AI 笔记',doc['text'])
+        selected=self.call('read_range',{'path':created['source'],'view':'body','start_line':2,'start_column':1,'end_line':2,'end_column':2})
+        self.assertEqual(selected['text'],'乙')
+        edited=self.call('edit_range',{'path':created['source'],'view':'body','revision':doc['revision'],
+            'start_line':2,'start_column':1,'end_line':2,'end_column':2,'expected':'乙','text':'丙'})
+        self.assertTrue(edited['verified'])
+        self.assertEqual((self.root/'files/notes/2026/q4/deep.md').read_text(),'甲\n丙\n')
+        current=self.call('read_document',{'source':created['source']})
+        self.assertIn('## AI 笔记',current['text'])
+        located=self.call('get_node',{'id':'nested-node'})['node']
+        self.assertEqual(located['location']['path'],created['source'])
+        self.assertTrue(located['registered'])
+        before=(self.root/created['source']).read_bytes()
+        self.assertFalse(self.tools.call('create_document',{'name':'deep.md','directory':'notes/2026/q4','body':'重复'})['ok'])
+        self.assertEqual((self.root/created['source']).read_bytes(),before)
+        self.assertFalse((self.root/'files/notes/2026/q4/deep (2).md.tex').exists())
+        plain=self.call('create_document',{'name':'plain.txt','directory':'a/b','body':'plain\n'})
+        self.assertEqual(plain['output'],'files/a/b/plain.txt')
+        self.assertEqual((self.root/'files/a/b/plain.txt').read_text(),'plain\n')
+        for directory in ('../escape','/absolute','files/../escape','.','files/.yohaku'):
+            self.assertFalse(self.tools.call('create_document',{'name':'bad.md','directory':directory,'body':'x'})['ok'])
+        self.assertFalse((self.root/'files/bad.md.tex').exists())
+        legacy=self.call('create_document',{'name':'legacy.md','body':'one'})
+        self.assertEqual(legacy['output'],'files/legacy.md')
+        numbered=self.call('create_document',{'name':'legacy.md','body':'two'})
+        self.assertEqual(numbered['output'],'files/legacy (2).md')
+
+
 if __name__=='__main__':unittest.main()
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "agent/test_agent.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

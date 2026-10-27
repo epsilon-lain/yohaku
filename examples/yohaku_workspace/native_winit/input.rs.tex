@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":11159,"path":"/root/projects/yohaku/release-prep/yohaku/examples/yohaku_workspace/native_winit/input.rs","sha256":"31bae29a29ff0e6d1869a943450de0f2595ef174b25b3c42a9ca838b2559222b"}
 ---
 
 ## 正文
-```text
+````text
 // Adapted from Smithay 0.7.0 (MIT), Copyright Smithay contributors.
 // Local change: forward IME events instead of dropping them. See LICENSE-SMITHAY.
 use std::path::PathBuf;
@@ -409,9 +408,14 @@ impl InputBackend for WinitInput {
 
     type SpecialEvent = UnusedEvent;
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "examples/yohaku_workspace/native_winit/input.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

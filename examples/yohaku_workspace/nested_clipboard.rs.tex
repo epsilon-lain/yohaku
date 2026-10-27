@@ -1,0 +1,249 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+//! Focus-scoped wl_data_device bridge. System clipboard access only on receive/copy gestures.
+use super::*;
+use smithay::wayland::selection::{
+    SelectionSource, SelectionTarget,
+    data_device::{
+        request_data_device_client_selection, set_data_device_focus, set_data_device_selection,
+    },
+};
+use std::{
+    io::{Read, Write},
+    os::unix::net::UnixStream,
+    sync::mpsc,
+    time::Duration,
+};
+use wayland_server::{DisplayHandle, Resource};
+pub const READ: &str = "application/x-yohaku-clipboard-read-v1";
+pub const WRITE: &str = "application/x-yohaku-clipboard-write-v1";
+pub const ACK: &str = "application/x-yohaku-clipboard-ack-v1";
+const LIMIT: u64 = 8 * 1024 * 1024;
+#[derive(Clone, Default)]
+pub struct Reply {
+    receipt: Option<serde_json::Value>,
+    grant: Option<wayland_server::backend::ClientId>,
+}
+fn reply(seat: &Seat<App>, receipt: Option<serde_json::Value>) -> Reply {
+    Reply {
+        receipt,
+        grant: seat
+            .get_keyboard()
+            .and_then(|k| k.current_focus())
+            .and_then(|s| s.client())
+            .map(|c| c.id()),
+    }
+}
+type ReadFn = fn() -> Result<String, String>;
+type WriteFn = fn(&str) -> Result<(), String>;
+pub struct Bridge {
+    pub dh: DisplayHandle,
+    pending: Option<(u64, String)>,
+    generation: u64,
+    tx: mpsc::Sender<(u64, serde_json::Value)>,
+    rx: mpsc::Receiver<(u64, serde_json::Value)>,
+    read: ReadFn,
+    write: WriteFn,
+    focus: Option<wayland_server::backend::ClientId>,
+    current: Arc<std::sync::atomic::AtomicU64>,
+    write_gate: Arc<std::sync::Mutex<()>>,
+}
+impl Bridge {
+    pub fn new(dh: &DisplayHandle) -> Self {
+        Self::with_backend(dh, host_clipboard::read, host_clipboard::write_verified)
+    }
+    pub fn with_backend(dh: &DisplayHandle, read: ReadFn, write: WriteFn) -> Self {
+        let (tx, rx) = mpsc::channel();
+        Self {
+            dh: dh.clone(),
+            pending: None,
+            generation: 0,
+            tx,
+            rx,
+            read,
+            write,
+            focus: None,
+            current: Arc::new(std::sync::atomic::AtomicU64::new(0)),
+            write_gate: Arc::new(std::sync::Mutex::new(())),
+        }
+    }
+    pub fn focus(&mut self, seat: &Seat<App>, surface: Option<&WlSurface>) {
+        self.focus = surface.and_then(|s| s.client()).map(|c| c.id());
+        set_data_device_focus(&self.dh, seat, surface.and_then(|s| s.client()));
+        // Every focused window can request a fresh external read. No clipboard access here.
+        if surface.is_some() && self.pending.is_none() {
+            set_data_device_selection(
+                &self.dh,
+                seat,
+                vec![READ.into(), "text/plain;charset=utf-8".into()],
+                Reply {receipt:None,grant:self.focus.clone()},
+            );
+        }
+    }
+    pub fn selected(&mut self, ty: SelectionTarget, source: Option<SelectionSource>) {
+        if ty != SelectionTarget::Clipboard {
+            return;
+        }
+        self.generation += 1;
+        self.current
+            .store(self.generation, std::sync::atomic::Ordering::SeqCst);
+        self.pending = source.and_then(|s| {
+            let m = s.mime_types();
+            let mime = if m.iter().any(|m| m == READ) {
+                Some(READ)
+            } else if m.iter().any(|m| m == WRITE) {
+                Some(WRITE)
+            } else if m.iter().any(|m| m == "text/plain;charset=utf-8") {
+                Some("text/plain;charset=utf-8")
+            } else if m.iter().any(|m| m == "text/plain") {
+                Some("text/plain")
+            } else {
+                None
+            };
+            mime.map(|m| (self.generation, m.to_owned()))
+        });
+    }
+    pub fn tick(&mut self, seat: &Seat<App>) {
+        // Smithay's focus_changed hook is not called on set_focus(None).
+        let focused = seat.get_keyboard().and_then(|k| k.current_focus());
+        if focused.as_ref().and_then(|s| s.client()).map(|c| c.id()) != self.focus {
+            self.focus(seat, focused.as_ref());
+        }
+        // new_selection runs before Smithay installs its source; consume only after dispatch.
+        if let Some((generation, mime)) = self.pending.take() {
+            if mime == READ {
+                set_data_device_selection(
+                    &self.dh,
+                    seat,
+                    vec![READ.into(), "text/plain;charset=utf-8".into()],
+                    reply(seat, None),
+                );
+                return;
+            }
+            let (tx, write) = (self.tx.clone(), self.write);
+            let current = self.current.clone();
+            let gate = self.write_gate.clone();
+            match UnixStream::pair() {
+                Ok((mut reader, writer)) => {
+                    if request_data_device_client_selection(seat, mime.clone(), writer.into())
+                        .is_ok()
+                    {
+                        std::thread::spawn(move || {
+                            let _ = reader.set_read_timeout(Some(Duration::from_secs(2)));
+                            let mut b = Vec::new();
+                            let response=(||->Result<serde_json::Value,String>{
+                                (&mut reader).take(LIMIT+1).read_to_end(&mut b).map_err(|_|"选区数据未完整收到".to_owned())?;
+                                if b.len() as u64>LIMIT{return Err("选区数据超限".into());}
+                                let v=if mime==WRITE {serde_json::from_slice::<serde_json::Value>(&b).map_err(|_|"选区格式错误".to_owned())?}else{serde_json::json!({"nonce":"","text":String::from_utf8(b).map_err(|_|"选区非UTF-8".to_owned())?})};
+                                let nonce=v["nonce"].as_str().ok_or("缺少确认编号")?;
+                                let text=v["text"].as_str().ok_or("缺少选区文本")?;
+                                let _guard=gate.lock().map_err(|_|"剪贴板写入锁失败")?;
+                                if current.load(std::sync::atomic::Ordering::SeqCst)!=generation {return Err("复制已被后续操作取代".into());}
+                                let r=if text.len()>1024*1024{Err("选区文本超过1MiB".into())}else{write(text)};
+                                Ok(match r {Ok(())=>serde_json::json!({"ok":true,"nonce":nonce,"text":""}),Err(e)=>serde_json::json!({"ok":false,"nonce":nonce,"error":e})})
+                            })().unwrap_or_else(|e|serde_json::json!({"ok":false,"error":e}));
+                            let _ = tx.send((generation, response));
+                        });
+                    }
+                }
+                Err(_) => eprintln!("NESTED_CLIPBOARD transport_failed"),
+            }
+        }
+        while let Ok((g, v)) = self.rx.try_recv() {
+            if g == self.generation {
+                eprintln!(
+                    "NESTED_CLIPBOARD write_verified={} generation={g}",
+                    v["ok"] == true
+                );
+                set_data_device_selection(
+                    &self.dh,
+                    seat,
+                    vec![
+                        READ.into(),
+                        ACK.into(),
+                        "text/plain;charset=utf-8".into(),
+                        "text/plain".into(),
+                    ],
+                    reply(seat, Some(v)),
+                );
+            }
+        }
+    }
+    pub fn send(&self, seat: &Seat<App>, mime: String, fd: OwnedFd, reply: &Reply) {
+        let focus = seat
+            .get_keyboard()
+            .and_then(|k| k.current_focus())
+            .and_then(|s| s.client())
+            .map(|c| c.id());
+        // A previously offered object must not grant future clipboard reads after focus changes.
+        if focus.is_none() || focus != reply.grant {
+            return;
+        }
+        let read = self.read;
+        let receipt = reply.receipt.clone();
+        std::thread::spawn(move || {
+            let bytes = if mime == ACK {
+                serde_json::to_vec(
+                    &receipt
+                        .unwrap_or_else(|| serde_json::json!({"ok":false,"error":"没有写入回执"})),
+                )
+                .unwrap()
+            } else {
+                let r = read().and_then(|s| {
+                    if s.len() <= 1024 * 1024 {
+                        Ok(s)
+                    } else {
+                        Err("剪贴板文本超过1MiB".into())
+                    }
+                });
+                if mime == READ {
+                    serde_json::to_vec(&match r {
+                        Ok(t) => serde_json::json!({"ok":true,"text":t}),
+                        Err(e) => serde_json::json!({"ok":false,"error":e}),
+                    })
+                    .unwrap()
+                } else if mime == "text/plain;charset=utf-8" || mime == "text/plain" {
+                    r.unwrap_or_default().into_bytes()
+                } else {
+                    return;
+                }
+            };
+            // Our private client uses a socket, standard clients may supply a pipe.
+            // Nonblocking fd avoids a stalled client retaining this worker indefinitely.
+            let mut file = std::fs::File::from(fd);
+            use smithay::reexports::rustix::fs::{OFlags, fcntl_getfl, fcntl_setfl};
+            if let Ok(flags) = fcntl_getfl(&file) {
+                let _ = fcntl_setfl(&file, flags | OFlags::NONBLOCK);
+            }
+            let end = std::time::Instant::now() + Duration::from_secs(2);
+            let mut offset = 0;
+            while offset < bytes.len() && std::time::Instant::now() < end {
+                match file.write(&bytes[offset..]) {
+                    Ok(0) => break,
+                    Ok(n) => offset += n,
+                    Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => {
+                        std::thread::sleep(Duration::from_millis(2))
+                    }
+                    Err(_) => break,
+                }
+            }
+        });
+    }
+}
+````
+
+## 输出与关联
+```yaml
+output: "examples/yohaku_workspace/nested_clipboard.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

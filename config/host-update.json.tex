@@ -1,0 +1,32 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+{
+  "format": "yohaku-host-update-config/1",
+  "enabled_by_default": false,
+  "launch_on_yohaku_start": false,
+  "world": "worlds/default",
+  "source": "files/codex-text/UPDATE.json.tex",
+  "required_permissions": [
+    "read",
+    "write",
+    "run"
+  ],
+  "automatic_install": false
+}
+````
+
+## 输出与关联
+```yaml
+output: "config/host-update.json"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

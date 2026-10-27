@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":26225,"path":"/root/projects/yohaku/release-prep/yohaku/examples/yohaku_workspace/native_winit/mod.rs","sha256":"7a7301ca619ef43b314ea318582dd0c7426595663656cff0723973cbd248259e"}
 ---
 
 ## 正文
-```text
+````text
 // Adapted from Smithay 0.7.0 (MIT), Copyright Smithay contributors.
 // Local change: forward IME events instead of dropping them. See LICENSE-SMITHAY.
 //! Implementation of backend traits for types provided by `winit`
@@ -742,9 +741,14 @@ pub enum WinitEvent {
     /// A redraw was requested
     Redraw,
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "examples/yohaku_workspace/native_winit/mod.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

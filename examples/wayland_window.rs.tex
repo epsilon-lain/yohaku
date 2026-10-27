@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":3128,"path":"/root/projects/yohaku/release-prep/yohaku/examples/wayland_window.rs","sha256":"7894d72fb5721836a655c1620c0394f25fc84f4656380074eeecf9b9deca82d4"}
 ---
 
 ## 正文
-```text
+````text
 use std::{num::NonZeroU32, rc::Rc};
 use softbuffer::{Context, Surface};
 use winit::{
@@ -120,9 +119,14 @@ fn main() {
 
     event_loop.run_app(&mut app).unwrap();
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "examples/wayland_window.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

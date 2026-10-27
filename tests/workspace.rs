@@ -540,3 +540,116 @@ fn tool_registry_validates_all_file_callers_and_preserves_existing_on_error() {
     assert!(f.workspace.execute(&json!({"command":"write_text","path":path,"expected":original,"text":invalid.to_string()})).is_err());
     assert_eq!(fs::read_to_string(f.path(path)).unwrap(), original);
 }
+
+#[test]
+fn create_metadata_is_validated_preserved_and_conflicts_do_not_leave_sources() {
+    let mut f = Fixture::new();
+    let notes = json!({"source_version":1,"writer":"test","summary":"中文\n```yaml\nquoted"});
+    let node = json!({"id":"created","name":"Created","description":"test","entry":true,"links":[]});
+    let request = json!({"command":"create","name":"created.md","body":"正文\r\n","notes":notes,"node":node});
+    let created = f.workspace.execute(&request).unwrap();
+    assert_eq!(created["loom"]["ok"], true);
+    let source = created["source"].as_str().unwrap();
+    let doc = f.workspace.read(source).unwrap();
+    assert_eq!(doc["body"], "正文\r\n");
+    assert!(doc["text"].as_str().unwrap().contains("## AI 笔记"));
+    let saved = f.workspace.save(source, doc["text"].as_str().unwrap(), "```\nchanged", true).unwrap();
+    assert_eq!(saved["loom"]["ok"], true);
+    let current = f.workspace.read(source).unwrap();
+    assert!(current["text"].as_str().unwrap().contains("source_version"));
+    assert_eq!(f.workspace.execute(&json!({"command":"node_get","id":"created"})).unwrap()["node"]["name"], "Created");
+    assert!(f.workspace.execute(&request).is_err());
+    assert!(!f.path("files/created (2).md.tex").exists());
+    for notes in [json!({}), json!({"source_version":0,"writer":"x","summary":"x"}), json!(null)] {
+        assert!(f.workspace.execute(&json!({"command":"create","name":"invalid.md","body":"x","notes":notes})).is_err());
+        assert!(!f.path("files/invalid.md.tex").exists());
+    }
+    let plain = f.workspace.create("plain.md", "old").unwrap();
+    let plain = f.workspace.read(plain["source"].as_str().unwrap()).unwrap();
+    assert!(!plain["text"].as_str().unwrap().contains("## AI 笔记"));
+    let only = f.workspace.execute(&json!({"command":"create","name":"notes.md","body":"","notes":{"source_version":1,"writer":"test","summary":"notes only"}})).unwrap();
+    assert_eq!(only["loom"]["ok"], true);
+    let mut node_only = node.clone();
+    node_only["id"] = json!("node-only");
+    let result = f.workspace.execute(&json!({"command":"create","name":"node.md","body":"node","node":node_only})).unwrap();
+    let text = f.workspace.read(result["source"].as_str().unwrap()).unwrap();
+    assert!(!text["text"].as_str().unwrap().contains("## AI 笔记"));
+    for node in [json!({}), json!({"id":"bad id","name":"N","description":"","links":[]}),
+        json!({"id":"bad-link","name":"N","description":"","links":[{"relation":"exec","target":"created"}]})] {
+        assert!(f.workspace.execute(&json!({"command":"create","name":"invalid-node.md","body":"","node":node})).is_err());
+        assert!(!f.path("files/invalid-node.md.tex").exists());
+    }
+    // Unregistered sources also reserve their stable IDs.
+    let raw = text["text"].as_str().unwrap().replace("node-only", "unregistered");
+    fs::write(f.path("files/unregistered.tex"), raw).unwrap();
+    node_only["id"] = json!("unregistered");
+    assert!(f.workspace.execute(&json!({"command":"create","name":"conflict.md","body":"","node":node_only})).is_err());
+    assert!(!f.path("files/conflict.md.tex").exists());
+}
+
+#[test]
+fn create_nested_directories_route_outputs_nodes_and_reject_existing_targets() {
+    let mut f = Fixture::new();
+    let notes = json!({"source_version":1,"writer":"test","summary":"nested"});
+    let node = json!({"id":"nested-deep","name":"Nested deep","description":"nested test","entry":true,"links":[]});
+    let created = f.workspace.execute(&json!({
+        "command":"create","name":"deep.md","directory":"notes/2026/q4","body":"first\n",
+        "notes":notes,"node":node
+    })).unwrap();
+    assert_eq!(created["source"], "files/notes/2026/q4/deep.md.tex");
+    assert_eq!(created["output"], "files/notes/2026/q4/deep.md");
+    assert_eq!(created["loom"]["ok"], true);
+    assert_eq!(fs::read_to_string(f.path("files/notes/2026/q4/deep.md")).unwrap(), "first\n");
+    let source = created["source"].as_str().unwrap();
+    let doc = f.workspace.read(source).unwrap();
+    assert_eq!(doc["body"], "first\n");
+    assert!(doc["text"].as_str().unwrap().contains("## AI 笔记"));
+    let located = f.workspace.execute(&json!({"command":"node_get","id":"nested-deep"})).unwrap();
+    assert_eq!(located["node"]["location"]["path"], source);
+    assert_eq!(located["node"]["registered"], true);
+    assert!(f.workspace.list().unwrap()["files"].as_array().unwrap().iter().any(|item| item["source"] == source));
+
+    let saved = f.workspace.save(source, doc["text"].as_str().unwrap(), "second\n", true).unwrap();
+    assert_eq!(saved["loom"]["ok"], true);
+    assert_eq!(fs::read_to_string(f.path("files/notes/2026/q4/deep.md")).unwrap(), "second\n");
+    let current = f.workspace.read(source).unwrap();
+    assert!(current["text"].as_str().unwrap().contains("## AI 笔记"));
+
+    let before = fs::read(f.path(source)).unwrap();
+    assert!(f.workspace.execute(&json!({"command":"create","name":"deep.md","directory":"notes/2026/q4","body":"other\n"})).is_err());
+    assert_eq!(fs::read(f.path(source)).unwrap(), before);
+    assert!(!f.path("files/notes/2026/q4/deep (2).md.tex").exists());
+    assert!(!f.path("files/notes/2026/q4/deep (2).md").exists());
+
+    let root = f.workspace.execute(&json!({"command":"create","name":"deep.md","directory":"files","body":"root\n"})).unwrap();
+    assert_eq!(root["output"], "files/deep.md");
+    assert!(f.workspace.execute(&json!({"command":"create","name":"deep.md","directory":"files","body":"again"})).is_err());
+    let legacy = f.workspace.create("legacy.md", "one").unwrap();
+    assert_eq!(legacy["output"], "files/legacy.md");
+    let numbered = f.workspace.create("legacy.md", "two").unwrap();
+    assert_eq!(numbered["output"], "files/legacy (2).md");
+
+    for directory in ["../escape", "/absolute", "files/../escape", ".", "./x", "files/.yohaku", "files/.loom"] {
+        assert!(f.workspace.execute(&json!({"command":"create","name":"bad.md","directory":directory,"body":"x"})).is_err(), "{directory}");
+        assert!(!f.path("files/bad.md.tex").exists());
+    }
+    assert!(f.workspace.execute(&json!({"command":"create","name":"sub/name.md","directory":"a","body":"x"})).is_err());
+    assert!(!f.path("files/a/sub/name.md.tex").exists());
+
+    #[cfg(unix)]
+    {
+        std::os::unix::fs::symlink(f.base.join("outside"), f.path("files/link")).unwrap();
+        assert!(f.workspace.execute(&json!({"command":"create","name":"bad.md","directory":"link/sub","body":"x"})).is_err());
+        assert!(!f.path("files/link/sub/bad.md.tex").exists());
+    }
+}
+
+#[test]
+fn create_metadata_and_directory_python_bridge_contract() {
+    let status = Command::new("/usr/bin/python3")
+        .args(["-B","-m","unittest","test_agent.CreateMetadataBridgeTests","test_agent.DirectoryCreateTests"])
+        .env("YOHAKU_TEST_BIN", env!("CARGO_BIN_EXE_yohaku_workspace"))
+        .current_dir(Path::new(env!("CARGO_MANIFEST_DIR")).join("agent"))
+        .status().unwrap();
+    assert!(status.success());
+}

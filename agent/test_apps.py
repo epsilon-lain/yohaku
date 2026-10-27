@@ -63,7 +63,7 @@ class ApplicationTests(unittest.TestCase):
         shim=self.base/'codex';shim.write_text('#!/bin/sh\nnode.exe codex.js\n');shim.chmod(0o755)
         windows=a.windows_item('/mnt/c/Users/test/AppData/Roaming/npm/codex.cmd','Codex')
         original=subprocess.run
-        with patch.object(a.shutil,'which',side_effect=lambda name:str(shim) if name=='codex' else None),patch.object(a,'is_windows_path',return_value=True),patch.object(a,'windows_inventory',return_value=([windows],'Windows scan complete')),patch.object(subprocess,'run') as execute:
+        with patch.object(a,'linux_codex_candidates',return_value=[]),patch.object(a.shutil,'which',side_effect=lambda name:str(shim) if name=='codex' else None),patch.object(a,'is_windows_path',return_value=True),patch.object(a,'windows_inventory',return_value=([windows],'Windows scan complete')),patch.object(subprocess,'run') as execute:
             items,report=a.discover(self.root,with_report=True)
             execute.assert_not_called()
         matches=[v for v in items if v['entry']['name']=='Codex']
@@ -108,7 +108,7 @@ class ApplicationTests(unittest.TestCase):
 
     def test_windows_npm_codex_shim_is_discovered_from_path(self):
         shim=self.npm_codex()
-        with patch.object(a,'is_windows_path',return_value=True),patch.object(a.shutil,'which',side_effect=lambda name:str(shim) if name=='codex' else None),patch.object(a,'windows_inventory',return_value=([],'Fixture inventory')),patch.object(subprocess,'run') as execute:
+        with patch.object(a,'linux_codex_candidates',return_value=[]),patch.object(a,'is_windows_path',return_value=True),patch.object(a.shutil,'which',side_effect=lambda name:str(shim) if name=='codex' else None),patch.object(a,'windows_inventory',return_value=([],'Fixture inventory')),patch.object(subprocess,'run') as execute:
             items=a.discover(self.root)
             execute.assert_not_called()
         self.assertTrue(any(item.get('action')=='codex' and item['address']==str(shim) for item in items))
@@ -117,6 +117,6 @@ class ApplicationTests(unittest.TestCase):
         shim=self.npm_codex();shim.with_suffix('.cmd').unlink()
         with patch.object(a,'is_windows_path',return_value=True):
             self.assertFalse(a.is_windows_program(shim))
-            with self.assertRaisesRegex(t.ToolError,'CLI application'):a.inspect(str(shim),self.root)
+            with self.assertRaisesRegex(t.ToolError,'native ELF binary'):a.inspect(str(shim),self.root)
 
 if __name__=='__main__':unittest.main()

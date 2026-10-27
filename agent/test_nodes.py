@@ -116,6 +116,82 @@ class Nodes(unittest.TestCase):
         self.assertTrue({'get_node','walk_nodes','read_range','edit_range'} <= names)
 
 
+    def test_explicit_archive_exclusions_persist_without_changing_copies_or_discovery(self):
+        source = self.node('active', [('contains','module')], True)
+        self.node('module')
+        ordinary = self.node('unregistered')
+        neighbor = self.node('neighbor', filename='vault-neighbor.py')
+        registry_path = self.root/'.yohaku/files.json'
+        registry = json.loads(registry_path.read_text())
+        registry['files'] = [entry for entry in registry['files'] if entry['source'] != ordinary]
+        registry_path.write_text(json.dumps(registry))
+        registered_before = registry_path.read_bytes()
+        original = (self.root/source).read_bytes()
+        copies = []
+        for relative in ['files/vault/data/copied.tex', 'files/dormant/copied.tex']:
+            path = self.root/relative
+            path.parent.mkdir(parents=True)
+            path.write_bytes(original)
+            copies.append(path)
+        duplicate = self.call('rebuild_node_index')
+        self.assertTrue(any(issue['kind']=='duplicate_id' and issue['id']=='active' for issue in duplicate['issues']))
+        policy = self.root/'memory/node-index-policy.json'
+        policy.write_text(json.dumps({'format':'yohaku-node-index-policy/1','exclude_paths':['files/vault','files/dormant']}))
+        rebuilt = self.call('rebuild_node_index')
+        self.assertEqual(rebuilt['issue_count'],0)
+        self.assertEqual(rebuilt['node_count'],4)
+        self.assertEqual(self.call('get_node',id='active')['node']['location']['path'], source)
+        self.assertEqual(self.call('get_node',id='active')['node']['links'][0]['status'],'resolved')
+        self.assertFalse(self.call('get_node',id='unregistered')['node']['registered'])
+        self.assertEqual(self.call('get_node',id='neighbor')['node']['location']['path'],neighbor)
+        (self.root/'.yohaku/nodes.json').unlink()
+        self.tools = agent.Tools(agent.Workspace(self.root, agent.ROOT/'bin/loom-linux-x86_64').execute)
+        self.assertEqual(self.call('rebuild_node_index')['node_count'],4)
+        self.assertEqual([node['id'] for node in self.call('list_entry_nodes')['nodes']],['active'])
+        self.assertEqual(registry_path.read_bytes(),registered_before)
+        self.assertEqual((self.root/source).read_bytes(),original)
+        for path in copies:
+            self.assertEqual(path.read_bytes(),original)
+
+    def test_exact_file_exclusion_does_not_hide_a_prefix_neighbor(self):
+        source = self.node('original',entry=True)
+        neighbor = self.node('neighbor',filename='copy.tex-extra')
+        original = (self.root/source).read_bytes()
+        copy = self.root/'files/copy.tex'
+        copy.write_bytes(original)
+        policy = self.root/'memory/node-index-policy.json'
+        policy.write_text(json.dumps({'format':'yohaku-node-index-policy/1','exclude_paths':['files/copy.tex']}))
+        self.assertEqual(self.call('rebuild_node_index')['issue_count'],0)
+        self.assertEqual(self.call('get_node',id='neighbor')['node']['location']['path'],neighbor)
+        self.assertEqual(copy.read_bytes(),original)
+        policy.write_text(json.dumps({'format':'yohaku-node-index-policy/1','exclude_paths':[]}))
+        self.assertTrue(any(item['kind']=='duplicate_id' for item in self.call('rebuild_node_index')['issues']))
+
+    def test_invalid_exclusion_policy_fails_closed_and_preserves_cached_index(self):
+        self.node('original',entry=True)
+        self.call('rebuild_node_index')
+        cached = (self.root/'.yohaku/nodes.json').read_bytes()
+        policy = self.root/'memory/node-index-policy.json'
+        invalid = [None, {}, {'format':'other','exclude_paths':[]},
+                   {'format':'yohaku-node-index-policy/1','exclude_paths':'files/archive'},
+                   {'format':'yohaku-node-index-policy/1','exclude_paths':['files/archive'],'unknown':True}]
+        for value in [False, '/etc', '../escape', 'files/../escape', 'files', 'files/archive/./x', 'files/archive\\x']:
+            invalid.append({'format':'yohaku-node-index-policy/1','exclude_paths':[value]})
+        invalid.append({'format':'yohaku-node-index-policy/1','exclude_paths':['files/x']*129})
+        for value in invalid:
+            policy.write_text(json.dumps(value))
+            reply = self.tools.call('rebuild_node_index',{})
+            self.assertFalse(reply['ok'],value)
+            self.assertEqual((self.root/'.yohaku/nodes.json').read_bytes(),cached)
+        for text in ['{invalid JSON','x'*65537]:
+            policy.write_text(text)
+            self.assertFalse(self.tools.call('rebuild_node_index',{})['ok'])
+        policy.unlink()
+        outside = Path(self.temp.name)/'outside-policy.json'
+        outside.write_text(json.dumps({'format':'yohaku-node-index-policy/1','exclude_paths':[]}))
+        policy.symlink_to(outside)
+        self.assertFalse(self.tools.call('rebuild_node_index',{})['ok'])
+        self.assertEqual((self.root/'.yohaku/nodes.json').read_bytes(),cached)
+
 if __name__ == '__main__':
     unittest.main()
-

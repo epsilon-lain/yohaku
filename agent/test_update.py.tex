@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":4555,"path":"/root/projects/yohaku/release-prep/yohaku/agent/test_update.py","sha256":"51794ac8b09661b4c4d264bb4bbc20079192d2a1e1835949e51418ccab96b2d6"}
 ---
 
 ## 正文
-```text
+````text
 """Regression coverage for installing the metadata required by Develop."""
 import contextlib
 import hashlib
@@ -86,9 +85,14 @@ class UpdateTests(unittest.TestCase):
         self.assertFalse((self.target/'update_manifest.json').exists())
 
 if __name__=='__main__':unittest.main()
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "agent/test_update.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

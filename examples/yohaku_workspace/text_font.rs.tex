@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":1435,"path":"/root/projects/yohaku/release-prep/yohaku/examples/yohaku_workspace/text_font.rs","sha256":"02ccf83087272f5f50ec936dbd5bca0963a64af4b535618ab13f1bfd6605df46"}
 ---
 
 ## 正文
-```text
+````text
 use fontdue::{Font, FontSettings};
 use std::sync::OnceLock;
 
@@ -54,9 +53,14 @@ fn load(path: &str) -> Option<Font> {
     eprintln!("[TEXT FONT] loaded {path}");
     Some(font)
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "examples/yohaku_workspace/text_font.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

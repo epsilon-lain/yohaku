@@ -59,9 +59,107 @@ class SandboxTests(unittest.TestCase):
         original=os.path.ismount
         with patch.object(t.os.path,'ismount',side_effect=lambda p:Path(p)==self.root/'mounted' or original(p)):
             with self.assertRaises(t.ToolError):t.command(self.root,self.entry)
+    def test_declared_parameters_validate_and_remain_single_arguments(self):
+        entry=copy.deepcopy(self.entry)
+        entry['parameters']=[{'name':'input','type':'world_file','default':'files/default.txt'}]
+        (self.root/'files/default.txt').write_text('default')
+        special='files/中文 space;$(echo bad).txt'
+        (self.root/special).write_text('safe')
+        argv=t.command(self.root,entry,parameters={'input':special})
+        self.assertEqual(argv[-1],'/world/'+special)
+        self.assertEqual(t.parameter_args(self.root,entry),['/world/files/default.txt'])
+        for values in [[], {'unknown':'x'}, {'input':False}, {'input':'/etc/passwd'}, {'input':'../outside'}, {'input':'files/missing'}, {'input':'files'}, {'input':'files/\x00'}]:
+            with self.assertRaises(t.ToolError):t.command(self.root,entry,parameters=values)
+        (self.root/'files/link').symlink_to(self.root/'files/default.txt')
+        with self.assertRaises(t.ToolError):t.command(self.root,entry,parameters={'input':'files/link'})
+        with self.assertRaises(t.ToolError):t.command(self.root,self.entry,parameters={'input':special})
+
+    def test_native_api_forwards_parameters_and_rejects_wrong_container(self):
+        import yohaku_agent as agent
+        calls=[]
+        api=agent.Tools(lambda req: calls.append(req) or {'state':'finished'},native=True,permissions={'read':True,'write':True,'delete':True,'import':True,'run':True})
+        response=api.call('run_tool',{'id':'python','parameters':{'input':'files/a'}})
+        self.assertTrue(response['ok'],repr(response))
+        self.assertEqual(calls[-1]['parameters'],{'input':'files/a'})
+        self.assertFalse(api.call('run_tool',{'id':'python','parameters':[]})['ok'])
+
     def test_real_kernel_boundary(self):
         try:result=t.check(self.root)
         except t.ToolError as e:self.skipTest('Kernel sandbox not available here: '+str(e))
         self.assertTrue(result['ok'])
+
+class OnboardingTests(unittest.TestCase):
+    def setUp(self):
+        import yohaku_agent as agent
+        self.agent=agent
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name)/'world';self.root.mkdir()
+        (self.root/'files/build').mkdir(parents=True)
+        self.registry={'format':'yohaku-tools/1','tools':[{'id':'old','name':'Old','program':'/usr/bin/true','args':[],'wayland':False}]}
+        self.text=json.dumps(self.registry);self.requests=[];self.conflict=False
+        self.tools=agent.Tools(self.execute)
+        self.entry={'id':'new','name':'New','args':[],'wayland':False}
+    def execute(self, request):
+        import yohaku_apps as apps
+        self.requests.append(request)
+        if request['command']=='tool_inspect':return apps.inspect_tool(request['path'],self.root)
+        if request['command']=='read_text':return {'text':self.text,'revision':self.agent.revision(self.text)}
+        if request['command']=='write_text':
+            if self.conflict:self.text+='\n'
+            if request.get('expected')!=self.text:raise self.agent.ToolError('File changed since reading')
+            self.text=request['text'];return {'saved':True}
+        raise AssertionError(request)
+    def test_register_persists_rediscover_and_duplicate_does_not_overwrite(self):
+        result=self.tools.call('register_tool',{'path':'/usr/bin/true','entry':self.entry})
+        self.assertTrue(result['ok'],result);self.assertTrue(result['result']['registered'])
+        fresh=self.agent.Tools(self.execute)
+        self.assertEqual([entry['id'] for entry in fresh.call('list_tools',{})['result']['tools']],['old','new'])
+        before=self.text
+        self.assertFalse(fresh.call('register_tool',{'path':'/usr/bin/true','entry':self.entry})['ok'])
+        self.assertEqual(before,self.text)
+        self.assertFalse(any(request['command']=='tool_run' for request in self.requests))
+    def test_registration_uses_real_rust_write_contract(self):
+        import yohaku_apps as apps
+        (self.root/'memory').mkdir(exist_ok=True)
+        (self.root/'memory/tools.json').write_text(self.text)
+        workspace=self.agent.Workspace(self.root,self.agent.ROOT/'bin/loom-linux-x86_64')
+        def execute(request):
+            if request['command']=='tool_inspect':return apps.inspect_tool(request['path'],self.root)
+            return workspace.execute(request)
+        api=self.agent.Tools(execute)
+        result=api.call('register_tool',{'path':'/usr/bin/true','entry':self.entry})
+        self.assertTrue(result['ok'],result)
+        fresh=self.agent.Tools(execute).call('list_tools',{})
+        self.assertTrue(fresh['ok'],fresh)
+        self.assertEqual([entry['id'] for entry in fresh['result']['tools']],['old','new'])
+    def test_registration_conflict_keeps_concurrent_change(self):
+        self.conflict=True;before=self.text
+        result=self.tools.call('register_tool',{'path':'/usr/bin/true','entry':self.entry})
+        self.assertFalse(result['ok']);self.assertEqual(self.text,before+'\n')
+    def test_invalid_entry_permission_and_program_override_fail(self):
+        for changes in [{'program':'/usr/bin/false'},{'args':'not-argv'},{'parameters':[{'name':'out','type':'host_file','default':'files/x'}]}]:
+            entry=dict(self.entry,**changes)
+            result=self.tools.call('register_tool',{'path':'/usr/bin/true','entry':entry})
+            self.assertFalse(result['ok'],result)
+        restricted=self.agent.Tools(self.execute,permissions={'write':False})
+        self.assertFalse(restricted.call('register_tool',{'path':'/usr/bin/true','entry':self.entry})['ok'])
+        external=self.agent.Tools(self.execute,native=False)
+        self.assertNotIn('register_tool',{item['name'] for item in external.definitions})
+        self.assertEqual(json.loads(self.text),self.registry)
+    def test_explicit_inspection_rejects_search_escape_symlink_and_nonexecutables(self):
+        import yohaku_apps as apps
+        self.assertFalse(apps.inspect_tool('/usr/bin/true',self.root)['executed'])
+        (self.root/'files/plain').write_text('not executable')
+        (self.root/'files/link').symlink_to('/usr/bin/true')
+        for path in ['gcc','/etc/passwd','/world/../outside','/world/files/plain','/world/files/link']:
+            with self.assertRaises((t.ToolError,OSError)):apps.inspect_tool(path,self.root)
+    def test_output_paths_and_independent_argv_keep_boundary(self):
+        entry=dict(self.entry,program='/usr/bin/true',parameters=[{'name':'output','type':'world_output','default':'files/build/result'}])
+        special='files/build/中文 space;$(touch bad)'
+        self.assertEqual(t.parameter_args(self.root,entry,{'output':special}),['/world/'+special])
+        for path in ['../outside','/etc/result','files/missing/result','files/build']:
+            with self.assertRaises(t.ToolError):t.parameter_args(self.root,entry,{'output':path})
+        (self.root/'files/build/link').symlink_to('/tmp')
+        with self.assertRaises(t.ToolError):t.parameter_args(self.root,entry,{'output':'files/build/link/result'})
 
 if __name__=='__main__':unittest.main()

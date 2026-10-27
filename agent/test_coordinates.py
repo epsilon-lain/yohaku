@@ -40,12 +40,49 @@ class Coordinates(unittest.TestCase):
         self.assertEqual(first['text']+second['text'],text)
         with self.assertRaises(ValueError):coord.read('中'*(coord.MAX_RANGE_BYTES//3+1))
 
+    def test_short_empty_eof_and_emoji_pages(self):
+        for text in ('','abc','甲🧸','甲\n','甲🧸\n第二行\n'):
+            table=text.split('\n')
+            page=coord.read(text)
+            self.assertEqual(page['text'],text)
+            self.assertFalse(page['has_more'])
+            self.assertIsNone(page['next'])
+            self.assertEqual((page['line_count'],page['eof_line'],page['eof_column']),
+                             (len(table),len(table),len(table[-1])+1))
+        text=''.join('行%02d🧸\n'%i for i in range(100))
+        first=coord.read(text)
+        self.assertTrue(first['has_more'])
+        self.assertEqual(first['next'],{'start_line':first['end_line'],'start_column':first['end_column']})
+        second=coord.read(text,first['next']['start_line'],first['next']['start_column'])
+        self.assertEqual(first['text']+second['text'],text)
+        self.assertFalse(second['has_more']);self.assertIsNone(second['next'])
+
+    def test_invalid_ranges_report_document_metrics_without_clamping(self):
+        text='甲\n乙\n丙'
+        for args in ({'end_line':200},{'start_line':9,'start_column':1},
+                     {'start_line':2,'start_column':1,'end_line':9,'end_column':1},
+                     {'start_line':1,'start_column':1,'end_line':1,'end_column':99}):
+            with self.assertRaises(coord.RangeError) as raised:coord.read(text,**args)
+            error=raised.exception
+            self.assertEqual((error.line_count,error.eof_line,error.eof_column),(3,3,2))
+            self.assertIn('document has 3 lines',str(error))
+        self.assertEqual(coord.read(text,1,1,1,2)['text'],'甲')
+
+    def test_legacy_explicit_range_is_unchanged(self):
+        text='甲🧸\n乙\n'
+        page=coord.read(text,1,2,1,3)
+        self.assertEqual((page['text'],page['start_line'],page['start_column'],
+                          page['end_line'],page['end_column']),('🧸',1,2,1,3))
+        self.assertTrue(page['has_more'])
+        self.assertEqual(page['next'],{'start_line':1,'start_column':3})
+
 
 class WorldEditing(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)/'world'
-        self.workspace=agent.Workspace(self.root,agent.ROOT/'bin/loom-linux-x86_64')
+        self.workspace=agent.Workspace(self.root,agent.ROOT/'bin/loom-linux-x86_64',
+                                       os.environ.get('YOHAKU_TEST_BIN'))
         self.tools=agent.Tools(self.workspace.execute)
     def call(self,tool,**args):
         result=self.tools.call(tool,args)
@@ -135,7 +172,11 @@ class WorldEditing(unittest.TestCase):
                 (self.root/source).write_bytes((self.root/source).read_bytes().replace('你好🧸'.encode(),'later'.encode()))
             return result
         result=agent.Tools(execute).call('edit_range',args)
-        self.assertTrue(written);self.assertFalse(result['ok']);self.assertTrue(result['saved']);self.assertFalse(result['verified'])
+        self.assertTrue(written);self.assertTrue(result['ok'])
+        value=result['result']
+        self.assertTrue(value['saved']);self.assertTrue(value['verified'])
+        self.assertEqual(value['verification'],'saved_snapshot');self.assertEqual(value['read_back'],'changed_after_save')
+        self.assertFalse(value['replay_allowed'])
     def test_cli_and_mcp_expose_same_coordinates_and_unicode(self):
         source=self.create();script=agent.ROOT/'agent/yohaku_text.py'
         command=[sys.executable,'-B',str(script),'--root',str(self.root)]
@@ -150,6 +191,56 @@ class WorldEditing(unittest.TestCase):
         replies=subprocess.run([sys.executable,'-B',str(agent.ROOT/'agent/yohaku_agent.py'),'--root',str(self.root),'--config',str(self.root/'no-model-config.json'),'mcp'],input='\n'.join(map(json.dumps,requests))+'\n',capture_output=True,text=True,check=True)
         answer=json.loads(json.loads(replies.stdout.splitlines()[-1])['result']['content'][0]['text'])
         self.assertEqual(answer['result']['text'],'中文🧸')
+
+
+class RangeFeedback(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name)/'world'
+        self.workspace=agent.Workspace(self.root,agent.ROOT/'bin/loom-linux-x86_64',
+                                       os.environ.get('YOHAKU_TEST_BIN'))
+        self.tools=agent.Tools(self.workspace.execute)
+        self.text=''.join('行%02d🧸\n'%i for i in range(100))
+        self.call('write_text',path='memory/pages.txt',revision=None,text=self.text)
+    def call(self,tool,**args):
+        result=self.tools.call(tool,args)
+        self.assertTrue(result['ok'],result)
+        return result['result']
+    def test_default_page_next_eof_and_legacy_explicit_arguments(self):
+        first=self.call('read_range',path='memory/pages.txt',view='text')
+        self.assertTrue(first['has_more'])
+        self.assertEqual((first['line_count'],first['eof_line'],first['eof_column']),(101,101,1))
+        self.assertEqual(first['next'],{'start_line':first['end_line'],'start_column':first['end_column']})
+        second=self.call('read_range',path='memory/pages.txt',view='text',**first['next'])
+        self.assertEqual(first['text']+second['text'],self.text)
+        self.assertFalse(second['has_more']);self.assertIsNone(second['next'])
+        legacy=self.call('read_range',path='memory/pages.txt',view='text',
+                         start_line=1,start_column=1,end_line=2,end_column=1)
+        self.assertEqual(legacy['text'],'行00🧸\n')
+    def test_invalid_range_returns_metrics_requested_and_current_revision(self):
+        before=(self.root/'memory/pages.txt').read_bytes()
+        result=self.tools.call('read_range',{'path':'memory/pages.txt','view':'text','end_line':200})
+        self.assertFalse(result['ok'])
+        self.assertEqual((result['line_count'],result['eof_line'],result['eof_column']),(101,101,1))
+        self.assertEqual(result['requested'],{'end_line':200})
+        self.assertEqual(result['available'],{'start_line':1,'start_column':1,'eof_line':101,'eof_column':1})
+        self.assertIn('document has 101 lines',result['error'])
+        current=self.call('read_range',path='memory/pages.txt',view='text',start_line=100,end_line=100)
+        self.assertEqual(result['revision'],current['revision'])
+        self.assertEqual((self.root/'memory/pages.txt').read_bytes(),before)
+    def test_body_text_views_and_node_location_agree(self):
+        created=self.call('create_document',name='node-view.md',body='节点正文\n',
+                          node={'id':'node-view-test','name':'Node view','description':'test','entry':True,'links':[]})
+        source=created['source']
+        body=self.call('read_range',path=source,view='body')
+        full=self.call('read_range',path=source,view='text')
+        self.assertEqual(body['text'],'节点正文\n')
+        self.assertTrue(full['text'].startswith('---\nformat: yohaku/0.2'))
+        self.assertEqual(body['revision'],full['revision'])
+        located=self.call('get_node',id='node-view-test')['node']
+        self.assertEqual(located['location'],{'path':source,'view':'body','start_line':1,'start_column':1})
+        pointed=self.call('read_range',**located['location'])
+        self.assertEqual(pointed['text'],'节点正文\n')
 
 
 if __name__=='__main__':

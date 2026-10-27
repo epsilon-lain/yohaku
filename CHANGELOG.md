@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased source refresh — 2026-10-26
+
+- Refresh the curated runtime source to codex-text/3 and save-feedback/2.
+- Include saved-operation diagnostics, exact save snapshots and authoritative Stop projection.
+- Include independent task control, current shared tools, terminals and clipboard/text-input support.
+- Package fixed internal candidate preparation, explicit activation/status and guarded rollback.
+- Add generic draft templates and self-contained candidate/request/protocol fixtures.
+- Preserve portable configs, vendored winit, bundled Loom and release build adjustments.
+- Keep historical model acceptance separate from new offline source/build validation.
+- Prepare a local commit only; no push is performed by this update.
+
 ## 0.1.0-local — 2026-10-17
 
 - Prepare an independent Yohaku source repository with Loom in the same tree.

@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":8974,"path":"/root/projects/yohaku/release-prep/yohaku/loom-src/src/reverse.rs","sha256":"503575e33ed8030addbf782ece2586ce4df9f094159deb33355bac98c08a56cf"}
 ---
 
 ## 正文
-```text
+````text
 use crate::engine::{check_macro, output_path, stage};
 use crate::format::{lines, parse_text, property, required_string};
 use crate::mapping::digest;
@@ -264,9 +263,14 @@ pub fn reverse_file(
         created_macro,
     })
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "loom-src/src/reverse.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

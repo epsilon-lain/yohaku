@@ -1,0 +1,152 @@
+import json
+import unittest
+from unittest.mock import patch
+
+import yohaku_agent as agent
+import yohaku_codex as codex
+
+
+GUIDE_IDS = ('yohaku-workspace-map','yohaku-source-authoring')
+
+
+def node(identity):
+    return dict(id=identity,name=identity,description='Brief entry',registered=True,
+                location=dict(path='files/'+identity+'.md.tex',view='body',start_line=1,start_column=1),
+                body='BODY_NOT_INJECTED',text='FULL_SOURCE_NOT_INJECTED')
+
+
+class BootstrapTests(unittest.TestCase):
+    def tools(self,permissions=agent.DEFAULT_PERMISSIONS):
+        requests = []
+
+        def execute(request):
+            requests.append((tools.active_name,request))
+            if request['command']=='node_entries':
+                return dict(nodes=[node(identity) for identity in GUIDE_IDS],truncated=False,issue_count=0)
+            if request['command']=='node_get':
+                return dict(node=node(request['id']))
+            if request['command']=='directory':
+                return dict(entries=[dict(path='memory/yohaku-development-progress.md',kind='file'),
+                                     dict(path='memory/yohaku-development.md',kind='symlink'),
+                                     dict(path='memory/private-settings.json',kind='file')])
+            if request['command']=='context':
+                return dict(root='/current/world',page='files')
+            raise AssertionError(request)
+
+        tools = agent.Tools(execute,permissions=permissions)
+        tools.current_context = lambda:execute({'command':'context'})
+        return tools,requests
+
+    def test_compact_entries_permissions_and_memory_locations_not_bodies(self):
+        tools,requests = self.tools()
+        tools.protocol = 'codex-local'
+        context = tools.bootstrap(dict(root='/current/world',page='files'))
+        bootstrap = context['world_bootstrap']
+        self.assertEqual(bootstrap['permissions'],{'read':True,'write':True,'delete':True,'import':False,'run':False})
+        self.assertEqual({entry['id'] for entry in bootstrap['guides']},set(GUIDE_IDS))
+        self.assertEqual(bootstrap['memory_guides'],['memory/yohaku-development-progress.md'])
+        self.assertEqual(set(bootstrap['structure']),{'files','memory','macros'})
+        self.assertEqual([name for name,request in requests],['list_entry_nodes','list_directory'])
+        self.assertNotIn('NOT_INJECTED',json.dumps(context))
+        self.assertNotIn('private-settings',json.dumps(context))
+        self.assertLess(len(json.dumps(context)),5000)
+
+    def test_read_denial_does_not_leak_context_or_discover_files(self):
+        tools,requests = self.tools({'read':False,'write':False,'run':True})
+        context = tools.bootstrap(dict(root='/world',page='files',draft='PRIVATE',files=['PRIVATE']))
+        self.assertEqual(requests,[])
+        self.assertNotIn('PRIVATE',json.dumps(context))
+        self.assertFalse(context['world_bootstrap']['permissions']['read'])
+        self.assertTrue(context['world_bootstrap']['permissions']['run'])
+        self.assertEqual(context['world_bootstrap']['guides'],[])
+        self.assertNotIn('structure',context['world_bootstrap'])
+
+    def test_context_tool_keeps_native_tool_id_and_refreshes_world(self):
+        tools,requests = self.tools()
+        first = tools.call('context',{})
+        self.assertTrue(first['ok'])
+        self.assertEqual([name for name,request in requests],['context','list_entry_nodes','list_directory'])
+        self.assertIsNone(tools.active_name)
+        tools.current_context = lambda:dict(root='/other/world',page='memory')
+        self.assertEqual(tools.call('context',{})['result']['root'],'/other/world')
+        self.assertEqual(len(requests),5)
+
+    def test_missing_root_does_not_guess_world(self):
+        tools,requests = self.tools()
+        context = tools.bootstrap({})
+        self.assertEqual(requests,[])
+        self.assertEqual(context['world_bootstrap']['guides'],[])
+        self.assertIn('no current world root',context['world_bootstrap']['discovery'])
+
+    def test_discovery_failures_are_explicit_and_do_not_invent_guides(self):
+        def unavailable(request):
+            raise agent.ToolError('unavailable')
+        tools = agent.Tools(unavailable)
+        bootstrap = tools.bootstrap({'root':'/world'})['world_bootstrap']
+        self.assertEqual(bootstrap['guides'],[])
+        self.assertIn('partial',bootstrap['discovery'])
+        self.assertIn('list_entry_nodes',bootstrap['discovery_failures'])
+
+    def test_guide_lookup_survives_entry_page_limit_and_limits_summaries(self):
+        tools,requests = self.tools()
+        original = tools.execute
+
+        def many(request):
+            if request['command']=='node_entries':
+                return dict(nodes=[dict(node(str(index)),description='x'*1000) for index in range(30)],truncated=True)
+            return original(request)
+
+        tools.execute = many
+        bootstrap = tools.bootstrap({'root':'/world'})['world_bootstrap']
+        self.assertEqual(len(bootstrap['entries']),12)
+        self.assertTrue(bootstrap['entries_truncated'])
+        self.assertTrue(all(len(entry['description'])==160 for entry in bootstrap['entries']))
+        self.assertEqual({entry['id'] for entry in bootstrap['guides']},set(GUIDE_IDS))
+
+    def test_codex_receives_exact_request_bootstrap_and_unchanged_model(self):
+        tools,requests = self.tools()
+
+        class Peer:
+            info = {'cwd':'/empty-control'}
+            linux = True
+            closed = False
+
+            def __init__(self):
+                self.requests = []
+
+            def request(self,method,parameters):
+                self.requests.append((method,parameters))
+                if method=='thread/start':
+                    return dict(thread={'id':'thread'},activePermissionProfile={'id':codex.CONTROL_PROFILE})
+                if method=='config/read':
+                    return dict(config={'features':dict(shell_tool=False,apps=False,plugins=False)})
+                if method=='turn/start':
+                    return dict(turn={'id':'turn'})
+                raise AssertionError(method)
+
+            def receive(self,timeout):
+                return dict(method='turn/completed',params={'threadId':'thread','turn':dict(id='turn',status='completed')})
+
+            def close(self):
+                self.closed = True
+
+        peer = Peer()
+        prompt = '请确认当前世界的基本结构，并说明你实际读取了哪些世界指南；不要修改文件。'
+        initial = dict(config={'codex_entry':'unchanged','model':'existing-model'},context={'root':'/world'},prompt=prompt)
+        with patch.object(codex,'connect',return_value=(peer,dict(model='existing-model',models=['existing-model']))):
+            result = codex.run(initial,tools,lambda event:None)
+        self.assertTrue(peer.closed)
+        self.assertEqual(result['tool_calls'],0)
+        thread = next(parameters for method,parameters in peer.requests if method=='thread/start')
+        self.assertIn('world_bootstrap',thread['developerInstructions'])
+        turn = next(parameters for method,parameters in peer.requests if method=='turn/start')
+        received = json.loads(turn['input'][0]['text'])
+        self.assertEqual(received['request'],prompt)
+        self.assertEqual(turn['model'],'existing-model')
+        self.assertFalse(received['context']['world_bootstrap']['permissions']['import'])
+        self.assertEqual(len(received['context']['world_bootstrap']['guides']),2)
+        self.assertNotIn('NOT_INJECTED',turn['input'][0]['text'])
+
+
+if __name__=='__main__':
+    unittest.main()

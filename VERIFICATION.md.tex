@@ -2,12 +2,43 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":1437,"path":"/root/projects/yohaku/release-prep/yohaku/VERIFICATION.md","sha256":"c030bd3c9a87a08c284793a39dea4ec5cc49abde05e63755135e061639b817bb"}
 ---
 
 ## 正文
-```text
+````text
 # Verification
+
+## Curated release refresh — 2026-10-27
+
+This section records checks run against the curated source package on branch
+`codex/initial-release`. They used offline/locked dependencies and a temporary
+HOME for test runs. No live model, account, private world, task journal, desktop
+process or host installation was used or changed.
+
+- `scripts/build.sh`: passed; bundled Loom and native compositor, workspace,
+  and terminal-window targets built offline. Cargo uses the retained local
+  `vendor/winit` patch and `loom-src` vendor dependencies.
+- `scripts/test.sh`: passed; its source/output check verified 144 documents.
+  After adding the public inventory and normalizing legacy Loom headers, the
+  standalone `python3 scripts/sync_sources.py --check` verified all 145 listed
+  source documents byte-for-byte.
+- Rust tests: library 13 passed; workspace 18 passed; compositor/workspace
+  native suite 92 passed and 3 ignored; terminal window 11 passed and 1
+  ignored. The four ignored tests require live system clipboard or an outer
+  Linux GUI controller. The package regression exercised the real Loom/CLI
+  Develop snapshot and internal candidate `prepare_candidate` then `check`,
+  and confirmed that check did not change the installed payload.
+- Python: 373 passed, 0 failed, 0 errors. This includes controlled
+  `codex-text/3` and `save-feedback/2` file/process tests, updater ownership,
+  hash, conflict and rollback tests, and the release-package preparation path.
+  Model calls in these tests are explicit fakes/local fixtures.
+- Loom: 67 passed (28 integration, 23 reverse and 16 synchronization tests).
+
+The host's previously completed authenticated `codex-text/3` and
+`save-feedback/2` send/stop acceptance is historical evidence; this packaging
+run did not repeat it. Earlier host acceptance documents, outputs, journals and
+private world data are not included. No new real-model acceptance, login,
+physical IME acceptance or GUI launch is claimed here.
 
 Measured on 2026-10-17. Known failures are listed explicitly; no simulated
 event, successful build or tool discovery is substituted for real AI acceptance.
@@ -72,31 +103,22 @@ file tools, and to preflight demo IDs. The partial test world was preserved
 as an ignored local verification backup; no source was deleted to adopt it.
 The corrected fresh import and actual sandbox execution then passed.
 
-## Known preexisting test failures
+## Historical baseline test failures (superseded by this refresh)
 
-`scripts/test.sh` therefore returns nonzero at the Python suite; this is not
-advertised as a fully green suite. These unchanged application-discovery tests
-also fail against the original host source in an isolated fixture comparison:
-
-- `test_linux_npm_codex_without_windows_companion_is_not_windows`: an old
-  error-message expectation says “CLI application”, while the current native
-  connector reports “Linux Codex must be a native ELF binary”.
-- `test_path_commands_and_windows_catalog_include_codex_without_launching_targets`:
-  a fixture assumes all named Codex catalog items have Windows origin, whereas
-  the existing discovery code also enumerates Linux candidates.
-
-They were not fixed or skipped as an unrelated behavior change. The provider
-mock tests' old tool-count expectation was refreshed for the already-added
-node tools. Packaging-specific Develop failures (debug-binary snapshot size,
-and a root LICENSE.tex glob collision) were reproduced and corrected without
-raising the existing 64 MiB limit or overwriting private development work.
+The original 2026-10-17 source package reported two discovery-fixture failures:
+one expected the older “CLI application” diagnostic and one assumed every named
+Codex catalog entry had Windows origin. The current refresh isolates native
+candidate discovery in those fixtures and checks the current ELF rejection;
+production application-discovery behavior was not changed. The current complete
+suite result is above and passes. The initial Develop size and LICENSE-glob
+packaging failures were corrected in the earlier source-only preparation.
 
 ## Repository hygiene and remaining scope
 
 The staged source tree was checked for personal worlds, actual AI/runtime
 configuration, credentials, caches, targets, diagnostic logs, font files,
 symlinks and precompiled ELF files: none is included. English templates, source,
-Loom vendors, notices, lockfiles, the three portable demo sources and 74 source
+Loom vendors, notices, lockfiles, portable demo and protocol fixtures, and 145 Loom source
 documents are included. Ignored local build/verification outputs are not part
 of the Git content. No remote was configured and nothing was uploaded.
 
@@ -105,9 +127,14 @@ lack standalone notice files; see THIRD_PARTY_NOTICES.md. Fonts and prebuilt
 programs are excluded. No claim is made that this source preparation completes
 a future binary-distribution license audit, cross-platform test or new real-model
 test of the clean configuration.
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "VERIFICATION.md"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

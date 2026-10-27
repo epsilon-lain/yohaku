@@ -1,0 +1,193 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Real loopback HTTP/TLS faults; synthetic bodies only, no provider network or tools."""
+import contextlib
+import hashlib
+import http.client
+import json
+import os
+from pathlib import Path
+import shutil
+import socket
+import ssl
+import subprocess
+import tempfile
+import threading
+import time
+import unittest
+from unittest.mock import patch
+import urllib.request
+
+import yohaku_agent as agent
+import yohaku_provider_diagnostics as diagnostics
+import yohaku_provider_transport as transport
+
+PRIVATE='PRIVATE CONVERSATION FIXTURE'
+KEY='TEST_PRIVATE_KEY_123456'
+ENV_NAMES=('HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY','http_proxy','https_proxy','all_proxy','no_proxy')
+
+class Peer:
+    def __init__(self, actions, tls=None):
+        self.actions=actions;self.tls=tls;self.connections=0;self.requests=[];self.errors=[]
+        self.listener=socket.socket();self.listener.bind(('127.0.0.1',0));self.listener.listen(4);self.listener.settimeout(3)
+        self.port=self.listener.getsockname()[1]
+        self.thread=threading.Thread(target=self.run,daemon=True);self.thread.start()
+    def run(self):
+        try:
+            for action in self.actions:
+                conn,_=self.listener.accept();self.connections+=1
+                with conn:
+                    conn.settimeout(2)
+                    if action=='tls_eof':continue
+                    if self.tls:
+                        try:conn=self.tls.wrap_socket(conn,server_side=True)
+                        except ssl.SSLError:continue
+                    with conn:
+                        data=b''
+                        while b'\r\n\r\n' not in data:
+                            chunk=conn.recv(65536)
+                            if not chunk:break
+                            data+=chunk
+                        if not data:continue
+                        headers,body=data.split(b'\r\n\r\n',1)
+                        length=next((int(s.split(b':',1)[1]) for s in headers.split(b'\r\n') if s.lower().startswith(b'content-length:')),0)
+                        while len(body)<length:
+                            chunk=conn.recv(length-len(body))
+                            if not chunk:break
+                            body+=chunk
+                        self.requests.append(dict(body_bytes=len(body),body_sha256=hashlib.sha256(body).hexdigest(),connect=headers.startswith(b'CONNECT ')))
+                        if action=='disconnect':continue
+                        if action=='malformed':conn.sendall(('NOT_HTTP '+PRIVATE+'\r\n\r\n').encode());continue
+                        if action=='proxy_reject':conn.sendall(b'HTTP/1.1 403 Forbidden\r\nContent-Length: 0\r\n\r\n');continue
+                        if action=='read_timeout':conn.sendall(b'HTTP/1.1 200 OK\r\nContent-Length: 999\r\n\r\n{');time.sleep(.25);continue
+                        status=401 if action=='http_error' else 200
+                        body=(PRIVATE.encode() if action=='http_error' else b'{"choices":[' if action=='cut_json' else json.dumps(dict(choices=[dict(finish_reason='stop',message=dict(content='fixture'))])).encode())
+                        conn.sendall(('HTTP/1.1 '+str(status)+' Fixture\r\nContent-Length: '+str(len(body))+'\r\nConnection: close\r\n\r\n').encode()+body)
+        except Exception as error:self.errors.append(type(error).__name__)
+        finally:self.listener.close()
+    def finish(self):
+        self.thread.join(4)
+        if self.thread.is_alive():raise AssertionError('Fixture peer did not terminate')
+        if self.errors:raise AssertionError(self.errors)
+
+class ProviderTransportTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.certdir=tempfile.TemporaryDirectory();base=Path(cls.certdir.name)
+        cls.cert=base/'cert.pem';cls.key=base/'key.pem'
+        openssl=shutil.which('openssl')
+        if not openssl:raise RuntimeError('Existing openssl required for local TLS fixture; no install')
+        result=subprocess.run([openssl,'req','-x509','-newkey','rsa:2048','-nodes','-keyout',str(cls.key),'-out',str(cls.cert),'-days','1','-subj','/CN=localhost','-addext','subjectAltName=DNS:localhost,IP:127.0.0.1'],capture_output=True)
+        if result.returncode:raise RuntimeError('Fixture certificate generation failed')
+        cls.tls=ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER);cls.tls.load_cert_chain(cls.cert,cls.key)
+    @classmethod
+    def tearDownClass(cls):cls.certdir.cleanup()
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory();self.dir=Path(self.tmp.name)/'private'
+        self.overrides=contextlib.ExitStack();self.overrides.enter_context(patch.object(diagnostics,'DIRECTORY',self.dir))
+        env=dict(os.environ)
+        for key in ENV_NAMES:env.pop(key,None)
+        self.overrides.enter_context(patch.dict(os.environ,env,clear=True))
+        original=socket.getaddrinfo
+        def loopback_only(host,*args,**kwargs):
+            if host not in ('127.0.0.1','localhost','::1'):raise AssertionError('Non-loopback fixture connection forbidden')
+            return original(host,*args,**kwargs)
+        self.overrides.enter_context(patch.object(socket,'getaddrinfo',loopback_only))
+    def tearDown(self):self.overrides.close();self.tmp.cleanup()
+    def provider(self, peer, secure=False, trusted=True, timeout=1):
+        p=agent.Provider(dict(protocol='chat',base_url=('https' if secure else 'http')+'://127.0.0.1:'+str(peer.port),model='fixture',api_key=KEY,timeout=timeout,request_max_retries=0))
+        p.definitions=[]
+        return p
+    def request(self,p,peer,secure=False,trusted=True):
+        if secure and trusted:
+            original=transport.HTTPSHandler
+            # Fixture-only CA injection; CERT_REQUIRED and hostname check remain enabled.
+            class Trusted(original):
+                def __init__(self,trace):super().__init__(trace,context=ssl.create_default_context(cafile=str(ProviderTransportTests.cert)))
+            with patch.object(transport,'HTTPSHandler',Trusted):return p.request([dict(role='user',content=PRIVATE),dict(role='tool',tool_call_id='fixture-call',content=PRIVATE)])
+        return p.request([dict(role='user',content=PRIVATE)])
+    def failure(self, action, secure=False, trusted=True, timeout=1):
+        peer=Peer([action],self.tls if secure else None);p=self.provider(peer,secure,timeout=timeout)
+        with self.assertRaises(agent.ToolError):self.request(p,peer,secure,trusted)
+        peer.finish();record=json.loads(next(self.dir.glob('*.json')).read_text());text=json.dumps(record)
+        self.assertNotIn(PRIVATE,text);self.assertNotIn(KEY,text);self.assertLess(len(text),32768)
+        self.assertEqual(peer.connections,1);self.persist(action,record,peer)
+        return record,peer
+    def persist(self,name,record,peer):
+        folder=os.environ.get('YOHAKU_TRANSPORT_TEST_EVIDENCE')
+        if folder:
+            directory=Path(folder);directory.mkdir(parents=True,exist_ok=True)
+            (directory/(name+'.json')).write_text(json.dumps(dict(record=record,peer=dict(connections=peer.connections,requests=peer.requests)),indent=2))
+    def test_tls_eof_identifies_handshake_before_any_completed_send(self):
+        r,peer=self.failure('tls_eof',secure=True)
+        self.assertEqual(r['transport']['failed_phase'],'tls_wrap_handshake');self.assertIsNone(r['http_status'])
+        self.assertEqual(r['transport']['counts'].get('request_send_complete',0),0);self.assertEqual(peer.requests,[])
+        self.assertEqual(r['transport']['counts']['dns_tcp_connect_complete'],1)
+    def test_tls_success_then_drop_waiting_headers_keeps_send_receipt_unknown(self):
+        r,peer=self.failure('disconnect',secure=True)
+        self.assertEqual(r['transport']['failed_phase'],'response_headers');self.assertIsNone(r['http_status'])
+        self.assertEqual(r['transport']['counts']['tls_wrap_handshake_complete'],1)
+        self.assertGreater(r['transport']['counts']['request_send_complete'],0);self.assertEqual(len(peer.requests),1)
+        self.assertEqual(r['transport']['metadata']['message_role_counts']['tool'],1)
+        self.assertIn('last_tool_content_sha256',r['transport']['metadata'])
+    def test_certificate_verification_stays_strict(self):
+        r,peer=self.failure('ok',secure=True,trusted=False)
+        self.assertEqual(r['transport']['failed_phase'],'tls_wrap_handshake')
+        self.assertTrue(any(x['type']=='SSLCertVerificationError' for x in r['exception_chain']))
+        event=next(x for x in r['transport']['events'] if x['phase']=='tls_wrap_handshake_start')
+        self.assertEqual(event['verify_mode'],2);self.assertTrue(event['check_hostname']);self.assertEqual(peer.requests,[])
+    def test_malformed_status_is_recorded_not_uncaught(self):
+        r,peer=self.failure('malformed');self.assertEqual(r['transport']['failed_phase'],'response_headers')
+        self.assertTrue(any(x['type']=='BadStatusLine' for x in r['exception_chain']))
+    def test_body_read_timeout_retains_observed_status(self):
+        r,peer=self.failure('read_timeout',timeout=.08)
+        self.assertEqual(r['http_status'],200);self.assertEqual(r['transport']['failed_phase'],'response_read')
+    def test_invalid_json_separates_read_from_decode(self):
+        r,peer=self.failure('cut_json');self.assertEqual(r['http_status'],200)
+        self.assertEqual(r['transport']['failed_phase'],'response_decode');self.assertIn('response_read_complete',r['transport']['counts'])
+    def test_http_error_records_status_without_error_body(self):
+        r,peer=self.failure('http_error');self.assertEqual(r['http_status'],401)
+        self.assertEqual(r['failure_stage'],'http_response');self.assertNotIn('response_read_start',r['transport']['counts'])
+    def test_default_proxy_handler_connect_is_observed_and_not_disabled(self):
+        peer=Peer(['proxy_reject']);env={**dict(os.environ),'https_proxy':'http://user:fixture-password@127.0.0.1:'+str(peer.port)}
+        with patch.dict(os.environ,env,clear=True):
+            p=agent.Provider(dict(protocol='chat',base_url='https://fixture.invalid',model='fixture',api_key=KEY,timeout=1));p.definitions=[]
+            with self.assertRaises(agent.ToolError):p.request([])
+        peer.finish();r=json.loads(next(self.dir.glob('*.json')).read_text());self.assertEqual(r['transport']['failed_phase'],'proxy_tunnel')
+        self.assertTrue(peer.requests[0]['connect']);self.assertIn('https',r['transport']['metadata']['proxy_schemes'])
+        self.assertNotIn('fixture-password',json.dumps(r));self.persist('proxy_connect',r,peer)
+    def test_sequential_requests_bound_history_without_reusing_or_retrying(self):
+        peer=Peer(['ok']*10+['disconnect'],self.tls);p=self.provider(peer,True)
+        originals=(socket.create_connection,ssl.SSLContext.wrap_socket,http.client.HTTPConnection.send)
+        for _ in range(10):self.assertEqual(self.request(p,peer,True)[2],'fixture')
+        self.assertFalse(self.dir.exists())
+        with self.assertRaises(agent.ToolError):self.request(p,peer,True)
+        peer.finish();r=json.loads(next(self.dir.glob('*.json')).read_text())
+        self.assertEqual(r['request_sequence'],11);self.assertEqual(len(r['recent_successes']),8)
+        self.assertEqual([x['request_sequence'] for x in r['recent_successes']],list(range(3,11)))
+        self.assertEqual(peer.connections,11);self.assertEqual(len(peer.requests),11)
+        self.assertEqual(originals,(socket.create_connection,ssl.SSLContext.wrap_socket,http.client.HTTPConnection.send));self.persist('sequential',r,peer)
+    def test_bounded_trace_and_request_isolation(self):
+        a=transport.TransportTrace('http://127.0.0.1',1,22,[]);b=transport.TransportTrace('http://127.0.0.1',1,22,[])
+        for _ in range(1000):a.event('request_send_complete')
+        self.assertEqual(len(a.events),64);self.assertEqual(a.dropped,936);self.assertEqual(b.events,[])
+        self.assertLess(len(json.dumps(a.snapshot())),16384)
+
+if __name__=='__main__':unittest.main()
+````
+
+## 输出与关联
+```yaml
+output: "agent/test_provider_transport.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

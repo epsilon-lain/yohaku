@@ -19,8 +19,9 @@ def commands(action):
     if action == 'test':
         return [prefix+['test','--offline','--locked','--lib','--test','workspace','--','--test-threads=1'],
                 prefix+['test','--offline','--locked','--example','yohaku_compositor','tool_windows::tests','--','--test-threads=1'],
+                prefix+['test','--offline','--locked','--example','yohaku_compositor','agent_panel::entry_tests::entry_','--','--test-threads=1'],
                 prefix+['test','--offline','--locked','--example','yohaku_compositor','window_protocol_tests','--','--test-threads=1']]
-    if action == 'build': return [prefix+['build','--offline','--locked','--example','yohaku_compositor','--bin','yohaku_workspace']]
+    if action == 'build': return [prefix+['build','--offline','--locked','--example','yohaku_compositor','--example','yohaku_terminal_window','--bin','yohaku_workspace']]
     raise ValueError('Unknown development action')
 
 
@@ -60,9 +61,16 @@ def main():
     except (OSError,ValueError) as error:
         print('Development action failed: '+str(error),flush=True);return 2
     if action=='build':
+        # Read-only source/binary IME gate; no host display or bus in sandbox.
+        code=run_command(['/usr/bin/python3','-B',str(PROJECT/'agent/yohaku_ime_check.py'),'--project',str(PROJECT),'--binary',str(TARGET/'debug/examples/yohaku_compositor')],PROJECT)
+        if code:
+            print('Candidate IME deployment gate failed: exit '+str(code),flush=True);return code
         # The candidate's Python/CLI bridge must use its newly built Rust dispatcher.
-        try:shutil.copy2(TARGET/'debug/yohaku_workspace', PROJECT/'bin/yohaku_workspace')
-        except OSError as error:print('Candidate bridge update failed: '+str(error),flush=True);return 2
+        try:
+            shutil.copy2(TARGET/'debug/yohaku_workspace', PROJECT/'bin/yohaku_workspace')
+            shutil.copy2(TARGET/'debug/yohaku_workspace', PROJECT/'bin/yohaku_chat_workspace')
+            subprocess.run(['strip','--strip-debug',str(PROJECT/'bin/yohaku_workspace'),str(PROJECT/'bin/yohaku_chat_workspace')],check=True)
+        except (OSError,subprocess.SubprocessError) as error:print('Candidate bridge update failed: '+str(error),flush=True);return 2
         print('Candidate: '+str(TARGET/'debug/examples/yohaku_compositor'),flush=True)
     print('Development action passed: '+action,flush=True)
     return 0

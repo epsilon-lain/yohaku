@@ -1,0 +1,27 @@
+{
+  "format": "codex-text-service/2",
+  "version": "codex-text/3",
+  "enabled_by_default": false,
+  "program": "bin/yohaku-codex-text-service",
+  "arguments": [
+    "--world",
+    "<absolute-current-world>",
+    "--grant-read-write-run"
+  ],
+  "source": "files/codex-text/OPERATOR.md.tex",
+  "poll_seconds": 1,
+  "automatic_install": false,
+  "required_permissions": [
+    "read",
+    "write",
+    "run"
+  ],
+  "note": "Portable source checkout: services remain disabled until the owner explicitly enables them for its own world and grants Read/Write/Run.",
+  "operator_directory": "files/codex-text/operators",
+  "operator_filename_rule": "[A-Za-z0-9_-]+.md.tex",
+  "context": "canonical source path; independent task per send, no implicit model conversation",
+  "launch_on_yohaku_start": false,
+  "world": "worlds/default",
+  "manager": "agent/yohaku_codex_text_service.py",
+  "installer": "python3 -B agent/yohaku_codex_text_service.py setup --world <absolute-world>"
+}

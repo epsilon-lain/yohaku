@@ -1,0 +1,295 @@
+"""Request-owned stdlib observation; no global patches or payload logging."""
+import errno
+import json
+import threading
+import socket
+import urllib.error
+import hashlib
+import http.client
+import os
+import ssl
+import time
+import urllib.parse
+import urllib.request
+
+class TransportTrace:
+    def __init__(self, url, timeout=None, request_bytes=None, messages=None, recovery=None):
+        self.recovery=recovery
+        self.started=time.monotonic();self.events=[];self.dropped=0
+        self.counts={};self.failed_phase=None;self.origin_status=None
+        self.target=urllib.parse.urlsplit(url).hostname
+        self.metadata={'timeout_seconds':timeout,'request_bytes':request_bytes,
+            'connection_policy':'stdlib urllib new connection per open; Connection: close',
+            'remote_receipt':'unknown; local send completion does not prove server receipt'}
+        proxies=urllib.request.getproxies()
+        self.metadata['proxy_schemes']=sorted(k for k in proxies if k in ('http','https','all','no'))
+        self.metadata['target_bypass']=bool(urllib.request.proxy_bypass(self.target or ''))
+        if recovery:self.metadata['recovery']={'attempt':getattr(recovery,'attempt',1),'max_attempts':recovery.max_retries+1,'previous_failures':list(recovery.request_events)}
+        self.metadata['ca_environment_set']={k:bool(os.environ.get(k)) for k in ('SSL_CERT_FILE','SSL_CERT_DIR')}
+        self.metadata['default_ca_paths']={'cafile':ssl.get_default_verify_paths().cafile,'capath':ssl.get_default_verify_paths().capath}
+        if isinstance(messages,list):
+            counts={role:sum(isinstance(m,dict) and m.get('role')==role for m in messages) for role in ('user','assistant','tool','system')}
+            self.metadata['message_role_counts']=counts
+            confirmed=[]
+            for message in messages:
+                if not isinstance(message,dict):continue
+                if message.get('role')=='tool':confirmed.append((message.get('tool_call_id'),message.get('content')))
+                elif message.get('type')=='function_call_output':confirmed.append((message.get('call_id'),message.get('output')))
+                content=message.get('content')
+                if message.get('role')=='user' and isinstance(content,list):
+                    confirmed.extend((block.get('tool_use_id'),block.get('content')) for block in content
+                        if isinstance(block,dict) and block.get('type')=='tool_result')
+            self.metadata['confirmed_tool_results']=len(confirmed)
+            if confirmed:
+                for name,value in zip(('tool_call_id','content'),confirmed[-1]):
+                    if isinstance(value,str):self.metadata['last_tool_'+name+'_sha256']=hashlib.sha256(value.encode()).hexdigest()
+    def event(self, phase, **fields):
+        self.counts[phase]=self.counts.get(phase,0)+1
+        entry={'phase':phase,'elapsed_seconds':round(time.monotonic()-self.started,6),**fields}
+        if len(self.events)<64:self.events.append(entry)
+        else:self.dropped+=1
+    def failure(self, phase, error):
+        if self.failed_phase is None:self.failed_phase=phase
+        self.event(phase+'_failed',exception_type=type(error).__name__)
+    def snapshot(self):
+        return {'metadata':self.metadata,'events':self.events,'events_dropped':self.dropped,
+            'counts':self.counts,'failed_phase':self.failed_phase,'origin_http_status':self.origin_status,
+            'elapsed_seconds':round(time.monotonic()-self.started,6)}
+
+class _Context:
+    def __init__(self, original, trace):self.original=original;self.trace=trace
+    def __getattr__(self,name):return getattr(self.original,name)
+    def wrap_socket(self,*args,**kwargs):
+        t=self.trace;t.event('tls_wrap_handshake_start',verify_mode=int(self.original.verify_mode),check_hostname=self.original.check_hostname,
+            handshake_on_connect=kwargs.get('do_handshake_on_connect',True))
+        try:sock=self.original.wrap_socket(*args,**kwargs)
+        except BaseException as error:t.failure('tls_wrap_handshake',error);raise
+        if t.recovery:t.recovery.track(sock)
+        t.event('tls_wrap_handshake_complete',tls_version=sock.version());return sock
+
+class _Connection:
+    def __init__(self, trace, *args, **kwargs):
+        self.trace=trace;self.in_tunnel=False
+        super().__init__(*args,**kwargs)
+        original=self._create_connection
+        def connect(*args,**kwargs):
+            trace.event('dns_tcp_connect_start')
+            try:sock=original(*args,**kwargs)
+            except BaseException as error:trace.failure('dns_tcp_connect',error);raise
+            if trace.recovery:trace.recovery.track(sock)
+            trace.event('dns_tcp_connect_complete');return sock
+        self._create_connection=connect
+        if hasattr(self,'_context'):self._context=_Context(self._context,trace)
+        trace.event('connection_created',target_host_matches=self.host==trace.target,port=self.port)
+    def connect(self):
+        self.trace.event('connection_start',proxy_tunnel=bool(self._tunnel_host))
+        return super().connect()
+    def _tunnel(self):
+        self.in_tunnel=True;self.trace.event('proxy_tunnel_start')
+        try:result=super()._tunnel()
+        except BaseException as error:self.trace.failure('proxy_tunnel',error);raise
+        else:self.trace.event('proxy_tunnel_complete');return result
+        finally:self.in_tunnel=False
+    def send(self,data):
+        t=self.trace;phase='proxy_send' if self.in_tunnel else 'request_send'
+        t.event(phase+'_start',socket_present=self.sock is not None)
+        try:result=super().send(data)
+        except BaseException as error:t.failure(phase,error);raise
+        t.event(phase+'_complete');return result
+    def getresponse(self):
+        t=self.trace;t.event('response_headers_start')
+        try:response=super().getresponse()
+        except BaseException as error:t.failure('response_headers',error);raise
+        t.origin_status=response.status;t.event('response_headers_complete',status=response.status)
+        return response
+
+class ObservedHTTP(_Connection,http.client.HTTPConnection):pass
+class ObservedHTTPS(_Connection,http.client.HTTPSConnection):pass
+
+class HTTPHandler(urllib.request.HTTPHandler):
+    def __init__(self,trace):super().__init__();self.trace=trace
+    def http_open(self,req):return self.do_open(lambda *a,**k:ObservedHTTP(self.trace,*a,**k),req)
+
+class HTTPSHandler(urllib.request.HTTPSHandler):
+    def __init__(self,trace,**kwargs):super().__init__(**kwargs);self.trace=trace
+    def https_open(self,req):return self.do_open(lambda *a,**k:ObservedHTTPS(self.trace,*a,**k),req,context=self._context)
+
+def handlers(trace):return HTTPHandler(trace),HTTPSHandler(trace)
+
+
+class RecoveryCancelled(Exception):pass
+
+
+TURN_TIMEOUT_DEFAULT = None
+TURN_TIMEOUT_LONG = 86400
+
+def turn_seconds(config):
+    # Missing/null means unlimited. A legacy long preset remains explicit opt-in.
+    if 'turn_timeout_long' in config and type(config['turn_timeout_long']) is not bool:
+        raise ValueError('turn_timeout_long must be a boolean')
+    if 'turn_timeout' in config and config['turn_timeout'] is None:return None
+    seconds=config.get('turn_timeout')
+    if seconds is None:return TURN_TIMEOUT_LONG if config.get('turn_timeout_long') is True else None
+    if type(seconds) is not int or seconds<=0:
+        raise ValueError('turn_timeout must be a positive integer number of seconds or null for unlimited')
+    return max(seconds,TURN_TIMEOUT_LONG) if config.get('turn_timeout_long') is True else seconds
+
+def turn_policy(config):
+    seconds=turn_seconds(config)
+    key='turn_timeout' if 'turn_timeout' in config else ('turn_timeout_long' if config.get('turn_timeout_long') is True else 'default')
+    provenance=config.get('_turn_budget_provenance',{})
+    source=provenance.get(key,'wire.initial.config.'+key if key!='default' else 'worker default: unlimited')
+    return {'mode':'unlimited' if seconds is None else 'limited','seconds':seconds,'source':source,
+            'configuration_reads':provenance.get('configuration_reads',[])}
+
+def resolve_turn_config(initial,project,host_config=None):
+    """Refresh only public total-limit keys on native startup, even with an old host.
+
+    Model routing, credentials, permissions, request and command timeouts are untouched.
+    Standalone/test callers without a real native world retain their supplied config.
+    """
+    from pathlib import Path
+    config=dict(initial['config']);context=initial.get('context',{})
+    root=context.get('root') if isinstance(context,dict) else None
+    if not isinstance(root,str) or not Path(root).is_absolute() or not Path(root).is_dir():return config
+    host=Path(host_config) if host_config else Path(project)/'config/ai.json';world=Path(root)/'memory/socius.json'
+    if not host.is_file():return config
+    keys=('turn_timeout','turn_timeout_long')
+    for key in keys:config.pop(key,None)
+    sources={'configuration_reads':[]}
+    for path,is_world in ((host,False),(world,True)):
+        if not path.is_file():continue
+        value=json.loads(path.read_text())
+        if not isinstance(value,dict):raise ValueError('Invalid limit configuration: '+str(path))
+        selected=value.get('chat',{}).get('limits',{}) if is_world else value
+        if not isinstance(selected,dict):raise ValueError('chat.limits must be an object')
+        sources['configuration_reads'].append(str(path))
+        for key in keys:
+            if key in selected:config[key]=selected[key];sources[key]=str(path)+('#/chat/limits/' if is_world else '#/')+key
+    config['_turn_budget_provenance']=sources
+    turn_seconds(config) # Fail before connect, never substitute a 900s fallback.
+    return config
+
+class ReplayBlocked(Exception):pass
+
+class ToolReplayGuard:
+    """Worker-local ambiguity barrier for one recovered logical model request.
+
+    Read-only reconciliation remains available. A repeated effect after recovery
+    pauses instead of guessing intent. A fresh request without a retry, or a new
+    user turn, does not permanently suppress an intentional repeated operation.
+    Only fingerprints are retained here; authoritative results stay in history.
+    """
+    READ_ONLY=frozenset(('context','list_files','list_directory','read_document',
+        'read_text','read_range','search_text','search_notes','list_entry_nodes',
+        'find_nodes','get_node','walk_nodes','list_tools','tool_status','inspect_tool',
+        'terminal_status','terminal_list','terminal_read','codex_model_status','codex_model_list'))
+    def __init__(self):self.completed=set();self.before=set();self.protected=set()
+    def begin_request(self):self.before=set(self.completed);self.protected=set()
+    def arm(self):self.protected.update(self.before)
+    def execute(self,name,args,operation):
+        if name in self.READ_ONLY:return operation()
+        fingerprint=hashlib.sha256(json.dumps([name,args],sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()
+        if fingerprint in self.protected:
+            raise ReplayBlocked('Possible repeated operation after model recovery: '+name+
+                '; fingerprint='+fingerprint+'; previous dispatch has a confirmed result; no replay performed. '+
+                'Reconcile saved state using read_range, tool_status or terminal_status. '+
+                'If intent remains ambiguous, pause and ask the user; a new user turn permits intentional repetition.')
+        # Even an ok=false result can contain a saved write or a failed process.
+        result=operation();self.completed.add(fingerprint);return result
+
+
+def retryable(error):
+    """Only temporary transport failures, never malformed/semantic model output."""
+    seen=set()
+    while error is not None and id(error) not in seen:
+        seen.add(id(error))
+        if isinstance(error,(RecoveryCancelled,ssl.SSLCertVerificationError)):return False
+        if isinstance(error,urllib.error.HTTPError):return error.code in (408,429,500,502,503,504)
+        if isinstance(error,(TimeoutError,ConnectionError,http.client.IncompleteRead,
+                             http.client.RemoteDisconnected,ssl.SSLEOFError)):return True
+        if isinstance(error,OSError) and error.errno in (errno.EAGAIN,errno.ECONNRESET,errno.ECONNABORTED,
+                errno.EPIPE,errno.ETIMEDOUT,errno.ECONNREFUSED,errno.ENETUNREACH,errno.EHOSTUNREACH):return True
+        reason=getattr(error,'reason',None)
+        error=reason if isinstance(reason,BaseException) else error.__cause__
+    return False
+
+
+class Recovery:
+    """One owner per worker. Retry model I/O only; call budgets count logical rounds.
+
+    Reuse Codex's request_max_retries spelling. Native Codex retries stay zero
+    when our relay owns recovery. No retries are allowed after delivery to tools.
+    """
+    def __init__(self,config=None):
+        retries=(config or {}).get('request_max_retries',2)
+        if type(retries) is not int or not 0<=retries<=5:
+            raise ValueError('request_max_retries must be an integer from 0 to 5')
+        self.max_retries=retries;self.cancelled=threading.Event();self.deadline=None
+        self.lock=threading.RLock();self.sockets=set();self.events=[];self.request_events=[]
+        self.notify=lambda event:None
+        self.tool_guard=ToolReplayGuard();self.expired=False;self.timer=None
+
+    def set_budget(self,seconds):
+        if self.timer:self.timer.cancel()
+        self.deadline=None if seconds is None else time.monotonic()+seconds
+        if seconds is None:return
+        def expire():
+            self.expired=True
+            self.cancel()
+        self.timer=threading.Timer(seconds,expire);self.timer.daemon=True;self.timer.start()
+
+    def finish_budget(self):
+        if self.timer:self.timer.cancel()
+
+    def check(self):
+        if self.expired:raise RecoveryCancelled('Turn time budget exhausted; completed tools remain saved; inspect running tools separately; no replay')
+        if self.cancelled.is_set():raise RecoveryCancelled('Model request stopped; no retry or tool replay')
+        if self.deadline is not None and time.monotonic()>=self.deadline:
+            raise RecoveryCancelled('Turn time budget exhausted; saved tool results remain; no replay')
+
+    def track(self,sock):
+        with self.lock:self.sockets.add(sock)
+        if self.cancelled.is_set():
+            try:sock.shutdown(socket.SHUT_RDWR)
+            except OSError:pass
+            self.check()
+
+    def cancel(self):
+        self.cancelled.set()
+        with self.lock:sockets=list(self.sockets)
+        for sock in sockets:
+            try:sock.shutdown(socket.SHUT_RDWR)
+            except OSError:pass
+
+    def run(self,operation,details=lambda:{},notify=None):
+        self.request_events=[]
+        self.check()
+        self.tool_guard.begin_request()
+        for attempt in range(1,self.max_retries+2):
+            self.attempt=attempt
+            try:
+                if attempt>1:
+                    (notify or self.notify)({'event':'status','text':'Model request retry '+str(attempt)+'/'+str(self.max_retries+1)+' requesting; Stop available'})
+                self.check();value=operation();self.check();return value
+            except Exception as error:
+                self.check()
+                again=retryable(error) and attempt<=self.max_retries
+                event={'attempt':attempt,'max_attempts':self.max_retries+1,
+                    'exception_type':type(error.__cause__ or error).__name__,
+                    'will_retry':again,**details()}
+                self.events.append(event);self.events=self.events[-32:]
+                self.request_events.append(event)
+                emit=notify or self.notify
+                emit({'event':'recovery','backend':'model-request',**event})
+                emit({'event':'status','text':'Model request attempt '+str(attempt)+'/'+str(self.max_retries+1)+
+                    ' failed: '+event['exception_type']+'; phase='+str(event.get('phase'))+
+                    ('; retry pending; Stop available' if again else '; recovery exhausted or not retryable; saved tool results remain')})
+                if not again:raise
+                self.tool_guard.arm()
+                delay=min(.5*2**(attempt-1),2)
+                if self.deadline is not None:delay=min(delay,max(0,self.deadline-time.monotonic()))
+                if self.cancelled.wait(delay):self.check()
+                self.check()
+            finally:
+                with self.lock:self.sockets.clear()

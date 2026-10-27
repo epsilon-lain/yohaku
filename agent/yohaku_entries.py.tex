@@ -1,0 +1,64 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Public entry configuration and opt-in private credential resolution."""
+import json
+import os
+from pathlib import Path
+import urllib.parse
+
+
+def codex_entry(root):
+    path = Path(root)
+    for part in ('memory', 'socius.json'):
+        path = path / part
+        if path.is_symlink():
+            raise ValueError('Socius settings cannot use symlinks')
+    if not path.exists():
+        return None
+    with path.open('rb') as stream:
+        raw = stream.read(256 * 1024 + 1)
+    if len(raw) > 256 * 1024:
+        raise ValueError('Socius settings exceed 256 KiB')
+    settings = json.loads(raw)
+    if not isinstance(settings,dict):
+        raise ValueError('Socius settings must be an object')
+    value = settings.get('codex_entry')
+    if value is None:
+        return None
+    if not isinstance(value,str) or not value.startswith('/') or any(ord(char)<32 for char in value) or len(value)>4096:
+        raise ValueError('codex_entry must be an absolute Linux/WSL executable address')
+    return value
+
+
+def private_key(config, url):
+    source = config.get('credential_source')
+    if source is None:
+        return config.get('api_key') or os.environ.get(config.get('api_key_env','DEEPSEEK_API_KEY'),'')
+    if source != 'yohaku-private-deepseek':
+        raise ValueError('Unknown private credential source')
+    target = urllib.parse.urlsplit(url)
+    if target.scheme!='https' or target.hostname!='api.deepseek.com' or target.port not in (None,443):
+        raise ValueError('Private DeepSeek credentials require https://api.deepseek.com')
+    import yohaku_codex_provider
+    saved = yohaku_codex_provider.load()
+    key = saved.get('deepseek_key')
+    if not key:
+        raise ValueError('No DeepSeek key in Yohaku private storage')
+    return key
+````
+
+## 输出与关联
+```yaml
+output: "agent/yohaku_entries.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

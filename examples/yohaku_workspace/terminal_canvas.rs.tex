@@ -1,0 +1,176 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+//! X11 canvas reuses the IME probe's native drawing path and existing font fallback.
+use std::ffi::{c_int, c_uint, c_ulong, c_void};
+use winit::{
+    raw_window_handle::{HasDisplayHandle, HasWindowHandle, RawDisplayHandle, RawWindowHandle},
+    window::Window,
+};
+#[link(name = "X11")]
+unsafe extern "C" {
+    fn XDefaultGC(d: *mut c_void, s: c_int) -> *mut c_void;
+    fn XDefaultVisual(d: *mut c_void, s: c_int) -> *mut c_void;
+    fn XDefaultDepth(d: *mut c_void, s: c_int) -> c_int;
+    fn XCreateImage(
+        d: *mut c_void,
+        v: *mut c_void,
+        depth: c_uint,
+        format: c_int,
+        offset: c_int,
+        data: *mut i8,
+        w: c_uint,
+        h: c_uint,
+        pad: c_int,
+        stride: c_int,
+    ) -> *mut c_void;
+    fn XPutImage(
+        d: *mut c_void,
+        w: c_ulong,
+        gc: *mut c_void,
+        image: *mut c_void,
+        sx: c_int,
+        sy: c_int,
+        dx: c_int,
+        dy: c_int,
+        width: c_uint,
+        height: c_uint,
+    ) -> c_int;
+    fn XDestroyImage(image: *mut c_void) -> c_int;
+    fn XFlush(d: *mut c_void) -> c_int;
+    fn malloc(size: usize) -> *mut c_void;
+    fn free(p: *mut c_void);
+}
+pub struct Canvas {
+    pub width: usize,
+    pub height: usize,
+    pub pixels: Vec<u32>,
+}
+impl Canvas {
+    pub fn new(width: usize, height: usize) -> Self {
+        Self {
+            width,
+            height,
+            pixels: vec![0x101820; width * height],
+        }
+    }
+    pub fn rect(&mut self, x: i32, y: i32, w: i32, h: i32, color: u32) {
+        for row in y.max(0)..(y + h).min(self.height as i32) {
+            let start = row as usize * self.width + x.max(0).min(self.width as i32) as usize;
+            let end = row as usize * self.width + (x + w).max(0).min(self.width as i32) as usize;
+            if start <= end {
+                self.pixels[start..end].fill(color)
+            }
+        }
+    }
+    pub fn text(&mut self, text: &str, x: i32, y: i32, color: u32, max: i32) {
+        let mut pen = x;
+        for ch in text.chars() {
+            if pen >= max {
+                break;
+            }
+            let (metrics, bitmap) = super::text_font::for_character(ch).rasterize(ch, 18.);
+            for row in 0..metrics.height {
+                for col in 0..metrics.width {
+                    let alpha = bitmap[row * metrics.width + col] as u32;
+                    if alpha == 0 {
+                        continue;
+                    }
+                    let px = pen + metrics.xmin + col as i32;
+                    let py = y + 19 - metrics.ymin - metrics.height as i32 + row as i32;
+                    if px >= 0
+                        && py >= 0
+                        && (px as usize) < self.width
+                        && (py as usize) < self.height
+                    {
+                        let at = py as usize * self.width + px as usize;
+                        let old = self.pixels[at];
+                        let mix = |shift: u32| {
+                            ((((color >> shift) & 255u32) * alpha
+                                + ((old >> shift) & 255u32) * (255 - alpha))
+                                / 255)
+                                << shift
+                        };
+                        self.pixels[at] = mix(16) | mix(8) | mix(0);
+                    }
+                }
+            }
+            pen += 10 * super::terminal_screen::width(ch) as i32;
+        }
+    }
+    pub fn present(&self, window: &Window) -> Result<(), String> {
+        let (Ok(display), Ok(handle)) = (window.display_handle(), window.window_handle()) else {
+            return Err("Window handles unavailable".into());
+        };
+        let (RawDisplayHandle::Xlib(display), RawWindowHandle::Xlib(handle)) =
+            (display.as_raw(), handle.as_raw())
+        else {
+            return Err(
+                "This minimal terminal window requires the existing X11 host display".into(),
+            );
+        };
+        let Some(d) = display.display else {
+            return Err("X11 display unavailable".into());
+        };
+        window.pre_present_notify();
+        unsafe {
+            let size = self.pixels.len() * 4;
+            let data = malloc(size);
+            if data.is_null() {
+                return Err("Canvas allocation failed".into());
+            }
+            std::ptr::copy_nonoverlapping(
+                self.pixels.as_ptr().cast::<u8>(),
+                data.cast::<u8>(),
+                size,
+            );
+            let image = XCreateImage(
+                d.as_ptr(),
+                XDefaultVisual(d.as_ptr(), display.screen),
+                XDefaultDepth(d.as_ptr(), display.screen) as u32,
+                2,
+                0,
+                data.cast(),
+                self.width as u32,
+                self.height as u32,
+                32,
+                (self.width * 4) as i32,
+            );
+            if image.is_null() {
+                free(data);
+                return Err("X11 image creation failed".into());
+            }
+            XPutImage(
+                d.as_ptr(),
+                handle.window,
+                XDefaultGC(d.as_ptr(), display.screen),
+                image,
+                0,
+                0,
+                0,
+                0,
+                self.width as u32,
+                self.height as u32,
+            );
+            XDestroyImage(image);
+            XFlush(d.as_ptr());
+        }
+        Ok(())
+    }
+}
+````
+
+## 输出与关联
+```yaml
+output: "examples/yohaku_workspace/terminal_canvas.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

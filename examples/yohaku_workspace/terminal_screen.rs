@@ -1,0 +1,329 @@
+//! Small streaming terminal screen for the line-oriented Yohaku console.
+//! Not a complete VT/xterm implementation: no alternate screen or device replies.
+use std::collections::VecDeque;
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct Cell {
+    pub text: String,
+    pub continuation: bool,
+}
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Screen {
+    pub lines: VecDeque<Vec<Cell>>,
+    pub rows: usize,
+    pub cols: usize,
+    pub row: usize,
+    pub col: usize,
+    pub cursor_visible: bool,
+    saved: (usize, usize),
+    escape: Vec<u8>,
+    utf8: Vec<u8>,
+    osc: bool,
+}
+impl Screen {
+    pub fn new(rows: usize, cols: usize) -> Self {
+        Self {
+            lines: VecDeque::from([vec![Cell::default(); cols]]),
+            rows,
+            cols,
+            row: 0,
+            col: 0,
+            cursor_visible: true,
+            saved: (0, 0),
+            escape: vec![],
+            utf8: vec![],
+            osc: false,
+        }
+    }
+    pub fn resize(&mut self, rows: usize, cols: usize) {
+        self.rows = rows.max(2);
+        self.cols = cols.max(2);
+        for line in &mut self.lines {
+            line.resize(self.cols, Cell::default());
+        }
+        self.col = self.col.min(self.cols - 1);
+    }
+    fn ensure(&mut self) {
+        while self.lines.len() <= self.row {
+            self.lines.push_back(vec![Cell::default(); self.cols]);
+        }
+        while self.lines.len() > 5000 {
+            self.lines.pop_front();
+            self.row = self.row.saturating_sub(1);
+            self.saved.0 = self.saved.0.saturating_sub(1);
+        }
+    }
+    fn newline(&mut self) {
+        self.row += 1;
+        self.col = 0;
+        self.ensure();
+    }
+    pub fn feed(&mut self, data: &[u8]) {
+        for &b in data {
+            self.byte(b)
+        }
+    }
+    fn byte(&mut self, b: u8) {
+        if self.osc {
+            if b == 7 || (b == b'\\' && self.escape.last() == Some(&27)) {
+                self.osc = false;
+                self.escape.clear();
+            } else {
+                self.escape.push(b);
+                if self.escape.len() > 8192 {
+                    self.escape.clear();
+                    self.osc = false;
+                }
+            }
+            return;
+        }
+        if !self.escape.is_empty() {
+            self.escape.push(b);
+            if self.escape.len() == 2 {
+                match b {
+                    b'[' => return,
+                    b']' => {
+                        self.osc = true;
+                        return;
+                    }
+                    b'7' => self.saved = (self.row, self.col),
+                    b'8' => {
+                        self.row = self.saved.0;
+                        self.col = self.saved.1;
+                        self.ensure()
+                    }
+                    _ => (),
+                };
+                if b != b'[' {
+                    self.escape.clear();
+                    return;
+                }
+            }
+            if self.escape.len() > 2 && (0x40..=0x7e).contains(&b) {
+                let raw = std::mem::take(&mut self.escape);
+                self.csi(&raw[2..raw.len() - 1], b);
+            } else if self.escape.len() > 256 {
+                self.escape.clear();
+            }
+            return;
+        }
+        if b < 32 || b == 127 {
+            if !self.utf8.is_empty() {
+                self.utf8.clear();
+                self.put('\u{fffd}');
+            }
+            match b {
+                27 => self.escape.push(b),
+                b'\n' => self.newline(),
+                b'\r' => self.col = 0,
+                8 => {
+                    self.col = self.col.saturating_sub(1);
+                    if self.lines[self.row][self.col].continuation {
+                        self.col = self.col.saturating_sub(1);
+                    }
+                }
+                b'\t' => {
+                    let end = ((self.col / 8 + 1) * 8).min(self.cols);
+                    while self.col < end {
+                        self.put(' ')
+                    }
+                }
+                _ => (),
+            }
+            return;
+        }
+        self.utf8.push(b);
+        match std::str::from_utf8(&self.utf8) {
+            Ok(text) => {
+                let chars: Vec<char> = text.chars().collect();
+                self.utf8.clear();
+                for ch in chars {
+                    self.put(ch)
+                }
+            }
+            Err(e) if e.error_len().is_some() => {
+                self.utf8.clear();
+                self.put('\u{fffd}')
+            }
+            _ => (),
+        }
+    }
+    fn put(&mut self, ch: char) {
+        let width = width(ch);
+        if width == 0 {
+            let col = self.col.saturating_sub(1);
+            if let Some(cell) = self.lines[self.row].get_mut(col) {
+                cell.text.push(ch)
+            }
+            return;
+        }
+        if self.col + width > self.cols {
+            self.newline()
+        }
+        self.ensure();
+        // Clear either half of a previous wide character before overwriting it.
+        if self.lines[self.row][self.col].continuation && self.col > 0 {
+            self.lines[self.row][self.col - 1] = Cell::default();
+        }
+        if self.col + 1 < self.cols && self.lines[self.row][self.col + 1].continuation {
+            self.lines[self.row][self.col + 1] = Cell::default();
+        }
+        self.lines[self.row][self.col] = Cell {
+            text: ch.to_string(),
+            continuation: false,
+        };
+        if width == 2 {
+            self.lines[self.row][self.col + 1] = Cell {
+                text: String::new(),
+                continuation: true,
+            };
+        }
+        self.col += width;
+    }
+    fn csi(&mut self, raw: &[u8], last: u8) {
+        let private = raw.first() == Some(&b'?');
+        let text = String::from_utf8_lossy(raw);
+        let values: Vec<usize> = text
+            .trim_start_matches('?')
+            .split(';')
+            .map(|s| s.parse().unwrap_or(0))
+            .collect();
+        let n = values.first().copied().unwrap_or(0).max(1);
+        let top = self.lines.len().saturating_sub(self.rows);
+        match last {
+            b'A' => self.row = self.row.saturating_sub(n).max(top),
+            b'B' => {
+                self.row = (self.row + n).min(top + self.rows - 1);
+                self.ensure()
+            }
+            b'C' => self.col = (self.col + n).min(self.cols - 1),
+            b'D' => self.col = self.col.saturating_sub(n),
+            b'G' => self.col = (n - 1).min(self.cols - 1),
+            b'H' | b'f' => {
+                self.row = top + (n - 1).min(self.rows - 1);
+                self.col = values
+                    .get(1)
+                    .copied()
+                    .unwrap_or(1)
+                    .max(1)
+                    .saturating_sub(1)
+                    .min(self.cols - 1);
+                self.ensure()
+            }
+            b'J' => match values[0] {
+                2 | 3 => {
+                    for line in self.lines.iter_mut().skip(top) {
+                        line.fill(Cell::default())
+                    }
+                }
+                0 => {
+                    self.lines[self.row][self.col.min(self.cols)..].fill(Cell::default());
+                    for line in self.lines.iter_mut().skip(self.row + 1) {
+                        line.fill(Cell::default())
+                    }
+                }
+                _ => (),
+            },
+            b'K' => {
+                let line = &mut self.lines[self.row];
+                match values[0] {
+                    0 => line[self.col.min(self.cols)..].fill(Cell::default()),
+                    1 => line[..=self.col.min(self.cols - 1)].fill(Cell::default()),
+                    2 => line.fill(Cell::default()),
+                    _ => (),
+                }
+            }
+            b's' => self.saved = (self.row, self.col),
+            b'u' => {
+                self.row = self.saved.0;
+                self.col = self.saved.1.min(self.cols - 1);
+                self.ensure()
+            }
+            b'h' | b'l' if private && values.contains(&25) => self.cursor_visible = last == b'h',
+            _ => (),
+        }
+    }
+    pub fn text(&self, line: usize) -> String {
+        self.lines
+            .get(line)
+            .map(|cells| {
+                cells
+                    .iter()
+                    .filter(|c| !c.continuation)
+                    .map(|c| if c.text.is_empty() { " " } else { &c.text })
+                    .collect::<String>()
+                    .trim_end()
+                    .to_string()
+            })
+            .unwrap_or_default()
+    }
+    pub fn selection(&self, a: (usize, usize), b: (usize, usize)) -> String {
+        let (a, b) = if a <= b { (a, b) } else { (b, a) };
+        let mut out = String::new();
+        for row in a.0..=b.0 {
+            if let Some(line) = self.lines.get(row) {
+                let start = if row == a.0 { a.1 } else { 0 };
+                let end = if row == b.0 { b.1 + 1 } else { self.cols };
+                let text = line
+                    .iter()
+                    .enumerate()
+                    .filter(|(i, c)| *i >= start && *i < end && !c.continuation)
+                    .map(|(_, c)| if c.text.is_empty() { " " } else { &c.text })
+                    .collect::<String>();
+                out.push_str(text.trim_end());
+                if row != b.0 {
+                    out.push('\n')
+                }
+            }
+        }
+        out
+    }
+}
+pub fn width(ch: char) -> usize {
+    let c = ch as u32;
+    if (0x300..=0x36f).contains(&c) || c == 0x200d || (0xfe00..=0xfe0f).contains(&c) {
+        0
+    } else if (0x1100..=0x115f).contains(&c)
+        || (0x2e80..=0xa4cf).contains(&c)
+        || (0xac00..=0xd7a3).contains(&c)
+        || (0xf900..=0xfaff).contains(&c)
+        || (0xff01..=0xff60).contains(&c)
+        || (0x1f300..=0x1faff).contains(&c)
+    {
+        2
+    } else {
+        1
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn fragmented_utf8_and_ansi() {
+        let data = "READY 中文 😀\n\x1b[31mred\x1b[0m\rOK\x1b[K".as_bytes();
+        let mut one = Screen::new(24, 80);
+        one.feed(data);
+        let mut fragmented = Screen::new(24, 80);
+        for b in data {
+            fragmented.feed(&[*b])
+        }
+        assert_eq!(one, fragmented);
+        assert_eq!(one.text(0), "READY 中文 😀");
+        assert_eq!(one.text(1), "OK");
+    }
+    #[test]
+    fn cursor_erase_backspace_and_resize() {
+        let mut s = Screen::new(3, 20);
+        s.feed(b"abc\x08Z\rQ\x1b[K\nline\x1b[1;3H!");
+        assert_eq!(s.text(0), "Q !");
+        s.resize(5, 10);
+        assert_eq!(s.cols, 10);
+        assert_eq!(s.selection((0, 0), (0, 2)), "Q !");
+    }
+    #[test]
+    fn selection_wide_and_scroll() {
+        let mut s = Screen::new(2, 20);
+        s.feed("a中😀\nsecond\nthird".as_bytes());
+        assert_eq!(s.selection((0, 0), (0, 4)), "a中😀");
+        assert_eq!(s.text(2), "third");
+    }
+}

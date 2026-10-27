@@ -105,9 +105,12 @@ def snapshot_files(package):
     manifest = json.loads((package/'update_manifest.json').read_text())
     names.update(item['path'] for item in manifest['files'] if item['path'].startswith('bin/'))
     names.add('config/shell.json')
+    names.update(('config/codex-text-service.json','config/host-update.json','config/host-update-v3.json'))
+    names.update(str(path.relative_to(package)) for path in (package/'config/codex-text-templates').glob('*') if path.is_file() and not path.name.endswith('.tex'))
+    names.update(str(path.relative_to(package)) for path in (package/'tests/fixtures').rglob('*') if path.is_file() and not path.name.endswith('.tex') and not any(part in ('.loom','.yohaku') for part in path.relative_to(package).parts))
     for directory in ('vendor',):
-        names.update(str(path.relative_to(package)) for path in (package/directory).rglob('*') if path.is_file())
-    names.update(name for name in ('bin/loom-linux-x86_64','bin/yohaku_workspace','bin/yohaku-tool-window') if (package/name).is_file())
+        names.update(str(path.relative_to(package)) for path in (package/directory).rglob('*') if path.is_file() and not any(part in ('.loom','.yohaku') for part in path.relative_to(package).parts))
+    names.update(name for name in ('bin/loom-linux-x86_64','bin/yohaku_workspace','bin/yohaku_chat_workspace','bin/yohaku-tool-window') if (package/name).is_file())
     return sorted(names)
 
 
@@ -144,7 +147,7 @@ def prepare(root, workspace=None):
                 if len(data) <= 2*1024*1024: text_files.append(name)
             # The candidate starts with blank model identity and no inherited secret.
             default = {'protocol':'chat','base_url':'https://api.deepseek.com','model':'deepseek-flash',
-                       'api_key_env':'DEEPSEEK_API_KEY','max_tokens':4096,'max_rounds':12,'timeout':120,
+                       'api_key_env':'DEEPSEEK_API_KEY','max_tokens':4096,'timeout':120,
                        'name':'AI','personality':'','permissions':{'read':True,'write':True,'delete':True,'import':True,'run':True}}
             path = temporary/'config/ai.json'; path.parent.mkdir(exist_ok=True)
             path.write_text(json.dumps(default,indent=2)+'\n'); text_files.append('config/ai.json')
@@ -161,7 +164,10 @@ def prepare(root, workspace=None):
     for name in info['text_files']:
         if not isinstance(name,str) or not name or Path(name).is_absolute() or '..' in Path(name).parts:
             raise tools.ToolError('Invalid development text path')
-        ws.execute({'command':'adopt','path':PROJECT+'/'+name})
+        try:
+            ws.execute({'command':'adopt','path':PROJECT+'/'+name})
+        except tools.ToolError as error:
+            raise tools.ToolError('Could not adopt development source '+PROJECT+'/'+name+': '+str(error)) from error
     guide = '''# Yohaku development workspace
 
 This is the editable source copy of Yohaku default. The running host application

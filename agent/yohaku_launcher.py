@@ -138,10 +138,19 @@ def main():
     project = args.project.expanduser().resolve()
     if not (project / "Cargo.toml").is_file(): parser.error(f"Yohaku project not found: {project}")
     try:
+        from yohaku_codex_text_service import ensure_configured
+        text_service=ensure_configured(project)
+        from yohaku_host_update import ensure_configured as ensure_host_update
+        host_update=ensure_host_update(project)
+        print('Yohaku host update: '+str(host_update),flush=True)
+        print('Yohaku text service: '+str(text_service),flush=True)
         env, backend = launch_environment(args.backend)
+        if backend == "x11":
+            from yohaku_ime import ensure_x11_ime
+            print("Yohaku IME: " + ensure_x11_ime(env), flush=True)
         print(f"Yohaku host display: {backend}", flush=True)
         return supervise(["cargo", "run", "--locked", "--example", "yohaku_compositor"], project, sys.stdout.buffer, env)
-    except (OSError, ValueError) as error:
+    except (OSError, ValueError, RuntimeError, subprocess.TimeoutExpired) as error:
         print(f"Could not launch Yohaku: {error}", file=sys.stderr)
         return 1
 

@@ -1,0 +1,159 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Failure-only, bounded direct-provider evidence without request/response bodies."""
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import stat
+import urllib.error
+import urllib.parse
+import uuid
+
+DIRECTORY = Path.home()/'.local/state/yohaku/provider-diagnostics'
+
+
+class ProviderDiagnostics:
+    def __init__(self, protocol, model, url, key, backend="agent-direct"):
+        self.backend=backend
+        self.protocol=protocol
+        self.model=model
+        self.url=url
+        self.key=key
+        self.session=uuid.uuid4().hex
+        self.sequence=0
+        self.last_failure_path=None
+        self.transport=None
+        self.recent_successes=[]
+        self.response_evidence={}
+
+    def begin(self, timeout=None, request_bytes=None, messages=None, recovery=None):
+        self.last_failure_path=None
+        self.response_evidence={}
+        self.sequence+=1
+        self.started=datetime.datetime.now(datetime.timezone.utc).isoformat()
+        from yohaku_provider_transport import TransportTrace
+        self.transport=TransportTrace(self.url,timeout,request_bytes,messages,recovery)
+
+    def observe_response(self, response):
+        # Keep only bounded response metadata; never auth/cookies or response text.
+        get = getattr(response, 'getheader', lambda *_: None)
+        names = ('content-type','content-length','content-encoding','transfer-encoding',
+                 'server','via','date','x-request-id','request-id','cf-ray','traceparent')
+        self.response_evidence['headers'] = {name:(str(get(name)) if len(str(get(name)))<=1024 else '[oversized header omitted]') for name in names if get(name) is not None}
+        length=get('content-length')
+        if isinstance(length,str) and length.isdigit():self.response_evidence['declared_bytes']=int(length)
+
+    def observe_body(self, data, complete, limit_exceeded=False):
+        head=data[:64].lstrip().lower()
+        kind='empty' if not data else 'sse' if head.startswith((b'data:',b'event:',b':')) else 'json' if head.startswith((b'{',b'[')) else 'html' if head.startswith((b'<!doctype',b'<html')) else 'other'
+        self.response_evidence.update(bytes_observed=len(data),body_sha256=hashlib.sha256(data).hexdigest(),
+            body_kind=kind,read_complete=complete,limit_exceeded=limit_exceeded,raw_body_saved=False)
+
+    def observe_parse_error(self, payload, index, data, error):
+        self.observe_body(payload,True)
+        self.response_evidence['parse']={'frame_index':index,'frame_bytes':len(data),
+            'frame_sha256':hashlib.sha256(data).hexdigest(),'exception_type':type(error).__name__,
+            'position_unit':'Unicode characters for JSON; bytes for UTF-8 decoding',
+            'position':getattr(error,'pos',getattr(error,'start',None)),
+            'line':getattr(error,'lineno',None),'column':getattr(error,'colno',None),
+            'stream_ends_with_event_separator':payload.endswith((b'\n\n',b'\r\n\r\n')),
+            'root_cause':'unknown: response bytes versus parser; no raw payload retained'}
+
+    def succeeded(self, status):
+        trace=self.transport.snapshot()
+        self.recent_successes.append({'request_sequence':self.sequence,'http_status':status,
+            'elapsed_seconds':trace['elapsed_seconds'],'send_completions':trace['counts'].get('request_send_complete',0)})
+        self.recent_successes=self.recent_successes[-8:]
+
+    def failure(self, error, payload, status=None, stage=None):
+        private=[self.key,urllib.parse.quote(self.key,safe='')] if self.key else []
+        def protect(value):
+            if isinstance(value,str):
+                if len(value)>=4:private.append(value)
+            elif isinstance(value,list):
+                for item in value:protect(item)
+            elif isinstance(value,dict):
+                for name,item in value.items():
+                    if name in ('content','text','arguments','prompt','instructions','system','input','output'):protect(item)
+                    elif isinstance(item,(dict,list)):protect(item)
+        protect(payload)
+        def safe(value,limit=256):
+            text=str(value)
+            for secret in sorted(set(private),key=len,reverse=True):
+                if secret:text=text.replace(secret,'[REDACTED]')
+            text=re.sub(r'(?i)\bBearer\s+[^\s,;"\']+','Bearer [REDACTED]',text)
+            text=re.sub(r'\b(?:sk-|sess-)[A-Za-z0-9_-]+|\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b','[REDACTED]',text)
+            text=re.sub(r'(?i)(["\']?(?:api[_-]?key|authorization|access[_-]?token|refresh[_-]?token|token|secret|password|prompt|messages|body)["\']?\s*[:=]\s*)(?:"[^"\r\n]*"|\'[^\'\r\n]*\'|[^\r\n,;]+)',r'\1[REDACTED]',text)
+            text=re.sub(r'https?://[^\s"\'<>]+','[URL REDACTED]',text)
+            text=re.sub(r'[\x00-\x1f\x7f]',' ',text)
+            return text[:limit]+(' [truncated]' if len(text)>limit else '')
+        parsed=urllib.parse.urlsplit(self.url)
+        target=urllib.parse.urlunsplit((parsed.scheme,parsed.netloc,parsed.path,'',''))
+        for secret in (self.key,urllib.parse.quote(self.key,safe='')) if self.key else ():
+            target=target.replace(secret,'[REDACTED]')
+        target=target[:512]
+        chain=[]
+        visited=set()
+        def observe(exception,relation):
+            if len(chain)>=8 or id(exception) in visited:return
+            visited.add(id(exception))
+            entry={'relation':relation,'type':type(exception).__name__,'summary':safe(exception)}
+            for name in ('errno','verify_code','verify_message','library'):
+                value=getattr(exception,name,None)
+                if isinstance(value,(str,int)):entry[name]=safe(value) if isinstance(value,str) else value
+            reason=getattr(exception,'reason',None)
+            if isinstance(reason,str):entry['reason']=safe(reason)
+            if isinstance(exception,urllib.error.URLError) and reason is None:entry['reason']='not supplied by transport'
+            chain.append(entry)
+            if isinstance(reason,BaseException):observe(reason,'reason')
+            if exception.__cause__ is not None:observe(exception.__cause__,'cause')
+            if exception.__context__ is not None and not exception.__suppress_context__:observe(exception.__context__,'context')
+        observe(error,'exception')
+        phase='http_response' if isinstance(error,urllib.error.HTTPError) else ('response_decode' if status is not None and isinstance(error,ValueError) else 'response_read' if status is not None else 'transport')
+        if stage is not None:phase=stage
+        record={'format':'yohaku-provider-failure/1','backend':self.backend,'session_id':self.session,'request_sequence':self.sequence,'worker_pid':os.getpid(),'parent_pid':os.getppid(),
+                'started_utc':self.started,'ended_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'protocol':self.protocol,'provider_host':safe(parsed.hostname,256),'target':target,'request_model':safe(self.model,128),
+                'failure_stage':phase,'http_status':status,'exception_chain':chain,'historical_reconstruction':False}
+        def scrub(value):
+            if isinstance(value,dict):return {k:scrub(v) for k,v in value.items()}
+            if isinstance(value,list):return [scrub(v) for v in value[:16]]
+            return safe(value) if isinstance(value,str) else value
+        if self.response_evidence:record['upstream_response']=scrub(self.response_evidence)
+        if self.transport is not None:
+            record['transport']=self.transport.snapshot()
+            record['recent_successes']=list(self.recent_successes)
+        location=None
+        try:
+            directory=Path(DIRECTORY)
+            directory.mkdir(mode=0o700,parents=True,exist_ok=True)
+            metadata=directory.lstat()
+            if not stat.S_ISDIR(metadata.st_mode) or metadata.st_uid!=os.getuid() or metadata.st_mode&0o077:raise OSError('Unsafe diagnostic directory')
+            path=directory/(self.session+'-'+str(self.sequence)+'.json')
+            descriptor=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+            with os.fdopen(descriptor,'w') as stream:json.dump(record,stream,ensure_ascii=False,indent=2)
+            location=str(path)
+        except (OSError,ValueError):location='unavailable (private diagnostic could not be saved)'
+        self.last_failure_path=location
+        details='; '.join(entry['relation']+'='+entry['type']+': '+entry.get('reason',entry['summary']) for entry in chain)
+        prefix='API HTTP '+str(status) if isinstance(error,urllib.error.HTTPError) else 'API request failed: '+type(error).__name__
+        return prefix+'; '+details+'; backend='+self.backend+'; protocol='+self.protocol+'; target='+target+'; HTTP '+(str(status) if status is not None else 'not observed')+'; diagnostic: '+location
+````
+
+## 输出与关联
+```yaml
+output: "agent/yohaku_provider_diagnostics.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

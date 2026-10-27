@@ -1,0 +1,183 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+//! Shared terminal transport and attachment bookkeeping. No command replay.
+use serde_json::{json, Value};
+use std::{
+    io::Write,
+    path::PathBuf,
+    process::{Command, Stdio},
+};
+#[derive(Clone)]
+pub struct Client {
+    pub root: PathBuf,
+    pub agent: PathBuf,
+}
+impl Client {
+    pub fn request(&self, request: &Value) -> Result<Value, String> {
+        let mut child = Command::new("/usr/bin/python3")
+            .arg("-B")
+            .arg(&self.agent)
+            .arg("--root")
+            .arg(&self.root)
+            .arg("request")
+            .env_clear()
+            .env("PATH", "/usr/bin:/bin")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::null())
+            .spawn()
+            .map_err(|e| e.to_string())?;
+        let mut input = child.stdin.take().ok_or("No terminal request stdin")?;
+        writeln!(input, "{request}")
+            .map_err(|_| "Request send failed; outcome unknown; do not resend")?;
+        drop(input);
+        let output = child
+            .wait_with_output()
+            .map_err(|_| "Terminal reply lost; outcome unknown; do not resend")?;
+        let reply: Value = serde_json::from_slice(&output.stdout)
+            .map_err(|_| "Terminal reply lost; outcome unknown; do not resend")?;
+        if reply["ok"] != true {
+            return Err(reply["error"]
+                .as_str()
+                .unwrap_or("Terminal request failed")
+                .into());
+        }
+        Ok(reply["result"].clone())
+    }
+    pub fn state_file(&self) -> PathBuf {
+        self.root.join(".yohaku/terminal-window-ui.json")
+    }
+    pub fn remember(&self, id: &str, instance: &str) -> Result<(), String> {
+        let file = self.state_file();
+        if file
+            .symlink_metadata()
+            .is_ok_and(|m| m.file_type().is_symlink())
+        {
+            return Err("Unsafe terminal UI reference path".into());
+        }
+        let temporary = file.with_extension("tmp");
+        if temporary.exists() {
+            return Err("Terminal UI reference update busy".into());
+        }
+        use std::fs::OpenOptions;
+        use std::os::unix::fs::OpenOptionsExt;
+        let mut stream = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .mode(0o600)
+            .open(&temporary)
+            .map_err(|e| e.to_string())?;
+        let result = (|| {
+            write!(
+                stream,
+                "{}",
+                json!({"session_id":id,"service_instance":instance})
+            )
+            .map_err(|e| e.to_string())?;
+            stream.sync_all().map_err(|e| e.to_string())?;
+            std::fs::rename(&temporary, &file).map_err(|e| e.to_string())
+        })();
+        if result.is_err() {
+            let _ = std::fs::remove_file(&temporary);
+        }
+        result
+    }
+    pub fn remembered(&self) -> Option<(String, String)> {
+        let file = self.state_file();
+        if file.symlink_metadata().ok()?.file_type().is_symlink() {
+            return None;
+        }
+        let text = std::fs::read_to_string(file).ok()?;
+        if text.len() > 1024 {
+            return None;
+        }
+        let v: Value = serde_json::from_str(&text).ok()?;
+        Some((
+            v["session_id"].as_str()?.into(),
+            v["service_instance"].as_str()?.into(),
+        ))
+    }
+}
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Attachment {
+    pub id: String,
+    pub instance: String,
+    pub cursor: u64,
+}
+impl Attachment {
+    pub fn from_status(v: &Value) -> Result<Self, String> {
+        if v["service_version"].as_u64().unwrap_or(0) < 2 {
+            return Err("Terminal service predates window/resize support. Preserve live sessions; upgrade the idle service before attaching.".into());
+        }
+        Ok(Self {
+            id: v["session_id"].as_str().ok_or("Missing session ID")?.into(),
+            instance: v["service_instance"]
+                .as_str()
+                .ok_or("Missing service instance")?
+                .into(),
+            cursor: 0,
+        })
+    }
+    pub fn request(&self, command: &str) -> Value {
+        json!({"command":command,"session_id":self.id,"service_instance":self.instance})
+    }
+    pub fn accept(&mut self, page: &Value) -> Result<String, String> {
+        if page["session_id"] != self.id || page["service_instance"] != self.instance {
+            return Err(
+                "Service/session changed: old attachment invalid. No program was restarted.".into(),
+            );
+        }
+        if page["cursor"].as_u64() != Some(self.cursor) {
+            return Err("Unexpected output cursor; refusing duplicate rendering".into());
+        }
+        let next = page["next_cursor"].as_u64().ok_or("Missing next_cursor")?;
+        if next < self.cursor {
+            return Err("Output cursor moved backwards".into());
+        }
+        self.cursor = next;
+        Ok(page["text"].as_str().unwrap_or("").into())
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn two_readers_are_independent_and_duplicates_rejected() {
+        let status = json!({"session_id":"one","service_instance":"svc","service_version":2});
+        let mut a = Attachment::from_status(&status).unwrap();
+        let mut b = a.clone();
+        let page = json!({"session_id":"one","service_instance":"svc","cursor":0,"next_cursor":4,"text":"ok\n"});
+        assert_eq!(a.accept(&page).unwrap(), b.accept(&page).unwrap());
+        assert!(a.accept(&page).is_err());
+        assert_eq!(a.cursor, 4);
+    }
+    #[test]
+    fn changed_service_invalidates_without_starting() {
+        let mut a = Attachment {
+            id: "id".into(),
+            instance: "old".into(),
+            cursor: 0,
+        };
+        assert!(a
+            .accept(&json!({"session_id":"id","service_instance":"new","cursor":0,"next_cursor":0}))
+            .is_err());
+        assert_eq!(a.cursor, 0);
+    }
+}
+````
+
+## 输出与关联
+```yaml
+output: "examples/yohaku_workspace/terminal_client.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

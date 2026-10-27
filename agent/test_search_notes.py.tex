@@ -1,0 +1,249 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Offline regression through actual workspace CLI/Loom; no model provider."""
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+
+sys.path.insert(0,str(Path(__file__).parent))
+import yohaku_agent as agent
+
+
+class SearchNotes(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix='yohaku-search-')
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)/'world'
+        self.tools = self.fresh()
+
+    def fresh(self):
+        return agent.Tools(agent.Workspace(self.root,agent.ROOT/'bin/loom-linux-x86_64').execute)
+
+    def call(self,tool_name,**args):
+        reply = self.tools.call(tool_name,args)
+        self.assertTrue(reply['ok'],reply)
+        return reply['result']
+
+    def document(self,summary='独有笔记词 🧸',node=True):
+        args = dict(name='module.py',directory='project',body='value = 1\n',
+                    notes=dict(source_version=1,writer='test',summary=summary))
+        if node:
+            args['node'] = dict(id='module',name='Module',description='source',entry=True,links=[])
+        return self.call('create_document',**args)['source']
+
+    def verify_match(self,match,query):
+        selected = self.call('read_range',**match['location'])
+        self.assertEqual(selected['text'],match['text'])
+        self.assertIn(query,selected['text'])
+        self.assertEqual(selected['revision'],match['revision'])
+        self.assertEqual(self.call('read_range',**match['match_location'])['text'],query)
+
+    def test_note_only_unicode_node_and_direct_readback(self):
+        source = self.document()
+        self.assertEqual(self.call('find_nodes',query='独有笔记词')['nodes'],[])
+        for query in ('独有笔记词','🧸'):
+            found = self.call('search_text',path='files/project',query=query)
+            self.assertEqual(len(found['matches']),1)
+            match = found['matches'][0]
+            self.assertEqual(match['source'],source)
+            self.assertEqual(match['node_id'],'module')
+            self.assertTrue(match['registered'])
+            self.verify_match(match,query)
+        self.assertEqual(self.call('read_range',**self.call('get_node',id='module')['node']['location'])['text'],'value = 1\n')
+
+    def test_single_file_search_reads_notes_pages_and_preserves_directory_contract(self):
+        source = self.document(summary='独有笔记词 中文😀')
+        found = self.call('search_text',path=source,query='中文😀',limit=1)
+        self.assertEqual([m['path'] for m in found['matches']],[source])
+        self.verify_match(found['matches'][0],'中文😀')
+        self.assertFalse(self.tools.call('list_directory',dict(path=source))['ok'])
+        self.call('write_text',path='memory/pages.txt',revision=None,text='词😀\n词😀\n词😀\n')
+        first = self.call('search_text',path='memory/pages.txt',query='词😀',limit=2)
+        self.assertTrue(first['truncated'])
+        second = self.call('search_text',**first['next'])
+        self.assertEqual([m['line'] for m in first['matches']+second['matches']],[1,2,3])
+        self.assertFalse(second['truncated'])
+        self.assertEqual(self.call('search_text',path=source,query='不命中')['matches'],[])
+
+    def test_single_file_search_keeps_archive_build_and_symlink_exclusions(self):
+        source = self.document()
+        for name in ('vault/snapshots/copy.tex','target/copy.tex'):
+            path=self.root/'files'/name;path.parent.mkdir(parents=True,exist_ok=True)
+            path.write_bytes((self.root/source).read_bytes())
+        (self.root/'memory/node-index-policy.json').write_text(json.dumps({'format':'yohaku-node-index-policy/1','exclude_paths':['files/vault']}))
+        (self.root/'files/link.tex').symlink_to(self.root/source)
+        for path in ('files/vault/snapshots/copy.tex','files/target/copy.tex'):
+            self.assertEqual(self.call('search_text',path=path,query='独有笔记词')['matches'],[])
+        link=self.tools.call('search_text',dict(path='files/link.tex',query='独有笔记词'))
+        self.assertFalse(link['ok']);self.assertIn('symlinks',link['error'])
+        self.assertIn('独有笔记词',self.call('read_range',path='files/vault/snapshots/copy.tex',view='text')['text'])
+
+    def test_late_long_line_crlf_and_unicode_separator_coordinates(self):
+        text = '甲'*700+'\u2028中文😀尾\r\n下一行😀\r\n'
+        self.call('write_text',path='memory/long.txt',revision=None,text=text)
+        found = self.call('search_text',path='memory',query='中文😀')
+        match = found['matches'][0]
+        self.assertEqual(match['line'],1)
+        self.assertEqual(match['match_location']['start_column'],702)
+        self.assertLessEqual(len(match['text']),600)
+        self.verify_match(match,'中文😀')
+        self.assertIsNone(match['node_id'])
+        self.assertIsNone(match['source'])
+        for match in self.call('search_text',path='memory',query='😀')['matches']:
+            self.verify_match(match,'😀')
+
+    def test_pagination_no_match_and_validation(self):
+        self.call('write_text',path='memory/pages.txt',revision=None,text=''.join('页码%d\n'%n for n in range(5)))
+        args = dict(path='memory',query='页码',limit=2)
+        texts = []
+        while True:
+            found = self.call('search_text',**args)
+            texts += [m['text'] for m in found['matches']]
+            if not found['next']:
+                self.assertFalse(found['truncated'])
+                break
+            self.assertTrue(found['truncated'])
+            args = found['next']
+        self.assertEqual(texts,['页码%d'%n for n in range(5)])
+        empty = self.call('search_text',path='memory',query='不存在')
+        self.assertEqual(empty['matches'],[])
+        self.assertFalse(empty['truncated'])
+        self.assertIsNone(empty['next'])
+        for extra in ({'limit':0},{'limit':101},{'limit':True},{'offset':-1},{'offset':True},
+                      {'query':''},{'query':'x\ny'},{'query':'😀'*251}):
+            self.assertFalse(self.tools.call('search_text',dict(path='memory',query='页码',**extra) if 'query' not in extra else dict(path='memory',**extra))['ok'])
+
+    def test_note_update_reload_rebuild_and_unchanged_output(self):
+        source = self.document()
+        output = self.root/'files/project/module.py'
+        before = output.read_bytes()
+        old = self.call('read_document',source=source)
+        first = self.call('search_text',path='files/project',query='独有笔记词')['matches'][0]
+        self.call('write_document',source=source,revision=old['revision'],body_only=False,
+                  text=old['text'].replace('独有笔记词','后续真实记录'))
+        self.assertEqual(output.read_bytes(),before)
+        current = self.call('search_text',path='files/project',query='后续真实记录')['matches'][0]
+        self.assertNotEqual(first['revision'],current['revision'])
+        self.assertEqual(self.call('search_text',path='files/project',query='独有笔记词')['matches'],[])
+        (self.root/'.yohaku/nodes.json').write_text('invalid derived cache')
+        self.call('rebuild_node_index')
+        self.tools = self.fresh()
+        self.assertEqual(self.call('search_text',path='files/project',query='后续真实记录')['matches'][0],current)
+        self.verify_match(current,'后续真实记录')
+
+    def test_unregistered_tex_declared_id_and_explicit_text_read(self):
+        source = self.document()
+        dest = self.root/'files/unregistered.tex'
+        dest.write_bytes((self.root/source).read_bytes())
+        found = self.call('search_text',path='files',query='独有笔记词')['matches']
+        match = next(m for m in found if m['path']=='files/unregistered.tex')
+        self.assertFalse(match['registered'])
+        self.assertEqual(match['node_id'],'module')
+        self.verify_match(match,'独有笔记词')
+        self.assertFalse(self.tools.call('read_range',dict(path='files/unregistered.tex',view='body'))['ok'])
+        self.assertFalse(self.tools.call('get_node',dict(id='module'))['ok'])
+
+    def test_policy_component_paths_invalid_policy_and_direct_archive_read(self):
+        source = self.document()
+        raw = (self.root/source).read_bytes()
+        for name in ('vault/snapshots','vault/restored','vault-neighbor'):
+            copy = self.root/'files'/name/'copy.tex'
+            copy.parent.mkdir(parents=True)
+            copy.write_bytes(raw)
+        policy = self.root/'memory/node-index-policy.json'
+        policy.write_text(json.dumps({'format':'yohaku-node-index-policy/1','exclude_paths':['files/vault']}))
+        found = self.call('search_text',path='files',query='独有笔记词')['matches']
+        self.assertEqual([m['path'] for m in found],[source,'files/vault-neighbor/copy.tex'])
+        self.assertEqual(self.call('search_text',path='files/vault/snapshots',query='独有笔记词')['matches'],[])
+        self.assertIn('独有笔记词',self.call('read_range',path='files/vault/snapshots/copy.tex',view='text',start_line=1)['text'])
+        self.assertEqual((self.root/'files/vault/restored/copy.tex').read_bytes(),raw)
+        policy.write_text(json.dumps({'format':'yohaku-node-index-policy/1','exclude_paths':['files']}))
+        self.assertFalse(self.tools.call('search_text',dict(path='files',query='独有笔记词'))['ok'])
+        self.assertTrue(self.call('list_directory',path='files')['entries'])
+
+    def test_search_scope_skips_build_dirs_binary_symlink_and_no_node(self):
+        source = self.document(node=False)
+        for name in ('target','.git','__pycache__'):
+            folder = self.root/'files'/name
+            folder.mkdir()
+            (folder/'copy.tex').write_bytes((self.root/source).read_bytes())
+        (self.root/'files/link.tex').symlink_to(self.root/source)
+        (self.root/'files/binary').write_bytes(b'\xff\xfe')
+        result = self.call('search_text',path='files',query='独有笔记词')
+        self.assertEqual([m['path'] for m in result['matches']],[source])
+        self.assertIsNone(result['matches'][0]['node_id'])
+        self.assertEqual(result['skipped'],['files/binary'])
+
+    def test_native_rpc_tags_and_codex_dynamic_schema_use_same_search(self):
+        import yohaku_codex
+        source = self.document()
+        tags = []
+        native = None
+        def execute(request):
+            tags.append((native.active_name, request['command']))
+            allowed = {'search_text':{'directory','read_text'},'read_text':{'read_text'}}
+            self.assertIn(request['command'],allowed[native.active_name])
+            return self.tools.execute(request)
+        native = agent.Tools(execute)
+        found = native.call('search_text',dict(path='files/project',query='独有笔记词'))
+        self.assertTrue(found['ok'],found)
+        selected = native.call('read_range',found['result']['matches'][0]['location'])
+        self.assertTrue(selected['ok'],selected)
+        self.assertIsNone(native.active_name)
+        self.assertIn(('search_text','directory'),tags)
+        self.assertIn(('search_text','read_text'),tags)
+        self.assertIn(('read_text','read_text'),tags)
+        dynamic = yohaku_codex.dynamic_definitions(native)
+        definition = next(item for item in dynamic if item['name']=='yohaku_search_text')
+        self.assertIn('offset',definition['inputSchema']['properties'])
+        self.assertIn('limit',definition['inputSchema']['properties'])
+        self.assertEqual(definition['inputSchema']['required'],['path','query'])
+        self.assertIn('first use search_notes(path=the relevant project',agent.SYSTEM)
+        self.assertIn('search_text remains available for code/logs',agent.SYSTEM)
+        self.assertIn('When sufficient, answer',agent.SYSTEM)
+
+    def test_invalid_tex_remains_searchable_without_fabricating_a_node(self):
+        self.call('write_text',path='files/broken.tex',revision=None,text='草稿中文😀\n')
+        found = self.call('search_text',path='files',query='中文😀')['matches'][0]
+        self.assertEqual(found['source'],'files/broken.tex')
+        self.assertIsNone(found['node_id'])
+        self.assertIn('node_error',found)
+        self.verify_match(found,'中文😀')
+
+    def test_scan_cap_reports_incomplete_and_old_host_rejected(self):
+        calls = []
+        def fake(request):
+            calls.append(request)
+            if request['command']=='directory':
+                return dict(search_scope='active',entries=[dict(path='files/%04d'%n,kind='file') for n in range(1001)])
+            return dict(text='no matches')
+        found = agent.Tools(fake).call('search_text',dict(path='files',query='needle'))['result']
+        self.assertTrue(found['truncated'] and found['scan_limited'])
+        self.assertEqual(found['scanned'],1000)
+        self.assertIsNone(found['next'])
+        self.assertEqual(len(calls),1001)
+        self.assertFalse(agent.Tools(lambda _:dict(entries=[])).call('search_text',dict(path='files',query='x'))['ok'])
+        self.assertFalse(agent.Tools(fake,permissions={'read':False}).call('search_text',dict(path='files',query='x'))['ok'])
+
+
+if __name__=='__main__':
+    unittest.main()
+````
+
+## 输出与关联
+```yaml
+output: "agent/test_search_notes.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

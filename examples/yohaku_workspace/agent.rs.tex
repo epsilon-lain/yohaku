@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":107644,"path":"/root/projects/yohaku/release-prep/yohaku/examples/yohaku_workspace/agent.rs","sha256":"d962baea754689cc17c19c613c9c13e08051cec136c91b449efd439e75a011ce"}
 ---
 
 ## 正文
-```text
+````text
 //! Socius uses the same native renderer and workspace worker as the file editor.
 use super::workspace_panel::Panel;
 use serde_json::{Value, json};
@@ -35,6 +34,7 @@ enum Event {
     Request(u64, Value, Sender<Value>),
     Paste(Option<Field>, Result<String, String>),
     Copied(String, Option<(Option<Field>, String)>, Result<(), String>),
+    AnswerCopied(String, u64, &'static str, Result<(), String>),
     Exit(u64),
 }
 #[derive(Clone, Copy, PartialEq)]
@@ -90,6 +90,18 @@ fn expand_prompt(prompt: &str, context: &Value) -> String {
     result.push_str(rest);
     result
 }
+#[cfg(unix)]
+fn terminate_process(pid: u32) {
+    unsafe extern "C" {
+        fn kill(pid: i32, sig: i32) -> i32;
+    }
+    const SIGTERM: i32 = 15;
+    unsafe {
+        kill(pid as i32, SIGTERM);
+    }
+}
+#[cfg(not(unix))]
+fn terminate_process(_pid: u32) {}
 const UI_WRITE_ID: u64 = u64::MAX;
 struct SettingsWrite {
     root: String,
@@ -128,7 +140,15 @@ impl ChatLayout {
         }
     }
 }
+include!("agent_entries.rs");
+include!("agent_copy.rs");
+
 pub struct AgentPanel {
+    route_error: Option<String>,
+    legacy_config: Value,
+    session_id: String,
+    sessions: HashMap<String, ChatSession>,
+    entry_save: Option<(Value, Option<String>)>,
     tool_requests: Vec<(Value, Sender<Value>)>,
     viewport: (i32, i32, i32),
     ui: Option<Value>,
@@ -148,6 +168,11 @@ pub struct AgentPanel {
     chat_focus: bool,
     log_focus: bool,
     log_selected_all: bool,
+    answer: Option<String>,
+    copy_status: String,
+    copy_ticket: u64,
+    turn_tool_failed: bool,
+    tool_summary: String,
     ime_preedit: String,
     key: String,
     input: Editor,
@@ -156,6 +181,8 @@ pub struct AgentPanel {
     logs: Vec<String>,
     log_offset: usize,
     status: String,
+    turn_budget: Option<TurnBudget>,
+    turn_budget_since: std::time::Instant,
     tx: Sender<Event>,
     rx: Receiver<Event>,
     child: Option<Arc<Mutex<Child>>>,
@@ -163,12 +190,81 @@ pub struct AgentPanel {
     history: Value,
     turn: u64,
     running: bool,
+    stopping: bool,
+    stop_requested: bool,
     history_root: String,
+}
+/// The connector reports either `time budget: <remaining>s of <total>s ...`
+/// (finite) or `time budget: unlimited; elapsed <n>s ...` (no whole-turn limit).
+/// For finite reports the first integer is the time still available at the moment
+/// of the report and the second is the configured total; trailing prose such as
+/// "remain; elapsed 5s; ..." never enters either number. Unlimited is kept as its
+/// own state so the UI never invents a zero-second countdown. Malformed,
+/// placeholder or absurd reports return None and keep the plain status.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum TurnBudget {
+    Limited { remaining: u64, total: u64 },
+    Unlimited,
+}
+pub(crate) fn parse_turn_budget(text: &str) -> Option<TurnBudget> {
+    const MARKER: &str = "time budget:";
+    let rest = text.split_once(MARKER)?.1.trim_start();
+    if let Some(tail) = rest.strip_prefix("unlimited") {
+        if tail.is_empty() || tail.starts_with(';') {
+            return Some(TurnBudget::Unlimited);
+        }
+    }
+    let (remaining_len, remaining) = leading_seconds(rest)?;
+    let rest = rest.get(remaining_len..)?.strip_prefix('s')?.trim_start();
+    let rest = rest.strip_prefix("of ")?.trim_start();
+    let (_, total) = leading_seconds(rest)?;
+    if !(1..=604_800).contains(&total) || remaining == 0 || remaining > total {
+        return None;
+    }
+    Some(TurnBudget::Limited { remaining, total })
+}
+fn leading_seconds(text: &str) -> Option<(usize, u64)> {
+    let end = text.find(|c: char| !c.is_ascii_digit())?;
+    if end == 0 {
+        return None;
+    }
+    let digits = text.get(..end)?;
+    if !text.get(end..)?.starts_with('s') {
+        return None;
+    }
+    Some((end, digits.parse::<u64>().ok()?))
+}
+/// Mirrors the connector's reported budget into the status line.
+/// For a finite budget `since` is when that report arrived, so the first rendered
+/// value equals its reported remaining time and later frames count down from there.
+/// The elapsed time already included in the report is never subtracted twice.
+/// For an unlimited turn `since` is the start of the turn, so the UI shows how long
+/// the turn has actually been running and never invents a zero-second countdown.
+/// It never stops or restarts a turn; without a report, or once the turn is over,
+/// the status is shown unchanged.
+pub(crate) fn budget_status(status: String, budget: Option<TurnBudget>, since: std::time::Instant, running: bool) -> String {
+    // The connector's initial report is a snapshot. Keep one live clock rather
+    // than showing its stale elapsed=0 next to the current elapsed value.
+    let status = if running && budget.is_some() {
+        status.split_once(" | time budget:").map(|(phase, _)| phase.to_owned()).unwrap_or(status)
+    } else { status };
+    match budget {
+        Some(TurnBudget::Limited { remaining, total }) if running => {
+            let since_report = since.elapsed().as_secs();
+            let remaining = remaining.saturating_sub(since_report);
+            let used = total.saturating_sub(remaining);
+            format!("budget {remaining}s left of {total}s ({used}s used) | {status}")
+        }
+        Some(TurnBudget::Unlimited) if running => {
+            format!("budget unlimited; {}s elapsed | {status}", since.elapsed().as_secs())
+        }
+        _ => status,
+    }
 }
 impl AgentPanel {
     pub fn new() -> Self {
         let config = std::fs::read_to_string("config/ai.json").ok().and_then(|s|serde_json::from_str::<Value>(&s).ok()).filter(Value::is_object)
-            .unwrap_or_else(||json!({"protocol":"chat","base_url":"https://api.deepseek.com","model":"deepseek-flash","api_key_env":"DEEPSEEK_API_KEY","max_tokens":4096,"max_rounds":12,"timeout":120}));
+            .unwrap_or_else(||json!({"protocol":"chat","base_url":"https://api.deepseek.com","model":"deepseek-flash","api_key_env":"DEEPSEEK_API_KEY","max_tokens":4096,"timeout":120}));
         let (tx, rx) = mpsc::channel();
         let panel = Self {
             tool_requests: Vec::new(),
@@ -184,12 +280,22 @@ impl AgentPanel {
             gesture: None,
             menu: None,
             macro_error: String::new(),
+            route_error: None,
+            legacy_config: config.clone(),
+            session_id: String::new(),
+            sessions: HashMap::new(),
+            entry_save: None,
             config,
             config_path: "config/ai.json".into(),
             chat_open: false,
             chat_focus: false,
             log_focus: false,
             log_selected_all: false,
+            answer: None,
+            copy_status: String::new(),
+            copy_ticket: 0,
+            turn_tool_failed: false,
+            tool_summary: String::new(),
             ime_preedit: String::new(),
             key: String::new(),
             input: Editor::default(),
@@ -198,6 +304,8 @@ impl AgentPanel {
             logs: Vec::new(),
             log_offset: 0,
             status: "Choose model/key, then write a request. Ctrl+Enter sends.".into(),
+            turn_budget: None,
+            turn_budget_since: std::time::Instant::now(),
             tx,
             rx,
             child: None,
@@ -205,11 +313,52 @@ impl AgentPanel {
             history: json!([]),
             turn: 0,
             running: false,
+            stopping: false,
+            stop_requested: false,
             history_root: String::new(),
         };
+        if std::env::var_os("YOHAKU_NODE_TOOL_AUDIT").is_some() {
+            panel.audit_node_tools();
+        }
         panel
     }
 
+    fn audit_node_tools(&self) {
+        let script = "import json,sys\nsys.path.insert(0,'agent')\nimport yohaku_agent as agent\nfrom yohaku_codex import dynamic_definitions\nrequest=json.load(sys.stdin)\ntools=agent.Tools(lambda request: None,permissions=request.get('permissions',agent.DEFAULT_PERMISSIONS))\nnames=[tool['name'] for tool in tools.definitions]\nchat_names=[tool['name'] for tool in dynamic_definitions(tools)] if request.get('protocol')=='codex-local' else names\nprint(json.dumps(dict(agent=agent.__file__,tools=names,chat_tools=chat_names,model_turn_started=False)))\n";
+        let result = (|| -> Result<Value, String> {
+            let mut request = json!({"protocol":self.config["protocol"]});
+            if let Some(permissions) = self.config.get("permissions") {
+                request["permissions"] = permissions.clone();
+            }
+            let mut child = Command::new("python3")
+                .args(["-B", "-c", script])
+                .stdin(Stdio::piped())
+                .stdout(Stdio::piped())
+                .stderr(Stdio::null())
+                .spawn().map_err(|error| error.to_string())?;
+            writeln!(child.stdin.take().ok_or("Missing discovery stdin")?, "{request}").map_err(|error| error.to_string())?;
+            let output = child.wait_with_output().map_err(|error| error.to_string())?;
+            if !output.status.success() { return Err("Local chat tool discovery failed".into()); }
+            let discovered: Value = serde_json::from_slice(&output.stdout).map_err(|error| error.to_string())?;
+            let checks = [
+                ("list_entry_nodes", "node_entries"), ("find_nodes", "node_search"),
+                ("get_node", "node_get"), ("walk_nodes", "node_walk"),
+                ("rebuild_node_index", "node_index"),
+            ];
+            let codex = self.config["protocol"] == "codex-local";
+            let available = checks.iter().all(|(tool, command)| {
+                let chat_name = if codex { format!("yohaku_{tool}") } else { tool.to_string() };
+                self.permits_rpc(tool, command)
+                    && discovered["tools"].as_array().is_some_and(|items| items.contains(&json!(tool)))
+                    && discovered["chat_tools"].as_array().is_some_and(|items| items.contains(&json!(chat_name)))
+            });
+            Ok(json!({"success":available,"permission_mapping_checked":true,"execution_checked":false,"discovery":discovered}))
+        })();
+        match result {
+            Ok(value) => eprintln!("[NODE TOOL DISCOVERY] {value}"),
+            Err(error) => eprintln!("[NODE TOOL DISCOVERY] {}", json!({"success":false,"error":error})),
+        }
+    }
     fn log(&mut self, text: String) {
         self.logs.extend(text.lines().map(str::to_owned));
         if self.logs.len() > 2000 {
@@ -218,6 +367,7 @@ impl AgentPanel {
         self.log_offset = 0;
     }
     fn save_config(&mut self) {
+        if self.save_entry_config() { return; }
         let mut config = self.config.clone();
         config.as_object_mut().map(|v| v.remove("api_key"));
         let result = (|| -> Result<(), std::io::Error> {
@@ -262,30 +412,53 @@ impl AgentPanel {
         self.field_input.cursor = self.field_input.text.len();
     }
     fn start(&mut self, panel: &mut Panel, page: &str) {
-        if self.running || self.input.text.trim().is_empty() {
+        if self.running || self.stopping || self.input.text.trim().is_empty() {
             return;
         }
         if self.history_root != panel.root {
             self.history = json!([]);
             self.logs.clear();
+            self.answer = None;
+            self.copy_ticket = self.copy_ticket.wrapping_add(1);
+            self.copy_status.clear();
             self.history_root = panel.root.clone();
         }
+        if let Some(error) = &self.route_error { self.status = error.clone(); return; }
+        if let Err(error) = Self::world_entries(&panel.root).and_then(|settings| {
+            if self.config["protocol"] != "codex-local" {
+                yohaku::socius::entry_config(&settings, &self.legacy_config, "agent")?;
+            }
+            if self.session_id.is_empty() { Err("Open Chat or a Techne Agent entry first".into()) }
+            else { Ok(()) }
+        }) { self.status = error; return; }
         let mut config = self.config.clone();
+        // Read the user's current limit choice for each send, including removal.
+        if let Ok(settings)=Self::world_entries(&panel.root) {
+            for key in ["turn_timeout","turn_timeout_long","request_max_retries"] {
+                config.as_object_mut().unwrap().remove(key);
+                if let Some(value)=self.legacy_config.get(key) { config[key]=value.clone(); }
+            }
+            yohaku::socius::apply_task_limits(&settings,&mut config);
+        }
         if !self.key.is_empty() {
             config["api_key"] = json!(self.key);
         }
         let initial = json!({"config":config,"prompt":self.input.text,"context":self.visible_context(panel,page),"history":self.history});
         let mut command = Command::new("python3");
         command.args(["-B", "agent/yohaku_agent.py", "wire"]);
-        if self.launch_worker(command, initial, panel) {
-            self.status = "AI is working...".into();
-            self.log(format!("You: {}", self.input.text));
-            self.input.load(String::new());
-        }
+        let _ = self.launch_worker(command, initial, panel);
+    }
+    fn begin_turn(&mut self) -> u64 {
+        self.turn += 1;
+        self.turn_budget = None;
+        // Unlimited turns use this as their elapsed-time origin. A finite report
+        // resets it when that report arrives so its remaining value is not
+        // subtracted twice.
+        self.turn_budget_since = std::time::Instant::now();
+        self.turn
     }
     fn launch_worker(&mut self, mut command: Command, initial: Value, panel: &mut Panel) -> bool {
-        self.turn += 1;
-        let turn = self.turn;
+        let turn = self.begin_turn();
         let launch = command
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
@@ -357,28 +530,82 @@ impl AgentPanel {
             let _ = tx.send(Event::Exit(turn));
         });
         self.running = true;
+        self.stopping = false;
+        self.stop_requested = false;
         panel.agent_active = true;
+        self.turn_tool_failed = false;
+        self.status = "AI processing | starting connector".into();
+        self.log(format!("You: {}", self.input.text));
+        self.input.load(String::new());
         true
     }
     fn stop(&mut self, panel: &mut Panel) {
-        if let Some(c) = self.child.take() {
-            if let Ok(mut c) = c.lock() {
-                let _ = c.kill();
-            }
+        if !self.running && self.child.is_none() {
+            self.status = if self.stopping {
+                "Stopping | waiting for the AI process to close".into()
+            } else {
+                "Nothing to stop".into()
+            };
+            return;
         }
-        self.waiting.clear();
+        let pending = panel.cancel_agent();
+        let cancelled = self.tool_requests.len() + self.waiting.len() + pending;
+        let child = self.child.take();
+        let had_process = child.is_some();
+        if let Some(child) = child {
+            if let Ok(child) = child.lock() {
+                terminate_process(child.id());
+            }
+            let watchdog = child.clone();
+            std::thread::spawn(move || {
+                for _ in 0..50 {
+                    if let Ok(mut child) = watchdog.lock() {
+                        if child.try_wait().ok().flatten().is_some() {
+                            return;
+                        }
+                    }
+                    std::thread::sleep(std::time::Duration::from_millis(100));
+                }
+                if let Ok(mut child) = watchdog.lock() {
+                    let _ = child.kill();
+                    let _ = child.wait();
+                }
+            });
+        }
+        for (_, reply) in self.waiting.drain() {
+            let _ = reply.send(json!({"ok":false,"error":"AI turn stopped"}));
+        }
         for (_, reply) in self.tool_requests.drain(..) {
             let _ = reply.send(json!({"ok":false,"error":"AI turn stopped"}));
         }
         self.pending_ui = None;
         self.ui_poll = std::time::Instant::now() - std::time::Duration::from_secs(1);
-        panel.cancel_agent();
         self.running = false;
+        self.stop_requested = had_process;
+        self.stopping = had_process;
         // A partially completed tool chain is not valid model history.
         self.history = json!([]);
-        self.status = "Stopped. Completed file changes remain saved.".into();
+        self.status = format!(
+            "Stopped by user | {cancelled} pending reply/queue entries cleared; dispatched tool outcomes may be unknown | {} | tools/terminals may continue; inspect Techne | completed file changes remain saved",
+            if had_process { "closing AI process" } else { "no process was running" }
+        );
+    }
+    fn primary_label(&self) -> &'static str {
+        if self.stopping { "Stopping..." } else if self.running { "Stop" } else { "Send" }
+    }
+    fn primary_action(&mut self, panel: &mut Panel, page: &str) {
+        if self.stopping {
+            self.status = "Stopping | waiting for the AI process to close".into();
+        } else if self.running {
+            self.stop(panel);
+        } else {
+            self.start(panel, page);
+        }
     }
     pub fn update(&mut self, panel: &mut Panel, page: &str) {
+        if let Some((settings, expected)) = self.entry_save.take() {
+            self.queue_settings(panel, serde_json::to_string_pretty(&settings).unwrap()+"\n", expected, false);
+        }
         for (id, result) in panel.take_agent_replies() {
             if id == UI_WRITE_ID {
                 if let Some(write) = self.pending_ui.take() {
@@ -441,7 +668,7 @@ impl AgentPanel {
                         Err(error) => self.status = error,
                     }
                 }
-                Event::Paste(field, result) if field == self.field => match result {
+                Event::Paste(field, result) if field == self.field && self.text_input_active() => match result {
                     Ok(s) => {
                         if self.field.is_some() {
                             self.field_input.insert(s.trim());
@@ -462,7 +689,9 @@ impl AgentPanel {
                         let _ = reply.send(json!({"ok":false,"error":"AI tool permission denied"}));
                         continue;
                     }
-                    if matches!(command, "tool_run" | "tool_status" | "tool_stop") {
+                    self.status = format!("Waiting for tool: {}{}", tool,
+                        request["id"].as_str().map(|id| format!(" ({id})")).unwrap_or_default());
+                    if matches!(command, "tool_run" | "tool_status" | "tool_stop" | "tool_inspect" | "terminal_start" | "terminal_write" | "terminal_read" | "terminal_status" | "terminal_list" | "terminal_interrupt" | "terminal_close" | "terminal_resize") {
                         let mut request = request.clone();
                         request["__world_root"] = json!(panel.root);
                         self.tool_requests.push((request, reply));
@@ -475,27 +704,59 @@ impl AgentPanel {
                     }
                 }
                 Event::Exit(turn) if turn == self.turn => {
-                    if self.running {
+                    if self.stop_requested {
+                        self.status = "Stopped by user | AI process closed | dispatched outcomes may be unknown; tools/terminals may continue; inspect Techne | completed file changes remain saved | ready for next message".into();
+                    } else if self.running {
                         self.status =
-                            "Connector ended before completion; check API settings".into();
+                            "AI connection interrupted | no end event received | ready to retry".into();
                         self.history = json!([]);
                     }
                     self.running = false;
+                    self.stopping = false;
+                    self.stop_requested = false;
                     panel.agent_active = false;
                     self.child = None;
                 }
+                Event::AnswerCopied(session, ticket, label, result) => self.finish_copy(&session, ticket, label, result),
                 Event::Message(turn, v) if turn == self.turn && self.running => {
                     match v["event"].as_str().unwrap_or("") {
-                        "status" => self.status = v["text"].as_str().unwrap_or("").into(),
-                        "assistant" => self.log(format!(
-                            "{}: {}",
-                            self.config["name"].as_str().unwrap_or("AI"),
-                            v["text"].as_str().unwrap_or("")
-                        )),
+                        "recovery" => self.log(format!("Model recovery: attempt {}/{} failed; retry={}; diagnostic={}",v["attempt"],v["max_attempts"],v["will_retry"],v["diagnostic_path"])),
+                        "status" => {
+                            self.status = format!("AI processing | {}", v["text"].as_str().unwrap_or(""));
+                            // The connector owns the turn budget; the UI only mirrors its report.
+                            // Both live shapes ("time budget: 895s of 900s remain; ..." and
+                            // "time budget: unlimited; elapsed 5s; ...") are recognized. A
+                            // finite report starts the countdown; unlimited keeps the turn's
+                            // own start time for elapsed display, never a fake zero countdown.
+                            if let Some(budget) = v["text"].as_str().filter(|_|self.turn_budget.is_none()).and_then(parse_turn_budget) {
+                                self.turn_budget = Some(budget);
+                                if matches!(budget, TurnBudget::Limited { .. }) {
+                                    self.turn_budget_since = std::time::Instant::now();
+                                }
+                            }
+                        },
+                        "assistant" => {
+                            let text = v["text"].as_str().unwrap_or("");
+                            self.answer = Some(text.to_owned());
+                            self.copy_ticket = self.copy_ticket.wrapping_add(1);
+                            self.copy_status.clear();
+                            self.log(format!("{}: {}", self.config["name"].as_str().unwrap_or("AI"), text));
+                        },
                         "tool_result" => {
                             let r = &v["result"];
-                            let ok = r["ok"] == true;
-                            let detail = if ok {
+                            let ok = r["ok"] == true
+                                && !r["result"]["sync_error"].is_string()
+                                && r["result"]["state"] != "failed"
+                                && !r["result"]["exit_code"].as_i64().is_some_and(|code| code != 0);
+                            self.turn_tool_failed |= !ok;
+                            self.status = if ok {
+                                format!("AI processing | tool {} completed", v["name"].as_str().unwrap_or(""))
+                            } else {
+                                format!("Tool failed: {} | AI processing", v["name"].as_str().unwrap_or(""))
+                            };
+                            let detail = if let Some(state) = r["result"]["state"].as_str() {
+                                format!("{state}; exit_code={}", r["result"]["exit_code"])
+                            } else if ok {
                                 if r["result"]["sync_error"].is_string() {
                                     r["result"]["sync_error"].as_str().unwrap_or("").to_owned()
                                 } else {
@@ -511,20 +772,33 @@ impl AgentPanel {
                             self.log(format!(
                                 "Tool {}: {} {}",
                                 v["name"].as_str().unwrap_or(""),
-                                if ok { "OK" } else { "ERROR" },
+                                if !ok { "ERROR" } else if r["result"]["state"].is_string() { "STATE" } else { "OK" },
                                 detail
                             ));
                         }
                         "done" => {
                             self.history = v["history"].clone();
-                            self.status = format!("Done. {} tool calls.", v["tool_calls"]);
+                            if let Some(text) = v["text"].as_str() { self.answer = Some(text.to_owned()); }
+                            else if self.answer.is_none() { self.answer = Self::latest_answer(&self.history); }
+                            self.status = if self.turn_tool_failed {
+                                "AI turn ended | tool failure recorded; review log | ready for next message"
+                            } else {
+                                "AI turn ended | review result | ready for next message"
+                            }.into();
                             self.running = false;
+                            self.stopping = false;
+                            self.stop_requested = false;
                             panel.agent_active = false;
                         }
                         "error" => {
                             self.log(format!("Error: {}", v["text"].as_str().unwrap_or("")));
-                            self.status =
-                                "AI turn failed; completed changes remain. Check the log.".into();
+                            let unknown = v["tool_outcome_unknown"] == true
+                                || v["text"].as_str().is_some_and(|s|s.contains("outcome unknown") || s.contains("result delivery unknown"));
+                            self.status = if unknown {
+                                "AI paused | tool outcome unknown; inspect saved files and Techne; no automatic replay | ready for next message"
+                            } else {
+                                "AI turn failed; completed changes remain. Check the log. | ready for next message"
+                            }.into();
                             self.history = json!([]);
                             self.running = false;
                             panel.agent_active = false;
@@ -570,7 +844,9 @@ impl AgentPanel {
             && letter == Some('c')
             && (shift || self.log_focus)
         {
-            self.copy_conversation(panel);
+            if shift || self.log_selected_all || self.answer.is_none() {
+                self.copy_conversation(panel);
+            } else { self.copy_answer(); }
             return;
         }
         if self.field.is_none() && self.log_focus {
@@ -730,8 +1006,18 @@ impl AgentPanel {
     }
     fn permits_rpc(&self, tool: &str, command: &str) -> bool {
         let (group, commands): (&str, &[&str]) = match tool {
+            "terminal_start" => ("run", &["terminal_start"]),
+            "terminal_write" => ("run", &["terminal_write"]),
+            "terminal_interrupt" => ("run", &["terminal_interrupt"]),
+            "terminal_close" => ("run", &["terminal_close"]),
+            "terminal_resize" => ("run", &["terminal_resize"]),
+            "terminal_read" => ("read", &["terminal_read"]),
+            "terminal_status" => ("read", &["terminal_status"]),
+            "terminal_list" => ("read", &["terminal_list"]),
             "context" => ("read", &["context"]),
             "list_tools" => ("read", &["read_text"]),
+            "inspect_tool" => ("read", &["tool_inspect"]),
+            "register_tool" => ("write", &["tool_inspect", "read_text", "write_text"]),
             "tool_status" => ("read", &["tool_status"]),
             "run_tool" => ("run", &["tool_run", "tool_status"]),
             "stop_tool" => ("run", &["tool_stop"]),
@@ -745,6 +1031,7 @@ impl AgentPanel {
             "read_document" => ("read", &["read"]),
             "read_text" => ("read", &["read_text"]),
             "search_text" => ("read", &["directory", "read_text"]),
+            "search_notes" => ("read", &["directory", "read_text", "node_index"]),
             "create_document" => ("write", &["create"]),
             "adopt_file" => ("write", &["adopt"]),
             "write_document" | "patch_document" => ("write", &["read", "save"]),
@@ -757,9 +1044,25 @@ impl AgentPanel {
         };
         self.permission(group) && commands.contains(&command)
     }
+    fn runtime_identity(root: &str) -> Value {
+        static ID: std::sync::OnceLock<Value> = std::sync::OnceLock::new();
+        let mut value=ID.get_or_init(|| {
+            let pid=std::process::id();
+            let executable=std::fs::read_link(format!("/proc/{pid}/exe")).ok();
+            let hash=Command::new("sha256sum").arg(format!("/proc/{pid}/exe")).output().ok()
+                .filter(|r|r.status.success()).and_then(|r|String::from_utf8(r.stdout).ok())
+                .and_then(|s|s.split_whitespace().next().map(str::to_owned))
+                .filter(|s|s.len()==64 && s.bytes().all(|b|b.is_ascii_hexdigit()));
+            json!({"host_pid":pid,"executable":executable,"executable_sha256":hash,
+                "project":std::env::current_dir().ok(),"workspace_backend":"embedded Rust Workspace in this host",
+                "capability":"transport-recovery-20261024-v2","cross_worker_resume":false})
+        }).clone();
+        value["world"]=json!(root);value
+    }
     fn visible_context(&self, panel: &Panel, page: &str) -> Value {
         if self.permission("read") {
             let mut context = panel.context(page);
+            context["runtime"] = Self::runtime_identity(&panel.root);
             context["techne"] = json!({"registry_path":yohaku::techne::REGISTRY_PATH,"instructions":"list_tools, run_tool, tool_status, stop_tool; only the registered offline world sandbox is supported. Startup request is not success; inspect status."});
             context["development"] = json!({"guide":"memory/yohaku-development.md", "record":"memory/development.json",
                 "instructions":"If prepared, read the guide and edit the Loom-managed source copy under files/yohaku-default. Registered yohaku-check/test/build/preview tools are available after human preparation. They do not replace or publish the host app."});
@@ -873,13 +1176,24 @@ impl AgentPanel {
     }
     fn run_macro(&mut self, item: &Value, context: &Value) {
         self.menu = None;
+        let was_open = self.chat_open && self.chat_focus;
+        let previous_session = self.session_id.clone();
+        if item["action"] != "close_chat" {
+            if let Err(error) = self.open_default(context["root"].as_str().unwrap_or("")) {
+                self.route_error = Some(error.clone());
+                self.status = error;
+                self.chat_open = true;
+                return;
+            }
+        }
         match item["action"].as_str().unwrap_or("open_chat") {
             "close_chat" => {
                 self.chat_open = false;
                 self.chat_focus = false;
                 return;
             }
-            "toggle_chat" => self.toggle_chat(),
+            "toggle_chat" if was_open && previous_session == self.session_id => { self.chat_open = false; self.chat_focus = false; },
+            "toggle_chat" => (),
             _ => {
                 self.chat_open = true;
                 self.chat_focus = true;
@@ -987,7 +1301,7 @@ impl AgentPanel {
         let tx = self.tx.clone();
         let root = panel.root.clone();
         std::thread::spawn(move || {
-            let result = super::host_clipboard::write(&text);
+            let result = super::host_clipboard::write_verified(&text);
             let _ = tx.send(Event::Copied(root, cut, result));
         });
     }
@@ -1089,25 +1403,6 @@ impl AgentPanel {
             self.chat_open = true;
             self.chat_focus = true;
         }
-    }
-    pub fn connect_local_codex(&mut self, connection: Value, panel: &Panel) {
-        if self.running || connection["protocol"] != "codex-local" {
-            return;
-        }
-        for key in ["protocol", "codex_entry", "model"] {
-            self.config[key] = connection[key].clone();
-        }
-        self.config["name"] = json!("Codex");
-        self.key.clear();
-        self.history = json!([]);
-        self.history_root = panel.root.clone();
-        self.save_config();
-        self.chat_open = true;
-        self.chat_focus = true;
-        self.log_focus = false;
-        self.log_selected_all = false;
-        self.clear_preedit();
-        self.status = "Codex connected. World edits go through Yohaku tools.".into();
     }
     pub fn unfocus_chat(&mut self) {
         self.clear_preedit();
@@ -1265,7 +1560,13 @@ impl AgentPanel {
             self.chat_focus = false;
             return;
         }
-        if inside(x, y, (left + w - 192, top + 4, 108, 36)) {
+        let answer_x = left + w - if w >= 464 { 328 } else { 208 };
+        if inside(x, y, (answer_x, top + 4, 124, 36)) {
+            self.log_focus = true;
+            self.copy_answer();
+            return;
+        }
+        if w >= 464 && inside(x, y, (left + w - 192, top + 4, 108, 36)) {
             self.log_focus = true;
             self.log_selected_all = true;
             self.copy_conversation(panel);
@@ -1298,11 +1599,13 @@ impl AgentPanel {
         let bottom = top + h;
         if (bottom - 50..bottom - 14).contains(&y) {
             match x - left {
-                12..=95 => self.start(panel, page),
-                102..=185 => self.stop(panel),
-                192..=295 if !self.running => {
+                12..=185 => self.primary_action(panel, page),
+                192..=295 if !self.running && !self.stopping => {
                     self.history = json!([]);
                     self.logs.clear();
+                    self.answer = None;
+                    self.copy_ticket = self.copy_ticket.wrapping_add(1);
+                    self.copy_status.clear();
                     self.status = "New conversation".into();
                 }
                 _ => (),
@@ -1312,7 +1615,7 @@ impl AgentPanel {
             if (layout.log_y..layout.log_y + layout.log_h).contains(&y) {
                 self.log_focus = true;
                 self.status =
-                    "Chat text: Ctrl+A select all, Ctrl+C copy; Ctrl+Shift+C copies conversation"
+                    "Answer: Ctrl+C copies raw answer; Ctrl+A then Ctrl+C or Ctrl+Shift+C copies chat"
                         .into();
                 return;
             }
@@ -1342,6 +1645,10 @@ impl AgentPanel {
         let x = x as i32 - left;
         let y = y as i32;
         if (88..124).contains(&y) {
+            if (!self.session_id.is_empty()) && ((x >= 338) != (self.config["protocol"] == "codex-local")) {
+                self.status = "Choose Chat from the context menu or Codex from Techne; this session keeps its backend".into();
+                return;
+            }
             match x {
                 0..=99 => self.config["protocol"] = json!("chat"),
                 106..=215 => self.config["protocol"] = json!("responses"),
@@ -1362,7 +1669,7 @@ impl AgentPanel {
             self.save_config();
         } else if (136..172).contains(&y) {
             if self.config["protocol"] == "codex-local" && !(96..=185).contains(&x) {
-                self.status="Local Codex uses its existing Windows login; no API URL or key is needed here.".into();
+                self.status="Local Codex uses its existing Codex account/provider; no API URL or key is needed here.".into();
                 return;
             }
             match x {
@@ -1430,7 +1737,7 @@ impl AgentPanel {
             self.config["protocol"].as_str().unwrap_or("chat"),
             self.config["model"].as_str().unwrap_or(""),
             if self.config["protocol"] == "codex-local" {
-                "Windows login"
+                "Codex account/provider"
             } else if self.key.is_empty() {
                 "key: environment"
             } else {
@@ -1564,14 +1871,16 @@ impl AgentPanel {
             frame.clear(white, &[rect((left, top), (w, h))])?;
             super::draw_shell_text_on(
                 frame,
-                self.config["name"].as_str().unwrap_or("AI"),
+                self.identity(),
                 left + 12,
                 top + 10,
                 layout.scale,
-                right - 200,
+                right - if w >= 464 { 336 } else { 216 },
                 (dark, white),
             )?;
-            button(frame, right - 192, top + 4, 108, "Copy chat", right - 84, dark, bg)?;
+            let answer_x = right - if w >= 464 { 328 } else { 208 };
+            button(frame, answer_x, top + 4, 124, "Copy answer", right - 84, dark, bg)?;
+            if w >= 464 { button(frame, right - 192, top + 4, 108, "Copy chat", right - 84, dark, bg)?; }
             button(frame, right - 76, top + 4, 64, "Hide", right - 8, dark, bg)?;
             super::draw_shell_text_on(
                 frame,
@@ -1582,13 +1891,15 @@ impl AgentPanel {
                 right - 12,
                 (muted, white),
             )?;
-            let status = if !self.ime_preedit.is_empty() && self.field.is_none() {
+            let mut status = if !self.ime_preedit.is_empty() && self.field.is_none() {
                 format!("Input: {}", self.ime_preedit)
             } else if self.ui_error.is_empty() {
                 self.status.clone()
             } else {
                 format!("Settings error: {}", self.ui_error)
             };
+            status = budget_status(status, self.turn_budget, self.turn_budget_since, self.running);
+            if !self.copy_status.is_empty() { status.push_str(" | "); status.push_str(&self.copy_status); }
             super::draw_shell_text_on(
                 frame,
                 &status,
@@ -1641,7 +1952,7 @@ impl AgentPanel {
                 false,
                 layout.scale,
             )?;
-            for (x, width, label) in [(12, 84, "Send"), (102, 84, "Stop"), (192, 104, "New chat")] {
+            for (x, width, label) in [(12, 174, self.primary_label()), (192, 104, "New chat")] {
                 button(
                     frame,
                     left + x,
@@ -2046,7 +2357,9 @@ mod tests {
     #[test]
     fn local_codex_connection_opens_chat_and_keeps_permissions_without_saving_keys() {
         let mut a = AgentPanel::new();
-        let p = render_panel();
+        let mut p = render_panel();
+        let world_root = entry_tests::root("local-codex");
+        p.root = world_root.to_string_lossy().into_owned();
         let dir = std::env::temp_dir().join(format!("yohaku-codex-config-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).unwrap();
@@ -2054,20 +2367,29 @@ mod tests {
         a.key = "in-memory-api-key".into();
         a.config["api_key"] = json!("must-not-be-saved");
         a.config["permissions"] = json!({"read":true,"write":false,"run":false});
+        a.legacy_config = a.config.clone();
         a.connect_local_codex(json!({"protocol":"codex-local","codex_entry":"/mnt/c/Users/test/AppData/Roaming/npm/codex","model":"existing-model"}),&p);
         assert!(a.chat_open && a.chat_focus && !a.running && a.child.is_none());
-        let saved = std::fs::read_to_string(&a.config_path).unwrap();
-        let value: Value = serde_json::from_str(&saved).unwrap();
-        assert_eq!(value["protocol"], "codex-local");
-        assert_eq!(value["permissions"]["write"], false);
-        assert!(!saved.contains("must-not-be-saved") && !saved.contains("in-memory-api-key"));
+        assert!(!a.config_path.exists(), "Connecting must not overwrite the Chat default");
+        assert_eq!(a.config["protocol"], "codex-local");
+        assert_eq!(a.config["permissions"]["write"], false);
+        assert!(a.config.get("api_key").is_none() && a.key.is_empty());
         let _ = std::fs::remove_dir_all(dir);
+        let _ = std::fs::remove_dir_all(world_root);
+    }
+    fn bind_fixture_entry(agent: &mut AgentPanel, panel: &mut Panel) {
+        let root = entry_tests::root("render");
+        panel.root = root.to_str().unwrap().into();
+        agent.legacy_config = agent.config.clone();
+        agent.open_default(&panel.root).unwrap();
+        agent.chat_open = false; agent.chat_focus = false;
     }
     #[test]
     fn closed_chat_has_no_pixels_or_tab_hit_area_and_menu_opens_at_edges() {
         let mut a = AgentPanel::new();
         a.config = json!({}); // Legacy config gets the runtime default.
         let mut p = render_panel();
+        bind_fixture_entry(&mut a, &mut p);
         let mut frame = Capture::new(1100, 800);
         a.draw_global(&mut frame, 1100, 800, 208, &p, "files")
             .unwrap();
@@ -2096,6 +2418,7 @@ mod tests {
         let mut a = AgentPanel::new();
         let mut p = render_panel();
         a.config = json!({"ai_macros":[{"name":"Explain","trigger":"context_menu","shortcut":"Alt+E","prompt":"{page}: {selection}"}]});
+        bind_fixture_entry(&mut a, &mut p);
         for c in "literal {root} 喵".chars() {
             p.key(Keysym::from_char(c), false, false, false);
         }
@@ -2111,6 +2434,7 @@ mod tests {
         assert!(a.shortcut(Keysym::e, false, false, true, false, &p, "files"));
         assert_eq!(a.input.text, draft); // key release never performs action
         a.config["permissions"] = json!({"read":false});
+        a.legacy_config["permissions"] = a.config["permissions"].clone();
         a.input.load(String::new());
         assert!(a.shortcut(Keysym::e, false, false, true, true, &p, "files"));
         assert_eq!(a.input.text, "files: ");
@@ -2164,6 +2488,8 @@ mod tests {
         assert_eq!(a.config, original);
         let custom = json!([{"name":"Talk","trigger":"right_click","shortcut":"Ctrl+Shift+K","action":"toggle_chat"}]);
         let mut settings = a.ui_settings();
+        settings["chat"]["backend"] = json!("agent");
+        settings["chat"]["provider"] = json!({"protocol":"chat","base_url":"http://127.0.0.1:1","model":"offline"});
         settings["macros"] = custom.clone();
         a.field_input.load(settings.to_string());
         a.key(Keysym::Return, true, false, false, &mut p, "socius");
@@ -2488,6 +2814,12 @@ mod tests {
             settle(&mut panel);
             let mut agents = AgentPanel::new();
             agents.config = json!({"protocol":"chat","base_url":format!("http://{address}"),"model":"test-model","max_rounds":5,"timeout":5});
+            let mut settings=defaults(default_macros());
+            settings["chat"]["backend"]=json!("agent");
+            settings["chat"]["provider"]=json!({"protocol":"chat","base_url":format!("http://{address}"),"model":"test-model"});
+            std::fs::write(std::path::Path::new(&panel.root).join(SETTINGS_PATH),serde_json::to_vec(&settings).unwrap()).unwrap();
+            agents.legacy_config=agents.config.clone();
+            agents.open_default(&panel.root).unwrap();
             agents
                 .input
                 .insert("Change old to native AI, enlarge chat and add an Explain macro.");
@@ -2520,7 +2852,7 @@ mod tests {
                 "print(\"native AI\")"
             );
             assert_eq!(panel.context("files")["draft"], "print(\"native AI\")");
-            assert!(agents.status.starts_with("Done."), "{}", agents.status);
+            assert!(agents.status.starts_with("AI turn ended") && agents.status.contains("ready for next message"), "{}", agents.status);
             assert!(agents.logs.iter().any(|s| s.contains("patch_document: OK")));
             assert!(agents.logs.iter().any(|s| s.contains("write_text: OK")));
             agents.refresh_settings(&mut panel, true);
@@ -2599,6 +2931,21 @@ mod tests {
             .unwrap();
         frame.dump("personality-editor.ppm");
         let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
+    fn terminal_rpc_keeps_lifecycle_permissions_separate() {
+        let mut a = AgentPanel::new();
+        a.config = json!({"permissions":{"read":true,"run":false}});
+        for operation in ["terminal_start", "terminal_write", "terminal_interrupt", "terminal_close", "terminal_resize"] {
+            assert!(!a.permits_rpc(operation, operation));
+        }
+        for operation in ["terminal_read", "terminal_status", "terminal_list"] {
+            assert!(a.permits_rpc(operation, operation));
+            assert!(!a.permits_rpc(operation, "terminal_start"));
+        }
+        a.config["permissions"]["run"] = json!(true);
+        assert!(a.permits_rpc("terminal_start", "terminal_start"));
+        assert!(!a.permits_rpc("terminal_start", "terminal_close"));
     }
     #[test]
     fn tool_rpc_checks_run_permission_and_dispatches_only_registered_world_tools() {
@@ -2689,10 +3036,56 @@ mod tests {
         let _ = std::fs::remove_dir_all(base);
     }
     #[test]
+    fn create_metadata_rpc_round_trip_preserves_notes_and_queries_the_node() {
+        let (base, mut panel) = live_panel("create-metadata-rpc");
+        let mut agent = AgentPanel::new();
+        agent.config = json!({"permissions":{"read":true,"write":true}});
+        agent.turn = 1;
+        agent.running = true;
+        let mut sequence = 0;
+        let mut call = |tool: &str, mut request: Value| {
+            sequence += 1;
+            request["__agent_tool"] = json!(tool);
+            let (sender, receiver) = mpsc::channel();
+            agent.tx.send(Event::Request((1 << 32) | sequence, request, sender)).unwrap();
+            let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+            loop {
+                panel.update();
+                agent.update(&mut panel, "workspace");
+                if let Ok(reply) = receiver.try_recv() { break reply; }
+                assert!(std::time::Instant::now() < deadline, "{tool} timed out");
+                std::thread::sleep(std::time::Duration::from_millis(10));
+            }
+        };
+        let notes = json!({"source_version":1,"writer":"native-test","summary":"保留创建笔记"});
+        let node = json!({"id":"native-created","name":"Native created","description":"RPC test","entry":false,"links":[]});
+        let created = call("create_document", json!({"command":"create","name":"native-created.md","body":"你好\n","notes":notes,"node":node}));
+        assert_eq!(created["ok"], true, "{created}");
+        assert_eq!(created["result"]["loom"]["ok"], true);
+        let source = created["result"]["source"].clone();
+        let read = call("read_document",json!({"command":"read","source":source}));
+        assert_eq!(read["ok"], true, "{read}");
+        assert_eq!(read["result"]["body"], "你好\n");
+        let text = read["result"]["text"].as_str().unwrap();
+        assert!(text.contains("## AI 笔记") && text.contains("保留创建笔记"));
+        let found = call("get_node",json!({"command":"node_get","id":"native-created"}));
+        assert_eq!(found["ok"], true, "{found}");
+        assert_eq!(found["result"]["node"]["location"]["path"], source);
+        let invalid = call("create_document",json!({"command":"create","name":"invalid-notes.md","body":"x","notes":{"source_version":0,"writer":"test","summary":"invalid"}}));
+        assert_eq!(invalid["ok"], false);
+        assert!(!base.join("world/files/invalid-notes.md.tex").exists());
+        drop(call);
+        agent.running = false;
+        let _ = std::fs::remove_dir_all(base);
+    }
+    #[test]
     fn native_rpc_permissions_reject_forged_commands_and_hide_read_context() {
         let mut a = AgentPanel::new();
         a.config["permissions"] = json!({"read":true,"write":false,"delete":false,"import":false});
         assert!(a.permits_rpc("read_document", "read"));
+        assert!(a.permits_rpc("inspect_tool", "tool_inspect"));
+        assert!(!a.permits_rpc("inspect_tool", "write_text"));
+        assert!(!a.permits_rpc("register_tool", "tool_inspect"));
         assert!(a.permits_rpc("get_node", "node_get"));
         assert!(!a.permits_rpc("get_node", "save"));
         assert!(!a.permits_rpc("read_document", "save"));
@@ -2743,10 +3136,225 @@ mod tests {
         assert_eq!(rx.recv().unwrap()["ok"], false);
         assert!(!panel.agent_active);
     }
+    #[test]
+    fn transport_recovery_stop_closes_worker_and_rejects_late_tool_events() {
+        let (base, mut panel) = live_panel("transport-stop");
+        let mut a = AgentPanel::new();
+        let mut command = Command::new("python3");
+        command.args(["-B", "-c", "import sys,json,time; json.loads(sys.stdin.readline()); time.sleep(60)"]);
+        assert!(a.launch_worker(command, json!({"fixture":true}), &mut panel));
+        let old_turn = a.turn;
+        let (pending_tx, pending_rx) = mpsc::channel();
+        a.tool_requests.push((json!({"command":"fixture-not-executed"}), pending_tx));
+        a.stop(&mut panel);
+        assert!(!a.running);
+        assert!(a.stopping);
+        assert_eq!(pending_rx.recv().unwrap()["error"], "AI turn stopped");
+        let (late_tx, late_rx) = mpsc::channel();
+        a.tx.send(Event::Request((old_turn << 32) | 123, json!({"command":"fixture-not-executed"}), late_tx)).unwrap();
+        a.tx.send(Event::Message(old_turn, json!({"event":"assistant","text":"late response"}))).unwrap();
+        for _ in 0..200 {
+            a.update(&mut panel, "files");
+            if !a.stopping { break; }
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+        assert!(!a.stopping);
+        assert!(a.child.is_none());
+        assert_eq!(late_rx.recv().unwrap()["error"], "AI turn stopped");
+        assert!(a.answer.as_deref() != Some("late response"));
+        assert!(a.tool_requests.is_empty());
+        assert!(a.status.contains("Stopped by user"));
+        drop(panel);
+        let _ = std::fs::remove_dir_all(base);
+    }
+
+    #[test]
+    pub(crate) fn window_protocol_tests_ai_status_events() {
+        let mut a = AgentPanel::new();
+        let mut panel = render_panel();
+        a.turn = 1;
+        a.running = true;
+        a.config["permissions"] = json!({"read":true,"run":true});
+        let (tx, _rx) = mpsc::channel();
+        a.tx.send(Event::Request((1<<32)|1,
+            json!({"__agent_tool":"run_tool","command":"tool_run","id":"yohaku-preview"}), tx)).unwrap();
+        a.update(&mut panel, "files");
+        assert!(a.status.contains("Waiting for tool: run_tool (yohaku-preview)"));
+        a.tx.send(Event::Message(1,json!({"event":"tool_result","name":"run_tool",
+            "result":{"ok":true,"result":{"state":"running","exit_code":null}}}))).unwrap();
+        a.update(&mut panel, "files");
+        assert!(a.running);
+        assert_eq!(a.status, "AI processing | tool run_tool completed");
+        a.tx.send(Event::Message(1,json!({"event":"done","history":[]}))).unwrap();
+        a.update(&mut panel, "files");
+        assert!(!a.running);
+        assert_eq!(a.status, "AI turn ended | review result | ready for next message");
+        a.tx.send(Event::Exit(1)).unwrap();
+        a.update(&mut panel, "files");
+        assert_eq!(a.status, "AI turn ended | review result | ready for next message");
+        assert_eq!(a.primary_label(), "Send");
+        a.running = true;
+        a.tx.send(Event::Message(1,json!({"event":"tool_result","name":"tool_status",
+            "result":{"ok":true,"result":{"state":"failed","exit_code":101}}}))).unwrap();
+        a.update(&mut panel, "files");
+        assert!(a.status.contains("Tool failed"));
+        a.tx.send(Event::Message(1,json!({"event":"done","history":[]}))).unwrap();
+        a.update(&mut panel, "files");
+        assert!(a.status.contains("tool failure recorded"));
+        a.running = true;
+        a.tx.send(Event::Exit(1)).unwrap();
+        a.update(&mut panel, "files");
+        assert!(a.status.contains("connection interrupted"));
+        assert!(!a.running);
+    }
+
+    #[test]
+    pub(crate) fn window_protocol_tests_turn_budget_mirrors_status_message() {
+        let mut a = AgentPanel::new();
+        let mut panel = render_panel();
+        a.turn = 1;
+        a.running = true;
+        // Real ordinary-AI/direct shape: the connector reports the budget before any tool.
+        a.tx.send(Event::Message(1, json!({"event":"status",
+            "text":"time budget: 900s of 900s remain; elapsed 0s; Stop remains available"}))).unwrap();
+        a.update(&mut panel, "files");
+        assert_eq!(a.turn_budget, Some(TurnBudget::Limited { remaining: 900, total: 900 }));
+        assert!(a.status.contains("time budget: 900s of 900s remain"), "{}", a.status);
+        // Retry status replaces the text but must not clear or invent a budget.
+        a.tx.send(Event::Message(1, json!({"event":"recovery","attempt":1,"max_attempts":3,
+            "will_retry":true,"diagnostic_path":"/tmp/d.json"}))).unwrap();
+        a.tx.send(Event::Message(1, json!({"event":"status",
+            "text":"Model request attempt 1/3 failed: SSLEOFError; phase=response_read; retry pending; Stop available"}))).unwrap();
+        a.update(&mut panel, "files");
+        assert_eq!(a.turn_budget, Some(TurnBudget::Limited { remaining: 900, total: 900 }));
+        assert!(a.status.contains("Model request attempt 1/3 failed"), "{}", a.status);
+        assert!(a.logs.iter().any(|line| line.contains("Model recovery: attempt 1/3")), "{:?}", a.logs);
+    }
+
+    #[test]
+    pub(crate) fn window_protocol_tests_turn_budget_reads_live_status_shapes() {
+        // Both live shapes carry the connector report verbatim. The first number is
+        // the remaining time and the second is the configured total, including when
+        // they differ after the turn has already consumed some time.
+        let ordinary = "time budget: 900s of 900s remain; elapsed 0s; Stop remains available";
+        let prefixed = "AI processing | time budget: 895s of 900s remain; elapsed 5s";
+        assert_eq!(parse_turn_budget(ordinary), Some(TurnBudget::Limited { remaining: 900, total: 900 }));
+        assert_eq!(parse_turn_budget(prefixed), Some(TurnBudget::Limited { remaining: 895, total: 900 }));
+        // Unlimited is a distinct state, never a zero-second finite countdown.
+        assert_eq!(parse_turn_budget("time budget: unlimited; elapsed 5s; source=worker default: unlimited"), Some(TurnBudget::Unlimited));
+        assert_eq!(parse_turn_budget("AI processing | time budget: unlimited; elapsed 0s"), Some(TurnBudget::Unlimited));
+        // Placeholder, malformed and absurd values keep the plain status.
+        assert_eq!(parse_turn_budget("AI processing | reading repository"), None);
+        assert_eq!(parse_turn_budget("time budget: unknown"), None);
+        assert_eq!(parse_turn_budget("time budget: unlimitedly; elapsed 5s"), None);
+        assert_eq!(parse_turn_budget("time budget: 900 of 900s remain"), None);
+        assert_eq!(parse_turn_budget("time budget: 900s of 900 remain"), None);
+        assert_eq!(parse_turn_budget("time budget: 0s of 900s remain"), None);
+        assert_eq!(parse_turn_budget("time budget: 901s of 900s remain"), None);
+        assert_eq!(parse_turn_budget("time budget: 604801s of 604801s remain"), None);
+    }
+
+    #[test]
+    pub(crate) fn window_protocol_tests_turn_budget_line_counts_down_and_hides() {
+        let now = std::time::Instant::now();
+        let reported = "AI processing | time budget: 895s of 900s remain; elapsed 5s";
+        let budget = TurnBudget::Limited { remaining: 895, total: 900 };
+        // The first frame preserves the report (895 left / 5 used) instead of
+        // subtracting the report's elapsed time a second time.
+        assert!(budget_status(reported.into(), Some(budget), now, true)
+            .starts_with("budget 895s left of 900s (5s used) |"));
+        let five = now - std::time::Duration::from_secs(5);
+        assert!(budget_status(reported.into(), Some(budget), five, true)
+            .starts_with("budget 890s left of 900s (10s used) |"));
+        // Never negative, and no budget line without a report or after the turn ended.
+        let expired = now - std::time::Duration::from_secs(895);
+        assert!(budget_status(reported.into(), Some(budget), expired, true)
+            .starts_with("budget 0s left of 900s (900s used) |"));
+        assert_eq!(budget_status(reported.into(), Some(budget), now, false), reported);
+        assert_eq!(budget_status(reported.into(), None, now, true), reported);
+        // Unlimited shows elapsed turn time and never a fake zero countdown.
+        let unlimited = "AI processing | time budget: unlimited; elapsed 0s";
+        let twelve = now - std::time::Duration::from_secs(12);
+        let shown = budget_status(unlimited.into(), Some(TurnBudget::Unlimited), twelve, true);
+        assert!(shown.starts_with("budget unlimited; 12s elapsed |"), "{}", shown);
+        assert!(!shown.contains("0s left"), "{}", shown);
+        assert!(!shown.contains("elapsed 0s"), "{}", shown);
+        assert_eq!(budget_status(unlimited.into(), Some(TurnBudget::Unlimited), twelve, false), unlimited);
+    }
+
+    #[test]
+    pub(crate) fn window_protocol_tests_turn_budget_is_not_extended_by_later_reports() {
+        let mut a = AgentPanel::new();
+        let mut panel = render_panel();
+        a.turn = 1;
+        a.running = true;
+        a.tx.send(Event::Message(1, json!({"event":"status",
+            "text":"time budget: 900s of 900s remain; elapsed 0s; Stop remains available"}))).unwrap();
+        a.update(&mut panel, "files");
+        assert_eq!(a.turn_budget, Some(TurnBudget::Limited { remaining: 900, total: 900 }));
+        // Long activity reports a smaller remaining time; the mirror keeps the first
+        // report of the turn instead of restarting the countdown.
+        a.tx.send(Event::Message(1, json!({"event":"status",
+            "text":"time budget: 700s of 900s remain; elapsed 200s; Stop remains available"}))).unwrap();
+        a.update(&mut panel, "files");
+        assert_eq!(a.turn_budget, Some(TurnBudget::Limited { remaining: 900, total: 900 }));
+        // After the turn ends the line is hidden. begin_turn() clears the mirror, so
+        // the next connector report acquires a fresh remaining/total pair.
+        a.tx.send(Event::Message(1, json!({"event":"done","history":[]}))).unwrap();
+        a.update(&mut panel, "files");
+        assert!(!a.running);
+        assert_eq!(budget_status(a.status.clone(), a.turn_budget, a.turn_budget_since, a.running), a.status);
+        assert_eq!(a.begin_turn(), 2);
+        assert_eq!(a.turn_budget, None);
+        a.running = true;
+        a.tx.send(Event::Message(2, json!({"event":"status",
+            "text":"time budget: 600s of 600s remain; elapsed 0s; Stop remains available"}))).unwrap();
+        a.update(&mut panel, "files");
+        assert_eq!(a.turn_budget, Some(TurnBudget::Limited { remaining: 600, total: 600 }));
+    }
+
+    #[test]
+    pub(crate) fn window_protocol_tests_send_stop_button_and_new_turn_clock() {
+        let mut a = AgentPanel::new();
+        assert_eq!(a.primary_label(), "Send");
+        a.running = true;
+        assert_eq!(a.primary_label(), "Stop");
+        a.stopping = true;
+        assert_eq!(a.primary_label(), "Stopping...");
+        a.running = false;
+        a.stopping = false;
+        assert_eq!(a.primary_label(), "Send");
+        a.turn = 7;
+        a.turn_budget = Some(TurnBudget::Unlimited);
+        let previous = a.turn_budget_since;
+        assert_eq!(a.begin_turn(), 8);
+        assert_eq!(a.turn_budget, None);
+        assert!(a.turn_budget_since >= previous);
+    }
+
+    #[test]
+    fn status_stop_unknown_result_remains_explicit_and_never_claims_rollback() {
+        let (base,mut panel)=live_panel("unknown-outcome");let mut a=AgentPanel::new();
+        a.turn=1;a.running=true;
+        a.tx.send(Event::Message(1,json!({"event":"error","tool_outcome_unknown":true,"text":"Tool outcome unknown; inspect saved state; do not replay"}))).unwrap();
+        a.update(&mut panel,"files");assert!(!a.running);assert!(a.status.contains("outcome unknown"));
+        assert!(a.status.contains("no automatic replay"));assert_eq!(a.primary_label(),"Send");
+        std::fs::remove_dir_all(base).unwrap();
+    }
+
 }
-```
+
+#[cfg(test)]
+#[path = "../../tests/fixtures/object_notes_native.rs"]
+mod object_notes_fixture;
+````
 
 ## 输出与关联
 ```yaml
 output: "examples/yohaku_workspace/agent.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

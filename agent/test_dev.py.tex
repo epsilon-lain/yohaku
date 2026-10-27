@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":9282,"path":"/root/projects/yohaku/release-prep/yohaku/agent/test_dev.py","sha256":"7103addc5f65984bb72dfeb3d20abc292ece81ad6d7305d00580763245c4455e"}
 ---
 
 ## 正文
-```text
+````text
 import contextlib,io,json,os,subprocess,sys,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -136,9 +135,14 @@ class DevelopmentTests(unittest.TestCase):
         self.assertFalse((self.root/'memory/tools.json').exists(),'Native UI must register the batch optimistically')
 
 if __name__=='__main__':unittest.main()
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "agent/test_dev.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

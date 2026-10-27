@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":218,"path":"/root/projects/yohaku/release-prep/yohaku/src/main.rs","sha256":"8618fa281bbfd38fbbb3b98f1e51b1e55776423e894ec9126633103c64ae8d73"}
 ---
 
 ## 正文
-```text
+````text
 use wayland_client::Connection;
 
 fn main() {
@@ -15,9 +14,14 @@ fn main() {
         Err(err) => eprintln!("Yohaku: connection failed: {err}"),
     }
 }
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "src/main.rs"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```

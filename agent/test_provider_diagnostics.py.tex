@@ -1,0 +1,113 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+import contextlib
+import http.client
+import io
+import json
+import os
+from pathlib import Path
+import socket
+import ssl
+import tempfile
+import unittest
+from unittest.mock import patch
+import urllib.error
+
+import yohaku_agent as agent
+import yohaku_provider_diagnostics as diagnostics
+
+
+class ProviderDiagnosticTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary=tempfile.TemporaryDirectory()
+        self.directory=Path(self.temporary.name)/'private'
+        self.override=patch.object(diagnostics,'DIRECTORY',self.directory);self.override.start()
+        self.config={'request_max_retries':0,'protocol':'chat','base_url':'https://fixture.invalid','model':'fixture-model','api_key':'TEST_PRIVATE_KEY_123456'}
+    def tearDown(self):
+        self.override.stop();self.temporary.cleanup()
+    def invoke(self,error,payload=None):
+        provider=agent.Provider(self.config)
+        opener=unittest.mock.Mock();opener.open.side_effect=error
+        with patch.object(agent.urllib.request,'build_opener',return_value=opener):
+            with self.assertRaises(agent.ToolError) as caught:provider.request(payload or [{'role':'user','content':'PRIVATE CONVERSATION CONTENT'}])
+        files=list(self.directory.glob('*.json'))
+        self.assertEqual(len(files),1)
+        return str(caught.exception),json.loads(files[0].read_text()),files[0]
+    def test_url_reason_connection_refused_and_real_target(self):
+        message,record,path=self.invoke(urllib.error.URLError(ConnectionRefusedError(111,'Connection refused')))
+        self.assertIn('ConnectionRefusedError',message);self.assertIn('Connection refused',message)
+        self.assertEqual(record['target'],'https://fixture.invalid/chat/completions')
+        self.assertEqual(record['request_model'],'fixture-model');self.assertEqual(record['protocol'],'chat')
+        self.assertEqual(record['exception_chain'][1]['errno'],111);self.assertIsNone(record['http_status'])
+        self.assertEqual(record['backend'],'agent-direct');self.assertEqual(record['failure_stage'],'transport')
+        self.assertEqual(path.stat().st_mode&0o777,0o600);self.assertEqual(path.parent.stat().st_mode&0o777,0o700)
+    def test_dns_tls_timeout_and_string_reason(self):
+        errors=[socket.gaierror(-2,'Name or service not known'),ssl.SSLCertVerificationError(1,'certificate verify failed'),TimeoutError('timed out'),'Tunnel connection failed: 403 Forbidden']
+        for reason in errors:
+            with self.subTest(reason_type=type(reason).__name__):
+                for path in self.directory.glob('*.json'):path.unlink()
+                message,record,path=self.invoke(urllib.error.URLError(reason))
+                self.assertIn(type(reason).__name__ if isinstance(reason,BaseException) else 'Tunnel connection failed',message)
+                self.assertIsNone(record['http_status'])
+    def test_cause_context_cycle_and_bounded_redaction(self):
+        error=urllib.error.URLError('Bearer TEST_PRIVATE_KEY_123456; password=hidden-password; https://user:pass@host/?token=hidden-url; PRIVATE CONVERSATION CONTENT')
+        nested=OSError('nested failure');error.__cause__=nested;nested.__cause__=error
+        message,record,path=self.invoke(error)
+        saved=path.read_text()+message
+        for forbidden in ('TEST_PRIVATE_KEY_123456','hidden-password','hidden-url','user:pass','PRIVATE CONVERSATION CONTENT'):self.assertNotIn(forbidden,saved)
+        self.assertLessEqual(len(record['exception_chain']),8);self.assertLess(path.stat().st_size,8192)
+    def test_http_status_preserved_without_reading_error_body(self):
+        body=unittest.mock.Mock()
+        error=urllib.error.HTTPError('https://fixture.invalid',429,'Too Many Requests',{},body)
+        message,record,path=self.invoke(error)
+        self.assertIn('HTTP 429',message);self.assertEqual(record['http_status'],429)
+        self.assertEqual(record['failure_stage'],'http_response');body.read.assert_not_called()
+    def test_success_does_not_create_a_failure_record(self):
+        response=unittest.mock.MagicMock();response.__enter__.return_value=response
+        response.status=200;response.read.return_value=json.dumps({'choices':[{'finish_reason':'stop','message':{'content':'offline only'}}]}).encode()
+        opener=unittest.mock.Mock();opener.open.return_value=response
+        with patch.object(agent.urllib.request,'build_opener',return_value=opener):self.assertEqual(agent.Provider(self.config).request([])[2],'offline only')
+        self.assertFalse(self.directory.exists())
+    def test_invalid_json_records_observed_http_not_authentication_guess(self):
+        response=unittest.mock.MagicMock();response.__enter__.return_value=response;response.status=200;response.read.return_value=b'not json'
+        opener=unittest.mock.Mock();opener.open.return_value=response
+        with patch.object(agent.urllib.request,'build_opener',return_value=opener):
+            with self.assertRaises(agent.ToolError):agent.Provider(self.config).request([])
+        record=json.loads(next(self.directory.glob('*.json')).read_text())
+        self.assertEqual(record['http_status'],200);self.assertEqual(record['failure_stage'],'response_decode')
+    def test_unavailable_storage_keeps_reason_and_explicit_save_failure(self):
+        self.directory.mkdir(mode=0o755)
+        provider=agent.Provider(self.config);provider.diagnostics.begin()
+        message=provider.diagnostics.failure(urllib.error.URLError(TimeoutError('timed out')),{},None)
+        self.assertIn('timed out',message);self.assertIn('unavailable',message)
+        self.assertFalse(list(self.directory.glob('*.json')))
+    def test_wire_existing_error_area_receives_diagnostic_reason_without_codex_fallback(self):
+        initial={'config':self.config,'prompt':'PRIVATE CONVERSATION CONTENT','context':{},'history':[]}
+        opener=unittest.mock.Mock();opener.open.side_effect=urllib.error.URLError(socket.gaierror(-2,'Name or service not known'))
+        import yohaku_codex
+        with patch.object(agent.sys,'stdin',io.StringIO(json.dumps(initial)+'\n')),patch.object(agent.urllib.request,'build_opener',return_value=opener),patch.object(yohaku_codex,'run') as codex:
+            output=io.StringIO()
+            with contextlib.redirect_stdout(output):agent.wire()
+        event=json.loads(output.getvalue().splitlines()[-1]);self.assertEqual(event['event'],'error')
+        self.assertIn('Name or service not known',event['text']);self.assertIn('diagnostic:',event['text'])
+        self.assertNotIn('PRIVATE CONVERSATION CONTENT',event['text']);codex.assert_not_called()
+
+
+if __name__=='__main__':unittest.main()
+````
+
+## 输出与关联
+```yaml
+output: "agent/test_provider_diagnostics.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
+```

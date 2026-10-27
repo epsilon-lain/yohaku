@@ -1,0 +1,80 @@
+"""Host-only Codex model control. Credentials never enter world tool results."""
+import json
+from pathlib import Path
+import yohaku_codex_provider as provider
+
+VERSION='codex-model-control-20261026-v1'
+SCOPE='Yohaku codex-local only, all worlds using this host; ordinary AI chat/responses routes unchanged'
+SOURCE='host private codex-provider.json'
+
+def probe(entry, selected):
+    import yohaku_codex as codex
+    import yohaku_codex_linux as linux
+    connection=None
+    try:
+        connection=codex.Connection(linux.launch(entry,selection=selected))
+        connection.initialize_transport()
+        account=connection.request('account/read',{'refreshToken':False})
+        acct=account.get('account') or {}
+        login={'state':'signed_in' if acct else ('provider_key' if account.get('requiresOpenaiAuth') is False else 'not_signed_in'),
+               'type':acct.get('type','provider'),'source':'Yohaku dedicated host login' if selected['active']=='openai' else 'Yohaku private provider key',
+               'inference_verified':False}
+        rows=[];cursor=None;seen=set()
+        for _ in range(20):
+            page=connection.request('model/list',{'limit':100,**({'cursor':cursor} if cursor else {})})
+            if not isinstance(page.get('data'),list):raise ValueError('Invalid official model catalog')
+            rows.extend({k:m[k] for k in ('id','model','displayName','isDefault','hidden','defaultReasoningEffort','supportedReasoningEfforts') if k in m} for m in page['data'] if isinstance(m,dict) and isinstance(m.get('id'),str))
+            cursor=page.get('nextCursor')
+            if cursor is None:break
+            if not isinstance(cursor,str) or not cursor or cursor in seen:raise ValueError('Invalid model catalog pagination')
+            seen.add(cursor)
+        else:raise ValueError('Model catalog pagination exceeded bound')
+        return {'provider':selected['active'],'login':login,'models':rows,
+                'catalog_source':'official Codex model/list' if selected['active']=='openai' else 'installed Yohaku DeepSeek catalog via Codex model/list',
+                'catalog_is_inference_test':False}
+    except codex.CodexStopped:
+        raise
+    except codex.CodexError:
+        raise ValueError('Codex login/catalog RPC failed; no selection change') from None
+    finally:
+        if connection is not None:connection.close()
+
+def model_for(selected, config):
+    return provider.MODEL if selected['active']=='deepseek' else selected.get('openai_model') or config.get('model')
+
+class Control:
+    def __init__(self, config):
+        self.config=dict(config)
+        self.runtime=None
+    def bind(self, provider_name, model, source=SOURCE):
+        self.runtime={'provider':provider_name,'model':model,'source':source}
+    def call(self, name, args):
+        selected=provider.load()
+        target=args.get('provider',selected['active'])
+        if target not in ('openai','deepseek'):raise ValueError('Unsupported provider; no change saved')
+        choice=dict(selected,active=target)
+        if target=='deepseek' and not choice.get('deepseek_key'):
+            raise ValueError('DeepSeek key is not configured on host; no change saved')
+        base={'version':VERSION,'scope':SCOPE,'source':SOURCE,'new_turn_required':True,'new_ui_session_required':False,
+              'current_turn_unchanged':True,'cross_worker_resume':False}
+        try:
+            details=probe(self.config['codex_entry'],choice)
+        except (OSError,ValueError,RuntimeError) as error:
+            raise ValueError('Host login/model catalog probe failed ('+type(error).__name__+'); selection unchanged; host diagnosis required') from None
+        if name=='codex_model_status':
+            return {**base,'current_turn':self.runtime,'next_turn':{'provider':selected['active'],'model':model_for(selected,self.config)},'login':details['login'],'login_check':'account/read; inference not tested'}
+        if name=='codex_model_list':return {**base,**details}
+        if name!='codex_model_select':raise ValueError('Unknown model operation')
+        if details['login']['state']=='not_signed_in':raise ValueError('Dedicated Yohaku ChatGPT login required on host; no change saved')
+        model=args['model']
+        if model not in {row['id'] for row in details['models']}:
+            raise ValueError('Requested model is absent from actual model/list; no change saved; no fallback')
+        if target=='deepseek' and model!=provider.MODEL:raise ValueError('DeepSeek relay supports only its installed model; no change saved')
+        # Re-read after network I/O: never clobber a concurrent credential/selection update.
+        if provider.load()!=selected:raise ValueError('Provider selection changed concurrently; no change saved; query again')
+        if target=='openai':choice['openai_model']=model
+        provider.save(choice)
+        confirmed=provider.load()
+        if confirmed!=choice:raise ValueError('Selection read-back mismatch; inspect status before retrying')
+        return {**base,'saved':True,'next_turn':{'provider':target,'model':model},'login':details['login'],
+                'new_session_recommended':'Use a new UI conversation for a clean model verification; existing drafts/history are retained'}

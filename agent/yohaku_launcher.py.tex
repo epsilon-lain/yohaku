@@ -2,11 +2,10 @@
 format: yohaku/0.2
 target: text
 macro: '[[macros/raw]]'
-imported: {"bytes":5306,"path":"/root/projects/yohaku/release-prep/yohaku/agent/yohaku_launcher.py","sha256":"443d4a47657fa71f3e4b1c56d7a760f40fd5c39a06b05ee25c43175a3f95b361"}
 ---
 
 ## 正文
-```text
+````text
 #!/usr/bin/env python3
 """Run the existing Yohaku launcher with bounded display-disconnect handling.
 
@@ -147,19 +146,33 @@ def main():
     project = args.project.expanduser().resolve()
     if not (project / "Cargo.toml").is_file(): parser.error(f"Yohaku project not found: {project}")
     try:
+        from yohaku_codex_text_service import ensure_configured
+        text_service=ensure_configured(project)
+        from yohaku_host_update import ensure_configured as ensure_host_update
+        host_update=ensure_host_update(project)
+        print('Yohaku host update: '+str(host_update),flush=True)
+        print('Yohaku text service: '+str(text_service),flush=True)
         env, backend = launch_environment(args.backend)
+        if backend == "x11":
+            from yohaku_ime import ensure_x11_ime
+            print("Yohaku IME: " + ensure_x11_ime(env), flush=True)
         print(f"Yohaku host display: {backend}", flush=True)
         return supervise(["cargo", "run", "--locked", "--example", "yohaku_compositor"], project, sys.stdout.buffer, env)
-    except (OSError, ValueError) as error:
+    except (OSError, ValueError, RuntimeError, subprocess.TimeoutExpired) as error:
         print(f"Could not launch Yohaku: {error}", file=sys.stderr)
         return 1
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-```
+````
 
 ## 输出与关联
 ```yaml
 output: "agent/yohaku_launcher.py"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "Yohaku release packaging", "summary": "Portable release source. Scope and packaging adjustments are documented in PROVENANCE.md."}
 ```
