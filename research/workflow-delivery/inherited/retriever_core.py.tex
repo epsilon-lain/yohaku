@@ -1,0 +1,181 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Offline frozen-document retriever. Python 3 standard library only."""
+import argparse
+from bisect import bisect_right
+import hashlib
+import types
+import json
+import os
+from pathlib import Path
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parent
+BASELINE_SEAL = "5ccd119bd634f72630239a1b9787e3aab4da28622a6ee397b527dd97a9341b7e"
+SNAPSHOT_SHA = "893a261990e2c4d9b5fec9043fee872b9bf510e4f8db8451ddfc88c1a21686ae"
+FIELDS = ("path", "title", "body")
+STATUSES = ("exists", "missing", "unknown")
+
+def sha(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def load_dataset(root=ROOT):
+    """Check trusted fixed bytes before importing the unchanged local verifier."""
+    base = Path(root) / "baseline"
+    raw = (base / "BASELINE.json").read_bytes()
+    if sha(raw) != BASELINE_SEAL:
+        raise ValueError("baseline seal hash mismatch")
+    seal = json.loads(raw)
+    verified_bytes = {}
+    for name, row in seal["files"].items():
+        raw = (base / name).read_bytes()
+        if sha(raw) != row["sha256"] or len(raw) != row["bytes"]:
+            raise ValueError("baseline asset hash mismatch: " + name)
+        verified_bytes[name] = raw
+    # Execute only the hashed source bytes; never read or write a .pyc cache.
+    verifier = types.ModuleType("_frozen_material_verifier")
+    exec(compile(verified_bytes["verify_materials.py"], str(base / "verify_materials.py"), "exec"), verifier.__dict__)
+    verifier.verify_bundle(base / "materials.zip", external_dir=base, input_sha256=SNAPSHOT_SHA)
+    data = json.loads(verified_bytes["snapshot.json"])
+    index = json.loads(verified_bytes["index.json"])
+    links = json.loads(verified_bytes["links.json"])
+    rows = {d["source"]: d for d in index["documents"]}
+    documents = []
+    for doc in data["documents"]:
+        row = rows[doc["source"]]
+        documents.append(dict(source=doc["source"], source_version=doc["source_version"],
+                              title=row["title"], body=doc["body"]))
+    return documents, links["links"]
+
+def link_counts(documents, links):
+    counts = {d["source"]: dict.fromkeys(STATUSES, 0) for d in documents}
+    for link in links:
+        if link["source"] not in counts or link["status"] not in STATUSES:
+            raise ValueError("invalid link source or status")
+        counts[link["source"]][link["status"]] += 1
+    return counts
+
+def snippet(body, needle=None):
+    """Return exact original complete lines, including original line endings."""
+    lines = body.splitlines(keepends=True)
+    if not lines:
+        return "", 0, 0
+    if needle is None:
+        first = next((i for i, line in enumerate(lines) if line.strip()), None)
+        if first is None:
+            return "", 0, 0
+        stop = first + 1
+        while stop < len(lines) and lines[stop].strip():
+            stop += 1
+        return "".join(lines[first:stop]), first + 1, stop
+    folded = body.casefold()
+    hit = folded.find(needle)
+    if hit < 0 or not needle:
+        raise ValueError("snippet requested without body match")
+    # Casefold may expand a character (e.g. ß -> ss). Translate both ends,
+    # not merely the start, back to original Unicode code-point offsets.
+    offsets = [0]
+    for char in body:
+        offsets.append(offsets[-1] + len(char.casefold()))
+    begin = bisect_right(offsets, hit) - 1
+    last = bisect_right(offsets, hit + len(needle) - 1) - 1
+    ends = []
+    total = 0
+    for line in lines:
+        total += len(line)
+        ends.append(total)
+    first_line = bisect_right(ends, begin)
+    last_line = bisect_right(ends, last)
+    return "".join(lines[first_line:last_line + 1]), first_line + 1, last_line + 1
+
+def search(documents, links, field, query, limit=None):
+    if field not in FIELDS + ("all",):
+        raise ValueError("invalid field")
+    if not isinstance(query, str) or not query.strip():
+        raise ValueError("query must contain a non-whitespace character")
+    if limit is not None and (type(limit) is not int or limit <= 0):
+        raise ValueError("limit must be a positive integer")
+    needle = query.casefold()
+    selected = FIELDS if field == "all" else (field,)
+    counts = link_counts(documents, links)
+    results = []
+    for doc in sorted(documents, key=lambda d: d["source"]):
+        values = {"path": doc["source"], "title": doc["title"], "body": doc["body"]}
+        matched = [key for key in selected if needle in values[key].casefold()]
+        if not matched:
+            continue
+        text, start, end = snippet(doc["body"], needle if "body" in matched else None)
+        results.append(dict(source=doc["source"], source_version=doc["source_version"],
+                            title=doc["title"], matched_fields=matched, snippet=text,
+                            line_start=start, line_end=end, link_counts=counts[doc["source"]]))
+    return dict(query=query, field=field, total=len(results),
+                results=results if limit is None else results[:limit])
+
+class Parser(argparse.ArgumentParser):
+    def error(self, message):
+        raise ValueError(message)
+
+def write_output(path, text):
+    target = Path(path).resolve()
+    base = (ROOT / "baseline").resolve()
+    if target == base or base in target.parents:
+        raise ValueError("output must not modify read-only baseline")
+    # Atomic replace: no partial JSON after a failed write.
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="",
+                                         dir=target.parent, delete=False) as f:
+            temporary = Path(f.name)
+            f.write(text)
+        os.replace(temporary, target)
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
+
+def main(argv=None):
+    p = Parser(description=__doc__, add_help=False, allow_abbrev=False)
+    p.add_argument("--help", action="store_true")
+    p.add_argument("command", nargs="?", choices=["search"])
+    p.add_argument("--field", choices=FIELDS + ("all",))
+    p.add_argument("--query")
+    p.add_argument("--limit", type=int)
+    p.add_argument("--output")
+    try:
+        args = p.parse_args(argv)
+        if args.help:
+            print(json.dumps({"usage": "python retriever.py search --field path|title|body|all --query TEXT [--limit N] [--output PATH]"}))
+            return 0
+        if args.command != "search" or args.field is None or args.query is None:
+            raise ValueError("search requires --field and --query")
+        if not args.query.strip():
+            raise ValueError("query must contain a non-whitespace character")
+        if args.limit is not None and args.limit <= 0:
+            raise ValueError("limit must be a positive integer")
+        documents, links = load_dataset()
+        result = search(documents, links, args.field, args.query, args.limit)
+        text = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
+        if args.output is not None:
+            write_output(args.output, text)
+        sys.stdout.write(text)
+        return 0
+    except Exception as exc:
+        message = str(exc) or type(exc).__name__
+        print(json.dumps({"error": message}, ensure_ascii=False))
+        print("ERROR: " + message, file=sys.stderr)
+        return 2
+
+if __name__ == "__main__":
+    sys.exit(main())
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-delivery/inherited/retriever_core.py"
+```

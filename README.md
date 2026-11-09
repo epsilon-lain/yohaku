@@ -148,3 +148,12 @@ node links never add implicit Loom dependencies. See `loom-src/FORMAT.md` and
 
 See [PROVENANCE.md](PROVENANCE.md), [CHANGELOG.md](CHANGELOG.md) and
 [VERIFICATION.md](VERIFICATION.md) for scope and measured results.
+## Research workflow materials
+
+The separately scoped [workflow runtime snapshot and reproduction instructions](research/workflow-runtime/README.md) include the historical Sol controller, an Adaption candidate source export, host budget and recovery boundaries, and offline checks. They are not enabled in the default desktop product. A [redacted review evidence index](research/review-evidence/README.md) and the [accepted handoff delivery](research/workflow-delivery/README.md) are available for the competition manuscript. No private runtime world, account, credentials or frozen acceptance answers are supplied.
+
+```sh
+python3 -B research/workflow-delivery/verify_offline.py
+python3 -B research/review-evidence/verify.py
+python3 -B -m unittest discover -s research/workflow-runtime/tests -v
+```

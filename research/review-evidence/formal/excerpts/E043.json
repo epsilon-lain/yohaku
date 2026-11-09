@@ -1,0 +1,25 @@
+{
+  "original_source": "Sfba47edbbbb59e",
+  "original_line": 7,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 38,
+    "record": {
+      "timestamp": "2026-11-07T09:45:30.592Z",
+      "ordinal": 37,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_09ac0cf7031e1ade016aeef333e6c487d09dcab52005809b15",
+        "status": "completed",
+        "call_id": "call_f459e2b2cfc7460eb71b9c492ab78c12",
+        "name": "exec",
+        "input": "let r=load(\"rawInputRange\");if(typeof r===\"string\")r=JSON.parse(r);\nconst rr=r.result;\ntext({ok:r.ok,keys:Object.keys(rr),textLength:rr.text?.length});\nconst data=JSON.parse(rr.text);store(\"input\",data);store(\"inputRevision\",rr.revision);\nconst u=x=>x?.result??x??{};\ntext({provenance:data.provenance,episodes:data.episodes.map((e,i)=>{\nconst b=u(e.receipts.before),s=u(e.receipts.started),c=u(e.receipts.cancel),f=u(e.receipts.final);\nreturn {reference:`/episodes/${i}`,source_pointer:e.source_pointer,receiptKeys:Object.keys(e.receipts),before:{status:b.status,model_phase:b.model_phase,execution:b.execution},started:s,cancel:{execution:c.execution,cancel_confirmed:c.cancel_confirmed,status:c.status,receipt:c.receipt},final:{task_id:f.task_id,status:f.status,phase:f.phase,model_phase:f.model_phase,cancel:f.cancel,cancel_confirmed:f.cancel_confirmed,execution:f.execution,receipt:f.receipt}};\n})});\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b565-b0fb-7222-ad83-0773f5ee23be",
+          "create_time": 1794044723.905865
+        }
+      }
+    }
+  }
+}

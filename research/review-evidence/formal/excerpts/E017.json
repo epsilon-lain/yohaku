@@ -1,0 +1,48 @@
+{
+  "original_source": "S292c3b3c5fe291",
+  "original_line": 36,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 163,
+    "record": {
+      "timestamp": "2026-11-07T09:54:51.464Z",
+      "ordinal": 162,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call_output",
+        "id": "ctco_01a1b56e-abc8-7dd2-bb5a-f1cbbdefd635",
+        "call_id": "call_8658956b17514e5a928371761dd23a22",
+        "output": [
+          {
+            "type": "input_text",
+            "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+          },
+          {
+            "type": "input_text",
+            "text": "[{\"input_version\":\"v1\",\"task_id\":\"project-task-e370856c121334c3df84e6fded0c15df\",\"output_complete\":true,\"read_state\":\"complete\",\"exit_code\":0,\"stdout_sha256\":\"cfef63ab93e1c53d8b68c7479ed9d40ce3ddc037eb66cdd4ce95e56a2d193dc9\",\"matches_upstream_independent_algorithm\":true,\"expected_input_sha256\":\"efbe374dacd7c225e541a5fbb210af3a2625c209c58794ec5545dc8992c96e22\",\"events_source\":{\"source\":\"files/work/EVENTS-v1.json.tex\",\"revision\":\"68c8c2c311aa498e2af7769d527bd315aafa4dfa7761dd8e8fa65a6b82bca29b\"}},{\"input_version\":\"v2\",\"task_id\":\"project-task-79ea37fb581977c44209f98ed4c898b2\",\"output_complete\":true,\"read_state\":\"complete\",\"exit_code\":0,\"stdout_sha256\":\"a60a77c43d8efcf36ceeb7dc418973e48b59ef66ae9e13a9a908cde8184954ad\",\"matches_upstream_independent_algorithm\":true,\"expected_input_sha256\":\"42f783f16004957b31b3614e321b6b47399e5ab5a66fef93b7a86802b744ca38\",\"events_source\":{\"source\":\"files/work/EVENTS-v2.json.tex\",\"revision\":\"ad1a73c4893792370f54e7d6adbcc5ae790c62c426413e04b15f03f90a789910\"}},{\"input_version\":\"v3\",\"task_id\":\"project-task-d0fbfae2b198fbaccea782733364238b\",\"output_complete\":true,\"read_state\":\"complete\",\"exit_code\":0,\"stdout_sha256\":\"2eee6bd784aefec3129ce525358572f0b2180711ba465aee3b0ac4078642c5c2\",\"matches_upstream_independent_algorithm\":true,\"expected_input_sha256\":\"99503de74ea993f5832604abf8d6fe6bf900ff4bc03ec3067dc6b25b1cfc55b0\",\"events_source\":{\"source\":\"files/work/EVENTS-v3.json.tex\",\"revision\":\"70de5851d9914e774e3abf147c82e12f5487b92690b84b3c3c351c476f72476e\"}}]"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"ok\": true, \"result\": {\"loom\": {\"action\": \"sync\", \"format\": \"loom-result/0.1\", \"ok\": true, \"result\": {\"build\": {\"build_id\": \"d9a96475b36a20d376f1e9c68e3b308e7d888854f6a2c8af29b039e9f241d4bb\", \"bytes_written\": 2316, \"map_path\": \"[PRIVATE_PATH]\", \"output\": \"[PRIVATE_PATH]\", \"source\": \"[PRIVATE_PATH]\"}, \"removed\": [], \"retained\": [], \"source\": \"[PRIVATE_PATH]\", \"state\": \"generated\"}}, \"output\": \"files/work/UPSTREAM-REVIEW.json\", \"source\": \"files/work/UPSTREAM-REVIEW.json.tex\"}}"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"ok\": true, \"result\": {\"chat_id\": \"ai-chat-bf5981b3f59d1ad6fe683f91\", \"participants\": [\"ai-node-40471c47c909a88a1bf15c25\", \"ai-node-ed1dd66297bf172176aea169\", \"main\"], \"messages\": [{\"message_id\": \"ai-chat-bf5981b3f59d1ad6fe683f91:9\", \"chat_id\": \"ai-chat-bf5981b3f59d1ad6fe683f91\", \"seq\": 9, \"sender_node_id\": \"ai-node-40471c47c909a88a1bf15c25\", \"text\": \"同一个通用audit.py已实际跑完stats-v1/v2/v3，全部done/exit_code=0，stdout恰好完整JSON，STATS-v1/v2/v3.json.tex及初版REPORT.md.tex已保存。task_id依次project-task-e370856c121334c3df84e6fded0c15df、project-task-79ea37fb581977c44209f98ed4c898b2、project-task-d0fbfae2b198fbaccea782733364238b。实际汇总与上游独立预期一致；正消费EVENTS逐项对照并补REPORT证据链。请上游可独立读STATS与audit.py对照，若发现问题及时消息。\", \"reply_to\": null, \"created_at\": 1794045276.3638031, \"provenance\": null}], \"next_seq\": 9, \"has_more\": false, \"starts_models\": false}}"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"ok\": true, \"result\": {\"entries\": [{\"kind\": \"file\", \"path\": \"files/work/CURRENT.json\"}, {\"kind\": \"file\", \"path\": \"files/work/CURRENT.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/EVENTS-v1.json\"}, {\"kind\": \"file\", \"path\": \"files/work/EVENTS-v1.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/EVENTS-v2.json\"}, {\"kind\": \"file\", \"path\": \"files/work/EVENTS-v2.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/EVENTS-v3.json\"}, {\"kind\": \"file\", \"path\": \"files/work/EVENTS-v3.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/REPORT.md\"}, {\"kind\": \"file\", \"path\": \"files/work/REPORT.md.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/SPEC.md\"}, {\"kind\": \"file\", \"path\": \"files/work/SPEC.md.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/STATS-v1.json\"}, {\"kind\": \"file\", \"path\": \"files/work/STATS-v1.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/STATS-v2.json\"}, {\"kind\": \"file\", \"path\": \"files/work/STATS-v2.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/STATS-v3.json\"}, {\"kind\": \"file\", \"path\": \"files/work/STATS-v3.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/UPSTREAM-REVIEW.json\"}, {\"kind\": \"file\", \"path\": \"files/work/UPSTREAM-REVIEW.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/audit.py\"}, {\"kind\": \"file\", \"path\": \"files/work/audit.py.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/downstream-memory.md\"}, {\"kind\": \"file\", \"path\": \"files/work/downstream-memory.md.tex\"}, {\"kind\": \"directory\", \"path\": \"files/work/inputs\"}, {\"kind\": \"file\", \"path\": \"files/work/project.json\"}, {\"kind\": \"file\", \"path\": \"files/work/project.json.tex\"}, {\"kind\": \"file\", \"path\": \"files/work/upstream-memory.md\"}, {\"kind\": \"file\", \"path\": \"files/work/upstream-memory.md.tex\"}], \"path\": \"files/work\"}}"
+          }
+        ],
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b56a-9156-7040-9898-4d5bb36fe5d7",
+          "create_time": 1794045291.4647408
+        }
+      },
+      "metadata": {
+        "client_authored": false,
+        "fallback_token_limit_override": 12000
+      }
+    }
+  }
+}

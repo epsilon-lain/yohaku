@@ -1,0 +1,54 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Offline durable controller identity and unknown-outcome contract."""
+import importlib.util
+from pathlib import Path
+import tempfile
+import unittest
+
+REPO=Path(__file__).resolve().parents[3]
+PATH=REPO / "diagnostics/reusable-workflow-20261107-01/sol-workflow/workflow.py"
+spec=importlib.util.spec_from_file_location("published_workflow",PATH)
+workflow=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(workflow)
+
+class IdentityContract(unittest.TestCase):
+    def test_duplicate_submit_and_unknown_keep_original_id(self):
+        events=[]
+        class Backend:
+            def __init__(self,run,state): events.append("bind")
+            def prepare(self): return {"synthetic":True}
+            def dispatch(self):
+                events.append("dispatch")
+                raise workflow.OutcomeUnknown("synthetic original task unknown")
+        with tempfile.TemporaryDirectory(prefix="yohaku-controller-") as root:
+            engine=workflow.Engine(root,backend_factory=Backend)
+            config={"profile":workflow.PROFILE,"poll_seconds":0.01}
+            first,created=engine.submit("fixed-id",config)
+            self.assertTrue(created)
+            again,created=engine.submit("fixed-id",config)
+            self.assertFalse(created);self.assertEqual(first["spec_sha256"],again["spec_sha256"])
+            with self.assertRaises(ValueError): engine.submit("fixed-id",{"profile":workflow.PROFILE,"poll_seconds":0.02})
+            self.assertEqual(events,[])
+            self.assertEqual(engine.run("fixed-id",one_step=True)["stage"],"prepared")
+            with self.assertRaises(workflow.OutcomeUnknown): engine.run("fixed-id",one_step=True)
+            state=engine.status("fixed-id")
+            self.assertEqual(state["stage"],"prepared")
+            self.assertTrue(state["attention"]["resume_with_same_request_only"])
+            prior,created=engine.submit("fixed-id",config)
+            self.assertFalse(created);self.assertEqual(prior["attention"]["type"],"OutcomeUnknown")
+            self.assertEqual(events.count("dispatch"),1)
+
+if __name__ == "__main__": unittest.main()
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/tests/test_controller.py"
+```

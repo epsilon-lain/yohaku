@@ -1,0 +1,103 @@
+"""Offline accounting, model-identity and transport replay contracts."""
+import hashlib
+import json
+import multiprocessing
+import os
+from pathlib import Path
+import ssl
+import sys
+import tempfile
+import types
+import unittest
+from unittest.mock import patch
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "agent"))
+import batch_budget_guard as guard
+import yohaku_adaption as adapter
+
+def write(path, value):
+    path.write_text(json.dumps(value, sort_keys=True), encoding="utf-8")
+
+def reserve_worker(identity, output):
+    try:
+        guard.reserve_post("fixture", identity, {"model":"fixture", "max_output_tokens":10, "store":False, "tools":[]})
+        output.put("reserved")
+    except guard.BudgetExceeded:
+        output.put("exceeded")
+    except guard.BudgetBlocked:
+        output.put("blocked")
+
+class BudgetContracts(unittest.TestCase):
+    def test_atomic_budget_and_unknown_not_refunded(self):
+        with tempfile.TemporaryDirectory(prefix="yohaku-budget-") as directory:
+            root = Path(directory)
+            evidence = root / "synthetic.json"
+            write(evidence, {"fixture":True})
+            proof = {"path":str(evidence), "sha256":hashlib.sha256(evidence.read_bytes()).hexdigest()}
+            session = root / "session.json"
+            write(session, {"session_id":"fixture-session", "enabled":True, "funding_scope":"account_existing_balance", "currency":"TEST", "no_recharge_or_purchase":True, "authorization":{"source":"explicit_user_authorization", "amount":"0.0001"}})
+            session_hash = hashlib.sha256(session.read_bytes()).hexdigest()
+            session_ledger = root / "session-ledger.json"
+            write(session_ledger, {"session_id":"fixture-session", "session_grant_sha256":session_hash, "currency":"TEST", "reservations":{}, "project_runs":{}})
+            grant = root / "grant.json"
+            write(grant, {"enabled":True,"batch_id":"fixture","provider":"adaption","model":"fixture","reasoning_effort":"none","funding_scope":"account_existing_balance","pricing_verified":True,"pricing_evidence":proof,"currency":"TEST","authorization":{"source":"explicit_user_authorization","reference":"synthetic-only","amount":"0.00004"},"pricing":{"input_per_million":"1","output_per_million":"1","input_token_cap":10,"max_output_tokens":10,"supplier_caps_verified":True},"limits":{"max_payload_bytes":4096},"open_runtime":True,"session":{"grant_path":str(session),"grant_sha256":session_hash,"ledger_path":str(session_ledger)}})
+            auth = guard.authorize_submit({"profile":{"provider":"adaption","model":"fixture","reasoning_effort":"none"},"spend_grant":str(grant)}, "fixture")
+            env = {"YOHAKU_BATCH_ID":"fixture","YOHAKU_BATCH_SPEND_GRANT":str(grant),"YOHAKU_BATCH_SPEND_GRANT_SHA256":auth["grant_sha256"],"YOHAKU_BATCH_SPEND_LEDGER":str(root / "mirror.json")}
+            with patch.dict(os.environ, env):
+                ctx=multiprocessing.get_context("fork");queue=ctx.Queue();workers=[ctx.Process(target=reserve_worker,args=("post-"+str(i),queue))for i in range(5)]
+                for process in workers: process.start()
+                for process in workers: process.join(15); self.assertEqual(process.exitcode, 0)
+                outcomes=[queue.get(timeout=2)for _ in workers]
+                self.assertEqual(outcomes.count("reserved"),2);self.assertEqual(outcomes.count("exceeded"),3)
+                ledger=json.loads(session_ledger.read_text()); self.assertEqual(len(ledger["reservations"]),2)
+                self.assertEqual(ledger["reserved_total"],"0.00004")
+                record=next(iter(ledger["reservations"].values()))
+                with self.assertRaises(guard.BudgetBlocked):
+                    guard.reserve_post("fixture",record["identity"],{"model":"fixture","max_output_tokens":10,"store":False,"tools":[]})
+                self.assertEqual(json.loads(session_ledger.read_text())["reserved_total"],"0.00004")
+                self.assertTrue(all(r["state"]=="reserved_outcome_unknown" for r in ledger["reservations"].values()))
+                reservation={"identity":record["identity"],"batch_id":"fixture","ledger_path":str(root / "mirror.json"),"session_ledger_path":str(session_ledger),"global_identity":"fixture::"+record["identity"],"payload_sha256":record["payload_sha256"]}
+                guard.reconcile_post(reservation,{"id":"synthetic","model":"fixture","status":"completed","usage":{"cost":0}})
+                self.assertEqual(json.loads(session_ledger.read_text())["reserved_total"],"0.00004")
+                with self.assertRaises(guard.BudgetBlocked): guard.create_batch_grant("fixture",root/"other.json")
+                other=json.loads(grant.read_text());other["batch_id"]="fixture-other";other["authorization"]["amount"]="0.0001"
+                other_grant=root / "other-grant.json";write(other_grant,other)
+                other_auth=guard.authorize_submit({"profile":{"provider":"adaption","model":"fixture","reasoning_effort":"none"},"spend_grant":str(other_grant)},"fixture-other")
+                other_env={"YOHAKU_BATCH_ID":"fixture-other","YOHAKU_BATCH_SPEND_GRANT":str(other_grant),"YOHAKU_BATCH_SPEND_GRANT_SHA256":other_auth["grant_sha256"],"YOHAKU_BATCH_SPEND_LEDGER":str(root / "other-mirror.json")}
+                with patch.dict(os.environ,other_env):
+                    payload={"model":"fixture","max_output_tokens":10,"store":False,"tools":[]}
+                    for i in range(3): guard.reserve_post("fixture-other","other-"+str(i),payload)
+                    with self.assertRaises(guard.BudgetExceeded): guard.reserve_post("fixture-other","other-over",payload)
+                    self.assertEqual(json.loads(session_ledger.read_text())["reserved_total"],"0.00010")
+
+class ModelAndTransportContracts(unittest.TestCase):
+    def test_explicit_identity_and_inheritance(self):
+        _, binding=adapter._transport_namespace_registration("glm-53-flash")
+        self.assertEqual(binding["supplier_model_verbatim"],"glm-5.3-flash")
+        with self.assertRaises(adapter.ModelNamespaceIdentityError): adapter._transport_namespace_registration("other-model")
+        parent={"provider":"adaption","model":"glm-53-flash","reasoning_effort":"none","budget":{}}
+        self.assertEqual(adapter.inherit_profile(parent),parent)
+        with self.assertRaises(ValueError): adapter.inherit_profile(parent,{"model":"other-model"})
+        with self.assertRaises(ValueError): adapter.inherit_profile(parent,{"provider":"openai"})
+        with patch.object(adapter,"MODEL_NAMESPACE_REGISTRY_SHA256","0"*64):
+            with self.assertRaises(adapter.ModelNamespaceIdentityError): adapter._transport_namespace_registration("glm-53-flash")
+
+    def test_unknown_post_is_not_replayed(self):
+        calls=[]
+        class Connection:
+            def __init__(self,*args,**kwargs): self.sock=None
+            def request(self,*args,**kwargs): calls.append("request"); raise ssl.SSLEOFError("synthetic interruption")
+            def close(self): pass
+        with tempfile.TemporaryDirectory(prefix="yohaku-http-") as directory:
+            root=Path(directory); grant=root/"grant.json";grant.write_text("{}")
+            fake=types.SimpleNamespace(reserve_post=lambda *a,**kw:{"fixture":True})
+            env={"YOHAKU_BATCH_ID":"fixture","YOHAKU_BATCH_SPEND_GRANT":str(grant),"YOHAKU_BATCH_SPEND_GRANT_SHA256":adapter.sha(grant.read_bytes())}
+            with patch.dict(os.environ,env),patch.dict(sys.modules,{"batch_budget_guard":fake}):
+                client=adapter.Client(adapter.Journal(root/"journal"),key="offline-fixture",connection_factory=Connection)
+                payload={"model":"glm-53-flash","stream":True,"store":False,"max_output_tokens":64,"tools":[]}
+                with self.assertRaises(Exception): client.request("POST","/responses","fixed",payload)
+                self.assertEqual(client.journal.load("fixed")["state"],"outcome_unknown")
+                with self.assertRaises(adapter.OutcomeUnknown): client.request("POST","/responses","fixed",payload)
+                self.assertEqual(calls,["request"])
+
+if __name__ == "__main__": unittest.main()

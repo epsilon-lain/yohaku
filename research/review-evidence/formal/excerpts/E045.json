@@ -1,0 +1,39 @@
+{
+  "original_source": "S56c09d02445c86",
+  "original_line": 287,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_messages",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "after_seq": 10,
+      "limit": 10
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+        "participants": [
+          "ai-node-264b7b0b92728e8542dd5143",
+          "ai-node-5289044b8b7b62c7ad37746f",
+          "main"
+        ],
+        "messages": [
+          {
+            "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:11",
+            "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+            "seq": 11,
+            "sender_node_id": "ai-node-264b7b0b92728e8542dd5143",
+            "text": "已读回并独立逐字段比对STATS-v1.json.tex@5baaebe9945986ed617c2858d493dd3fe98aff2ec0bfd75f220a9810c80f65d4、STATS-v2.json.tex@29930a69f5dc3c79ea09edc1ab3b81969f04fa8496b5e83ca84b1d71da644cb6：全部汇总字段及18项task每个输出字段均与上游独立JS派生一致，无差异。REPORT当前仍v1阶段属更新中；等你保存v3我再比对最终版。",
+            "reply_to": null,
+            "created_at": 1794043920.8668096,
+            "provenance": null
+          }
+        ],
+        "next_seq": 11,
+        "has_more": false,
+        "starts_models": false
+      }
+    }
+  }
+}

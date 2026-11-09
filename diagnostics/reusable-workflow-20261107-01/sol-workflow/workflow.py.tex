@@ -1,0 +1,790 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+#!/usr/bin/env python3
+"""One host entry for isolated, durable Sol/high workflow runs (Linux/WSL).
+
+No imports from the old live driver's mutable runtime. Archived inputs and the
+reviewed host candidate are copied/verified into a fresh per-request workspace.
+Repeated submit is a query; resume explicitly continues the original identities.
+"""
+from __future__ import annotations
+import argparse
+import contextlib
+import fcntl
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import tempfile
+import time
+
+HERE = Path(__file__).resolve().parent
+BASE = HERE.parent
+REPO = BASE.parents[1]
+OLD = Path(os.environ.get('YOHAKU_WORKFLOW_RETRIEVER_ROOT', str(REPO / 'diagnostics/internal-offline-retriever-host-20261107-01'))).resolve()
+MATERIALS = Path(os.environ.get('YOHAKU_WORKFLOW_MATERIALS_ROOT', str(REPO / 'diagnostics/internal-project-materials-host-20261107-01'))).resolve()
+PROFILE = {'provider': 'openai', 'model': 'gpt-6.1-sol', 'reasoning_effort': 'high',
+           'budget': {'timeout_seconds': 1200, 'max_tool_calls': 180}}
+LIMITS = {'active_nodes': 3, 'dispatches': 12, 'tool_calls': 180, 'seconds': 1200}
+TERMINAL = {'complete', 'failed', 'cancelled'}
+SOL_ENV_KEYS = ('YOHAKU_CODEX_AUTH_HOME', 'YOHAKU_CODEX_PROVIDER_FILE', 'YOHAKU_CODEX_LINUX')
+ENV_KEYS = SOL_ENV_KEYS + ('YOHAKU_ADAPTION_CREDENTIAL_FILE',)
+
+
+class OutcomeUnknown(RuntimeError):
+    pass
+
+
+class CancellationObserved(RuntimeError):
+    pass
+
+
+def load(path):
+    return json.loads(Path(path).read_bytes())
+
+
+def digest(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+
+def file_sha(path):
+    return digest(Path(path).read_bytes())
+
+
+def save(path, value):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp = path.with_name(path.name + '.pending')
+    with temp.open('w') as f:
+        json.dump(value, f, ensure_ascii=False, indent=2)
+        f.write('\n'); f.flush(); os.fsync(f.fileno())
+    temp.replace(path)
+
+
+def once(path, raw, mode=None):
+    path = Path(path)
+    if path.is_symlink():
+        raise ValueError('Symlink refused: ' + str(path))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        if path.read_bytes() != raw:
+            raise ValueError('Immutable byte conflict: ' + str(path))
+    else:
+        fd, temporary = tempfile.mkstemp(prefix='.' + path.name + '.partial-', dir=path.parent)
+        try:
+            with os.fdopen(fd, 'wb') as f:
+                f.write(raw); f.flush(); os.fsync(f.fileno())
+            try:
+                # Atomic create, never overwrite another completed writer.
+                os.link(temporary, path)
+            except FileExistsError:
+                if path.is_symlink() or path.read_bytes() != raw:
+                    raise ValueError('Concurrent immutable byte conflict: ' + str(path))
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
+    if mode is not None:
+        path.chmod(mode)
+
+
+def identifier(value):
+    if not isinstance(value, str) or value in ('.', '..') or not re.fullmatch(r'[A-Za-z0-9_.:-]{1,80}', value):
+        raise ValueError('request-id requires 1..80 ASCII letters/digits/_.:-')
+    return value
+
+
+@contextlib.contextmanager
+def locked(path, blocking=False):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd = os.open(path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX | (0 if blocking else fcntl.LOCK_NB))
+        yield
+    finally:
+        os.close(fd)
+
+
+def config_value(path=None):
+    config = load(path) if path else {}
+    if set(config) - {'environment', 'poll_seconds', 'profile'}:
+        raise ValueError('Unsupported config; credentials must remain outside this file')
+    env = config.setdefault('environment', {})
+    if set(env) - set(ENV_KEYS):
+        raise ValueError('Only explicit reviewed host configuration paths are accepted')
+    for k in ENV_KEYS:
+        env.setdefault(k, os.environ.get(k, ''))
+        if env[k] and not Path(env[k]).is_absolute():
+            raise ValueError(k + ' requires an absolute host path')
+    config.setdefault('poll_seconds', 5)
+    config.setdefault('profile', json.loads(json.dumps(PROFILE)))
+    selected = config['profile']
+    if not isinstance(selected, dict) or set(selected) != set(PROFILE):
+        raise ValueError('profile requires provider/model/reasoning_effort/budget')
+    if selected['provider'] not in ('openai', 'adaption'):
+        raise ValueError('Only the verified Sol route or isolated Adaption route is supported')
+    if selected['provider'] == 'openai' and selected != PROFILE:
+        raise ValueError('The verified OpenAI workflow is explicitly gpt-6.1-sol/high')
+    if selected['provider'] == 'adaption' and (not isinstance(selected['model'], str) or not selected['model']
+            or selected['reasoning_effort'] != 'none' or selected['budget'] != PROFILE['budget']):
+        raise ValueError('Adaption requires an explicit hosted inference ID, effort none, and the shared run budget')
+    if not isinstance(config['poll_seconds'], (float, int)) or not 0 < config['poll_seconds'] <= 30:
+        raise ValueError('poll_seconds must be >0 and <=30')
+    return config
+
+
+class Engine:
+    def __init__(self, root, backend_factory=None):
+        self.root = Path(root).resolve()
+        self.backend_factory = backend_factory or SolBackend
+
+    def path(self, request_id):
+        result = (self.root / identifier(request_id)).resolve()
+        if result.parent != self.root:
+            raise ValueError('Workflow request escapes the runs directory')
+        return result
+
+    def status(self, request_id):
+        p = self.path(request_id) / 'STATE.json'
+        if not p.exists():
+            raise ValueError('Unknown workflow request ID; no execution started')
+        return load(p)
+
+    def commit(self, state, allow_cancel=False):
+        request_id = state['request_id']
+        with locked(self.root / (identifier(request_id) + '.lock'), blocking=True):
+            current = self.status(request_id)
+            if current.get('cancel_requested') and not allow_cancel:
+                return False
+            save(self.path(request_id) / 'STATE.json', state)
+            return True
+
+    def action(self, state, callback, *args, allow_cancel=False):
+        # This fence covers the whole durable submit operation, not merely the
+        # final process spawn. Cancel waits for an in-flight submit to expose its
+        # stable identity, then cancels it before reporting cleanup complete.
+        with locked(self.root / (identifier(state['request_id']) + '.action.lock'), blocking=True):
+            if self.status(state['request_id']).get('cancel_requested') and not allow_cancel:
+                raise CancellationObserved('Cancellation already fenced new mutations')
+            return callback(*args)
+
+    def submit(self, request_id, config):
+        run = self.path(request_id)
+        with locked(self.root / (identifier(request_id) + '.lock')):
+            if (run / 'STATE.json').exists():
+                prior = load(run / 'STATE.json')
+                if prior['config'] != config:
+                    raise ValueError('Existing request/config conflict; query original ID')
+                return prior, False
+            run.mkdir(parents=True, exist_ok=True)
+            spec = {'request_id': request_id, 'config': config, 'profile': config.get('profile', PROFILE),
+                    'limits': LIMITS, 'template': 'verified-offline-retriever-small-task/v1'}
+            state = {**spec, 'spec_sha256': digest(json.dumps(spec, sort_keys=True).encode()),
+                     'stage': 'reserved', 'created_at': time.time(), 'history': [],
+                     'new_run': True, 'remote_cancellation': 'unknown unless provider receipt proves it'}
+            save(run / 'STATE.json', state)
+            return state, True
+
+    def run(self, request_id, *, one_step=False):
+        run = self.path(request_id)
+        # The long-lived controller lock is separate so cancel can reach a live run.
+        with locked(self.root / (identifier(request_id) + '.runner.lock')):
+            state = self.status(request_id)
+            if state['stage'] in TERMINAL:
+                return state
+            backend = self.backend_factory(run, state)
+            while state['stage'] not in TERMINAL:
+                latest = self.status(request_id)
+                if latest.get('cancel_requested'):
+                    if latest['stage'] == 'cancel_archiving':
+                        state = latest
+                        state['archive'] = self.action(state, backend.archive, allow_cancel=True)
+                        state['stage'] = 'cancelled'; state.pop('attention', None)
+                        self.commit(state, allow_cancel=True)
+                        return state
+                    return latest
+                stage = state['stage']
+                try:
+                    if stage == 'reserved':
+                        state['prepared'] = self.action(state, backend.prepare)
+                        next_stage = 'prepared'
+                    elif stage == 'prepared':
+                        # Native API queries the exact request first, including after a lost reply.
+                        state['dispatch'] = self.action(state, backend.dispatch)
+                        next_stage = 'running'
+                    elif stage == 'running':
+                        observation = backend.observe()
+                        state['observation'] = observation
+                        if not observation['terminal']:
+                            if not self.commit(state):
+                                return self.status(request_id)
+                            if one_step:
+                                return state
+                            time.sleep(state['config']['poll_seconds'])
+                            continue
+                        if not observation['cleanup_confirmed']:
+                            raise OutcomeUnknown('Terminal output without confirmed process cleanup')
+                        state['closure'] = self.action(state, backend.close, 'Workers ended; independent acceptance')
+                        next_stage = 'workers_ended'
+                    elif stage == 'workers_ended':
+                        if not state['observation']['successful']:
+                            state['outcome'] = 'failed'
+                            next_stage = 'archiving'
+                        else:
+                            state['acceptance_submission'] = self.action(state, backend.accept_submit)
+                            next_stage = 'accepting'
+                    elif stage == 'accepting':
+                        result = backend.accept_status()
+                        state['acceptance'] = result
+                        if not result['terminal']:
+                            if not self.commit(state):
+                                return self.status(request_id)
+                            if one_step:
+                                return state
+                            time.sleep(state['config']['poll_seconds'])
+                            continue
+                        state['outcome'] = 'complete' if result['passed'] else 'failed'
+                        next_stage = 'archiving'
+                    elif stage == 'archiving':
+                        state['archive'] = self.action(state, backend.archive)
+                        next_stage = state.get('outcome', 'complete')
+                    else:
+                        raise ValueError('Unsupported durable stage: ' + stage)
+                    state['history'].append({'from': stage, 'to': next_stage, 'at': time.time()})
+                    state['stage'] = next_stage
+                    state.pop('attention', None)
+                    if not self.commit(state):
+                        return self.status(request_id)
+                    if one_step:
+                        return state
+                except CancellationObserved:
+                    return self.status(request_id)
+                except Exception as exc:
+                    # Do not convert an unknown outcome into a new request or a false terminal state.
+                    state['attention'] = {'stage': stage, 'type': type(exc).__name__,
+                                          'message': str(exc)[:1600], 'at': time.time(),
+                                          'resume_with_same_request_only': True}
+                    if not self.commit(state):
+                        return self.status(request_id)
+                    raise
+            return state
+
+    def cancel(self, request_id):
+        run = self.path(request_id)
+        # Waiting here also covers accept_submit before ACCEPT-ARGS exists.
+        with locked(self.root / (identifier(request_id) + '.action.lock'), blocking=True):
+            state = self.status(request_id)
+            if state['stage'] in TERMINAL:
+                return state
+            # Persist before touching processes. The foreground controller sees
+            # this on its next poll and never starts acceptance or a new worker.
+            state['cancel_requested'] = True
+            self.commit(state, allow_cancel=True)
+            backend = self.backend_factory(run, state)
+            receipt = backend.cancel()
+            state['cancellation'] = receipt
+            if receipt['local_cleanup_confirmed']:
+                state['stage'] = 'cancel_archiving'
+            else:
+                state['attention'] = {'message': 'Local cleanup unconfirmed; query the same IDs'}
+            self.commit(state, allow_cancel=True)
+            if state['stage'] == 'cancel_archiving':
+                try:
+                    state['archive'] = backend.archive()
+                    state['stage'] = 'cancelled'; state.pop('attention', None)
+                    self.commit(state, allow_cancel=True)
+                except Exception as exc:
+                    state['attention'] = {'type': type(exc).__name__, 'message': str(exc)[:1600],
+                                          'resume_with_same_request_only': True}
+                    self.commit(state, allow_cancel=True)
+                    raise
+            return state
+
+
+class SolBackend:
+    def __init__(self, run, state):
+        self.run, self.state = run, state
+        self.profile = state['profile']
+        self.key = 'wf-' + digest(state['request_id'].encode())[:20]
+        self.pid = self.key + '-work'; self.gid = self.key + '-group'
+        self.work_rel = 'files/' + self.key + '/work'
+        self.control_rel = 'files/' + self.key + '/control'
+        self.world = run / 'work-world'; self.control_world = run / 'control-world'
+        self.work_root = self.world / self.work_rel
+        self.control_root = self.control_world / self.control_rel
+        self.candidate = run / 'candidate'; self.evidence = run / 'evidence'
+        self.evidence.mkdir(parents=True, exist_ok=True)
+        self.bound = False
+
+    def bind(self):
+        if self.bound:
+            return
+        for k, v in self.state['config']['environment'].items():
+            if k in SOL_ENV_KEYS and self.profile['provider'] == 'openai' and (not v or not Path(v).exists()):
+                raise ValueError('Missing authorized host path for ' + k + '; configure it, no model started')
+            if v:
+                if not Path(v).exists():
+                    raise ValueError('Configured host path missing: ' + k)
+                os.environ[k] = v
+        if self.profile['provider'] == 'adaption' and not (os.environ.get('ADAPTION_API_KEY') or os.environ.get('YOHAKU_ADAPTION_CREDENTIAL_FILE')):
+            raise ValueError('Missing Adaption inference API key: ADAPTION_API_KEY or YOHAKU_ADAPTION_CREDENTIAL_FILE; no fallback')
+        home = self.run / 'home'
+        home.mkdir(mode=0o700, exist_ok=True); home.chmod(0o700)
+        os.environ['HOME'] = str(home)
+        os.environ['PYTHONDONTWRITEBYTECODE'] = '1'
+        sys.path.insert(0, str(self.candidate / 'agent'))
+        from yohaku_ai_nodes import Control
+        from yohaku_projects import Control as Projects
+        from yohaku_experiment_groups import Groups
+        self.nodes, self.work = Control(self.world), Projects(self.world)
+        self.control, self.groups = Projects(self.control_world), Groups(self.world)
+        self.bound = True
+
+    def verify_old(self):
+        frozen = load(OLD / 'FINAL-FREEZE.json')
+        for row in frozen['files']:
+            if file_sha(OLD / row['path']) != row['sha256']:
+                raise ValueError('Frozen evidence changed: ' + row['path'])
+        return {'freeze_sha256': file_sha(OLD / 'FINAL-FREEZE.json'),
+                'files_verified': len(frozen['files']), 'existing_acceptance_passed': load(OLD / 'canonical-recheck/RESULT.json')['passed']}
+
+    def document(self, world, relative, body):
+        from yohaku_ai_nodes import Control
+        docs = Control(world)
+        path = world / relative
+        if path.exists():
+            if docs.read(relative)['body'] != body:
+                raise ValueError('Prepared document conflicts with durable input: ' + relative)
+        else:
+            docs.write(relative, body)
+
+    def prepare(self):
+        reused = self.verify_old()
+        # A killed controller can leave unpublished scratch bytes. They are not
+        # authoritative inputs; remove only this implementation's scratch names
+        # inside the new per-request copy, under its exclusive action fence.
+        for area in (self.candidate, self.world, self.control_world):
+            for scratch in area.rglob('.*.partial-*') if area.exists() else ():
+                if scratch.is_file() and not scratch.is_symlink():
+                    scratch.unlink()
+        source = MATERIALS / 'candidate'
+        manifest = load(source / 'CANDIDATE.json')
+        if file_sha(source / 'CANDIDATE.json') != '42316804edf83adba905d4029e44e343d67c421047f18d9b8a1b17918110a680':
+            raise ValueError('Original accepted candidate manifest changed')
+        copy_marker = self.evidence / 'CANDIDATE-COPY.json'
+        if not copy_marker.exists():
+            for row in manifest['files']:
+                raw = (source / row['path']).read_bytes()
+                if digest(raw) != row['sha256']:
+                    raise ValueError('Sealed candidate input changed: ' + row['path'])
+                once(self.candidate / row['path'], raw, (source / row['path']).stat().st_mode & 0o777)
+            save(copy_marker, {'source_manifest_sha256': file_sha(source / 'CANDIDATE.json'),
+                               'copied_files': len(manifest['files'])})
+        once(self.candidate / 'CANDIDATE.json', (source / 'CANDIDATE.json').read_bytes())
+        if self.profile['provider'] == 'adaption':
+            import importlib.util
+            installer_path = BASE / 'adaption/install_candidate.py'
+            spec = importlib.util.spec_from_file_location('isolated_adaption_installer', installer_path)
+            installer = importlib.util.module_from_spec(spec); spec.loader.exec_module(installer)
+            installed = installer.install(self.candidate, sync=False)
+            save(self.evidence / 'ADAPTION-INSTALL.json', installed)
+        else:
+            for row in manifest['files']:
+                if file_sha(self.candidate / row['path']) != row['sha256']:
+                    raise ValueError('Prepared Sol candidate seal changed: ' + row['path'])
+        for world in (self.world, self.control_world):
+            world.mkdir(parents=True, exist_ok=True)
+            once(world / 'macros/raw.source.md', (MATERIALS / 'work-world/macros/raw.source.md').read_bytes())
+        self.bind()
+        archive = OLD / load(OLD / 'BEHAVIOR-REVIEW.json')['snapshot'] / 'work'
+        source_manifest = load(archive / 'project.json')
+        for row in source_manifest['assets']:
+            raw = (archive / row['path']).read_bytes()
+            if digest(raw) != row['sha256']:
+                raise ValueError('Archived baseline changed: ' + row['path'])
+            once(self.work_root / row['path'], raw, 0o444)
+            once(self.control_root / row['path'], raw, 0o444)
+        # The small reusable task retains exactly the validated retriever implementation.
+        sources = source_manifest['sources']
+        from yohaku_ai_nodes import Control
+        for name in sources:
+            raw = (archive / name).read_bytes()
+            old_rel = 'files/internal-offline-retriever-20261107-01/work'
+            raw = raw.replace(old_rel.encode(), self.work_rel.encode())
+            target = self.work_root / name
+            once(target, raw)
+            ws = Control(self.world).workspace
+            ws.execute({'command': 'adopt', 'path': self.work_rel + '/' + name})
+            ws.execute({'command': 'sync', 'source': self.work_rel + '/' + name})
+        manifest = {**source_manifest, 'id': self.pid, 'root': self.work_rel}
+        self.document(self.world, self.work_rel + '/project.json.tex', json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+        work_registration = self.work.call('project_register', {'manifest_source': self.work_rel + '/project.json.tex'})
+        prior_control = Path(load(OLD / 'PREPARED.json')['control_world']) / 'files/internal-offline-retriever-20261107-01/control-argv'
+        for name in ('queries.json', 'EXPECTED.json'):
+            once(self.control_root / name, (prior_control / name).read_bytes(), 0o444)
+        oracle = (prior_control / 'oracle_argv.py').read_text()
+        if "'--query='+case['query']" not in oracle:
+            raise ValueError('Validated argv-encoding fix missing')
+        expected_control = load(OLD / 'PREPARED.json')['control_seals']
+        for name in ('queries.json', 'EXPECTED.json'):
+            if file_sha(self.control_root / name) != expected_control[name]:
+                raise ValueError('Original independent input seal differs: ' + name)
+        if digest(oracle.encode()) != load(OLD / 'canonical-recheck/BASIS.json')['corrected_oracle_sha256']:
+            raise ValueError('Canonical oracle does not match the verified controller correction')
+        self.document(self.control_world, self.control_rel + '/oracle.py.tex', oracle)
+        seal = {name: file_sha(self.control_root / name) for name in ('queries.json', 'EXPECTED.json', 'oracle.py')}
+        once(self.evidence / 'CONTROL-SEAL.json', (json.dumps(seal, sort_keys=True) + '\n').encode())
+        group = self.groups.configure(self.gid)
+        if group['limits'] != LIMITS or group['started_at'] is not None:
+            # A prepare receipt may have been lost after dispatch only if a later state was corrupt.
+            raise ValueError('Cannot reinitialize an already-started/shared-budget group')
+        creation = self.nodes.node_create(self.key + '-lead-create', '离线检索器既有小任务复核',
+            '复用已验收检索器和同一固定输入，运行现有测试及搜索，报告实际任务与源码版本。',
+            self.work_rel + '/lead-memory.md.tex', profile=self.profile, project_ids=[self.pid])
+        node_id = creation['node']['node_id']
+        self.groups.bind(self.gid, [node_id])
+        result = {'node_id': node_id, 'node_request_id': self.key + '-initial', 'group_id': self.gid,
+                  'project_id': self.pid, 'work_world': str(self.world), 'control_world': str(self.control_world),
+                  'profile': self.profile, 'limits': group['limits'], 'reused_validation': reused,
+                  'work_registration': work_registration, 'baseline_sha256': file_sha(self.work_root / 'baseline/BASELINE.json'),
+                  'control_seal': seal, 'original_experiment_not_replayed': True,
+                  'initial_product_versions': {name: file_sha(self.work_root / name) for name in sources},
+                  'training_started': False}
+        save(self.evidence / 'PREPARED.json', result)
+        return result
+
+    def prepared(self):
+        return self.state.get('prepared') or load(self.evidence / 'PREPARED.json')
+
+    def dispatch(self):
+        self.bind(); p = self.prepared()
+        status = self.nodes.node_status(p['node_id'], p['node_request_id'])
+        if status['status'] == 'unknown':
+            raise OutcomeUnknown('Native reservation exists without a start receipt; never replay')
+        if status['status'] != 'idle':
+            return status
+        prompt = (f'本次运行已验证的离线检索器小任务，不训练、不访问网络/浏览器或控制区。'
+                  f'你只获项目 {self.pid}，根 {self.work_rel}；先读自己的记忆及本项目 README。'
+                  '保持 baseline、检索器实现和测试源码不变；通过公共 Project/Task 运行 test 和 search，'
+                  '查询原任务至终态后报告真实任务ID、source_set、产物及结果。无需另起实现。'
+                  f'共享预算组 {self.gid} 已生效3节点/12派发/180工具/1200秒，包含后代和唤醒。'
+                  f'如自主委派后代，必须显式 {self.profile["provider"]}/{self.profile["model"]}/{self.profile["reasoning_effort"]}，不能扩大项目授权。'
+                  '未知任务只查询原ID；完成后停止额外工作，不自动扩批。')
+        args = {'node_id': p['node_id'], 'request_id': p['node_request_id'], 'task': prompt, 'profile': self.profile}
+        once(self.evidence / 'DISPATCH-ARGS.json', (json.dumps(args, sort_keys=True, ensure_ascii=False) + '\n').encode())
+        result = self.nodes.node_dispatch(**args)
+        save(self.evidence / 'DISPATCH.json', result)
+        return result
+
+    def observe(self):
+        self.bind(); statuses = []; profile_errors = []
+        for n in self.nodes.node_list()['nodes']:
+            if self.groups.group_for(n['node_id']) != self.gid:
+                continue
+            for task in n['tasks']:
+                s = self.nodes.node_status(n['node_id'], task['request_id'], max_chars=16384)
+                if s.get('status') == 'unknown':
+                    raise OutcomeUnknown('Native task outcome unknown; retain its exact request/task IDs')
+                actual = s.get('model_settings') or {}
+                if actual and any(actual.get(k) != self.profile[k] for k in ('provider', 'model', 'reasoning_effort')):
+                    self.groups.close(self.gid, reason='Observed model profile mismatch', wait_seconds=25)
+                    profile_errors.append({'task_id': s['task_id'], 'kind': 'actual_profile_mismatch', 'actual': actual})
+                elif s.get('output_complete') and any(actual.get(k) != self.profile[k] for k in ('provider', 'model', 'reasoning_effort')):
+                    profile_errors.append({'task_id': s['task_id'], 'kind': 'terminal_actual_profile_unproven', 'actual': actual})
+                statuses.append(s)
+        group = self.groups.status(self.gid)
+        terminal = bool(statuses) and group['active_count'] == 0 and all(s.get('output_complete') for s in statuses)
+        cleanup = terminal and all((s.get('receipt') or {}).get('native_cleanup_complete') for s in statuses)
+        result = {'terminal': terminal, 'cleanup_confirmed': cleanup,
+                  'successful': terminal and not profile_errors and all(s['status'] == 'done' for s in statuses),
+                  'statuses': statuses, 'group': group, 'profile_errors': profile_errors}
+        save(self.evidence / 'WORKERS-LATEST.json', result)
+        return result
+
+    def close(self, reason):
+        self.bind()
+        result = self.groups.close(self.gid, reason=reason, wait_seconds=25)
+        save(self.evidence / 'GROUP-CLOSE.json', result)
+        if not result['cleanup_complete'] or result['active_count']:
+            raise OutcomeUnknown('Group cleanup not confirmed; query original group')
+        return result
+
+    def load_accept_helpers(self):
+        # Reuse the validated fixed-snapshot import, without old driver/main side effects.
+        import ast
+        tree = ast.parse((OLD / 'accept_results.py').read_bytes())
+        names = {'sha', 'safe_relative', 'read_contained', 'write_once', 'succeeded', 'snapshot_runtime_files'}
+        chosen = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in names]
+        from pathlib import PurePosixPath
+        env = {'Path': Path, 'PurePosixPath': PurePosixPath, 'MAX_FILE': 64 * 1024 * 1024,
+               'hashlib': hashlib, 'OUT': self.evidence / 'acceptance'}
+        exec(compile(ast.Module(body=chosen, type_ignores=[]), str(OLD / 'accept_results.py'), 'exec'), env)
+        return env
+
+    def accept_submit(self):
+        self.bind(); h = self.load_accept_helpers()
+        original_baseline = load(OLD / 'PREPARED.json')['baseline_files']
+        original_baseline['BASELINE.json'] = {
+            'sha256': '5ccd119bd634f72630239a1b9787e3aab4da28622a6ee397b527dd97a9341b7e',
+            'bytes': (self.control_root / 'baseline/BASELINE.json').stat().st_size}
+        for root in (self.work_root / 'baseline', self.control_root / 'baseline'):
+            if {p.name for p in root.iterdir()} != set(original_baseline):
+                raise ValueError('Fixed baseline membership changed')
+            for name, row in original_baseline.items():
+                raw = h['read_contained'](root, name)
+                if digest(raw) != row['sha256'] or len(raw) != row['bytes']:
+                    raise ValueError('Fixed baseline changed: ' + name)
+        pin = self.evidence / 'PRODUCER.json'
+        if not pin.exists():
+            plan = self.work.call('project_plan', {'project_id': self.pid, 'action': 'search'})
+            candidates = []
+            for row in self.work.call('task_list', {'project_id': self.pid})['tasks']:
+                s = self.work.call('task_status', {'task_id': row['task_id']})
+                if h['succeeded'](s) and s['source_set'] == plan['source_set'] and s['action'] != 'inspect':
+                    candidates.append(s)
+            if not candidates:
+                raise ValueError('No successful current-version work task; independent acceptance cannot guess')
+            s = candidates[0]
+            record = self.work.tasks._owned(s['task_id'])
+            proof = self.work.call('task_provenance', {'task_id': s['task_id']})
+            if not proof.get('ok') or not proof.get('snapshot_valid'):
+                raise ValueError('Producer fixed snapshot/artifact provenance failed')
+            baseline = {p.name: {'sha256': file_sha(p), 'bytes': p.stat().st_size}
+                        for p in (self.work_root / 'baseline').iterdir()}
+            files, rows, artifacts, excluded, code = h['snapshot_runtime_files'](
+                record['snapshot'], proof, self.work, s, baseline)
+            for name, raw in files.items():
+                once(self.control_root / 'candidate' / name, raw, 0o444)
+            producer = {'task_id': s['task_id'], 'source_set': s['source_set'], 'runtime_files': rows,
+                        'code_hashes': code, 'artifacts': artifacts}
+            save(pin, producer); save(self.evidence / 'PRODUCER-PROVENANCE.json', proof)
+        producer = load(pin)
+        assets = [{'path': p.relative_to(self.control_root).as_posix(), 'sha256': file_sha(p)}
+                  for p in sorted(self.control_root.rglob('*')) if p.is_file() and
+                  (p.is_relative_to(self.control_root / 'baseline') or p.is_relative_to(self.control_root / 'candidate')
+                   or p.name in ('queries.json', 'EXPECTED.json'))]
+        manifest = {'format': 'yohaku-project/1', 'id': self.key + '-control', 'root': self.control_rel,
+                    'sources': ['oracle.py.tex'], 'assets': assets, 'runtime': 'python',
+                    'tasks': {'accept': {'kind': 'python', 'entry': 'oracle.py', 'args': ['accept', 'candidate'],
+                                         'artifacts': ['acceptance.json'], 'timeout_seconds': 600}}}
+        self.document(self.control_world, self.control_rel + '/project.json.tex', json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+        self.control.call('project_register', {'manifest_source': self.control_rel + '/project.json.tex'})
+        plan = self.control.call('project_plan', {'project_id': manifest['id'], 'action': 'accept'})
+        args = {'project_id': manifest['id'], 'action': 'accept', 'request_id': self.key + '-accept',
+                'expected_sources': plan['source_set']}
+        once(self.evidence / 'ACCEPT-ARGS.json', (json.dumps(args, sort_keys=True) + '\n').encode())
+        try:
+            existing = self.control.call('task_status', {'request_id': args['request_id']})
+        except Exception as exc:
+            if getattr(exc, 'kind', None) != 'unknown_task':
+                raise
+        else:
+            if existing['source_set'] != args['expected_sources']:
+                raise ValueError('Existing acceptance source identity conflict')
+            return existing
+        return self.control.call('task_submit', args)
+
+    def accept_status(self):
+        self.bind(); args = load(self.evidence / 'ACCEPT-ARGS.json')
+        s = self.control.call('task_status', {'request_id': args['request_id']})
+        terminal = s.get('execution') == 'ended' and (s.get('receipt') or {}).get('cleanup_confirmed')
+        result = {'terminal': bool(terminal), 'passed': False, 'status': s}
+        if terminal:
+            proof = self.control.call('task_provenance', {'task_id': s['task_id']})
+            save(self.evidence / 'ACCEPT-PROVENANCE.json', proof)
+            output = self.control.tasks.work / s['task_id'] / 'output/acceptance.json'
+            if output.is_file() and not output.is_symlink():
+                report = load(output)
+                once(self.evidence / 'acceptance.json', output.read_bytes())
+                artifact = next((a for a in proof.get('artifacts', []) if a['path'] == 'acceptance.json'), {})
+                result['report'] = report
+                result['passed'] = (self.load_accept_helpers()['succeeded'](s) and proof.get('ok') is True
+                    and proof.get('snapshot_valid') is True and artifact.get('valid') is True
+                    and artifact.get('actual_sha256') == file_sha(output) and report.get('passed') is True
+                    and len(report.get('cases', [])) == 21)
+            seals = load(self.evidence / 'CONTROL-SEAL.json')
+            if any(file_sha(self.control_root / name) != sha for name, sha in seals.items()):
+                raise ValueError('Independent oracle/query/expected seal drift')
+        save(self.evidence / 'ACCEPT-RESULT.json', result)
+        return result
+
+    def cancel(self):
+        if not (self.evidence / 'PREPARED.json').exists():
+            return {'local_cleanup_confirmed': True, 'remote_request_status': 'not_started'}
+        self.bind()
+        closure = self.close('Explicit host workflow cancel')
+        if (self.evidence / 'ACCEPT-ARGS.json').exists():
+            args = load(self.evidence / 'ACCEPT-ARGS.json')
+            try:
+                s = self.control.call('task_status', {'request_id': args['request_id']})
+            except Exception as exc:
+                if getattr(exc, 'kind', None) != 'unknown_task':
+                    raise
+            else:
+                receipt = self.control.call('task_cancel', {'task_id': s['task_id']})
+                if not (receipt.get('receipt') or {}).get('cleanup_confirmed'):
+                    raise OutcomeUnknown('Acceptance sandbox cleanup unconfirmed')
+        return {'local_cleanup_confirmed': closure['cleanup_complete'], 'group': closure,
+                'remote_request_status': 'unknown', 'remote_cancellation_confirmed': False,
+                'note': 'Native local process cleanup is not proof of supplier-side request cancellation'}
+
+    def archive_provider(self, task_id):
+        """Copy only this Adaption task's redacted transport journals, never HOME."""
+        if self.profile['provider'] != 'adaption':
+            return None
+        if not re.fullmatch(r'model-task-[0-9a-f]{32}', task_id):
+            raise ValueError('Invalid provider task identity')
+        home = self.run / 'home'
+        source = home / '.local/state/yohaku/adaption-tasks' / task_id
+        if home.is_symlink() or not home.resolve().is_relative_to(self.run.resolve()):
+            raise ValueError('Private task HOME escapes this workflow run')
+        if not source.exists():
+            return {'task_id': task_id, 'journal_present': False, 'files': []}
+        if source.is_symlink() or not source.resolve().is_relative_to(home.resolve()):
+            raise ValueError('Provider journal escapes private task HOME')
+        allowed = re.compile(re.escape(task_id) + r':(?:round:[0-9]+|tool:[0-9a-f]{32}|result|local-cleanup)\.json')
+        secret_keys = {'authorization', 'api_key', 'adaption_api_key', 'access_token', 'refresh_token', 'password'}
+        def check_redacted(value):
+            if isinstance(value, dict):
+                for key, child in value.items():
+                    if key.lower() in secret_keys and child != '[REDACTED]':
+                        raise ValueError('Unredacted credential field in provider journal')
+                    check_redacted(child)
+            elif isinstance(value, list):
+                for child in value:
+                    check_redacted(child)
+        rows = []
+        for p in sorted(source.iterdir()):
+            if not allowed.fullmatch(p.name):
+                continue
+            if p.is_symlink() or not p.is_file():
+                raise ValueError('Provider journal must be a regular, owned task file')
+            value = load(p); check_redacted(value)
+            target = self.evidence / 'provider' / task_id / p.name
+            once(target, p.read_bytes(), 0o600)
+            rows.append({'path': target.relative_to(self.run).as_posix(),
+                         'sha256': file_sha(target), 'bytes': target.stat().st_size})
+        return {'task_id': task_id, 'journal_present': True, 'files': rows,
+                'credentials_and_other_home_files_excluded': True}
+
+    def archive(self):
+        if not (self.evidence / 'PREPARED.json').exists():
+            result = {'format': 'isolated-sol-workflow-archive/1',
+                      'request_id': self.state['request_id'], 'no_models_started': True,
+                      'local_cleanup_confirmed': True, 'supplier_remote_request_status': 'not_started'}
+            save(self.run / 'ARCHIVE.json', result)
+            return {'path': str(self.run / 'ARCHIVE.json'), 'sha256': file_sha(self.run / 'ARCHIVE.json')}
+        self.bind()
+        observation = self.observe()
+        from yohaku_codex_tasks import read_record
+        provider_archives = []
+        remote_statuses = []
+        for s in observation['statuses']:
+            r = read_record(s['task_id'])
+            public = {k: r.get(k) for k in ('task_id', 'world', 'status', 'node_context', 'model_settings',
+                       'receipt', 'memory_versions', 'created', 'finished', 'error')}
+            if self.profile['provider'] == 'adaption':
+                final = r.get('final_result') or {}
+                public['final_result'] = {k: final[k] for k in
+                    ('provider_evidence', 'continuation', 'native_tools_sha256', 'session_id',
+                     'usage', 'elapsed_seconds', 'submitted_context', 'text') if k in final}
+                journals = self.archive_provider(s['task_id'])
+                if s['status'] == 'done' and (not journals['files'] or not final.get('provider_evidence')):
+                    raise OutcomeUnknown('Successful Adaption task lacks archived provider evidence')
+                provider_archives.append(journals)
+                remote_statuses.append(final.get('provider_evidence', {}).get('remote_request_status', 'unknown'))
+            save(self.evidence / 'tasks' / (s['task_id'] + '.json'), public)
+            trace = r.get('node_trace_path')
+            if trace and Path(trace).is_file():
+                once(self.evidence / 'tasks' / (s['task_id'] + '.events.jsonl'), Path(trace).read_bytes())
+        self.verify_old()
+        files = []
+        for sub in ('work-world', 'control-world', 'evidence'):
+            for p in sorted((self.run / sub).rglob('*')):
+                if p.is_file() and not p.is_symlink():
+                    files.append({'path': p.relative_to(self.run).as_posix(), 'bytes': p.stat().st_size,
+                                  'sha256': file_sha(p)})
+        archive = {'format': 'isolated-sol-workflow-archive/1', 'request_id': self.state['request_id'],
+                   'profile': self.profile, 'limits': LIMITS, 'files': files,
+                   'group': load(self.evidence / 'GROUP-CLOSE.json'),
+                   'acceptance': load(self.evidence / 'ACCEPT-RESULT.json') if (self.evidence / 'ACCEPT-RESULT.json').exists() else None,
+                   'supplier_remote_request_status': ('completed' if remote_statuses and
+                       all(v == 'completed' for v in remote_statuses) else 'unknown'),
+                   'provider_archives': provider_archives,
+                   'local_cleanup_confirmed': observation['cleanup_confirmed'],
+                   'old_sealed_experiment_preserved': True, 'credentials_and_private_home_excluded': True}
+        save(self.run / 'ARCHIVE.json', archive)
+        return {'path': str(self.run / 'ARCHIVE.json'), 'sha256': file_sha(self.run / 'ARCHIVE.json'), 'file_count': len(files)}
+
+
+def evidence_only():
+    b = SolBackend.__new__(SolBackend)
+    proof = b.verify_old()
+    proof.update({'model_calls_added': 0, 'existing_nodes': 2, 'existing_native_tools': 73,
+                  'existing_final_tests': 18, 'existing_independent_cases': 21,
+                  'reference': str(OLD / 'BEHAVIOR-REVIEW.json')})
+    return proof
+
+
+def main(argv=None):
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--runs', type=Path, default=BASE / 'runs')
+    sub = p.add_subparsers(dest='command', required=True)
+    for name in ('submit', 'resume', 'status', 'cancel', 'archive'):
+        item = sub.add_parser(name); item.add_argument('--request-id', required=True)
+        if name == 'submit':
+            item.add_argument('--config', type=Path); item.add_argument('--detach', action='store_true')
+    sub.add_parser('evidence')
+    args = p.parse_args(argv)
+    if args.command == 'evidence':
+        result = evidence_only()
+    else:
+        engine = Engine(args.runs)
+        if args.command == 'submit':
+            result, created = engine.submit(args.request_id, config_value(args.config))
+            if created:
+                if args.detach:
+                    run = engine.path(args.request_id)
+                    with (run / 'controller.log').open('ab') as log:
+                        child = subprocess.Popen([sys.executable, '-B', str(Path(__file__)), '--runs', str(args.runs),
+                            'resume', '--request-id', args.request_id], stdin=subprocess.DEVNULL, stdout=log,
+                            stderr=log, start_new_session=True)
+                    result = {**result, 'controller_pid': child.pid, 'detached': True}
+                else:
+                    result = engine.run(args.request_id)
+        elif args.command == 'resume':
+            result = engine.run(args.request_id)
+        elif args.command == 'cancel':
+            result = engine.cancel(args.request_id)
+        elif args.command == 'archive':
+            state = engine.status(args.request_id)
+            if state['stage'] not in TERMINAL:
+                raise ValueError('Archive requires a confirmed workflow terminal state')
+            result = state.get('archive') or SolBackend(engine.path(args.request_id), state).archive()
+        else:
+            result = engine.status(args.request_id)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        raise SystemExit(main())
+    except (ValueError, OutcomeUnknown, BlockingIOError) as exc:
+        print(json.dumps({'error': str(exc), 'type': type(exc).__name__, 'no_new_identity_on_retry': True}, ensure_ascii=False), file=sys.stderr)
+        raise SystemExit(2)
+````
+
+## 输出与关联
+```yaml
+output: "diagnostics/reusable-workflow-20261107-01/sol-workflow/workflow.py"
+```

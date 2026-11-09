@@ -1,0 +1,25 @@
+{
+  "original_source": "Sf456be4e6ff845",
+  "original_line": 13,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 68,
+    "record": {
+      "timestamp": "2026-11-07T09:24:58.526Z",
+      "ordinal": 67,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_067b9467756af992016aeeee56505887d085e3238360b3ca70",
+        "status": "completed",
+        "call_id": "call_f2246a84d5c14c65b9e257063ced1be9",
+        "name": "exec",
+        "input": "const p=r=>typeof r===\"string\"?JSON.parse(r):r;\nlet r=p(await tools.yohaku_read_document({source:\"files/work/inputs/v3.json.tex\"})); \ntext({keys:Object.keys(r),ok:r.ok,resultType:typeof r.result});\nif(r.result?.body){store(\"input-v3\",r.result);let d=JSON.parse(r.result.body);text({version:d.version,revision:r.result.revision,count:d.observations.length,new_observations:d.observations.slice(29).map((o,i)=>({pointer:`/observations/${i+29}`,id:o.observation_id,order:o.observation_order,time:o.observed_at_ms,time_provenance:o.time_provenance,receipt:o.receipt,source:o.source,hash:o.receipt_sha256}))});}\nfor(const v of [\"v1\",\"v2\",\"v3\"]) text({v,result:p(await tools.yohaku_task_status({task_id:load(`run-${v}`).result.task_id}))});\ntext(await tools.yohaku_ai_messages({chat_id:\"ai-chat-bf5981b3f59d1ad6fe683f91\",limit:20}));\ntext(await tools.yohaku_list_directory({path:\"files/work\"}));\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-8288-7233-a26c-877239f9484a",
+          "create_time": 1794043478.317337
+        }
+      }
+    }
+  }
+}

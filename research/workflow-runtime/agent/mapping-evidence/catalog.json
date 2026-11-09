@@ -1,0 +1,13 @@
+{
+  "method": "GET",
+  "http_status": 200,
+  "response": {
+    "data": [
+      {
+        "id": "glm-53-flash",
+        "display_name": "GLM 5.3 Flash"
+      }
+    ]
+  },
+  "projection_of_sha256": "21ab210f887ff277247ae57c815eb9f203455ab58d4f20d787de1e6599008266"
+}

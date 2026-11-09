@@ -1,0 +1,522 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Read-only Project/Task consistency views over the accepted source barrier.
+
+This module does not generate, compile, edit or replay. Projects._collect and
+Tasks._snapshot remain authoritative. Reports distinguish old snapshot addresses
+from the current source revision, and never construct a stale edit operation.
+"""
+import base64
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import stat
+
+from yohaku_project_schema import ProjectError
+from yohaku_project_sources import MAX_FILE, MAX_TOTAL, contained, digest, read_bytes, relative
+
+MAX_STDERR_BYTES = 64 * 1024 * 1024
+MAX_DIAGNOSTICS = 5000
+MAX_LINE_BYTES = 16384
+MAX_PUBLIC_LINE_CHARS = 2048
+MAX_ARTIFACT_BYTES = 1024 * 1024 * 1024
+RUST_LOCATION = re.compile(r'^\s*-->\s+(.+?):([1-9][0-9]*):([1-9][0-9]*)\s*$')
+PYTHON_LOCATION = re.compile(r'^\s*File "([^"]+)", line ([1-9][0-9]*)(?:,.*)?$')
+MESSAGE = re.compile(r'^\s*(error|warning)(?:\[[^\]]+\])?:\s*(.*)$')
+ANSI = re.compile(r'\x1b\[[0-?]*[ -/]*[@-~]')
+
+
+def public_error(error):
+    return {'kind': getattr(error, 'kind', type(error).__name__), 'message': str(error)}
+
+
+def _artifact_open(root, name):
+    parts = relative(name).parts
+    if os.name != 'posix':
+        return os.open(contained(root, name), os.O_RDONLY | getattr(os, 'O_BINARY', 0))
+    directory = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    try:
+        for part in parts[:-1]:
+            child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC,
+                            dir_fd=directory)
+            os.close(directory)
+            directory = child
+        return os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC,
+                       dir_fd=directory)
+    finally:
+        os.close(directory)
+
+
+def _artifact_hash(root, name):
+    """Bounded-memory hashing; a second rooted open detects atomic replacement."""
+    file_fd = None
+    verify_fd = None
+    try:
+        file_fd = _artifact_open(root, name)
+        before = os.fstat(file_fd)
+        if not stat.S_ISREG(before.st_mode):
+            raise ProjectError('artifact_invalid', 'Artifact is not a regular file', path=name)
+        if before.st_size > MAX_ARTIFACT_BYTES:
+            raise ProjectError('artifact_scan_limit', 'Artifact exceeds the bounded verification limit',
+                               path=name, limit=MAX_ARTIFACT_BYTES)
+        checksum = hashlib.sha256()
+        size = 0
+        while True:
+            chunk = os.read(file_fd, 1024 * 1024)
+            if not chunk:
+                break
+            size += len(chunk)
+            if size > MAX_ARTIFACT_BYTES:
+                raise ProjectError('artifact_scan_limit', 'Artifact grew beyond the verification limit', path=name)
+            checksum.update(chunk)
+        after = os.fstat(file_fd)
+        identity = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns, item.st_mode)
+        if identity(before) != identity(after) or size != after.st_size:
+            raise ProjectError('artifact_changed_during_read', 'Artifact changed during verification', path=name)
+        # Reopen from output root, not the original parent fd: nested directories
+        # or the leaf may have been atomically replaced while the old fd stayed valid.
+        verify_fd = _artifact_open(root, name)
+        if identity(os.fstat(verify_fd)) != identity(after):
+            raise ProjectError('artifact_changed_during_read', 'Artifact path changed during verification', path=name)
+        return {'sha256': checksum.hexdigest(), 'bytes': size, 'executable': bool(after.st_mode & 0o111)}
+    except OSError as error:
+        raise ProjectError('artifact_unavailable', 'Owned artifact cannot be read as a regular file', path=name,
+                           reason=type(error).__name__) from error
+    finally:
+        if file_fd is not None:
+            os.close(file_fd)
+        if verify_fd is not None:
+            os.close(verify_fd)
+
+
+class Consistency:
+    def __init__(self, projects, tasks=None):
+        self.projects = projects
+        self.tasks = tasks
+
+    def _task(self, task_id):
+        if self.tasks is None:
+            raise ProjectError('task_unavailable', 'A task backend is required for this operation')
+        if Path(self.tasks.world).resolve() != self.projects.world:
+            raise ProjectError('task_ownership', 'Task and source views belong to different worlds')
+        return self.tasks._owned(task_id)
+
+    def drift(self, project_id, expected_sources=None):
+        if expected_sources is not None and (not isinstance(expected_sources, str) or
+                                            not re.fullmatch(r'[0-9a-f]{64}', expected_sources)):
+            raise ProjectError('invalid_revision', 'expected_sources must be a whole project source-set hash')
+        report = {'format': 'yohaku-project-drift/1', 'project_id': project_id, 'ok': False,
+                  'source_set': None, 'expected_sources': expected_sources, 'conflict': False,
+                  'sources': [], 'assets': [], 'issues': [], 'preserved': True,
+                  'generated': False, 'executed': False,
+                  'coverage': {'complete': True, 'atomic': False, 'captured_input_bytes': 0,
+                               'capture_limit_bytes': MAX_TOTAL, 'actual_io_measured': False,
+                               'additional_barrier_reads': 'Workspace/Loom inspection and final existing _collect may reread captured inputs'},
+                  'recovery': {'tool': 'project_describe', 'project_id': project_id}}
+        try:
+            info = self.projects._description(project_id)
+            entries = self.projects._entries()
+        except ProjectError as error:
+            if error.kind == 'project_not_found':
+                raise
+            report['issues'].append(public_error(error))
+            report['coverage'].update(complete=False, reason='manifest_or_registry_unavailable')
+            try:
+                registry, _ = self.projects._registry()
+                row = next(row for row in registry['projects'] if row['id'] == project_id)
+                report['manifest_source'] = row['source']
+                report['recovery'] = {'tool': 'read_document', 'source': row['source']}
+            except (ProjectError, StopIteration):
+                pass
+            return report
+        report.update(manifest_source=info['manifest_source'], manifest_revision=info['manifest_revision'],
+                      editable_sources=list(dict.fromkeys([info['manifest_source'], *info['editable_sources']])))
+        project = info['manifest']
+        prefix = project['root'] + '/'
+        names = list(dict.fromkeys([info['manifest_source'], *[prefix + name for name in project['sources']]]))
+        cache = {}
+        map_payloads = {}
+        seen_issues = set()
+
+        def issue(kind, message, **details):
+            item = {'kind': kind, 'message': message, **details}
+            key = json.dumps(item, sort_keys=True)
+            if key not in seen_issues:
+                seen_issues.add(key)
+                report['issues'].append(item)
+            return item
+
+        def probe(name, role, expected=None, source=None, metadata=False, retain=False):
+            key = (name, role, expected)
+            if key in cache:
+                return {**cache[key], 'source': source}
+            row = {'path': name, 'role': role, 'expected_sha256': expected, 'sha256': None,
+                   'matches': None, 'source': source}
+            try:
+                remaining = MAX_TOTAL - report['coverage']['captured_input_bytes']
+                if remaining < 0:
+                    raise ProjectError('scan_limit', 'Drift inspection reached its aggregate byte limit')
+                data = read_bytes(self.projects.world, name, metadata=metadata, limit=min(MAX_FILE, remaining))
+                report['coverage']['captured_input_bytes'] += len(data)
+                row.update(sha256=digest(data), bytes=len(data))
+                if retain:
+                    map_payloads[name] = data
+                if expected is not None:
+                    row['matches'] = row['sha256'] == expected
+                    if not row['matches']:
+                        issue(role + '_drift', 'Current bytes differ from the last successful generation or declaration',
+                              path=name, source=source, expected_sha256=expected, actual_sha256=row['sha256'])
+            except ProjectError as error:
+                row['error'] = public_error(error)
+                issue(error.kind, str(error), path=name, source=source, role=role)
+                if error.kind in ('scan_limit', 'input_size'):
+                    report['coverage'].update(complete=False, scan_limited=True, reason='bounded_inspection_limit')
+            cache[key] = row
+            return dict(row)
+
+        for source in names:
+            item = {'source': source, 'revision': None,
+                    'editable_location': {'path': source, 'view': 'text', 'start_line': 1, 'start_column': 1},
+                    'recovery': {'tool': 'read_document', 'source': source}, 'inputs': []}
+            if report['coverage']['captured_input_bytes'] >= MAX_TOTAL:
+                report['coverage'].update(complete=False, scan_limited=True, reason='aggregate_capture_limit',
+                                          remaining_sources=len(names) - len(report['sources']))
+                break
+            entry = entries.get(source, {})
+            mapping = None
+            try:
+                result = entry.get('last_sync', {}).get('result', {})
+                build = result.get('build') or {}
+                map_name = self.projects._world_path(build.get('map_path'), metadata=True)
+                map_row = probe(map_name, 'map', source=source, metadata=True, retain=True)
+                if map_row.get('error'):
+                    raise ProjectError('generation_invalid', 'Loom map could not be captured within inspection limits')
+                mapping = json.loads(map_payloads[map_name])
+                if not isinstance(mapping, dict) or mapping.get('format') != 'loom-source-map/0.1':
+                    raise ProjectError('generation_invalid', 'Invalid Loom map format')
+                if any(not isinstance(mapping.get(key), str) or not re.fullmatch(r'[0-9a-f]{64}', mapping[key])
+                       for key in ('source_hash', 'macro_hash', 'output_hash')):
+                    raise ProjectError('generation_invalid', 'Invalid Loom map hash fields')
+                if self.projects._world_path(mapping.get('source')) != source:
+                    raise ProjectError('generation_invalid', 'Loom map belongs to another source')
+            except (ProjectError, ValueError, TypeError, AttributeError) as error:
+                mapping = None
+                item['baseline'] = 'unavailable'
+                issue('generation_baseline_unavailable', 'No valid last successful source map is available',
+                      source=source)
+            source_row = probe(source, 'source', mapping.get('source_hash') if mapping else None, source)
+            item['revision'] = source_row['sha256']
+            item['inputs'].append(source_row)
+            try:
+                output = self.projects._world_path(entry.get('output'))
+                item['output'] = output
+                item['inputs'].append(probe(output, 'output', mapping.get('output_hash') if mapping else None, source))
+                if mapping and self.projects._world_path(mapping.get('output')) != output:
+                    issue('generation_routing_conflict', 'Workspace output and Loom map disagree', source=source, output=output)
+            except ProjectError as error:
+                issue(error.kind, str(error), source=source, role='output')
+            if mapping:
+                try:
+                    macro = self.projects._world_path(mapping.get('macro'))
+                    item['inputs'].append(probe(macro, 'macro', mapping.get('macro_hash'), source))
+                except ProjectError as error:
+                    issue(error.kind, str(error), source=source, role='macro')
+            else:
+                item['inputs'].append({'role': 'macro', 'path': None, 'matches': None,
+                                       'state': 'unknown; no valid generation baseline'})
+            if report['coverage']['complete']:
+                try:
+                    document = self.projects._document(source, entries)
+                    item.update(revision=document['source_hash'], generation_ok=True)
+                except ProjectError as error:
+                    item.update(generation_ok=False, barrier=public_error(error))
+                    issue(error.kind, str(error), source=source, role='generation')
+            else:
+                item.update(generation_ok=None, barrier={'kind': 'scan_limit', 'message': 'Generation inspection not repeated after capture limit'})
+            report['sources'].append(item)
+        for asset in project.get('assets', []):
+            report['assets'].append(probe(prefix + asset['path'], 'asset', asset.get('sha256')))
+        try:
+            if not report['coverage']['complete']:
+                raise ProjectError('scan_limit', 'Full project barrier not repeated after incomplete inspection')
+            _, _, _, source_set = self.projects._collect(project_id, expected_sources)
+            report['source_set'] = source_set
+        except ProjectError as error:
+            if error.kind == 'source_conflict' and error.details.get('actual_sources'):
+                report.update(source_set=error.details['actual_sources'], conflict=True)
+            issue(error.kind, str(error), role='project', **{
+                key: value for key, value in error.details.items()
+                if key in ('expected_sources', 'actual_sources', 'path', 'source')})
+        if expected_sources is not None and report['source_set'] is None:
+            report['comparison'] = 'unavailable; generation barrier failed'
+            report['conflict'] = None
+        elif expected_sources is not None:
+            report['conflict'] = report['source_set'] != expected_sources
+        report['ok'] = not report['issues'] and report['coverage']['complete']
+        return report
+
+    def provenance(self, task_id):
+        record = self._task(task_id)
+        snapshot = record['snapshot']
+        report = {'format': 'yohaku-task-provenance/1', 'task_id': task_id,
+                  'project_id': record['project_id'], 'request_id': record['request_id'],
+                  'action': record['action'], 'snapshot_id': snapshot['id'],
+                  'source_set': snapshot['source_set'], 'ok': False, 'snapshot_valid': False,
+                  'inputs': [], 'mappings': [], 'artifacts': [], 'issues': [],
+                  'executed': False, 'replay_allowed': False}
+        try:
+            self.tasks._snapshot(record)
+            compact = [{key: value for key, value in row.items() if key != 'generated_to_source_line'}
+                       for row in snapshot.get('mappings', [])]
+            for row, original in zip(compact, snapshot.get('mappings', [])):
+                lines = original.get('generated_to_source_line')
+                row['generated_line_count'] = len(lines) if isinstance(lines, list) else None
+            report.update(snapshot_valid=True, inputs=snapshot['files'], mappings=compact)
+        except ProjectError as error:
+            report['issues'].append(public_error(error))
+        receipt = record.get('receipt')
+        report['execution'] = {'receipt_available': receipt is not None}
+        if not receipt:
+            report['execution']['result'] = 'unknown; no target receipt'
+        else:
+            report['execution'].update({key: receipt.get(key) for key in
+                                        ('exit_code', 'cleanup_confirmed', 'output_complete', 'output_truncated', 'adapter')})
+            output = self.tasks.work / task_id / 'output'
+            for artifact in receipt.get('artifacts', []):
+                name = artifact.get('path')
+                expected_hash = artifact.get('sha256')
+                item = {'id': 'artifact-' + digest((task_id + '\0' + str(name) + '\0' + str(expected_hash)).encode()),
+                        'path': name, 'expected_sha256': expected_hash, 'valid': False,
+                        'snapshot_id': snapshot['id'], 'source_set': snapshot['source_set'],
+                        'expected_executable': artifact.get('executable')}
+                try:
+                    relative(name)
+                    expected_path = output / PurePosixPath(name)
+                    if Path(artifact.get('host_path', '')).absolute() != expected_path.absolute():
+                        raise ProjectError('artifact_binding', 'Artifact path does not belong to this owned task')
+                    if (artifact.get('producer_task_id') != task_id or artifact.get('snapshot_id') != snapshot['id']
+                            or artifact.get('source_set') != snapshot['source_set']):
+                        raise ProjectError('artifact_binding', 'Artifact receipt does not match its task/source binding')
+                    actual = _artifact_hash(output, name)
+                    item.update(actual_sha256=actual['sha256'], bytes=actual['bytes'],
+                                actual_executable=actual['executable'])
+                    if actual['sha256'] != expected_hash or actual['bytes'] != artifact.get('bytes'):
+                        raise ProjectError('artifact_drift', 'Owned artifact differs from its recorded output')
+                    if actual['executable'] != artifact.get('executable'):
+                        raise ProjectError('artifact_mode_drift', 'Owned artifact execution permission changed')
+                    item['bytes_verified'] = True
+                    item['valid'] = report['snapshot_valid']
+                except (ProjectError, TypeError) as error:
+                    item['error'] = public_error(error)
+                    report['issues'].append({'artifact_id': item['id'], **public_error(error)})
+                report['artifacts'].append(item)
+        report['ok'] = report['snapshot_valid'] and not report['issues']
+        return report
+
+    def _stderr_lines(self, task_id, coverage):
+        cursor = 0
+        start = 0
+        captured = bytearray()
+        size = 0
+        clipped = False
+        complete = False
+        while cursor < MAX_STDERR_BYTES:
+            response = self.tasks.output(task_id, 'stderr', cursor, min(65536, MAX_STDERR_BYTES - cursor))
+            data = base64.b64decode(response['base64'], validate=True)
+            if response.get('task_id') != task_id or response.get('stream') != 'stderr' or (
+                    response.get('cursor') != cursor or response.get('next_cursor') != cursor + len(data)):
+                raise ProjectError('output_cursor', 'Task stderr response did not match its byte cursor')
+            coverage['output_truncated'] = bool(response.get('truncated'))
+            coverage['output_complete'] = bool(response.get('output_complete'))
+            cursor += len(data)
+            coverage['bytes_read'] = cursor
+            position = cursor - len(data)
+            for segment in data.splitlines(keepends=True):
+                size += len(segment)
+                available = max(0, MAX_LINE_BYTES - len(captured))
+                captured.extend(segment[:available])
+                clipped = clipped or len(segment) > available
+                position += len(segment)
+                if segment.endswith(b'\n'):
+                    coverage['bytes_processed'] = position
+                    coverage['bytes_scanned'] = position
+                    yield bytes(captured), start, size, clipped
+                    start = position
+                    captured.clear()
+                    size = 0
+                    clipped = False
+            if not response.get('has_more'):
+                complete = bool(response.get('output_complete'))
+                break
+            if not data:
+                raise ProjectError('output_cursor', 'Task stderr did not advance despite has_more')
+        else:
+            coverage.update(scan_limited=True, reason='stderr_byte_limit')
+        if captured:
+            if complete:
+                coverage['bytes_processed'] = start + size
+                coverage['bytes_scanned'] = start + size
+                yield bytes(captured), start, size, clipped
+            else:
+                coverage.update(incomplete_last_line=True, next_byte_cursor=start)
+
+    def _current_source(self, source, cache, budget):
+        if source in cache:
+            return cache[source]
+        try:
+            remaining = 16 * 1024 * 1024 - budget['captured_source_bytes']
+            if remaining <= 0:
+                raise ProjectError('current_lookup_limit', 'Current-source verification reached its capture budget')
+            captured = read_bytes(self.projects.world, source, limit=min(2 * 1024 * 1024, remaining))
+            budget['captured_source_bytes'] += len(captured)
+            document = self.projects._document(source, self.projects._entries(), generation=False)
+            current = {'revision': document['source_hash'], 'available': True}
+        except ProjectError as error:
+            current = {'revision': None, 'available': False, 'error': public_error(error)}
+        cache[source] = current
+        return current
+
+    def _map(self, file, line, mappings, current_cache):
+        name = file.replace(chr(92), '/')
+        if name.startswith('/project/'):
+            name = name[len('/project/'):]
+        elif name.startswith('./'):
+            name = name[2:]
+        try:
+            relative(name)
+        except ProjectError:
+            return {'mapped': False, 'mapping_reason': 'diagnostic is outside the fixed project snapshot'}
+        candidates = [row for row in mappings if row.get('output') == name]
+        if len(candidates) != 1:
+            return {'mapped': False, 'mapping_reason': 'no unique generated-output source map'}
+        mapping = candidates[0]
+        table = mapping.get('generated_to_source_line')
+        text_line = table[line - 1] if isinstance(table, list) and 0 < line <= len(table) else None
+        if type(text_line) is not int or text_line < 1:
+            return {'mapped': False, 'mapping_reason': 'generated line has no precise source-line mapping',
+                    'source': mapping.get('source'), 'snapshot_revision': mapping.get('source_revision')}
+        source = mapping['source']
+        origin = mapping.get('body_source_line')
+        body_line = text_line - origin + 1 if type(origin) is int and text_line >= origin else None
+        location = {'path': source, 'view': 'text', 'start_line': text_line,
+                    'revision': mapping['source_revision'], 'revision_scope': 'whole authoritative tex'}
+        if body_line is not None:
+            location.update(body_line=body_line)
+        return {'mapped': True, 'location': location, 'snapshot_revision': mapping['source_revision'],
+                'editable_now': False, 'coordinate_epoch': 'historical snapshot only',
+                'recovery': {'tool': 'read_document', 'source': source}}
+
+    def diagnostics(self, task_id, offset=0, limit=100):
+        if type(offset) is not int or not 0 <= offset <= MAX_DIAGNOSTICS or (
+                type(limit) is not int or not 1 <= limit <= 100):
+            raise ProjectError('invalid_cursor', 'Diagnostics offset is 0..5000, limit is 1..100')
+        record = self._task(task_id)
+        snapshot = record['snapshot']
+        issues = []
+        mappings = []
+        try:
+            self.tasks._snapshot(record)
+            mappings = snapshot.get('mappings', [])
+            snapshot_valid = True
+        except ProjectError as error:
+            snapshot_valid = False
+            issues.append(public_error(error))
+        coverage = {'bytes_scanned': 0, 'bytes_read': 0, 'bytes_processed': 0, 'scan_limited': False, 'output_complete': False,
+                    'output_truncated': False, 'incomplete_last_line': False,
+                    'result_limit': MAX_DIAGNOSTICS, 'byte_limit': MAX_STDERR_BYTES,
+                    'lines_scanned': 0, 'clipped_lines': 0, 'unrecognized_lines': 0, 'clipped_line_cursors': []}
+        found = []
+        current_cache = {}
+        message = None
+        severity = None
+        try:
+            for raw, byte_cursor, byte_count, clipped in self._stderr_lines(task_id, coverage):
+                text = raw.decode('utf-8', 'replace').rstrip('\r\n')
+                clean = ANSI.sub('', text)
+                header = MESSAGE.match(clean)
+                rust = RUST_LOCATION.match(clean)
+                python = PYTHON_LOCATION.match(clean)
+                coverage['lines_scanned'] += 1
+                if clipped:
+                    coverage['clipped_lines'] += 1
+                    if len(coverage['clipped_line_cursors']) < 16:
+                        coverage['clipped_line_cursors'].append(byte_cursor)
+                if not header and not rust and not python:
+                    coverage['unrecognized_lines'] += 1
+                    continue
+                common = {'original': text[:MAX_PUBLIC_LINE_CHARS],
+                          'original_truncated': clipped or len(text) > MAX_PUBLIC_LINE_CHARS,
+                          'stderr_byte_cursor': byte_cursor, 'stderr_line_bytes': byte_count,
+                          'raw_recovery': {'tool': 'task_output', 'task_id': task_id, 'stream': 'stderr',
+                                           'cursor': byte_cursor, 'max_bytes': 65536}}
+                if header:
+                    severity = header.group(1)
+                    message = clean[:MAX_PUBLIC_LINE_CHARS]
+                    row = {'kind': 'message', 'severity': severity, 'mapped': False,
+                           'mapping_reason': 'message has no location', **common}
+                else:
+                    match = rust or python
+                    file = match.group(1)
+                    line = int(match.group(2))
+                    column = int(match.group(3)) if rust else None
+                    row = {'kind': 'rust' if rust else 'python', 'severity': severity or 'error',
+                           'message': message, 'file': file[:MAX_PUBLIC_LINE_CHARS],
+                           'file_truncated': len(file) > MAX_PUBLIC_LINE_CHARS, 'reported_line': line,
+                           'reported_column': column,
+                           'column_precision': 'line-only; compiler column unit is not verified' if rust else 'line-only traceback',
+                           **common, **self._map(file, line, mappings, current_cache)}
+                    if not snapshot_valid:
+                        row.update(mapped=False, editable_now=False, mapping_reason='snapshot validation failed')
+                found.append(row)
+                if len(found) >= MAX_DIAGNOSTICS:
+                    coverage.update(scan_limited=True, reason='diagnostic_result_limit',
+                                    next_byte_cursor=byte_cursor + byte_count)
+                    break
+        except (ProjectError, ValueError, KeyError) as error:
+            issues.append(public_error(error))
+            coverage.update(scan_limited=True, reason='stderr_read_or_parse_error')
+        coverage['complete'] = (coverage['output_complete'] and not coverage['output_truncated']
+                                and not coverage['scan_limited'] and not coverage['incomplete_last_line'])
+        page = found[offset:offset + limit]
+        current_budget = {'captured_source_bytes': 0, 'capture_limit_bytes': 16 * 1024 * 1024,
+                          'scope': 'returned page only; Workspace validation may reread captured source bytes'}
+        for row in page:
+            if not row.get('mapped'):
+                continue
+            location = row['location']
+            source = location['path']
+            current = dict(self._current_source(source, current_cache, current_budget))
+            current['matches_snapshot'] = (current['revision'] == row['snapshot_revision']) if current['available'] else None
+            editable_now = current['available'] and current['matches_snapshot'] is True
+            row.update(current=current, editable_now=editable_now,
+                       coordinate_epoch='current source matches snapshot' if editable_now else 'historical snapshot only')
+            if editable_now:
+                body_line = location.get('body_line')
+                row['recovery'] = {'tool': 'read_range', 'path': source, 'view': 'body' if body_line else 'text',
+                                   'start_line': body_line or location['start_line'], 'start_column': 1}
+        coverage['current_source_lookup'] = current_budget
+        has_more = offset + len(page) < len(found)
+        return {'format': 'yohaku-task-diagnostics/1', 'task_id': task_id,
+                'snapshot_id': snapshot['id'], 'source_set': snapshot['source_set'],
+                'snapshot_valid': snapshot_valid, 'ok': not issues,
+                'offset': offset, 'limit': limit, 'diagnostics': page,
+                'has_more': has_more,
+                'next': {'task_id': task_id, 'offset': offset + len(page), 'limit': limit} if has_more else None,
+                'scan_limited': coverage['scan_limited'], 'coverage': coverage, 'issues': issues,
+                'unmapped': [row for row in page if not row.get('mapped')],
+                'raw_output': {'tool': 'task_output', 'task_id': task_id, 'stream': 'stderr'},
+                'executed': False, 'replay_allowed': False}
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_project_consistency.py"
+```

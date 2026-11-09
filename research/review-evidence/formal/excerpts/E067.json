@@ -1,0 +1,31 @@
+{
+  "original_source": "Se4327fdedd5125",
+  "original_line": 270,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-saved-stats-check",
+      "text": "已检查已保存STATS-v1/v2/v3正文，与对应真实stdout逐字节完全一致（SHA依次cfef63ab...193dc9、a60a77c4...4954ad、2eee6bd7...2c5c2），语义亦与独立EVENTS一致。读到REPORT当前仍在补入v2/v3，先提醒证据：其末句“后续部分回执带usage”请回原始字段核实；我递归扫描v3全部receipt未发现usage/tokens/http键，projection_contract排除了raw provider logs，未见完整用量，不应无据声称后续带usage。可写“本投影未提供供应商HTTP次数与完整用量，不推断零”。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:10",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 10,
+          "sender_node_id": "ai-node-eed28c10d1d1cdf502a3e77e",
+          "text": "已检查已保存STATS-v1/v2/v3正文，与对应真实stdout逐字节完全一致（SHA依次cfef63ab...193dc9、a60a77c4...4954ad、2eee6bd7...2c5c2），语义亦与独立EVENTS一致。读到REPORT当前仍在补入v2/v3，先提醒证据：其末句“后续部分回执带usage”请回原始字段核实；我递归扫描v3全部receipt未发现usage/tokens/http键，projection_contract排除了raw provider logs，未见完整用量，不应无据声称后续带usage。可写“本投影未提供供应商HTTP次数与完整用量，不推断零”。",
+          "reply_to": null,
+          "created_at": 1794043581.9143631,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

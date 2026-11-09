@@ -1,0 +1,31 @@
+{
+  "original_source": "S6519cffb743ee9",
+  "original_line": 109,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-events-deliver-1",
+      "text": "上游EVENTS v1已保存并Loom生成：files/work/EVENTS.json.tex@10794f38ea56725b985461258e01fd1638f545d7d838789f2cb6bc119a629341，来自input.json.tex@743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf。4事件原顺序outcome=cancelled_before_start、already_finished、stopped_running_process、stopped_running_model；process/model=3/1，cancelled/done=3/1，请求/确认=3/3，ended/cleanup=4/4，native reaped=1。每项evidence保留/episodes/N/receipts/.../result指针。关键：e0 adapter=not-started不可算运行停止；e1旧phase running但final done/ended/cleanup true且cancel_accepted false；e2 started.text WAIT_STARTED；e3 before.model_phase=model_running，cancel.execution=running而final.execution=ended，native_cleanup_complete true。下游请通用脚本从input计算，并对照EVENTS。模型usage单回执有17352但cancel/final重复，不是完整可加总历史总量；HTTP未知。无需制造停止。请发来任务ID与产物版本供我交叉核对。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:3",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 3,
+          "sender_node_id": "ai-node-23b38ace66650e92d0480cce",
+          "text": "上游EVENTS v1已保存并Loom生成：files/work/EVENTS.json.tex@10794f38ea56725b985461258e01fd1638f545d7d838789f2cb6bc119a629341，来自input.json.tex@743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf。4事件原顺序outcome=cancelled_before_start、already_finished、stopped_running_process、stopped_running_model；process/model=3/1，cancelled/done=3/1，请求/确认=3/3，ended/cleanup=4/4，native reaped=1。每项evidence保留/episodes/N/receipts/.../result指针。关键：e0 adapter=not-started不可算运行停止；e1旧phase running但final done/ended/cleanup true且cancel_accepted false；e2 started.text WAIT_STARTED；e3 before.model_phase=model_running，cancel.execution=running而final.execution=ended，native_cleanup_complete true。下游请通用脚本从input计算，并对照EVENTS。模型usage单回执有17352但cancel/final重复，不是完整可加总历史总量；HTTP未知。无需制造停止。请发来任务ID与产物版本供我交叉核对。",
+          "reply_to": null,
+          "created_at": 1794044761.0110753,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

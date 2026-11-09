@@ -1,0 +1,102 @@
+"""Scoped offline group/stop contracts derived from the archived runtime tests."""
+import contextlib
+import json
+import os
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest.mock import Mock, patch
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "agent"))
+import yohaku_experiment_groups as groups
+import yohaku_codex_tasks as tasks
+import yohaku_ai_nodes as nodes
+
+def setUpModule():
+ global _capacity_temp, _old_capacity
+ _capacity_temp = tempfile.TemporaryDirectory(prefix="yohaku-test-capacity-")
+ path = Path(_capacity_temp.name) / "capacity.json"
+ path.write_text(json.dumps({"reserve_memory_bytes": 0, "per_node_memory_bytes": 1, "cpus_per_node": 1, "max_active_model_nodes": 3}))
+ _old_capacity = os.environ.get("YOHAKU_OPEN_CAPACITY_FILE")
+ os.environ["YOHAKU_OPEN_CAPACITY_FILE"] = str(path)
+
+def tearDownModule():
+ if _old_capacity is None: os.environ.pop("YOHAKU_OPEN_CAPACITY_FILE", None)
+ else: os.environ["YOHAKU_OPEN_CAPACITY_FILE"] = _old_capacity
+ _capacity_temp.cleanup()
+
+class ExperimentGroups(unittest.TestCase):
+ def setUp(self):
+   self.temp=tempfile.TemporaryDirectory(prefix='yohaku-experiment-contract-')
+   self.addCleanup(self.temp.cleanup)
+   self.home=Path(self.temp.name)
+   self.env=patch.dict(os.environ,{'HOME':str(self.home)})
+   self.env.start();self.addCleanup(self.env.stop)
+   self.world=self.home/'world';self.world.mkdir()
+   self.g=groups.Groups(self.world)
+   self.watch=patch.object(groups.Groups,'ensure_watch',autospec=True)
+   self.watch.start();self.addCleanup(self.watch.stop)
+   self.finished=patch.object(groups.Groups,'_finished',autospec=True,return_value=False)
+   self.finished_mock=self.finished.start();self.addCleanup(self.finished.stop)
+   self.g.configure('A');self.g.bind('A',['a','b','c','d'])
+
+ def test_private_world_binding_and_inherited_membership(self):
+   self.assertFalse(self.g.path.is_relative_to(self.world))
+   self.g.inherit('a','child')
+   self.assertEqual(self.g.same_group('child','b'),'A')
+   self.g.configure('B');self.g.bind('B',['outsider'])
+   with self.assertRaises(ValueError):self.g.same_group('a','outsider')
+   with self.assertRaises(ValueError):self.g.same_group('main','a')
+   with self.assertRaises(ValueError):self.g.bind('B',['child'])
+   with self.assertRaises(ValueError):self.g.bind('A',['main'])
+   world2=self.home/'second-world';world2.mkdir()
+   other=groups.Groups(world2)
+   self.assertNotEqual(self.g.path,other.path)
+   self.assertIsNone(other.group_for('a'))
+
+ def test_finished_requires_runner_and_native_identity_exit(self):
+   self.finished.stop()
+   record={'pid':12,'start':'runner','native':[{'pid':13,'start':'native'}],'receipt':{'native_cleanup_complete':True}}
+   with patch.object(tasks,'read_record',return_value=record),patch.object(tasks,'alive',return_value=False),patch.object(tasks,'identity',return_value={'pid':13,'start':'native','state':'S'}):
+    self.assertFalse(self.g._finished('x'))
+   with patch.object(tasks,'read_record',return_value=record),patch.object(tasks,'alive',return_value=True),patch.object(tasks,'identity',return_value=None):
+    self.assertFalse(self.g._finished('x'))
+   with patch.object(tasks,'read_record',return_value=record),patch.object(tasks,'alive',return_value=False),patch.object(tasks,'identity',return_value=None):
+    self.assertTrue(self.g._finished('x'))
+
+class NodeStopBoundary(unittest.TestCase):
+ setUp=ExperimentGroups.setUp
+ def control(self,task_api):
+  obj=object.__new__(nodes.Control);obj.world=self.world;obj.actor='a';obj._tasks=task_api
+  registry={'nodes':{'b':{'node_id':'b','tasks':[{'task_id':'exact-old','request_id':'r-old'},{'task_id':'later','request_id':'r-new'}]},'a':{'node_id':'a','tasks':[]}}}
+  @contextlib.contextmanager
+  def locked():yield registry
+  obj.locked=locked
+  return obj
+ def test_stop_uses_exact_owned_task_and_repeated_call_is_safe(self):
+  self.g.reserve('b','exact-old')
+  api=Mock();api.status.return_value={'status':'running','model_phase':'model_running'}
+  api.cancel.return_value={'status':'cancelled','cancel_confirmed':True,'process_signalled':True}
+  self.finished_mock.return_value=True
+  obj=self.control(api)
+  first=obj.node_stop('b','exact-old','r-old')
+  self.assertEqual(first['stop_outcome'],'running_stopped')
+  api.cancel.assert_called_once_with({'task_id':'exact-old'})
+  api.status.return_value={'status':'cancelled','model_phase':'finished'}
+  second=obj.node_stop('b','exact-old','r-old')
+  self.assertEqual(second['stop_outcome'],'already_ended')
+  self.assertTrue(second['cleanup_confirmed'])
+  with self.assertRaises(ValueError):obj.node_stop('b','exact-old','r-new')
+  with self.assertRaises(ValueError):obj.node_stop('b','unknown-task')
+  self.assertEqual(api.cancel.call_count,2)
+ def test_stop_reserved_before_host_start_has_no_process_signal(self):
+  self.g.reserve('b','exact-old')
+  api=Mock();api.status.side_effect=ValueError('Unknown task id; no process targeted')
+  result=self.control(api).node_stop('b','exact-old')
+  self.assertEqual(result['stop_outcome'],'queued_cancelled')
+  self.assertTrue(result['launch_prevented']);self.assertFalse(result['process_signalled'])
+  api.cancel.assert_not_called()
+  self.assertFalse(self.g.before_start('b','exact-old'))
+
+if __name__ == "__main__": unittest.main()

@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+"""Actual Loom/doc tools/two nodes/CAS/offline ProjectTask, zero model requests."""
+import os,json,shutil,sys,tempfile,time,hashlib
+from pathlib import Path
+import atexit
+HERE=Path(__file__).resolve().parent
+REPO=HERE.parents[2]
+BASE=HERE.parent
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+checks={};receipts=[]
+def main():
+    fixture=Path(tempfile.mkdtemp(prefix='yohaku-shared-tex-'));atexit.register(shutil.rmtree,fixture,ignore_errors=True);candidate=fixture/'candidate';candidate.mkdir()
+    shutil.copytree(BASE/'agent',candidate/'agent');shutil.copytree(REPO/'macros',candidate/'macros');(candidate/'bin').mkdir()
+    for name in ('loom-linux-x86_64','yohaku_workspace','yohaku_chat_workspace'):
+        source=Path(os.environ.get('YOHAKU_TEST_BIN_DIR',str(REPO/'bin')))/name
+        if not source.is_file():raise ValueError('Build or provide offline test binary: '+str(source))
+        shutil.copy2(source,candidate/'bin'/name)
+    changes=[{'path':'yohaku_ai_nodes.py'},{'path':'yohaku_shared_tex.py'}];checks['already_installed_shared_tex']=all((candidate/'agent'/x['path']).is_file()for x in changes)
+    home=fixture/'home';home.mkdir(mode=0o700);os.environ['HOME']=str(home)
+    sys.path.insert(0,str(candidate/'agent'))
+    import yohaku_agent as a
+    import yohaku_ai_nodes as n
+    import yohaku_shared_tex as shared
+    from yohaku_codex_tasks import atomic,task_path
+    # Do not make a catalog HTTP request in this offline mechanism test.
+    # Only this process binding is stubbed, not source, permissions or tools.
+    n.validate_profile=lambda value:n.profile(value)
+    world=fixture/'world';ws=a.Workspace(world,candidate/'bin/loom-linux-x86_64',candidate/'bin/yohaku_chat_workspace')
+    top=a.Tools(ws.execute,permissions={'read':True,'write':True,'run':True,'delete':False,'import':False},native=True)
+    top.host_world_root=str(world)
+    def call(tools,tool_name,**arguments):
+        out=tools.call(tool_name,arguments);receipts.append({'tool':tool_name,'arguments':arguments,'result':out})
+        if not out.get('ok'):raise AssertionError((tool_name,out))
+        return out['result']
+    root='files/shared-test';sources={}
+    for name,body,node in(('shared/A.md','A version one\n',{'id':'shared-a','name':'A workfile','description':'Maintained by A, shared project','entry':True,'links':[{'relation':'related','target':'shared-b'}]}),('shared/B.md','B workfile\n',{'id':'shared-b','name':'B workfile','description':'B links A','links':[{'relation':'related','target':'shared-a'}]}),('check.py','print("actual offline project shared-tex")\n',None)):
+        directory=root+'/'+str(Path(name).parent)if str(Path(name).parent)!='.'else root
+        args={'name':Path(name).name,'directory':directory,'body':body}
+        if node:args['node']=node
+        made=call(top,'create_document',**args);sources[name]=made['source']
+    manifest={'format':'yohaku-project/1','id':'shared-tex-offline','root':root,'runtime':'python',
+              'sources':['shared/A.md.tex','shared/B.md.tex','check.py.tex'],
+              'tasks':{'check':{'kind':'python','entry':'check.py','args':[],'artifacts':[],'timeout_seconds':30}}}
+    made=call(top,'create_document',name='project.json',directory=root,body=json.dumps(manifest)+'\n')
+    call(top,'project_register',manifest_source=made['source'])
+    main=n.Control(world,workspace=ws)
+    nodes=[]
+    for name in('A','B'):
+        nodes.append(main.node_create('offline-'+name,'offline '+name,'Exercise actual shared work tex without model inference',sources['shared/'+name+'.md'],project_ids=['shared-tex-offline'])['node'])
+    contexts=[]
+    for row in nodes:
+        with main.locked()as registry:node=dict(main.node(registry,row['node_id']))
+        contexts.append({'node_id':node['node_id'],'role':node['role'],'memory_source':node['memory_source'],
+                         'memory_origin':node['memory_origin'],'profile':node['profile'],'project_scopes':node['project_scopes']})
+    tools=[]
+    for number,ctx in enumerate(contexts):
+        tid='model-task-'+hashlib.sha256(('offline-shared-'+str(number)).encode()).hexdigest()[:32];atomic(task_path(tid),{'task_id':tid,'memory_versions':[]})
+        tools.append(n.task_tools(ws,{},ctx,tid))
+    ta,tb=tools;A=sources['shared/A.md']
+    checks['new_tools_in_both_actual_node_runtime_catalogs']=all({'ai_node_workfile_link','ai_node_workfiles','ai_workfile_version_read'}<={x['name']for x in t.definitions}for t in tools)
+    first=call(ta,'read_document',source=A);second=call(tb,'read_document',source=A)
+    v1=first['revision'];before=(world/A).read_bytes()
+    checks['two_authorized_nodes_read_identical_tex']=first['text']==second['text']and v1==second['revision']
+    peer=call(tb,'ai_node_memory_read',node_id=nodes[0]['node_id'])
+    checks['maintainer_not_private_acl']=peer['source']==A and peer['revision']==v1
+    call(ta,'ai_node_workfile_link',source=A,revision=v1,relation='maintains')
+    call(tb,'ai_node_workfile_link',source=A,revision=v1,relation='depends_on')
+    call(ta,'write_document',source=A,revision=v1,text='A version two after real Loom CAS\n',body_only=True)
+    fresh=call(tb,'read_document',source=A);v2=fresh['revision']
+    conflict=tb.call('patch_document',{'source':A,'revision':v1,'old':'A version one','new':'stale B proposal','body_only':True})
+    receipts.append({'tool':'patch_document','arguments':{'source':A,'revision':v1},'result':conflict})
+    checks['stale_CAS_refused_current_tex_preserved']=conflict.get('ok')is False and(world/A).read_text()==fresh['text']
+    old=call(tb,'ai_workfile_version_read',source=A,revision=v1)
+    checks['old_tex_exact_bytes_and_metadata_preserved']=old['text'].encode()==before and 'shared-a'in old['text']and'related'in old['text']
+    current=call(tb,'ai_node_workfiles',known_revisions={A:v1})
+    checks['actual_update_discovery']=any(x['source']==A and x['current_revision']==v2 and x['changed_since_known']is True for x in current['workfiles'])
+    third=main.node_create('offline-third-authorized','Third authorized peer','Read and participate in the B to A source relationship',root+'/shared/C.md.tex',project_ids=['shared-tex-offline'])['node']
+    third_context={'node_id':third['node_id'],'role':third['role'],'memory_source':third['memory_source'],'project_scopes':third['project_scopes']}
+    third_tid='model-task-'+hashlib.sha256(b'offline-third-authorized').hexdigest()[:32];atomic(task_path(third_tid),{'task_id':third_tid,'memory_versions':[]})
+    tc=n.task_tools(ws,{},third_context,third_tid)
+    read_c=call(tc,'ai_node_memory_read',node_id=nodes[0]['node_id'])
+    linked_c=call(tc,'ai_node_workfile_link',source=A,revision=v2,relation='contributes')
+    shared_c=call(tc,'ai_node_workfiles')
+    checks['third_same_scope_peer_reads_and_participates_B_to_A']=read_c['revision']==v2 and linked_c['node_id']==third['node_id']and any(x['node_id']==nodes[1]['node_id']and x['source']==A and x['relation']=='depends_on'for x in shared_c['workfiles'])
+    message=call(tb,'ai_message_send',request_id='offline-share-reference',node_id=nodes[0]['node_id'],text='Actual shared source citation: '+A+'@'+v2)
+    checks['actual_message_citation_host_bound_sender']=message['message']['sender']==nodes[1]['node_id']if 'sender'in message['message']else message['message'].get('sender_node_id')==nodes[1]['node_id']
+    outsider=main.node_create('offline-no-project','No project grant','Check no grant expansion','files/ai-nodes/isolated.md.tex',project_ids=[])['node']
+    denied=n.Control(world,actor=outsider['node_id'],workspace=ws)
+    try:denied.workfile_version_read(A,v1)
+    except ValueError:checks['unauthorized_version_read_refused']=True
+    else:checks['unauthorized_version_read_refused']=False
+    call(ta,'sync_document',source=A)
+    indexed=call(top,'rebuild_node_index')
+    checks['historical_blobs_do_not_duplicate_active_node_id']=not any(x.get('kind')=='duplicate_id'for x in indexed.get('issues',[]))
+    call(ta,'project_plan',project_id='shared-tex-offline',action='check')
+    submitted=call(ta,'task_submit',project_id='shared-tex-offline',action='check',request_id='offline-shared-tex-project')
+    tid=submitted['task_id']
+    for _ in range(60):
+        status=call(ta,'task_status',task_id=tid)
+        if status.get('status')in('done','error','cancelled'):break
+        time.sleep(.2)
+    output=call(ta,'task_output',task_id=tid,stream='stdout',max_bytes=4096)
+    checks['actual_declared_ProjectTask_completed']=status['status']=='done'and status['exit_code']==0 and'actual offline project shared-tex'in output.get('text','')
+    # This actual Loom source has no node link, no Task declaration, and has
+    # never passed through a node document/read hook. Explicit public export
+    # must preserve it without promoting it to accepted producer code.
+    loose=call(top,'create_document',name='loose-note.md',directory=root+'/shared',body='Unlinked current project note\n')['source']
+    with shared._index(world)as(cache,index):store_index=cache/'index.json'
+    store_before=store_index.read_bytes()
+    exported=shared.export_public_project(world,root,fixture/'export',sources=[A,loose])
+    checks['export_does_not_modify_closed_source_archive']=store_index.read_bytes()==store_before
+    checks['export_unobserved_current_not_backfilled_into_old_HOME']=loose not in json.loads(store_index.read_bytes())['sources']
+    bundle=json.loads((fixture/'export/manifest.json').read_bytes())
+    checks['selective_export_no_other_tex_or_private_memory']={x['original_source']for x in bundle['sources']}=={A,loose}
+    loose_row=next(x for x in bundle['sources']if x['original_source']==loose)
+    checks['unlinked_undeclared_unobserved_current_tex_exported']=loose_row['current_on_export_revision']==sha(world/loose)and loose_row['acceptance']=='not_assessed_by_capability'
+    absent_state=fixture/'never-created-old-state'
+    shared.export_public_project(world,root,fixture/'export-with-no-old-cache',state_dir=absent_state,sources=[loose])
+    checks['read_only_export_does_not_create_missing_old_state']=not absent_state.exists()
+    world2=fixture/'next-world';world2.mkdir();newroot='files/next-shared';mapped='history/A.md.tex'
+    imported=shared.import_public_project(world2,newroot,fixture/'export',source_map={'shared/A.md.tex':mapped})
+    checks['import_versions_without_activity_or_source_overwrite']=imported['imported_versions']>=2 and not(world2/newroot/mapped).exists()
+    with shared._index(world2)as(cache,index):
+        entry=index['sources'][newroot+'/'+mapped]
+        checks['cross_world_original_tex_blob_exact']=shared._blob(cache,v1).read_bytes()==before and v2 in entry['versions']
+    # Raw source import used by source-preserving builders; no Loom sync/write.
+    preserved=shared.import_source_version(world2,newroot+'/canonical.md.tex',before,project_root=newroot,origin_reference={'source':A,'revision':v1})
+    checks['builder_raw_source_import_preserves_revision']=preserved['revision']==v1 and preserved['source_file_written']is False
+    checks['no_runtime_budget_provider_changes']=all('yohaku_ai_nodes.py'in r['path']or'yohaku_shared_tex.py'in r['path']for r in changes)
+    report={'passed':all(checks.values()),'checks':checks,'fixture':str(fixture),'candidate':str(candidate),
+            'installer_changes':changes,'nodes':nodes,'source':A,'revisions':[v1,v2],'source_original_sha256':hashlib.sha256(before).hexdigest(),
+            'ProjectTask_id':tid,'model_requests':0,'catalog_HTTP_requests':0,'ProjectTasks_started':1,
+            'model_authored_conflict_behavior_observed':False,'classification':'Offline capability mechanism validation, not AI collaboration or growth evidence',
+            'receipts':receipts}
+    print(json.dumps({'passed':report['passed'],'checks':checks,'fixture':str(fixture)},ensure_ascii=False))
+    return 0 if report['passed']else 2
+if __name__=='__main__':raise SystemExit(main())

@@ -1,0 +1,33 @@
+{
+  "format": "host-model-namespace-registry/1",
+  "registry_id": "adaption-glm53flash-observed-deployment/1",
+  "registered_date": "2026-11-08",
+  "policy": "Exact observed pair only; no model fallback or raw-field rewrite. Evidence consists of redacted projections, not complete raw responses.",
+  "bindings": [
+    {
+      "provider": "adaption",
+      "canonical_public_model": "glm-53-flash",
+      "supplier_model_verbatim": "glm-5.3-flash",
+      "display_name": "GLM 5.3 Flash",
+      "linked_upstream_model_card": "https://huggingface.co/zai-org/GLM-5.3-Flash",
+      "binding_basis": "Catalog public ID/display + official public deployment to upstream model-card link + complete observed terminal outer-public/nested-upstream fields; registration is an explicit host decision, not a claim of a published generic wire-alias rule.",
+      "sources": [
+        {
+          "kind": "catalog",
+          "path": "mapping-evidence/catalog.json",
+          "sha256": "8c7fc59c8c4df0730bf6106ba8ecf726722fb62ccdd28e887b1f932437de1227"
+        },
+        {
+          "kind": "official_model_page",
+          "path": "mapping-evidence/model-page.txt",
+          "sha256": "2393579ea57b2d34192c3e370aa377cca82ba0cbea22b70d2e71d54baef3937d"
+        },
+        {
+          "kind": "observed_terminal",
+          "path": "mapping-evidence/terminal.json",
+          "sha256": "42b2b9263fa2e7fffe858c1ab21aba15fb598aa8dd8e0aa3d2e09847bd1f4f22"
+        }
+      ]
+    }
+  ]
+}

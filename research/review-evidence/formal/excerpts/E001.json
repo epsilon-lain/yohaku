@@ -1,0 +1,5 @@
+{
+  "original_source": "S2162e6b77742ba",
+  "original_line": 13,
+  "payload": "两个工作角色为实验预设：上游整理每个已发布输入版本的事件、重复观测与状态版本，保存EVENTS-v1/v2/v3.json.tex；下游消费上游成果并可直接读取原始输入，交付通用audit.py.tex→Loom→audit.py、每版本STATS-vN.json.tex和持续更新的中文REPORT.md.tex。第三节点只能用于独立复核。全部节点Sol/high；组级并发3、累计派发12、工具180、首派发起1200秒，后代/跟进/wake共享累计。工具以真实目录和宿主授权为准。"
+}

@@ -1,0 +1,6 @@
+{
+  "reserve_memory_bytes": 2147483648,
+  "per_node_memory_bytes": 1073741824,
+  "cpus_per_node": 2,
+  "max_active_model_nodes": 0
+}

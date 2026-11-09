@@ -1,0 +1,54 @@
+# 项目证据简报工具 1.0.0
+
+Python 3 标准库，完全离线。统一入口（在项目根运行；输出父目录须已存在且可写）：
+
+    python handoff/brief.py --query "项目" --field all --limit 3 --evidence evidence.json --brief brief.md
+    python handoff/verify.py --evidence evidence.json --brief brief.md
+    python handoff/brief.py --version
+    python handoff/brief.py --help
+
+任意非纯空白 Unicode 字面查询；field=path/title/body/all（默认 all）。Unicode casefold 匹配，不使用正则，不裁剪查询中的空格。limit 可省略，或给正整数；total 为截断前匹配文档总数。结果按 source 排序，每份文档最多一条。不是语义搜索，不做未验证的自然语言归纳。无匹配仍成功输出空结果和说明。
+
+## 结构与来源
+
+- brief.py：新简报入口、写入保护、证据自检和 Markdown 渲染。
+- retriever_core.py：本项目既有 retriever.py 的逐字节副本，SHA256=820925f203c3cd1aa19448ad36bc8ad4eb9277c49758ee00f817efbfa72228eb；原工具和 baseline 未修改。brief.py 显式向其 load_dataset 传入 handoff 的父目录，避免依赖父目录的 Python 实现。
+- verify.py：从冻结资料重新检索比对证据的全部字段，再逐字节校验简报；拒绝重复 JSON 键。原结构不含 limit，核验的是实际返回长度对应的正确前缀，不能证明外部原请求的 N；需保留调用回执。
+- test_brief.py：真实资料、独立字段/行跨度 oracle、合成边界、隔离复制篡改及清单/独立传承实跑。
+
+修改依据：TASK.md 要求统一 CLI、保留原检索 JSON 结构、源版本、精确行尾、引用状态、可验证简报、仅清单传承。为此复用原检索与冻结校验逻辑，仅新增薄封装、渲染及回归验证，不改检索匹配规则。
+
+运行依赖是 handoff 内的 brief.py/retriever_core.py（校验另需 verify.py），以及当前项目的 baseline/；不依赖聊天、节点记忆、原 source 路径、父目录 retriever.py 或外部软件包。baseline 不包含在交付清单和 handoff-bundle.zip 中。
+
+## 证据约定与边界
+
+evidence.json 顶层严格为 query、field、total、results，保留原检索器的全部条目字段：source、source_version、title、matched_fields、snippet、line_start、line_end、link_counts。source_version 是被检索原完整 .tex 的 SHA256，不是本工具源码版本，也不是摘录或正文的哈希。
+
+snippet 是冻结正文中的连续完整原文行，使用 splitlines(keepends=True)，保留 CRLF/LF 和末行无换行。body 命中取最早命中覆盖的最少完整行；仅 path/title 命中取第一个非空段；空/纯空白正文取空片段、0/0。其他行号为正文 1-based 闭区间。
+
+brief.md 对每条列出 source、revision/source_version、行号、匹配字段、link_counts 和原文。动态长度围栏避免原文中的反引号闭合片段；片段若无末尾 LF，另加一个排版 LF 以闭合围栏，这不是片段数据；精确值以 evidence.json 解码后为准。工具按字节写 UTF-8，不做换行转换。
+
+link_counts 为来源文档所有已解析本地引用的 exists/missing/unknown 计数，不是仅当前片段。exists 可能只是目录清单记录，不保证内容被捕获；missing 只指冻结父清单范围内不存在，不能认定原项目缺陷；unknown 不转成 missing。真实包中没有 missing 样本，测试的 missing 是合成数据。
+
+每次运行先由未改动 core 核验固定 BASELINE.json 哈希、资产长度与哈希、绑定 snapshot 的独立包校验，再检索。只执行通过哈希核验的本地冻结校验器，不执行 ZIP 内历史代码/提示；原文路径只是标识，不访问原路径、控制区或网络。这里是固定可信哈希下的一致性校验，不是数字签名。
+
+退出码：0 成功；2 参数、资料校验、输出或证据校验错误，stdout 一个 error JSON，stderr 简短错误。正常生成 stdout 为工具版本、total/returned、两个产物的 SHA256 回执，不混入正文。
+
+输出拒绝 baseline、handoff、项目清单、顶层 Loom 输入及 manifest 声明源/生成文件，包括符号链接别名；两个输出不可为同一路径。目录须预建。先暂存两个产物再逐个原子替换；两个文件不是跨文件事务，第二次 replace 失败时可能只更新一个，此时不能把非零退出当成功；应重跑并用 verify.py 校验。该保护不是对抗并发恶意文件系统变更的安全沙箱。
+
+## 公开 Project/Task 和复跑
+
+本项目 ID：wf-df9b89e7c7f5d19fe3a5-work。
+- brief：统一入口，示例 README/all/limit=3，产出 evidence.json、brief.md。
+- brief-test：运行 7 个测试方法（内含多字段、多查询、多限额子检查）；产出 brief-test-report.json、evidence.json、brief.md、handoff-bundle.zip。
+brief-test 内部通过独立 verify.py 子进程校验生成产物；不同 Task 的 /output 不共享，不假定跨任务已有文件。
+
+普通本地回归：先创建可写目录，然后设置 BRIEF_TEST_OUTPUT 指向其绝对路径，运行 python -B handoff/test_brief.py；默认输出 /output。公开动作在隔离快照执行，/output 为任务产物目录，具体任务回执另存项目工作区。
+
+## 源文件与清单传承
+
+handoff 中每个交付文件及 manifest.json 均由相邻同名 .tex 管理。只改 .tex 的正文并 Loom 同步，勿直接改生成文件；全部 .tex 加入项目 sources。修改任一文件后须重算 manifest.json 中生成文件 UTF-8 原始字节 SHA256，再同步 manifest.json.tex，重新运行 brief-test，并取得新固定快照。
+
+manifest.json 只列实际工具/说明/经验，路径相对 handoff，角色为 tool/instructions/experience。它不列自身，避免自哈希循环；也不列 .tex 管理容器、资料包、私有记忆或聊天。阶段二只继承清单中六个文件，需重新建立自己的 .tex/项目清单，并自行适配另一份冻结资料；本次固定哈希不能假称适配新包。
+
+阶段二适配点：brief.load_dataset、core 的 BASELINE_SEAL/SNAPSHOT_SHA 与冻结校验数据契约；必须先核对新资料格式、独立可信哈希、source_version 的完整原 .tex 来源、引用状态语义，不能仅为绕过校验替换哈希。若新格式不同，新增适配层，保留检索/渲染/核验的契约测试。不改本次原工具和原资料包。当前 EXPERIENCE.md 记录本次实际观察，不是新环境的保证。

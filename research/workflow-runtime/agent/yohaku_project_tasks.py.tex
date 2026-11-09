@@ -1,0 +1,874 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Offline project tasks using the existing Rust chat state machine.
+
+Business state is authoritative only in a private Loom-managed chat ledger.
+Records here bind immutable inputs, owned processes, raw logs and cleanup receipts.
+No model/provider, user chat, host updater or GUI service is started by this module.
+"""
+import argparse
+import base64
+import contextlib
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import signal
+import stat
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+
+from yohaku_project_schema import ProjectError, validate_manifest
+
+ROOT = Path(__file__).resolve().parents[1]
+VERSION = 'yohaku-project-task/1'
+TASK_FORMAT = 'yohaku-task/1'
+CHAT_SOURCE = 'files/chat-runtime-20261025/requests.json.tex'
+TERMINAL = {'done', 'error', 'cancelled', 'unknown'}
+STATE = {'queued': 'accepted', 'running': 'running', 'stopping': 'stopping',
+         'done': 'succeeded', 'error': 'failed', 'cancelled': 'cancelled', 'unknown': 'unknown'}
+LOG_LIMIT = 64 * 1024 * 1024
+
+
+def canonical(value):
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False)
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def error(kind, message, **details):
+    return ProjectError(kind, message, **details)
+
+
+def relative(value):
+    if not isinstance(value, str) or not value or '\\' in value or '\0' in value:
+        raise error('invalid_path', 'Expected a relative project path')
+    p = Path(value)
+    if p.is_absolute() or any(part in ('', '.', '..') for part in value.split('/')):
+        raise error('invalid_path', 'Expected a contained relative project path', path=value)
+    return p
+
+
+def regular(root, name):
+    p = root
+    for part in relative(name).parts:
+        p = p / part
+        if p.is_symlink():
+            raise error('symlink', 'Symlinks are not project inputs or artifacts', path=name)
+    if not p.is_file():
+        raise error('missing_file', 'Expected a regular file', path=name)
+    return p
+
+
+def private_dir(path):
+    p = Path(path).absolute()
+    if p.is_symlink():
+        raise error('unsafe_state', 'Task state directory cannot be a symlink')
+    p.mkdir(mode=0o700, parents=True, exist_ok=True)
+    if p.resolve() != p or not p.is_dir():
+        raise error('unsafe_state', 'Task state must use canonical directories')
+    if os.name == 'posix' and (p.stat().st_uid != os.getuid() or p.stat().st_mode & 0o077):
+        raise error('unsafe_state', 'Task state must be private and owned by the host user')
+    return p
+
+
+def default_state():
+    return Path.home() / '.local/state/yohaku/project-tasks'
+
+
+def atomic(path, value):
+    data = (canonical(value) + '\n').encode('utf-8')
+    fd, temp = tempfile.mkstemp(prefix='.project-task-', dir=path.parent)
+    try:
+        with os.fdopen(fd, 'wb') as out:
+            out.write(data)
+            out.flush()
+            os.fsync(out.fileno())
+        os.replace(temp, path)
+        if os.name == 'posix':
+            parent = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
+            try:
+                os.fsync(parent)
+            finally:
+                os.close(parent)
+    finally:
+        if os.path.exists(temp):
+            os.unlink(temp)
+
+
+def read_json(path):
+    flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0)
+    fd = os.open(path, flags)
+    try:
+        if not stat.S_ISREG(os.fstat(fd).st_mode):
+            raise error('unsafe_state', 'Task record is not a regular file')
+        with os.fdopen(fd, 'r', encoding='utf-8') as src:
+            fd = None
+            text = src.read(16 * 1024 * 1024 + 1)
+        if len(text) > 16 * 1024 * 1024:
+            raise error('state_limit', 'Task record exceeds its size limit')
+        return json.loads(text)
+    finally:
+        if fd is not None:
+            os.close(fd)
+
+
+@contextlib.contextmanager
+def locked(path):
+    flags = os.O_CREAT | os.O_RDWR | getattr(os, 'O_NOFOLLOW', 0)
+    fd = os.open(path, flags, 0o600)
+    try:
+        if os.name == 'posix':
+            import fcntl
+            fcntl.flock(fd, fcntl.LOCK_EX)
+        else:
+            import msvcrt
+            if os.fstat(fd).st_size == 0:
+                os.write(fd, b'0')
+            os.lseek(fd, 0, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+        yield
+    finally:
+        if os.name != 'posix':
+            import msvcrt
+            os.lseek(fd, 0, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+        os.close(fd)
+
+
+@contextlib.contextmanager
+def try_locked(path):
+    fd = os.open(path, os.O_CREAT | os.O_RDWR | getattr(os, 'O_NOFOLLOW', 0), 0o600)
+    acquired = False
+    try:
+        if os.name == 'posix':
+            import fcntl
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                acquired = True
+            except BlockingIOError:
+                pass
+        else:
+            import msvcrt
+            if os.fstat(fd).st_size == 0:
+                os.write(fd, b'0')
+            os.lseek(fd, 0, os.SEEK_SET)
+            try:
+                msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+                acquired = True
+            except OSError:
+                pass
+        yield acquired
+    finally:
+        if acquired and os.name != 'posix':
+            import msvcrt
+            os.lseek(fd, 0, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+        os.close(fd)
+
+
+def identity(pid):
+    if os.name != 'posix' or not isinstance(pid, int) or pid < 1:
+        return None
+    try:
+        fields = (Path('/proc') / str(pid) / 'stat').read_text().split(') ')[1].split()
+        return {'pid': pid, 'start': fields[19], 'state': fields[0]}
+    except (OSError, ValueError, IndexError):
+        return None
+
+
+def alive(record):
+    current = identity(record.get('pid'))
+    return bool(current and current['start'] == record.get('start') and current['state'] != 'Z')
+
+
+class Tasks:
+    def __init__(self, world, workspace=None, state_dir=None):
+        self.world = Path(world).resolve(strict=True)
+        self.state = private_dir(state_dir or default_state())
+        self.records = private_dir(self.state / 'records')
+        self.logs = private_dir(self.state / 'logs')
+        self.work = private_dir(self.state / 'work')
+        self.world_id = digest(str(self.world).encode('utf-8'))
+        self.ledger = self.state / 'ledgers' / self.world_id
+        self._injected = workspace is not None
+        if workspace is None:
+            from yohaku_agent import Workspace
+            binary = ROOT / 'bin/yohaku_chat_workspace'
+            if not binary.is_file():
+                binary = ROOT / 'bin/yohaku_workspace'
+            workspace = Workspace(self.ledger, ROOT / 'bin/loom-linux-x86_64', binary)
+        self.workspace = workspace
+        if not self._injected:
+            self._initialize_ledger()
+
+    def _chat(self, command):
+        result = self.workspace.execute(command)
+        if isinstance(result, dict) and 'ok' in result:
+            if not result['ok']:
+                raise error('ledger_error', str(result.get('error', 'Rust chat command failed')))
+            result = result.get('result')
+        if not isinstance(result, dict):
+            raise error('ledger_unknown', 'No authoritative Rust chat result', side_effect='unknown')
+        return result
+
+    def _initialize_ledger(self):
+        with locked(self.state / ('ledger-' + self.world_id + '.lock')):
+            private_dir(self.ledger)
+            macro = self.ledger / 'macros'
+            macro.mkdir(mode=0o700, exist_ok=True)
+            target = macro / 'raw.source.md'
+            data = (ROOT / 'macros/raw.source.md').read_bytes()
+            if not target.exists():
+                with target.open('xb') as out:
+                    out.write(data)
+                    out.flush()
+                    os.fsync(out.fileno())
+            elif target.is_symlink() or target.read_bytes() != data:
+                raise error('ledger_macro_conflict', 'Private ledger macro changed; no overwrite')
+            source = self.ledger / CHAT_SOURCE
+            if not source.exists():
+                result = self._chat({'command': 'create', 'name': 'requests.json',
+                                     'directory': 'chat-runtime-20261025',
+                                     'body': canonical({'format': 'yohaku-chat-requests/1', 'next_request': 1, 'requests': []}) + '\n'})
+                if result.get('sync_error') or result.get('loom', {}).get('ok') is False:
+                    raise error('ledger_generation', 'Private ledger source saved but generation failed', replay_allowed=False)
+            self._chat({'command': 'chat_list', 'limit': 1})
+
+    def task_id(self, request_id):
+        if not isinstance(request_id, str) or not re.fullmatch(r'[A-Za-z0-9_.-]{1,128}', request_id):
+            raise error('invalid_request_id', 'request_id must contain 1..128 ASCII letters, digits, dot, dash or underscore')
+        return 'project-task-' + digest((str(self.world) + '\0' + request_id).encode('utf-8'))[:32]
+
+    def _record_path(self, task_id):
+        if not isinstance(task_id, str) or not re.fullmatch(r'project-task-[0-9a-f]{32}', task_id):
+            raise error('invalid_task_id', 'Invalid project task identity; no process targeted')
+        return self.records / (task_id + '.json')
+
+    def _owned(self, task_id):
+        p = self._record_path(task_id)
+        try:
+            value = read_json(p)
+        except FileNotFoundError:
+            raise error('unknown_task', 'No task with this identity; no process targeted', task_id=task_id) from None
+        if value.get('world') != str(self.world) or value.get('task_id') != task_id:
+            raise error('task_ownership', 'Task belongs to another world; no process targeted')
+        return value
+
+    def _patch(self, task_id, **fields):
+        p = self._record_path(task_id)
+        with locked(p.with_suffix('.lock')):
+            record = self._owned(task_id)
+            record.update(fields)
+            atomic(p, record)
+            return record
+
+    def submit(self, project_dict, action, request_id, snapshot_dict, plan_dict):
+        project = validate_manifest(json.loads(canonical(project_dict)))
+        snapshot = json.loads(canonical(snapshot_dict))
+        plan = json.loads(canonical(plan_dict))
+        task_id = self.task_id(request_id)
+        if action not in project.get('tasks', {}):
+            raise error('unknown_action', 'Action is not declared in this project', action=action)
+        if snapshot.get('project_id') != project.get('id'):
+            raise error('snapshot_mismatch', 'Snapshot belongs to another project')
+        binding = {'project': project, 'action': action,
+                   'source_set': snapshot.get('source_set'), 'runtime': plan.get('runtime')}
+        fingerprint = digest(canonical(binding).encode('utf-8'))
+        p = self._record_path(task_id)
+        with locked(p.with_suffix('.lock')):
+            if p.exists():
+                existing = self._owned(task_id)
+                if existing.get('fingerprint') != fingerprint:
+                    raise error('request_conflict', 'request_id is already bound to different immutable inputs; inspect the original task',
+                                task_id=task_id, replay_allowed=False, side_effect='none')
+                duplicate = True
+            else:
+                duplicate = False
+                # Reservation precedes chat claim and spawn. Any crash leaves a queryable ID.
+                record = {'task_id': task_id, 'request_id': request_id, 'world': str(self.world),
+                          'project_id': project['id'], 'action': action, 'project': project,
+                          'snapshot': snapshot, 'plan': plan, 'fingerprint': fingerprint,
+                          'version': VERSION, 'created': time.time(), 'pid': None, 'start': None,
+                          'launch': 'preparing', 'token': None, 'receipt': None,
+                          'starter': identity(os.getpid()), 'prepare_lease_until': time.time() + 60}
+                self._snapshot(record)
+                if project['tasks'][action]['kind'] == 'artifact':
+                    self._artifact_input(record)
+                atomic(p, record)
+                try:
+                    self._chat({'command': 'chat_submit', 'id': request_id, 'prompt': 'Project task ' + fingerprint,
+                                'target': 'project-runtime', 'kind': 'project-task',
+                                'config': {'project_task': {'format': TASK_FORMAT, 'project_id': project['id'],
+                                                          'action': action, 'fingerprint': fingerprint,
+                                                          'snapshot_id': snapshot.get('id'), 'source_set': snapshot.get('source_set')}}})
+                    claim = self._chat({'command': 'chat_claim', 'id': request_id,
+                                        'runner': task_id, 'target': 'project-runtime'})
+                    if not claim.get('request') or not claim.get('token'):
+                        raise error('claim_unknown', 'Task reserved without a confirmed claim; inspect task, never resubmit under a new ID',
+                                    task_id=task_id, side_effect='unknown', replay_allowed=False)
+                    record.update(token=claim['token'], launch='claimed')
+                    atomic(p, record)
+                    child = self._launch_worker(task_id)
+                    proc = identity(child.pid)
+                    record.update(pid=child.pid, start=proc['start'] if proc else None, launch='spawned')
+                    atomic(p, record)
+                    threading.Thread(target=child.wait, daemon=True).start()
+                except Exception as exc:
+                    record['launch_error'] = {'kind': getattr(exc, 'kind', type(exc).__name__), 'message': str(exc)[:2048]}
+                    atomic(p, record)
+                    raise error('submission_unknown', 'Task ID reserved; submission outcome must be inspected before any new attempt',
+                                task_id=task_id, request_id=request_id, side_effect='unknown', replay_allowed=False) from exc
+        result = self.status(task_id=task_id)
+        result.update(duplicate=duplicate, started_new_process=not duplicate)
+        return result
+
+    def _launch_worker(self, task_id):
+        if not sys.platform.startswith('linux'):
+            raise error('unsupported_platform', 'Production project execution requires Linux bubblewrap; no unisolated fallback')
+        argv = [sys.executable, '-B', str(Path(__file__).resolve()), 'run', task_id, '--state-dir', str(self.state)]
+        log = self.logs / (task_id + '.supervisor')
+        with log.open('ab') as out:
+            return subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=out, stderr=out,
+                                    cwd=ROOT, start_new_session=True,
+                                    env={'HOME': str(Path.home()), 'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'})
+
+    def _request(self, record):
+        return self._chat({'command': 'chat_status', 'id': record['request_id']})['request']
+
+    def _commit_receipt(self, record, request):
+        receipt = record.get('receipt')
+        if not receipt or request['status'] in TERMINAL:
+            return request
+        if not receipt.get('cleanup_confirmed'):
+            state = 'unknown'
+        elif receipt.get('cancel_observed'):
+            state = 'cancelled'
+        elif receipt.get('error') is not None or receipt.get('exit_code') != 0:
+            state = 'error'
+        else:
+            state = 'done'
+        public_artifacts = [{k: v for k, v in a.items() if k != 'host_path'} for a in receipt.get('artifacts', [])]
+        reply = {'task_id': record['task_id'], 'snapshot_id': record['snapshot']['id'],
+                 'source_set': record['snapshot']['source_set'], 'exit_code': receipt.get('exit_code'),
+                 'artifacts': public_artifacts, 'output': {'stdout': self._log_size(record['task_id'], 'stdout'),
+                                                        'stderr': self._log_size(record['task_id'], 'stderr')}}
+        return self._chat({'command': 'chat_update', 'id': record['request_id'], 'token': record['token'],
+                           'status': state, 'reply': reply, 'error': receipt.get('error'),
+                           'worker': {'runner': record['task_id'], 'cleanup_confirmed': receipt['cleanup_confirmed']},
+                           'cancel_result': 'owned sandbox closed and reaped' if state == 'cancelled' else None})['request']
+
+    def _recover_abandoned_start(self, record, request):
+        if record.get('launch') not in ('preparing', 'claimed') or time.time() < record.get('prepare_lease_until', float('inf')):
+            return request
+        starter = record.get('starter') or {}
+        current = identity(starter.get('pid'))
+        if current and current['start'] == starter.get('start') and current['state'] != 'Z':
+            return request
+        with try_locked(self._record_path(record['task_id']).with_suffix('.lock')) as acquired:
+            if not acquired:
+                return request
+            record = self._owned(record['task_id'])
+            if record.get('launch') not in ('preparing', 'claimed') or time.time() < record.get('prepare_lease_until', float('inf')):
+                return request
+            starter = record.get('starter') or {}
+            current = identity(starter.get('pid'))
+            if current and current['start'] == starter.get('start') and current['state'] != 'Z':
+                return request
+            request = self._request(record)
+            if request['status'] == 'queued':
+                claim = self._chat({'command': 'chat_claim', 'id': record['request_id'],
+                                    'runner': 'reconcile-' + record['task_id'], 'target': 'project-runtime'})
+                if not claim.get('token'):
+                    return self._request(record)
+                record['token'] = claim['token']
+                atomic(self._record_path(record['task_id']), record)
+                request = claim['request']
+            if request['status'] in ('running', 'stopping'):
+                self._chat({'command': 'chat_reconcile', 'id': record['request_id'], 'older_than_ms': 0})
+            record['launch'] = 'abandoned'
+            atomic(self._record_path(record['task_id']), record)
+            return self._request(record)
+
+    def status(self, task_id=None, request_id=None):
+        if task_id is None:
+            task_id = self.task_id(request_id)
+        record = self._owned(task_id)
+        if request_id is not None and record['request_id'] != request_id:
+            raise error('request_mismatch', 'Task and request identity do not match')
+        try:
+            request = self._request(record)
+            request = self._recover_abandoned_start(record, request)
+            record = self._owned(task_id)
+            if record.get('receipt') and request['status'] not in TERMINAL:
+                request = self._commit_receipt(record, request)
+            if request['status'] in ('running', 'stopping') and (record.get('launch') == 'spawned' or record.get('launch_error')) and not alive(record) and not record.get('receipt'):
+                with try_locked(self._record_path(task_id).with_suffix('.lock')) as acquired:
+                    if acquired:
+                        # A dead worker cannot write a future receipt. Re-read under its
+                        # receipt lock before irreversibly reconciling the Rust terminal.
+                        record = self._owned(task_id)
+                        if record.get('receipt'):
+                            request = self._commit_receipt(record, self._request(record))
+                        elif not alive(record):
+                            self._chat({'command': 'chat_reconcile', 'id': record['request_id'], 'older_than_ms': 0})
+                            request = self._request(record)
+        except Exception as exc:
+            return {'format': TASK_FORMAT, 'version': VERSION, 'task_id': task_id,
+                    'request_id': record['request_id'], 'project_id': record['project_id'], 'action': record['action'],
+                    'status': 'unknown', 'state': 'unknown', 'status_source': 'Rust chat object unavailable',
+                    'snapshot_id': record['snapshot']['id'], 'source_set': record['snapshot']['source_set'],
+                    'stdout_bytes': self._log_size(task_id, 'stdout'), 'stderr_bytes': self._log_size(task_id, 'stderr'),
+                    'event_seq': None, 'error': {'kind': 'ledger_unknown', 'message': str(exc)[:2048]}, 'replay_allowed': False}
+        record = self._owned(task_id)
+        receipt = record.get('receipt') or {}
+        public_receipt = {k: v for k, v in receipt.items() if k != 'artifacts'}
+        return {'format': TASK_FORMAT, 'version': VERSION, 'task_id': task_id,
+                'request_id': record['request_id'], 'project_id': record['project_id'], 'action': record['action'],
+                'status': request['status'], 'state': STATE.get(request['status'], 'unknown'),
+                'status_source': 'Rust chat object',
+                'event_seq': request.get('version', 0) * (2 * LOG_LIMIT + 1) + self._log_size(task_id, 'stdout') + self._log_size(task_id, 'stderr'),
+                'ledger_version': request.get('version', 0),
+                'stdout_bytes': self._log_size(task_id, 'stdout'), 'stderr_bytes': self._log_size(task_id, 'stderr'),
+                'phase': request.get('last_status'), 'snapshot_id': record['snapshot']['id'],
+                'source_set': record['snapshot']['source_set'], 'exit_code': receipt.get('exit_code'),
+                'error': request.get('error'), 'cancel': request.get('cancel'),
+                'cancel_confirmed': request['status'] == 'cancelled' and receipt.get('cleanup_confirmed') is True,
+                'execution': 'ended' if receipt else 'running' if alive(record) else record.get('launch'),
+                'receipt': public_receipt, 'artifacts': (request.get('reply') or {}).get('artifacts', []),
+                'output': {'stdout': self._log_size(task_id, 'stdout'), 'stderr': self._log_size(task_id, 'stderr')},
+                'replay_allowed': False}
+
+    def _log_size(self, task_id, stream):
+        p = self.logs / (task_id + '.' + stream)
+        try:
+            if p.is_symlink():
+                raise error('unsafe_log', 'Task log cannot be a symlink')
+            return p.stat().st_size
+        except FileNotFoundError:
+            return 0
+
+    def output(self, task_id, stream='stdout', cursor=0, max_bytes=65536):
+        self._owned(task_id)
+        if stream not in ('stdout', 'stderr') or type(cursor) is not int or cursor < 0 or type(max_bytes) is not int or not 1 <= max_bytes <= 65536:
+            raise error('invalid_cursor', 'Use stdout/stderr, a nonnegative byte cursor and max_bytes 1..65536')
+        p = self.logs / (task_id + '.' + stream)
+        if p.is_symlink():
+            raise error('unsafe_log', 'Task log cannot be a symlink')
+        size = self._log_size(task_id, stream)
+        if cursor > size:
+            raise error('invalid_cursor', 'Cursor is past the captured output', task_id=task_id, stream=stream, output_end=size)
+        if p.exists():
+            flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0)
+            fd = os.open(p, flags)
+            with os.fdopen(fd, 'rb') as src:
+                src.seek(cursor)
+                data = src.read(max_bytes)
+        else:
+            data = b''
+        current = self.status(task_id=task_id)
+        end = self._log_size(task_id, stream)
+        complete=bool((current.get('receipt') or {}).get('output_complete'))
+        more=cursor+len(data)<end
+        terminal=current.get('state') in ('succeeded','failed') or (current.get('state')=='cancelled' and current.get('cancel_confirmed') is True)
+        return {'format': TASK_FORMAT, 'task_id': task_id, 'stream': stream, 'cursor_unit': 'bytes',
+                'bytes_returned':len(data),'read_state':'complete' if complete and not more else 'more' if more else 'pending',
+                'end_of_stream':complete and not more,'no_progress':not data,
+                'event_seq':current.get('event_seq'),'exit_code':current.get('exit_code'),
+                'phase':current.get('phase'),'cancel_confirmed':current.get('cancel_confirmed',False),
+                'task_terminal_confirmed':terminal,
+                'log_ref':{'kind':'task_output','task_id':task_id,'stream':stream,'captured_bytes':end,'full_original_retained':not bool((current.get('receipt') or {}).get('output_truncated'))},
+                'next_action':{'tool':'task_output','task_id':task_id,'stream':stream,'cursor':cursor+len(data)} if more else None if complete and terminal else {'tool':'task_watch','task_id':task_id,'wait_ms':5000},
+                'cursor': cursor, 'next_cursor': cursor + len(data), 'output_end': end,
+                'has_more': cursor + len(data) < end,
+                'output_complete': bool(current.get('receipt', {}).get('output_complete')),
+                'text': data.decode('utf-8', 'replace'), 'base64': base64.b64encode(data).decode('ascii'),
+                'text_encoding': 'UTF-8 replacement view; base64 preserves exact bytes',
+                'truncated': bool(current.get('receipt', {}).get('output_truncated')), 'state': current['state']}
+
+    def cancel(self, task_id):
+        record = self._owned(task_id)
+        request = self._request(record)
+        if request['status'] in TERMINAL:
+            return dict(self.status(task_id=task_id), cancel_accepted=False)
+        self._chat({'command': 'chat_stop', 'id': record['request_id'], 'by': 'project-task-api'})
+        record = self._owned(task_id)
+        # Never signal a model, an unrelated process or a reused PID.
+        if alive(record) and record.get('sandbox_launch') == 'dispatching':
+            try:
+                os.kill(record['pid'], signal.SIGTERM)
+            except ProcessLookupError:
+                pass
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            result = self.status(task_id=task_id)
+            if result['status'] in TERMINAL:
+                return dict(result, cancel_accepted=True)
+            time.sleep(.05)
+        return dict(self.status(task_id=task_id), cancel_accepted=True, cancel_confirmed=False)
+
+    def list(self, project_id=None):
+        rows = []
+        for p in self.records.glob('project-task-*.json'):
+            record = read_json(p)
+            if record.get('world') == str(self.world) and (project_id is None or record.get('project_id') == project_id):
+                rows.append((record.get('created', 0), record['task_id']))
+        rows.sort(reverse=True)
+        return {'format': TASK_FORMAT, 'tasks': [self.status(task_id=task_id) for _, task_id in rows]}
+
+    def _artifact_input(self, record):
+        task = record['project']['tasks'][record['action']]
+        if task['kind'] != 'artifact':
+            return None
+        wanted = task['artifact']
+        relative(wanted)
+        rows = []
+        for p in self.records.glob('project-task-*.json'):
+            r = read_json(p)
+            if r.get('world') == str(self.world) and r.get('project_id') == record['project_id'] and r.get('action') == task['from'] and r.get('snapshot', {}).get('source_set') == record['snapshot']['source_set']:
+                rows.append(r)
+        for previous in sorted(rows, key=lambda r: r['created'], reverse=True):
+            if self._request(previous)['status'] != 'done':
+                continue
+            for artifact in (previous.get('receipt') or {}).get('artifacts', []):
+                if artifact['path'] == wanted:
+                    location = Path(artifact['host_path'])
+                    if location.is_symlink() or not location.is_file() or digest(location.read_bytes()) != artifact['sha256']:
+                        raise error('artifact_drift', 'Built artifact bytes changed; rebuild under a new request_id')
+                    if not artifact.get('executable'):
+                        raise error('artifact_not_executable', 'Declared runtime artifact is not executable', artifact=wanted)
+                    return artifact
+        raise error('missing_artifact', 'No successful artifact producer for this exact source set',
+                    project_id=record['project_id'], action=task['from'], artifact=wanted, source_set=record['snapshot']['source_set'])
+
+    def _snapshot(self, record):
+        snapshot = record['snapshot']
+        base = Path(snapshot['path']).absolute()
+        if not base.is_dir() or base.resolve() != base:
+            raise error('snapshot_invalid', 'Snapshot must be a canonical sealed directory')
+        expected = {item['path'] for item in snapshot['files']} | {'.project-snapshot.json'}
+        actual = set()
+        for folder, dirs, names in os.walk(base, followlinks=False):
+            for name in dirs + names:
+                candidate = Path(folder) / name
+                if candidate.is_symlink():
+                    raise error('snapshot_drift', 'Snapshot contains a symlink')
+            actual.update(str((Path(folder) / name).relative_to(base)).replace(os.sep, '/') for name in names)
+        if actual != expected:
+            raise error('snapshot_drift', 'Snapshot file set changed', missing=sorted(expected - actual), extra=sorted(actual - expected))
+        recorded = read_json(base / '.project-snapshot.json')
+        supplied = {key: value for key, value in snapshot.items() if key not in ('path', 'reused')}
+        if recorded != supplied:
+            raise error('snapshot_drift', 'Snapshot receipt differs from the accepted input binding')
+        for item in snapshot['files']:
+            location = regular(base, item['path'])
+            if digest(location.read_bytes()) != item['sha256']:
+                raise error('snapshot_drift', 'Sealed input bytes differ from their manifest', path=item['path'])
+        return base
+
+    def _sandbox(self, record, out, artifact=None):
+        if not sys.platform.startswith('linux'):
+            raise error('unsupported_platform', 'Production project execution requires Linux bubblewrap; no unisolated fallback')
+        import yohaku_tools as tools
+        task = record['project']['tasks'][record['action']]
+        snapshot = self._snapshot(record)
+        runtime = record['plan'].get('runtime') or {}
+        env = {}
+        mounts = ['--ro-bind', str(snapshot), '/project', '--bind', str(out), '/output']
+        if task['kind'] == 'python':
+            argv = ['/usr/bin/python3', '-B', '/project/' + str(relative(task['entry'])), *task.get('args', [])]
+        elif task['kind'] == 'cargo':
+            from yohaku_dev import validate_profile
+            tc, registry = validate_profile({'format': 'yohaku-dev-runtime/1',
+                                             'toolchain': runtime.get('toolchain'), 'registry': runtime.get('registry')})
+            mounts += ['--ro-bind', str(tc), '/opt/yohaku/rust']
+            for part in ('src', 'cache', 'index'):
+                mounts += ['--ro-bind', str(registry / part), '/output/cargo/registry/' + part]
+            args = list(task.get('args', []))
+            if '--offline' not in args:
+                args.append('--offline')
+            if '--locked' not in args:
+                args.append('--locked')
+            if not args or args[0] not in ('build', 'check', 'test'):
+
+                raise error('invalid_cargo_action', 'Cargo actions require build/check/test and --offline --locked')
+            argv = ['/opt/yohaku/rust/bin/cargo', *args]
+            env.update(PATH='/opt/yohaku/rust/bin:/usr/bin:/bin', RUSTC='/opt/yohaku/rust/bin/rustc',
+                       CARGO_HOME='/output/cargo', CARGO_TARGET_DIR='/output/target', CARGO_NET_OFFLINE='true',
+                       CARGO_BUILD_JOBS='2', LD_LIBRARY_PATH='/opt/yohaku/rust/lib')
+        elif task['kind'] == 'artifact':
+            if artifact is None:
+                raise error('missing_artifact', 'Artifact input has not been resolved')
+            dest = out / relative(task['artifact'])
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(artifact['host_path'], dest)
+            if digest(dest.read_bytes()) != artifact['sha256']:
+                raise error('artifact_drift', 'Artifact changed while preparing the run')
+            mounts += ['--ro-bind', str(dest), '/output/' + task['artifact']]
+            argv = ['/output/' + task['artifact'], *task.get('args', [])]
+        else:
+            raise error('unknown_adapter', 'Task kind is not supported')
+        if record['plan'].get('argv') != argv or record['plan'].get('cwd', '/project') != '/project':
+            raise error('plan_mismatch', 'Trusted task plan does not match the declared adapter')
+        sandbox_world = self.work / record['task_id'] / 'sandbox-world'
+        for name in ('files', '.yohaku', 'tools/state/project-task'):
+            (sandbox_world / name).mkdir(mode=0o700, parents=True, exist_ok=True)
+        registry = sandbox_world / '.yohaku/files.json'
+        if not registry.exists():
+            atomic(registry, {'format': 'yohaku-workspace/0.1', 'files': []})
+        entry = {'id': 'project-task', 'name': 'Project task', 'program': '/usr/bin/python3', 'args': [], 'wayland': False}
+        command = tools.command(sandbox_world, entry)
+        split = command.index('--')
+        command = command[:split]
+        old_cwd = command.index('--chdir')
+        del command[old_cwd:old_cwd + 2]
+        # Reuse the existing sandbox and preflight; only the isolated scratch world is writable.
+        world_index = command.index(str(sandbox_world))
+        command[world_index - 1] = '--ro-bind'
+        command += mounts
+        for key, value in env.items():
+            command += ['--setenv', key, value]
+        command += ['--chdir', '/project', '--', *argv]
+        tools.check(sandbox_world)
+        return tools, sandbox_world, command
+
+    def _run_backend(self, record, out, stop):
+        artifact = self._artifact_input(record)
+        tools, sandbox_world, command = self._sandbox(record, out, artifact)
+        truncated = threading.Event()
+        io_errors = []
+        readers = []
+        process = None
+        cancelled = False
+        timed_out = False
+        failure = None
+        if self._request(record)['status'] == 'stopping' or stop.is_set():
+            return {'exit_code': None, 'cleanup_confirmed': True, 'cancel_observed': True,
+                    'output_complete': True, 'output_truncated': False, 'error': None, 'adapter': 'not-started'}
+        # Reserve dispatch before Popen; an exception after this boundary is conservatively unknown.
+        self._patch(record['task_id'], sandbox_launch='dispatching')
+        # Pin all caller-independent source/output roots, not only the scratch world.
+        with contextlib.ExitStack() as stack:
+            pinned_argv = command
+            descriptors = []
+            for mount_root in (sandbox_world, Path(record['snapshot']['path']), out):
+                pinned = stack.enter_context(tools.PinnedMounts(pinned_argv, mount_root))
+                pinned_argv = pinned.argv
+                descriptors.extend(pinned.fds)
+            try:
+                child = subprocess.Popen(pinned_argv, pass_fds=tuple(descriptors), stdin=subprocess.DEVNULL,
+                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={}, close_fds=True,
+                                         start_new_session=True)
+            except OSError as exc:
+                return {'exit_code': None, 'cleanup_confirmed': True, 'cancel_observed': False,
+                        'output_complete': True, 'output_truncated': False, 'adapter': 'not-started',
+                        'error': {'kind': 'launch_failed', 'message': str(exc)[:2048]}}
+        def terminate():
+            current = identity(child.pid)
+            if current and process and current['start'] == process['start']:
+                try:
+                    os.killpg(child.pid, signal.SIGTERM)
+                except ProcessLookupError:
+                    pass
+            elif child.poll() is None:
+                child.terminate()
+            try:
+                child.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                current = identity(child.pid)
+                if current and process and current['start'] == process['start']:
+                    try:
+                        os.killpg(child.pid, signal.SIGKILL)
+                    except ProcessLookupError:
+                        pass
+                elif child.poll() is None:
+                    child.kill()
+                child.wait(timeout=3)
+        def capture(pipe, stream):
+            location = self.logs / (record['task_id'] + '.' + stream)
+            written = 0
+            try:
+                with location.open('xb') as sink:
+                    while True:
+                        chunk = os.read(pipe.fileno(), 65536)
+                        if not chunk:
+                            break
+                        remaining = max(0, LOG_LIMIT - written)
+                        if len(chunk) > remaining:
+                            sink.write(chunk[:remaining]); written += remaining
+                            truncated.set(); stop.set()
+                        else:
+                            sink.write(chunk); written += len(chunk)
+                        sink.flush()
+                    os.fsync(sink.fileno())
+            except Exception as exc:
+                io_errors.append(type(exc).__name__ + ': ' + str(exc)[:500]); stop.set()
+            finally:
+                pipe.close()
+        try:
+            process = identity(child.pid)
+            self._patch(record['task_id'], sandbox_process=process, command=command)
+            readers = [threading.Thread(target=capture, args=(child.stdout, 'stdout'), daemon=True),
+                       threading.Thread(target=capture, args=(child.stderr, 'stderr'), daemon=True)]
+            for thread in readers:
+                thread.start()
+            timeout = record['project']['tasks'][record['action']].get('timeout_seconds', 900)
+            deadline = time.monotonic() + timeout
+            heartbeat = time.monotonic()
+            while child.poll() is None:
+                request = self._request(record)
+                if request['status'] == 'stopping':
+                    cancelled = True; stop.set()
+                if time.monotonic() >= deadline:
+                    timed_out = True; stop.set()
+                if stop.is_set():
+                    terminate()
+                    break
+                if time.monotonic() - heartbeat > 10:
+                    self._chat({'command': 'chat_update', 'id': record['request_id'], 'token': record['token'],
+                                'last_status': 'project process running'})
+                    heartbeat = time.monotonic()
+                time.sleep(.05)
+        except Exception as exc:
+            failure = exc.to_dict() if isinstance(exc, ProjectError) else {'kind': type(exc).__name__, 'message': str(exc)[:2048]}
+        finally:
+            if child.poll() is None:
+                terminate()
+            child.wait()
+            for thread in readers:
+                if thread.ident is not None:
+                    thread.join(timeout=5)
+            if not readers:
+                child.stdout.close(); child.stderr.close()
+        complete = bool(readers) and all(thread.ident is not None and not thread.is_alive() for thread in readers) and not io_errors
+        if truncated.is_set():
+            failure = {'kind': 'output_limit', 'message': 'Output exceeded 64 MiB per stream; captured prefix is explicitly truncated'}
+        elif io_errors:
+            failure = {'kind': 'output_io', 'message': '; '.join(io_errors)}
+        elif timed_out:
+            failure = {'kind': 'timeout', 'message': 'Project task exceeded its declared wall-clock limit'}
+        elif not complete and failure is None:
+            failure = {'kind': 'output_unknown', 'message': 'Output drain did not complete; process result is not sufficient'}
+        return {'exit_code': child.returncode, 'cleanup_confirmed': child.returncode is not None and (complete or not readers),
+                'cancel_observed': cancelled, 'output_complete': complete and not truncated.is_set(),
+                'output_truncated': truncated.is_set(), 'error': failure, 'adapter': 'linux-bubblewrap', 'process': process}
+
+    def _collect_artifacts(self, record, out):
+        result = []
+        for name in record['project']['tasks'][record['action']].get('artifacts', []):
+            location = regular(out, name)
+            data = location.read_bytes()
+            result.append({'id': record['task_id'] + ':' + name, 'path': name, 'host_path': str(location),
+                           'sha256': digest(data), 'bytes': len(data), 'executable': bool(location.stat().st_mode & 0o111),
+                           'producer_task_id': record['task_id'], 'snapshot_id': record['snapshot']['id'],
+                           'source_set': record['snapshot']['source_set']})
+        return result
+
+    def _worker_matches(self, record):
+        current = identity(os.getpid())
+        return bool(current and record.get('pid') == current['pid'] and record.get('start') == current['start'])
+
+    def run(self, task_id):
+        # A second worker must not execute a running/unknown request again.
+        with locked(self._record_path(task_id).with_suffix('.execution.lock')):
+            with locked(self._record_path(task_id).with_suffix('.lock')):
+                record = self._owned(task_id)
+            request = self._request(record)
+            if request['status'] in TERMINAL:
+                return 0
+            if record.get('receipt'):
+                self._commit_receipt(record, request)
+                return 0
+            if not self._worker_matches(record):
+                if request['status'] in ('running', 'stopping'):
+                    self._chat({'command': 'chat_reconcile', 'id': record['request_id'], 'older_than_ms': 0})
+                return 2
+            return self._run_owned(task_id)
+
+    def _run_owned(self, task_id):
+        # Acquire the submit lock once: the parent must finish the durable PID binding first.
+        with locked(self._record_path(task_id).with_suffix('.lock')):
+            record = self._owned(task_id)
+        stop = threading.Event()
+        previous = {}
+        if threading.current_thread() is threading.main_thread():
+            for number in (signal.SIGTERM, signal.SIGINT):
+                previous[number] = signal.signal(number, lambda *_: stop.set())
+        receipt = None
+        out = self.work / task_id / 'output'
+        out.mkdir(mode=0o700, parents=True, exist_ok=True)
+        try:
+            self._snapshot(record)
+            request = self._request(record)
+            if request['status'] in TERMINAL:
+                return 0
+            if request['status'] == 'stopping' or stop.is_set():
+                receipt = {'exit_code': None, 'cleanup_confirmed': True, 'cancel_observed': True,
+                           'output_complete': True, 'output_truncated': False, 'error': None, 'adapter': 'not-started'}
+            else:
+                self._chat({'command': 'chat_update', 'id': record['request_id'], 'token': record['token'],
+                            'last_status': 'validating fixed snapshot and sandbox'})
+                receipt = self._run_backend(record, out, stop)
+                if receipt.get('exit_code') == 0 and receipt.get('error') is None and not receipt.get('cancel_observed'):
+                    receipt['artifacts'] = self._collect_artifacts(record, out)
+                self._snapshot(record)
+        except Exception as exc:
+            failure = exc.to_dict() if isinstance(exc, ProjectError) else {'kind': type(exc).__name__, 'message': str(exc)[:2048]}
+            if receipt is None:
+                try:
+                    dispatched = self._owned(task_id).get('sandbox_launch') == 'dispatching'
+                except Exception:
+                    dispatched = True
+                receipt = {'exit_code': None, 'cleanup_confirmed': not dispatched, 'cancel_observed': False,
+                           'output_complete': not dispatched, 'output_truncated': False,
+                           'adapter': 'linux-bubblewrap-outcome-unknown' if dispatched else 'not-started'}
+            receipt['error'] = failure
+        finally:
+            for number, handler in previous.items():
+                signal.signal(number, handler)
+        receipt['finished'] = time.time()
+        self._patch(task_id, receipt=receipt)
+        # Real exit and output evidence is durable before the Rust business terminal state.
+        try:
+            self._commit_receipt(self._owned(task_id), self._request(record))
+        except Exception as exc:
+            self._patch(task_id, commit_error=type(exc).__name__)
+            return 2
+        return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('mode', choices=['run'])
+    parser.add_argument('task_id')
+    parser.add_argument('--state-dir')
+    args = parser.parse_args()
+    state = private_dir(args.state_dir or default_state())
+    if not re.fullmatch(r'project-task-[0-9a-f]{32}', args.task_id):
+        raise error('invalid_task_id', 'Invalid internal worker identity')
+    record = read_json(state / 'records' / (args.task_id + '.json'))
+    tasks = Tasks(record['world'], state_dir=state)
+    return tasks.run(args.task_id)
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_project_tasks.py"
+```

@@ -1,0 +1,31 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+{
+  "environment": {
+    "YOHAKU_CODEX_AUTH_HOME": "/absolute/private/auth-home",
+    "YOHAKU_CODEX_PROVIDER_FILE": "/absolute/private/provider.json",
+    "YOHAKU_CODEX_LINUX": "/absolute/bin/codex-linux"
+  },
+  "profile": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "budget": {
+      "timeout_seconds": 1200,
+      "max_tool_calls": 180
+    }
+  },
+  "poll_seconds": 5
+}
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/config/sol.example.json"
+```

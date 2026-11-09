@@ -1,0 +1,79 @@
+{
+  "format": "yohaku-stage2-delivery-export/1",
+  "source": "sol-autonomous-workflow-20261108-01 stage2 producer-snapshot",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "9c1d20162cd9135dc30d4484cef83937f0401d891506738c264061fa97799f8c",
+      "bytes": 4158
+    },
+    {
+      "path": "READ-REUSE.json",
+      "sha256": "4e5e56930c03d8e3aa6edddefc572fb5ae52bbbcdecf8d5425de97970681132e",
+      "bytes": 1469
+    },
+    {
+      "path": "rerun.py",
+      "sha256": "93ee5687b060e162f48510021fddcef796a943555f209437b82b676b6148876e",
+      "bytes": 10313
+    },
+    {
+      "path": "inspect.py",
+      "sha256": "408ee0a9237245dd2899603916a8950be838682ff65724977234c68fc5b6f0b9",
+      "bytes": 422,
+      "published_sha256": "baf5dd8b66ebbac5c26accf05733dd04f8515ede8dd69d7dfd6df0be0b00697c",
+      "export_note": "Removed one extra final blank line; host-created inspect.py remains otherwise byte-identical."
+    },
+    {
+      "path": "test_handoff.py",
+      "sha256": "18da372f2e48e9861b82a218b5fda708587eb76ef832daf1b481266ce3257811",
+      "bytes": 8412
+    },
+    {
+      "path": "inherited/EXPERIENCE.md",
+      "sha256": "e7f8e43b94cdfc0cd191774024105c0376b3247de4e15786fdbe2f494a4c3241",
+      "bytes": 5461
+    },
+    {
+      "path": "inherited/README.md",
+      "sha256": "a5b6bae4f14384a30db2e213bd4a0412be2ac0ff4c9419aaebc39429a3c5338d",
+      "bytes": 6583
+    },
+    {
+      "path": "inherited/brief.py",
+      "sha256": "0a7b3cd32b5d935ee29555030306ab69903e0ad5c9538d60a36436abd24dd56d",
+      "bytes": 6851
+    },
+    {
+      "path": "inherited/retriever_core.py",
+      "sha256": "820925f203c3cd1aa19448ad36bc8ad4eb9277c49758ee00f817efbfa72228eb",
+      "bytes": 7286
+    },
+    {
+      "path": "inherited/test_brief.py",
+      "sha256": "16f19f5b734fe31dd720ea4ecdbbfa53291d96d8de0ed15f46c9fff9e09bd04b",
+      "bytes": 12710
+    },
+    {
+      "path": "inherited/verify.py",
+      "sha256": "d83cd66c183b789c61dcb49b9b4cd2421aacf433a87bd93477b1c7c417413006",
+      "bytes": 1659
+    },
+    {
+      "path": "input/document.md",
+      "sha256": "a47d6cdfdcfad0dc388ad1407c1e337a476044721dc7f14308cba33349260a44",
+      "bytes": 7612
+    },
+    {
+      "path": "input/metadata.json",
+      "sha256": "7a61c3c162fd4a0ef88769765a733cc2b629078344db81cc5a296851029c0ec9",
+      "bytes": 312
+    },
+    {
+      "path": "input/source.tex",
+      "sha256": "2ed25e0967228809a056710f204d6c61b4aa141c8950e6ac38aa457fc3fc1930",
+      "bytes": 8067
+    }
+  ],
+  "wrappers": "Fresh Loom raw wrappers preserve exported bytes; not original source metadata."
+}

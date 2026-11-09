@@ -1,0 +1,591 @@
+#!/usr/bin/env python3
+"""Two-stage host controller. This module is deliberately inert when imported.
+
+This implementation is under construction: submit is disabled until its
+isolation, deadline and acceptance contracts have been exercised.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path, PurePosixPath
+import shutil
+import subprocess
+import sys
+import time
+import zipfile
+
+HERE = Path(__file__).resolve().parent
+REPO = HERE.parents[1]
+PREVIOUS = REPO / 'diagnostics/reusable-workflow-20261107-01'
+MATERIALS = Path(os.environ.get('YOHAKU_WORKFLOW_MATERIALS_ROOT', str(REPO / 'diagnostics/internal-project-materials-host-20261107-01'))).resolve()
+DATA = Path(os.environ.get('YOHAKU_WORKFLOW_DATA_ROOT', str(HERE))).resolve()
+RUNS = Path(os.environ.get('YOHAKU_WORKFLOW_RUNS_ROOT', str(HERE / 'runs'))).resolve()
+ORIGINAL = PREVIOUS / 'sol-workflow/workflow.py'
+
+spec = importlib.util.spec_from_file_location('accepted_workflow', ORIGINAL)
+accepted = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(accepted)
+
+
+def patch_once(path: Path, old: str, new: str) -> dict:
+    """Apply an exact, recorded patch only to a new isolated candidate."""
+    raw = path.read_bytes()
+    text = raw.decode('utf-8')
+    if text.count(old) != 1:
+        raise ValueError(f'Candidate patch anchor mismatch: {path.name}')
+    result = text.replace(old, new).encode('utf-8')
+    path.write_bytes(result)
+    return {'path': str(path), 'before_sha256': hashlib.sha256(raw).hexdigest(),
+            'after_sha256': hashlib.sha256(result).hexdigest()}
+
+
+def patch_candidate(candidate: Path) -> list[dict]:
+    """Constrain this run's model, browser access and overall wall clock."""
+    nodes = candidate / 'agent/yohaku_ai_nodes.py'
+    groups = candidate / 'agent/yohaku_experiment_groups.py'
+    changes = []
+    changes.append(patch_once(nodes,
+        " value=profile(value);row=catalog(value['provider'])['backends'][0]",
+        " value=profile(value)\n"
+        " if (value['provider'],value['model'],value['reasoning_effort']) != "
+        "('openai','gpt-6.1-sol','high'):raise ValueError('Host requires Sol/high for every node')\n"
+        " row=catalog(value['provider'])['backends'][0]"))
+    changes.append(patch_once(nodes,
+        'allowed=NAMES | BROWSER_NAMES | (DOCUMENT_TOOLS | PROJECT_NAMES if node_context.get(\'project_scopes\') else READ_DOCUMENT_TOOLS)',
+        'allowed=NAMES | (DOCUMENT_TOOLS | PROJECT_NAMES if node_context.get(\'project_scopes\') else READ_DOCUMENT_TOOLS)'))
+    instruction = nodes.read_text()
+    start = instruction.index('The same public browser_status')
+    end = instruction.index('Read archived detail explicitly on demand;', start)
+    changes.append(patch_once(nodes, instruction[start:end],
+        'Browser tools are unavailable in this isolated workflow. '))
+    changes.append(patch_once(groups,
+        "if g['started_at'] is None:g.update(started_at=time.time(),deadline=time.time()+LIMITS['seconds'])",
+        "if g['started_at'] is None:\n"
+        "     start=time.time();cap=float(os.environ['YOHAKU_WORKFLOW_ABSOLUTE_DEADLINE'])\n"
+        "     if cap<=start:raise BudgetExceeded('Overall workflow wall-time budget exhausted')\n"
+        "     g.update(started_at=start,deadline=min(start+LIMITS['seconds'],cap))"))
+    combined = {}
+    for row in changes:
+        path = row['path']
+        if path not in combined:
+            combined[path] = {'path': path, 'before_sha256': row['before_sha256']}
+        combined[path]['after_sha256'] = row['after_sha256']
+    return list(combined.values())
+
+
+def static_check() -> dict:
+    """Check source anchors without copying a candidate or starting a model."""
+    files = MATERIALS / 'candidate/agent'
+    nodes = (files / 'yohaku_ai_nodes.py').read_text()
+    groups = (files / 'yohaku_experiment_groups.py').read_text()
+    checks = {
+        'profile_anchor': nodes.count(" value=profile(value);row=catalog(value['provider'])['backends'][0]") == 1,
+        'browser_anchor': nodes.count("allowed=NAMES | BROWSER_NAMES | (DOCUMENT_TOOLS | PROJECT_NAMES if node_context.get('project_scopes') else READ_DOCUMENT_TOOLS)") == 1,
+        'deadline_anchor': groups.count("if g['started_at'] is None:g.update(started_at=time.time(),deadline=time.time()+LIMITS['seconds'])") == 1,
+        'native_watchdog': 'self.ensure_watch(group)' in groups and "time.time()>=g['deadline']" in groups,
+    }
+    return {'checks': checks, 'passed': all(checks.values()), 'starts_models': False,
+            'warning': 'Anchors alone do not prove end-to-end isolation or deadline enforcement.'}
+
+
+class StageBackend(accepted.SolBackend):
+    """Stage-specific adapter for the previously accepted durable engine."""
+    def __init__(self, run, state):
+        super().__init__(run, state)
+        self.number = int(run.parent.name.removeprefix('stage'))
+        if self.number not in (1, 2):
+            raise ValueError('Invalid stage')
+        self.workflow = run.parents[1]
+        self.input = DATA / 'inputs' / f'stage{self.number}' / 'work'
+        self.hidden = DATA / 'control' / f'stage{self.number}'
+
+    def bind(self):
+        super().bind()
+        import yohaku_ai_nodes, yohaku_codex_tasks, yohaku_experiment_groups
+        modules = {m.__name__: str(Path(m.__file__).resolve())
+                   for m in (yohaku_ai_nodes, yohaku_codex_tasks, yohaku_experiment_groups)}
+        if any(not Path(path).is_relative_to(self.candidate.resolve()) for path in modules.values()):
+            raise ValueError('A node/host module came from another candidate')
+        if Path(os.environ['HOME']).resolve() != (self.run / 'home').resolve():
+            raise ValueError('Stage HOME differs from its private home')
+        accepted.save(self.evidence / 'BIND-IDENTITY.json', {'pid': os.getpid(), 'home': os.environ['HOME'],
+            'state_root': str(yohaku_codex_tasks.state_root()), 'modules': modules})
+
+    def _candidate(self):
+        """Build and seal a per-stage candidate before binding any host API."""
+        marker = self.candidate / 'HOST-PATCHES.json'
+        if marker.exists():
+            for row in accepted.load(marker):
+                path = self.candidate / row['path']
+                if accepted.file_sha(path) != row['after_sha256']:
+                    raise ValueError('Isolated candidate patch drift: ' + str(path))
+            return accepted.load(marker)
+        if self.candidate.exists():
+            raise accepted.OutcomeUnknown('Unsealed candidate exists; inspect instead of rebuilding')
+        staging = self.run / 'candidate.building'
+        if staging.exists():
+            raise accepted.OutcomeUnknown('Incomplete candidate build; inspect same request before recovery')
+        original = MATERIALS / 'candidate'
+        manifest = accepted.load(original / 'CANDIDATE.json')
+        if accepted.file_sha(original / 'CANDIDATE.json') != '42316804edf83adba905d4029e44e343d67c421047f18d9b8a1b17918110a680':
+            raise ValueError('Accepted candidate manifest changed')
+        staging.mkdir(parents=True)
+        for row in manifest['files']:
+            raw = (original / row['path']).read_bytes()
+            if accepted.digest(raw) != row['sha256']:
+                raise ValueError('Accepted candidate input changed: ' + row['path'])
+            accepted.once(staging / row['path'], raw, (original / row['path']).stat().st_mode & 0o777)
+        accepted.once(staging / 'CANDIDATE.json', (original / 'CANDIDATE.json').read_bytes())
+        patches = patch_candidate(staging)
+        for row in patches:
+            row['path'] = str(Path(row['path']).relative_to(staging))
+        accepted.save(staging / 'HOST-PATCHES.json', patches)
+        staging.rename(self.candidate)
+        return patches
+
+    def _verify_freeze(self):
+        expected = accepted.load(self.workflow / 'STATE.json')['input_freeze_sha256']
+        if accepted.file_sha(DATA / 'INPUT-FREEZE.json') != expected:
+            raise ValueError('The pre-submission input freeze manifest changed')
+        rows = accepted.load(DATA / 'INPUT-FREEZE.json')['files']
+        for row in rows:
+            path = DATA / row['path']
+            if not path.is_file() or accepted.file_sha(path) != row['sha256'] or path.stat().st_size != row['bytes']:
+                raise ValueError('Frozen input or control expectation changed: ' + row['path'])
+        return {'manifest_sha256': accepted.file_sha(DATA / 'INPUT-FREEZE.json'), 'files': len(rows)}
+
+    def prepare(self):
+        reused = self.verify_old()
+        frozen = self._verify_freeze()
+        patches = self._candidate()
+        for world in (self.world, self.control_world):
+            world.mkdir(parents=True, exist_ok=True)
+            accepted.once(world / 'macros/raw.source.md', (MATERIALS / 'work-world/macros/raw.source.md').read_bytes())
+        self.bind()
+        manifest = accepted.load(self.input / 'project.json')
+        manifest.update(id=self.pid, root=self.work_rel)
+        for row in manifest['assets']:
+            raw = (self.input / row['path']).read_bytes()
+            if accepted.digest(raw) != row['sha256']:
+                raise ValueError('Frozen work asset differs: ' + row['path'])
+            accepted.once(self.work_root / row['path'], raw, 0o444)
+        source_copies = []
+        for name in manifest['sources']:
+            original = (self.input / name).read_bytes()
+            raw = original.replace(b'files/internal-offline-retriever-20261107-01/work', self.work_rel.encode())
+            # The new stage-specific sources use a relative output declaration;
+            # make only that YAML output path project-relative in this copy.
+            output = name.removesuffix('.tex')
+            relative_declaration = ('output: "' + output + '"').encode()
+            raw = raw.replace(relative_declaration, ('output: "' + self.work_rel + '/' + output + '"').encode())
+            accepted.once(self.work_root / name, raw)
+            source_copies.append({'path': name, 'input_sha256': accepted.digest(original),
+                                  'working_copy_sha256': accepted.digest(raw)})
+            self.nodes.workspace.execute({'command': 'adopt', 'path': self.work_rel + '/' + name})
+            self.nodes.workspace.execute({'command': 'sync', 'source': self.work_rel + '/' + name})
+        if self.number == 2:
+            self._install_handoff(manifest)
+        self.document(self.world, self.work_rel + '/project.json.tex', json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+        registration = self.work.call('project_register', {'manifest_source': self.work_rel + '/project.json.tex'})
+        group = self.groups.configure(self.gid)
+        if group['limits'] != accepted.LIMITS or group['started_at'] is not None:
+            raise ValueError('Group is not a fresh unstarted group')
+        creation = self.nodes.node_create(self.key + '-lead-create', f'自主实践阶段 {self.number} 负责人',
+            '阅读项目任务，自行决定实现、合作、检查和停止。', self.work_rel + '/lead-memory.md.tex',
+            profile=self.profile, project_ids=[self.pid])
+        node_id = creation['node']['node_id']
+        self.groups.bind(self.gid, [node_id])
+        result = {'node_id': node_id, 'node_request_id': self.key + '-initial', 'group_id': self.gid,
+                  'project_id': self.pid, 'work_world': str(self.world), 'control_world': str(self.control_world),
+                  'profile': self.profile, 'limits': group['limits'], 'reused_validation': reused,
+                  'work_registration': registration, 'input_freeze': frozen, 'host_patches': patches,
+                  'source_copies': source_copies,
+                  'workflow_template': 'two-stage-autonomous-evidence/1'}
+        accepted.save(self.evidence / 'PREPARED.json', result)
+        return result
+
+    def dispatch(self):
+        self.bind()
+        p = self.prepared()
+        current = self.nodes.node_status(p['node_id'], p['node_request_id'])
+        if current['status'] == 'unknown':
+            raise accepted.OutcomeUnknown('Native reservation exists without start receipt; retain exact ID')
+        if current['status'] != 'idle':
+            return current
+        deadline = accepted.load(self.workflow / 'DEADLINE.json')['absolute_deadline']
+        os.environ['YOHAKU_WORKFLOW_ABSOLUTE_DEADLINE'] = str(deadline)
+        prompt = (f'你获授权的项目是 {self.pid}，根目录 {self.work_rel}；请先读自己的记忆和 TASK.md，'
+                  '完成其中的任务。你自行决定是否创建同伴、职责、检查、纠错和停止。'
+                  f'宿主已绑定共享预算组 {self.gid}，至多3节点、12次派发、180次工具调用、1200秒；'
+                  '全部节点须使用 openai/gpt-6.1-sol/high。未知结果查询原ID，不重复派发。')
+        args = {'node_id': p['node_id'], 'request_id': p['node_request_id'], 'task': prompt, 'profile': self.profile}
+        accepted.once(self.evidence / 'DISPATCH-ARGS.json', (json.dumps(args, sort_keys=True, ensure_ascii=False) + '\n').encode())
+        result = self.nodes.node_dispatch(**args)
+        accepted.save(self.evidence / 'DISPATCH.json', result)
+        return result
+
+    def _pin_producer(self):
+        """Pin only a successful public task snapshot and verified artifacts."""
+        marker = self.evidence / 'PRODUCER.json'
+        if marker.exists():
+            return accepted.load(marker)
+        self.bind()
+        helpers = self.load_accept_helpers()
+        description = self.work.call('project_describe', {'project_id': self.pid})
+        actions = list(description['manifest']['tasks'])
+        if not actions:
+            raise ValueError('No registered producer task')
+        current = self.work.call('project_plan', {'project_id': self.pid, 'action': actions[0]})['source_set']
+        found = []
+        for row in self.work.call('task_list', {'project_id': self.pid})['tasks']:
+            status = self.work.call('task_status', {'task_id': row['task_id']})
+            if status.get('source_set') != current or not helpers['succeeded'](status):
+                continue
+            record = self.work.tasks._owned(status['task_id'])
+            snap = record['snapshot']
+            if snap['id'] != status['snapshot_id'] or snap['source_set'] != current:
+                raise ValueError('Producer identity mismatch')
+            proof = self.work.call('task_provenance', {'task_id': status['task_id']})
+            if not proof.get('ok') or not proof.get('snapshot_valid'):
+                continue
+            names = {r['path'] for r in snap['files']}
+            required = {'handoff/manifest.json', 'handoff/brief.py'} if self.number == 1 else {'rerun.py'}
+            if required <= names:
+                found.append((status, snap, proof))
+        if not found:
+            raise ValueError('No successful task with the current source set and required deliverables')
+        status, snap, proof = found[-1]
+        prefix = 'baseline/' if self.number == 1 else 'input/'
+        source_prefix = f'inputs/stage{self.number}/work/'
+        expected = {r['path'].removeprefix(source_prefix): (r['sha256'], r['bytes'])
+                    for r in accepted.load(DATA / 'INPUT-FREEZE.json')['files']
+                    if r['path'].startswith(source_prefix + prefix)}
+        actual = {r['path']: (r['sha256'], r['bytes']) for r in snap['files'] if r['path'].startswith(prefix)}
+        if not expected or actual != expected:
+            raise ValueError('Producer snapshot frozen input membership or bytes differ')
+        if self.number == 2:
+            transfer = accepted.load(self.evidence / 'HANDOFF-TRANSFER.json')['files']
+            expected_inherited = {r['destination']: (r['sha256'], r['bytes']) for r in transfer}
+            actual_inherited = {r['path']: (r['sha256'], r['bytes']) for r in snap['files'] if r['path'].startswith('inherited/')}
+            if expected_inherited != actual_inherited:
+                raise ValueError('Producer snapshot inherited handoff differs from transfer record')
+        pinned = self.evidence / 'producer-snapshot'
+        rows = []
+        for row in snap['files']:
+            name = helpers['safe_relative'](row['path'])
+            if (name.startswith('.provenance/') or name in ('.project-snapshot.json', 'project.json')
+                or row.get('role') in ('source', 'map', 'macro')):
+                continue
+            if name.endswith('.tex') and name != 'input/source.tex':
+                continue
+            raw = helpers['read_contained'](Path(snap['path']), name)
+            if accepted.digest(raw) != row['sha256'] or len(raw) != row['bytes']:
+                raise ValueError('Snapshot bytes changed: ' + name)
+            accepted.once(pinned / name, raw, 0o444)
+            rows.append({'path': name, 'sha256': row['sha256'], 'bytes': row['bytes'], 'role': row.get('role')})
+        if len(rows) > 512 or sum(r['bytes'] for r in rows) > 64 * 1024 * 1024:
+            raise ValueError('Producer snapshot exceeds fixed bounds')
+        result = {'task_id': status['task_id'], 'source_set': current, 'snapshot_id': snap['id'], 'files': rows}
+        accepted.save(self.evidence / 'PRODUCER-PROVENANCE.json', proof)
+        accepted.save(marker, result)
+        return result
+
+    def _install_handoff(self, manifest):
+        """Transfer an explicit, checked subset of the first fixed snapshot."""
+        previous = self.workflow / 'stage1'
+        matches = list(previous.glob('*/evidence/producer-snapshot'))
+        if len(matches) != 1:
+            raise ValueError('First-stage fixed producer snapshot is absent or ambiguous')
+        root = matches[0]
+        listing = accepted.load(root / 'handoff/manifest.json')
+        if set(listing) != {'files'} or not isinstance(listing['files'], list):
+            raise ValueError('Handoff manifest schema mismatch')
+        entries = listing['files']
+        if len(entries) > 64:
+            raise ValueError('Handoff exceeds file-count bound')
+        baseline_hashes = {r['sha256'] for r in accepted.load(DATA / 'INPUT-FREEZE.json')['files']
+                           if r['path'].startswith('inputs/stage1/work/baseline/')}
+        names = set()
+        transferred = []
+        helper = self.load_accept_helpers()['read_contained']
+        for row in entries:
+            if set(row) != {'path', 'role', 'sha256'} or row['role'] not in ('tool', 'instructions', 'experience'):
+                raise ValueError('Invalid handoff manifest entry')
+            name = row['path']
+            path = PurePosixPath(name)
+            if (not isinstance(name, str) or path.is_absolute() or '..' in path.parts or str(path) != name
+                or name in names or path.suffix.lower() not in ('.py', '.md', '.json', '.txt')
+                or any(x in name.lower() for x in ('baseline', 'material', 'private', 'memory', 'chat', 'conversation'))):
+                raise ValueError('Handoff path/type rejected: ' + str(name))
+            raw = helper(root / 'handoff', name)
+            if (len(raw) > 256 * 1024 or accepted.digest(raw) != row['sha256'] or row['sha256'] in baseline_hashes
+                or b'\x00' in raw or raw.startswith((b'PK\x03\x04', b'\x1f\x8b'))):
+                raise ValueError('Handoff content/hash rejected: ' + name)
+            raw.decode('utf-8')
+            target = 'inherited/' + name
+            accepted.once(self.work_root / target, raw, 0o444)
+            manifest['assets'].append({'path': target, 'sha256': accepted.digest(raw)})
+            names.add(name)
+            transferred.append({**row, 'bytes': len(raw), 'destination': target})
+        if not {'brief.py', 'README.md', 'EXPERIENCE.md'} <= names:
+            raise ValueError('Handoff lacks required files')
+        if sum(r['bytes'] for r in transferred) > 1024 * 1024:
+            raise ValueError('Handoff exceeds total byte bound')
+        accepted.save(self.evidence / 'HANDOFF-TRANSFER.json', {'files': transferred,
+            'checks': 'allowlisted role, name, UTF-8, type, size and exact baseline hashes',
+            'limitation': 'These mechanical checks cannot prove that text does not embed source content.'})
+
+    def accept_submit(self):
+        """Run code separately: hidden expected data never enters this sandbox."""
+        self.bind()
+        producer = self._pin_producer()
+        self._verify_freeze()
+        source = self.evidence / 'producer-snapshot'
+        execution = self.control_root / 'candidate'
+        assets = []
+        for row in producer['files']:
+            raw = (source / row['path']).read_bytes()
+            if accepted.digest(raw) != row['sha256']:
+                raise ValueError('Pinned source changed')
+            accepted.once(execution / row['path'], raw, 0o444)
+            assets.append({'path': 'candidate/' + row['path'], 'sha256': row['sha256']})
+        runner = (self.hidden / 'runner.py').read_text()
+        self.document(self.control_world, self.control_rel + '/runner.py.tex', runner)
+        manifest = {'format': 'yohaku-project/1', 'id': self.key + '-control', 'root': self.control_rel,
+                    'sources': ['runner.py.tex'], 'assets': assets, 'runtime': 'python',
+                    'tasks': {'accept': {'kind': 'python', 'entry': 'runner.py',
+                        'args': [f'stage{self.number}'], 'artifacts': ['results.zip'], 'timeout_seconds': 240}}}
+        self.document(self.control_world, self.control_rel + '/project.json.tex', json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
+        self.control.call('project_register', {'manifest_source': self.control_rel + '/project.json.tex'})
+        plan = self.control.call('project_plan', {'project_id': manifest['id'], 'action': 'accept'})
+        args = {'project_id': manifest['id'], 'action': 'accept', 'request_id': self.key + '-accept',
+                'expected_sources': plan['source_set']}
+        accepted.once(self.evidence / 'ACCEPT-ARGS.json', (json.dumps(args, sort_keys=True) + '\n').encode())
+        try:
+            existing = self.control.call('task_status', {'request_id': args['request_id']})
+        except Exception as exc:
+            if getattr(exc, 'kind', None) != 'unknown_task':
+                raise
+        else:
+            if existing['source_set'] != args['expected_sources']:
+                raise ValueError('Acceptance identity mismatch')
+            return existing
+        return self.control.call('task_submit', args)
+
+    def accept_status(self):
+        self.bind()
+        args = accepted.load(self.evidence / 'ACCEPT-ARGS.json')
+        status = self.control.call('task_status', {'request_id': args['request_id']})
+        terminal = status.get('execution') == 'ended' and (status.get('receipt') or {}).get('cleanup_confirmed')
+        result = {'terminal': bool(terminal), 'passed': False, 'status': status}
+        if not terminal:
+            return result
+        proof = self.control.call('task_provenance', {'task_id': status['task_id']})
+        accepted.save(self.evidence / 'ACCEPT-PROVENANCE.json', proof)
+        artifact = next((a for a in proof.get('artifacts', []) if a['path'] == 'results.zip'), {})
+        archive = self.control.tasks.work / status['task_id'] / 'output/results.zip'
+        if not (self.load_accept_helpers()['succeeded'](status) and proof.get('ok') is True
+                and proof.get('snapshot_valid') is True and artifact.get('valid') is True
+                and archive.is_file() and not archive.is_symlink() and artifact.get('actual_sha256') == accepted.file_sha(archive)):
+            result['reason'] = 'Execution task or its result artifact failed provenance'
+        else:
+            data = archive.read_bytes()
+            if len(data) > 16 * 1024 * 1024:
+                raise ValueError('Acceptance result archive exceeds bound')
+            accepted.once(self.evidence / 'results.zip', data)
+            output = self.evidence / 'accept-output'
+            with zipfile.ZipFile(archive) as z:
+                entries = z.infolist()
+                if len(entries) > 128 or sum(x.file_size for x in entries) > 32 * 1024 * 1024:
+                    raise ValueError('Acceptance extraction exceeds bounds')
+                seen = set()
+                for entry in entries:
+                    path = PurePosixPath(entry.filename)
+                    if (entry.is_dir() or path.is_absolute() or '..' in path.parts or str(path) != entry.filename
+                            or entry.filename in seen or ((entry.external_attr >> 16) & 0o170000) == 0o120000):
+                        raise ValueError('Unsafe acceptance output path')
+                    seen.add(entry.filename)
+                    accepted.once(output / entry.filename, z.read(entry))
+            self._verify_freeze()
+            target = self.evidence / 'acceptance.json'
+            command = [sys.executable, '-B', str(self.hidden / 'oracle.py'), f'stage{self.number}',
+                       str(self.hidden), str(output), str(self.evidence / 'producer-snapshot'), str(target)]
+            process = subprocess.run(command, capture_output=True, text=True, timeout=60)
+            result['checker'] = {'exit_code': process.returncode, 'stdout': process.stdout[-4000:], 'stderr': process.stderr[-4000:]}
+            if target.is_file():
+                result['report'] = accepted.load(target)
+                result['passed'] = process.returncode == 0 and result['report'].get('passed') is True
+        accepted.save(self.evidence / 'ACCEPT-RESULT.json', result)
+        return result
+
+
+def main() -> int:
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('command', choices=['check', 'submit', 'status', 'resume', 'cancel', 'stage-step', 'stage-cancel', 'run'])
+    p.add_argument('--request-id')
+    p.add_argument('--number', type=int, choices=[1, 2])
+    p.add_argument('--config', type=Path)
+    p.add_argument('--detach', action='store_true')
+    args = p.parse_args()
+    if args.command == 'check':
+        result = static_check()
+        print(json.dumps(result, indent=2))
+        return 0 if result['passed'] else 1
+    if not args.request_id or len(args.request_id) > 60:
+        raise ValueError('A stable request ID of at most 60 characters is required')
+    accepted.identifier(args.request_id)
+    root = RUNS / args.request_id
+    statefile = root / 'STATE.json'
+    def stage_engine(number):
+        return accepted.Engine(root / f'stage{number}', backend_factory=StageBackend)
+    def stage_id(number):
+        return args.request_id + f'-stage{number}'
+    def state():
+        return accepted.load(statefile)
+    def save(value):
+        accepted.save(statefile, value)
+    def child(command, number=None, wait=True):
+        cmd = [sys.executable, '-B', str(Path(__file__)), command, '--request-id', args.request_id]
+        if number is not None:
+            cmd += ['--number', str(number)]
+        if not wait:
+            with (root / 'controller.log').open('ab') as log:
+                process = subprocess.Popen(cmd, stdin=subprocess.DEVNULL, stdout=log, stderr=log, start_new_session=True)
+            return {'pid': process.pid}
+        process = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        return {'exit_code': process.returncode, 'stdout': process.stdout[-12000:], 'stderr': process.stderr[-4000:]}
+    if args.command == 'submit':
+        # Keep this disabled until all no-model integration tests are reviewed.
+        if os.environ.get('YOHAKU_REVIEWED_TWO_STAGE_CONTROLLER') != '1':
+            raise SystemExit('Submission disabled pending full integration verification.')
+        with accepted.locked(RUNS / (args.request_id + '.lock'), blocking=True):
+            if statefile.exists():
+                print(json.dumps(state(), ensure_ascii=False, indent=2)); return 0
+            config = accepted.config_value(args.config or PREVIOUS / 'ops/sol-host-config.json')
+            freeze = DATA / 'INPUT-FREEZE.json'
+            if not freeze.is_file():
+                raise ValueError('Inputs and independent expectations are not frozen')
+            # Verify all sealed inputs before reserving the new request.
+            for row in accepted.load(freeze)['files']:
+                path = DATA / row['path']
+                if not path.is_file() or accepted.file_sha(path) != row['sha256'] or path.stat().st_size != row['bytes']:
+                    raise ValueError('Input freeze mismatch: ' + row['path'])
+            root.mkdir(parents=True, exist_ok=True)
+            value = {'request_id': args.request_id, 'status': 'reserved', 'config': config,
+                     'workflow_template': 'two-stage-autonomous-evidence/1',
+                     'stage_engine_template_note': 'The inherited engine records its legacy small-task template label; stage tasks, inputs, expectations and acceptance are defined by this controller.',
+                     'host_controls': {'nodes_per_stage': 3, 'dispatches_per_stage': 12, 'tool_calls_per_stage': 180,
+                        'seconds_per_stage': 1200, 'overall_seconds': 2400, 'model_lock': 'openai/gpt-6.1-sol/high',
+                        'permissions': 'read/write/run inside granted project; no delete/import/browser; isolated worlds and private HOME'},
+                     'profile': config['profile'], 'limits': accepted.LIMITS,
+                     'input_freeze_sha256': accepted.file_sha(freeze), 'created_at': time.time(),
+                     'controller_sha256': accepted.file_sha(Path(__file__)), 'stages': {}}
+            save(value)
+        if args.detach:
+            print(json.dumps({**value, 'controller': child('run', wait=False)}, ensure_ascii=False)); return 0
+        args.command = 'run'
+    if not statefile.exists():
+        raise ValueError('Unknown workflow request ID; no execution started')
+    if args.command == 'status':
+        value = state()
+        value['stage_details'] = {}
+        for n in (1, 2):
+            path = root / f'stage{n}' / stage_id(n) / 'STATE.json'
+            if path.exists():
+                value['stage_details'][str(n)] = accepted.load(path)
+        if (root / 'DEADLINE.json').exists():
+            value['deadline'] = accepted.load(root / 'DEADLINE.json')
+        print(json.dumps(value, ensure_ascii=False, indent=2)); return 0
+    if args.command in ('stage-step', 'stage-cancel'):
+        if args.number is None:
+            raise ValueError('Internal stage operation requires a stage number')
+        deadline = root / 'DEADLINE.json'
+        if deadline.exists():
+            os.environ['YOHAKU_WORKFLOW_ABSOLUTE_DEADLINE'] = str(accepted.load(deadline)['absolute_deadline'])
+        eng = stage_engine(args.number)
+        result = eng.cancel(stage_id(args.number)) if args.command == 'stage-cancel' else eng.run(stage_id(args.number), one_step=True)
+        print(json.dumps(result, ensure_ascii=False)); return 0
+    if args.command == 'cancel':
+        accepted.once(root / 'CANCEL', b'cancel\n')
+        value = state()
+        n = value.get('active_stage')
+        if n:
+            result = child('stage-cancel', n)
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return 0 if result['exit_code'] == 0 else 2
+        print(json.dumps({'cancel_requested': True})); return 0
+    if args.command == 'resume':
+        if args.detach:
+            print(json.dumps(child('run', wait=False))); return 0
+        args.command = 'run'
+    if args.command == 'run':
+        with accepted.locked(root / 'workflow.runner.lock'):
+            value = state()
+            if value.get('status') in ('complete', 'failed', 'cancelled'):
+                print(json.dumps(value, ensure_ascii=False)); return 0
+            def finish_cancel(number):
+                if not number:
+                    return True
+                response = child('stage-cancel', number)
+                value['cancellation'] = response
+                current = stage_engine(number).status(stage_id(number))
+                cleanup = (current.get('cancellation', {}).get('local_cleanup_confirmed') is True
+                           or current.get('closure', {}).get('cleanup_complete') is True)
+                return response['exit_code'] == 0 and current['stage'] in accepted.TERMINAL and cleanup
+            for number in (1, 2):
+                if (root / 'CANCEL').exists():
+                    if finish_cancel(value.get('active_stage')):
+                        value.update(status='cancelled', active_stage=None)
+                    else:
+                        value.update(status='attention', reason='Cancellation cleanup is unconfirmed; query the same IDs')
+                    save(value); break
+                eng = stage_engine(number)
+                if number == 2:
+                    previous = stage_engine(1).status(stage_id(1))
+                    if previous['stage'] not in accepted.TERMINAL or not previous.get('closure', {}).get('cleanup_complete'):
+                        value.update(status='attention', reason='First-stage cleanup not confirmed'); save(value); break
+                    prior_stage2 = root / 'stage2' / stage_id(2) / 'STATE.json'
+                    if not prior_stage2.exists() and (not (root / 'DEADLINE.json').exists() or time.time() >= accepted.load(root / 'DEADLINE.json')['absolute_deadline']):
+                        value.update(status='failed', reason='Overall deadline elapsed before second-stage launch'); save(value); break
+                eng.submit(stage_id(number), value['config'])
+                value.update(status='running', active_stage=number); save(value)
+                while True:
+                    if (root / 'CANCEL').exists():
+                        if finish_cancel(number):
+                            value.update(status='cancelled', active_stage=None)
+                        else:
+                            value.update(status='attention', reason='Cancellation cleanup is unconfirmed; query the same IDs')
+                        save(value); break
+                    current = eng.status(stage_id(number))
+                    if current['stage'] in accepted.TERMINAL:
+                        value.setdefault('stages', {})[str(number)] = {'stage': current['stage'], 'request_id': stage_id(number)}
+                        save(value); break
+                    if number == 2 and current['stage'] in ('reserved', 'prepared') and time.time() >= accepted.load(root / 'DEADLINE.json')['absolute_deadline']:
+                        if finish_cancel(number):
+                            value.update(status='failed', reason='Overall deadline elapsed before second-stage dispatch', active_stage=None)
+                        else:
+                            value.update(status='attention', reason='Expired second-stage cleanup unconfirmed')
+                        save(value); break
+                    if current['stage'] == 'prepared' and not (root / 'DEADLINE.json').exists():
+                        now = time.time()
+                        accepted.once(root / 'DEADLINE.json', (json.dumps({'started_at': now, 'absolute_deadline': now + 2400}) + '\n').encode())
+                    response = child('stage-step', number)
+                    if response['exit_code'] != 0:
+                        value.update(status='attention', attention={'stage': number, 'response': response, 'same_id_only': True})
+                        save(value); print(json.dumps(value, ensure_ascii=False)); return 2
+                    time.sleep(value['config']['poll_seconds'])
+                if value['status'] in ('cancelled', 'attention', 'failed'): break
+            else:
+                first, second = (stage_engine(n).status(stage_id(n)) for n in (1, 2))
+                value.update(status='complete' if first['stage'] == second['stage'] == 'complete' else 'failed', active_stage=None)
+                save(value)
+            print(json.dumps(value, ensure_ascii=False, indent=2)); return 0
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

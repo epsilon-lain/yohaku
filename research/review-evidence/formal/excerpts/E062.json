@@ -1,0 +1,25 @@
+{
+  "original_source": "Sf456be4e6ff845",
+  "original_line": 19,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 98,
+    "record": {
+      "timestamp": "2026-11-07T09:25:38.707Z",
+      "ordinal": 97,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_067b9467756af992016aeeee800e0087d08cf82d365c450a6e",
+        "status": "completed",
+        "call_id": "call_0248053ee0d749da8175a48b3801f75f",
+        "name": "exec",
+        "input": "const p=r=>typeof r===\"string\"?JSON.parse(r):r;\nconst r=p(await tools.yohaku_read_range({path:\"files/work/inputs/v3.json.tex\",view:\"body\",start_line:1,start_column:1,end_line:1864,end_column:1}));store(\"raw-v3\",r.result);\nconst d=JSON.parse(r.result.text);store(\"data-v3\",d);\ntext({revision:r.result.revision,count:d.observations.length,new_observations:d.observations.slice(29).map((o,i)=>({pointer:`/observations/${i+29}`,id:o.observation_id,order:o.observation_order,time:o.observed_at_ms,time_provenance:o.time_provenance,receipt:o.receipt,source:o.source,hash:o.receipt_sha256}))});\nfor(const v of [\"v1\",\"v2\",\"v3\"]){\n const output=load(`stdout-${v}`).result;\n const s=JSON.parse(output.text);store(`stats-${v}`,s);text({v,...s,tasks:s.tasks.map(t=>({id:t.latest_observation_id,reference:t.reference,status:t.status,execution:t.execution,cleanup:t.cleanup_confirmed,reaped:t.native_reaped_count,basis:t.temporal_basis}))});\n text(await tools.yohaku_create_document({directory:\"files/work\",name:`STATS-${v}.json`,body:output.text}));\n}\nconst body=`# 增量真实任务回执审计报告\\n\\n## 当前入口与交付进度\\n当前控制器已发布v1/v2/v3，最终入口v3（CURRENT.json.tex@8ba7b2fecc66e8219f2994bfcf836b39113663c126faa3b7f117e48fa3b6f792）。本报告保留旧版本结论；旧版本结果在其输入上正确，更新到达仅使其不足以代表新快照，并非原来算错。\\n\\n三个版本已用同一通用audit.py实际运行，均done、exit_code=0，逐版STATS已保存；下文先记录v1，v2/v3的原始证据和EVENTS独立对照正在补入。\\n\\n## 版本历史：v1\\n输入：files/work/inputs/v1.json.tex@${load(\"input-v1\").revision}\\n精确文件SHA256：${load(\"stats-v1\").input_sha256}\\n实际动作stats-v1，task_id=${load(\"run-v1\").result.task_id}。\\n18观测、18唯一回执、0重复、18任务；最新均running。取消请求true=0、确认true=0、清理确认true=0；清理unknown=18，native unknown=18，known reaped合计0（仅已知值之和，不是所有进程均未回收）。\\n原始指针/observations/0..17逐条检查；例如/observations/0无清理字段，/observations/4有已记录的观测时间，而/observations/16时间缺失。9个任务使用记录时间，9个使用feed顺序。\\n\\n## 方法与证据边界\\n仅处理封存字段，不启动、不取消、不重放任何历史任务。receipt以UTF-8、键排序、无空白、中文不转义规范JSON重算SHA256，全局去重保留首次数组位置，然后按每任务全部唯一观测是否都有整数时间决定排序。observation_order是封存数据流顺序，不是历史事件时间。status与execution独立保留；缺字段为null，不能推断false或0。脚本仅标准库，stdout一个完整JSON，与/output/statistics.json同字节；STATS直接复制实际stdout。\\n\\n不据任务数推断供应商HTTP次数。v1没有usage；后续部分回执带usage，只能说明这些投影中的字段，不能宣称全体完整用量或HTTP次数。\\n`;\ntext(await tools.yohaku_create_document({directory:\"files/work\",name:\"REPORT.md\",body}));\nstore(\"report-initial\",body);\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-8288-7233-a26c-877239f9484a",
+          "create_time": 1794043520.0659385
+        }
+      }
+    }
+  }
+}

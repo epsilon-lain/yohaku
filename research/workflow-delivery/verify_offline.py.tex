@@ -1,0 +1,42 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+#!/usr/bin/env python3
+"""Re-run the accepted handoff contract with only temporary outputs."""
+import sys
+from pathlib import Path
+ROOT = Path(__file__).resolve().parent
+sys.path = [p for p in sys.path if Path(p or ".").resolve() != ROOT]
+import importlib.util
+import subprocess
+import tempfile
+import unittest
+
+def main():
+    spec=importlib.util.spec_from_file_location("handoff_contract", ROOT / "test_handoff.py")
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    with tempfile.TemporaryDirectory(prefix="yohaku-handoff-check-") as temp:
+        module.OUT=Path(temp)
+        result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(module.Contract))
+        command=[sys.executable,"-B",str(ROOT / "rerun.py"),"--evidence",temp+"/evidence.json","--brief",temp+"/brief.md","--provenance",temp+"/provenance.json"]
+        run=subprocess.run(command,cwd=temp,capture_output=True,text=True)
+        if not result.wasSuccessful() or run.returncode:
+            print(run.stdout,run.stderr,file=sys.stderr)
+            return 1
+        print("PASS: eight handoff contract tests and one independent CLI execution")
+        return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-delivery/verify_offline.py"
+```

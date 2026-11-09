@@ -1,0 +1,47 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+# 本次实践经验：证据简报 1.0.0
+
+## 实际观察及依据
+
+2026-11-08，本项目阶段一；使用公开 Project/Task 离线执行。首轮真实任务 stage1-brief-test-001 / project-task-8abbcd6f51328d64dbd4de99dd33b5fa，快照 fbf608c47f77f6834958d872cd8fa5bcdcf276ff439de39628ba5416683dfcfe，exit_code=0、cleanup_confirmed=true；7 个测试方法全部通过（含多查询/字段/limit 子检查），不是从历史 README 推断的结论。该快照的经验文件尚为占位；本文根据该轮真实结果补全，修改后必须重算清单并取得新成功快照，不能拿旧快照冒称包含本文。
+
+实际读取并核验的冻结包有 24 份文档、77 个本地引用；自然计数 exists=54、missing=0、unknown=23。项目查询“项目”/all/limit=3 生成 total=15、returned=3；evidence.json SHA256=ee9969e8895ffb51cb03f9033a4597be767d53bb57c59c93143077e89f776743，brief.md SHA256=679b2c5f1dbfadacc132699e7fafb9a89ab072eeec0e25e63d2e46b99b2d8058。它们是该任务固定产物，不是手写示例。missing 的覆盖仅来自合成计数，不声称发现真实缺失。
+
+首轮测试实际观察：README、项目、AI、无匹配查询的 CLI 成功往返与确定性重跑；API 上 path/title/body/all 和不同 limit 的独立 oracle；全部文档路径可检索。重新核验器成功验真生成简报，拒绝修改后的简报；证据路径、revision、片段、行号、计数和 total 的篡改被拒绝。CRLF、跨行 Unicode casefold 展开、无末尾 LF、长反引号围栏和重复 missing 是合成夹具，不能误报自然资料特征。
+
+独立传承测试只复制 manifest 所列六个文件到临时 handoff，加上本项目 baseline（仅临时运行依赖，不进入 handoff/清单），不复制父目录 retriever.py/项目清单/聊天/记忆；从另一工作目录启动 CLI，查询“项目”成功。随后故意篡改临时 snapshot.json，查询失败且不创建产物。原 baseline 全部文件哈希前后相同、没有新增 __pycache__。这证明本次数据上的独立运行，不代表已适配阶段二的新资料。
+
+## 可复用的做法
+
+1. 先读任务契约，再看现有源码和冻结包校验边界。把既有检索器逐字节复制为交付核心；用显式数据根参数复用，不去改旧默认常量或读取原来源路径。测试核对核心原始字节 SHA256，而不只检查函数输出。
+2. 保留 evidence 顶层结构和原文，不为展示方便 strip、重排字段内容或转行尾。用字节写入避免平台换行转换；Markdown 额外排版 LF 与精确片段分开说明，动态围栏防止片段反引号打断引用。
+3. 引用状态是冻结证据范围，不是线上真实状态。exists 可能只是目录条目；unknown 不当 missing。只汇总计数时明确它是全文引用计数，不把片段未包含的引用说成片段引用。
+4. 生成时先自检，交付 verify.py 重新从固定可信资料检索并逐字段比对，再按字节核验 Markdown；只看输出 SHA256 不能证明片段真实。哈希锚点是已知可信固定字节，不冒充签名。
+5. 采用清单白名单传承；manifest 自身不自哈希，资料包、.tex 管理容器、聊天和私有记忆不列入。所有生成文件及 manifest 对应 .tex，加入 Project sources，修改经验也必须重算清单并重跑快照。
+6. 第一轮成功仍不足以收尾：经验文件补全本身改变交付内容，因此用最终版清单再跑。保存任务 ID、request_id、snapshot/source_set、退出码、产物哈希及 provenance；未知结果查原 ID，不能重派冒充续查。
+
+## 本次纠错与未覆盖边界
+
+- 编排首次创建代码的 JavaScript 模板含 Python 反引号，出现 SyntaxError，整次脚本未执行；改用 chr(96) 后成功创建。不是产品运行故障，也未改 baseline。
+- 静态复核发现若把根目录所有 *.json/*.md 都视为输入，会把第一次生成的 evidence.json/brief.md 误当输入并禁止复跑；在首轮实跑前改为保护 .tex 源/对应生成文件、manifest 声明源和基准/交付目录。实跑验证了重复生成；不能声称观察过修复前运行失败。
+- task_watch 的 wait_ms=10000 被工具拒绝，按工具返回允许的 5000 续查同一任务，未重启任务。工具参数范围以实际回执为准。
+- 两个输出采用先暂存再逐个原子替换，不是跨文件事务；第二次替换若失败可能留下不配对文件。未做真实磁盘故障/并发恶意目录竞态测试；必须以成功退出加 verify.py 为准。
+- 保持原 JSON 结构不含 limit，因此 verify.py 可证明返回列表为真实排序结果的正确非空前缀及 total；它不能独立证明外部调用者原先要求的 N。需要核对请求时须保留调用/任务回执。
+- 未访问网络、原 source 目录或控制区；未执行文档中的历史任务/权限声明。未验证其他新资料格式、操作系统或第三方 Markdown 渲染器，不保证新环境无需适配。
+
+## 阶段二建议
+
+只继承 manifest 所列工具、说明、本文；新项目重新建 .tex 和公开动作。先审新冻结文档与可信哈希，再实现 load_dataset 适配；source_version 必须仍能追溯完整原 .tex，不能把正文哈希冒名。新资料可能有自然 missing 或不同换行，必须按新事实更新测试预期和经验，不要照抄本次 24/77/54/0/23。
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-delivery/inherited/EXPERIENCE.md"
+```

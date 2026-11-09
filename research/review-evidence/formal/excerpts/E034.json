@@ -1,0 +1,48 @@
+{
+  "original_source": "S8d2707f7e64426",
+  "original_line": 24,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 94,
+    "record": {
+      "timestamp": "2026-11-07T09:47:04.961Z",
+      "ordinal": 93,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call_output",
+        "id": "ctco_01a1b567-8d81-7392-81b7-2cbb7f4c4c10",
+        "call_id": "call_a1aa0a1eeb3a46caaede623ab1ee4b7c",
+        "output": [
+          {
+            "type": "input_text",
+            "text": "Script completed\nWall time 0.4 seconds\nOutput:\n"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"stdout_one_json\":true,\"stdout_complete\":true,\"exit_zero\":true,\"counts_match\":true,\"episodes_match\":true}"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"source\":\"files/work/STATISTICS.json.tex\",\"revision\":\"589cc813f386de89de277ae2ec8b9689402f17dd9f69c3eaaf144f31ea487964\",\"exact_stdout_match\":true}"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"ok\": true, \"result\": {\"format\": \"yohaku-task-provenance/1\", \"task_id\": \"project-task-28fbdbc13711bebfd6d78e014eada959\", \"project_id\": \"hackathon-r3-t1-a\", \"request_id\": \"t1-a-downstream-stats-01\", \"action\": \"stats\", \"snapshot_id\": \"e7eac4fdae483d6797a590a36c7a58add947f32a297d8377e06c56143dfc6c3c\", \"source_set\": \"e7eac4fdae483d6797a590a36c7a58add947f32a297d8377e06c56143dfc6c3c\", \"ok\": true, \"snapshot_valid\": true, \"inputs\": [{\"bytes\": 143, \"path\": \".provenance/macros/macros/raw.source.md\", \"role\": \"macro\", \"sha256\": \"67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8\"}, {\"bytes\": 2232, \"path\": \".provenance/maps/17996ebab4d10beb8764de379b4aa8503fe8a75946de2a4f5a455f54de027e3b.json\", \"role\": \"map\", \"sha256\": \"5c4b8a0fea46bd771f90616b639ce761a3eac844ed651ebc4d3bdac2df6063cc\"}, {\"bytes\": 5387, \"path\": \".provenance/maps/82da9c9cb28b813f8abc1f08eaca902d26ea9f8ecb82c250d397bb4d76c059b6.json\", \"role\": \"map\", \"sha256\": \"83fe418737538ee7f4fbc06c5348350937c57bf49d1205de6d322af1a6e39ee6\"}, {\"bytes\": 8742, \"path\": \".provenance/maps/e85de54ddf8e39556a38443b483200e053cb7271dcae337a4bbfd540375031a6.json\", \"role\": \"map\", \"sha256\": \"5acc7f26ee06874feb873c8ab3ef7176ff077bb7fee1c370d473b760d926ae55\"}, {\"bytes\": 106743, \"path\": \".provenance/maps/fb2abb619f155ec31b9c5481c63fa6d85f251008512e05c80d55ea47818e2f2d.json\", \"role\": \"map\", \"sha256\": \"f3a9daad3f82c9ebc76cfa42ff8cea7d27b8ef8369001d55af15f33d87daa6dd\"}, {\"bytes\": 3732, \"path\": \"SPEC.md\", \"role\": \"generated\", \"sha256\": \"78e01a987707904349416882e3425e385b1a8da26a6922e31401522e39cbfeb3\", \"source\": \"files/work/SPEC.md.tex\", \"source_revision\": \"32bbf952dface37a1c03f61b4f42db477b4ad87e9110d59aef84a1a25b7af3a5\"}, {\"bytes\": 4089, \"path\": \"SPEC.md.tex\", \"role\": \"source\", \"sha256\": \"32bbf952dface37a1c03f61b4f42db477b4ad87e9110d59aef84a1a25b7af3a5\", \"source\": \"files/work/SPEC.md.tex\"}, {\"bytes\": 5726, \"path\": \"audit.py\", \"role\": \"generated\", \"sha256\": \"1b607fed98d68e8c22ef7f2b1460f34deb8e55ef8fdbec21b4d2db4d62ea2c66\", \"source\": \"files/work/audit.py.tex\", \"source_revision\": \"6263134b680391980de263ff409e80114d2b11f5d599fc4e43742e2ed721d30f\"}, {\"bytes\": 6085, \"path\": \"audit.py.tex\", \"role\": \"source\", \"sha256\": \"6263134b680391980de263ff409e80114d2b11f5d599fc4e43742e2ed721d30f\", \"source\": \"files/work/audit.py.tex\"}, {\"bytes\": 79525, \"path\": \"input.json\", \"role\": \"generated\", \"sha256\": \"7fe4f0b8895ea1cb7c3554c400ec58884606b57010921c80787368ae84fecaca\", \"source\": \"files/work/input.json.tex\", \"source_revision\": \"743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf\"}, {\"bytes\": 79889, \"path\": \"input.json.tex\", \"role\": \"source\", \"sha256\": \"743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf\", \"source\": \"files/work/input.json.tex\"}, {\"bytes\": 432, \"path\": \"project.json\", \"role\": \"generated\", \"sha256\": \"ff823dd3f1a256ed2e4ed5b6907bd709048e00a6bbe7fe0320a414c64e96dc6e\", \"source\": \"files/work/project.json.tex\", \"source_revision\": \"b057c5e14797e3deb02f90975c6bdcf64082ed29596e114576e3eec914ed3b72\"}, {\"bytes\": 798, \"path\": \"project.json.tex\", \"role\": \"source\", \"sha256\": \"b057c5e14797e3deb02f90975c6bdcf64082ed29596e114576e3eec914ed3b72\", \"source\": \"files/work/project.json.tex\"}], \"mappings\": [{\"body_source_line\": 10, \"macro\": \"macros/raw.source.md\", \"macro_hash\": \"67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8\", \"map\": \".provenance/maps/17996ebab4d10beb8764de379b4aa8503fe8a75946de2a4f5a455f54de027e3b.json\", \"output\": \"project.json\", \"output_hash\": \"ff823dd3f1a256ed2e4ed5b6907bd709048e00a6bbe7fe0320a414c64e96dc6e\", \"source\": \"files/work/project.json.tex\", \"source_revision\": \"b057c5e14797e3deb02f90975c6bdcf64082ed29596e114576e3eec914ed3b72\", \"generated_line_count\": 24}, {\"body_source_line\": 10, \"macro\": \"macros/raw.source.md\", \"macro_hash\": \"67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8\", \"map\": \".provenance/maps/82da9c9cb28b813f8abc1f08eaca902d26ea9f8ecb82c250d397bb4d76c059b6.json\", \"output\": \"SPEC.md\", \"output_hash\": \"78e01a987707904349416882e3425e385b1a8da26a6922e31401522e39cbfeb3\", \"source\": \"files/work/SPEC.md.tex\", \"source_revision\": \"32bbf952dface37a1c03f61b4f42db477b4ad87e9110d59aef84a1a25b7af3a5\", \"generated_line_count\": 15}, {\"body_source_line\": 10, \"macro\": \"macros/raw.source.md\", \"macro_hash\": \"67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8\", \"map\": \".provenance/maps/e85de54ddf8e39556a38443b483200e053cb7271dcae337a4bbfd540375031a6.json\", \"output\": \"audit.py\", \"output_hash\": \"1b607fed98d68e8c22ef7f2b1460f34deb8e55ef8fdbec21b4d2db4d62ea2c66\", \"source\": \"files/work/audit.py.tex\", \"source_revision\": \"6263134b680391980de263ff409e80114d2b11f5d599fc4e43742e2ed721d30f\", \"generated_line_count\": 127}, {\"body_source_line\": 10, \"macro\": \"macros/raw.source.md\", \"macro_hash\": \"67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8\", \"map\": \".provenance/maps/fb2abb619f155ec31b9c5481c63fa6d85f251008512e05c80d55ea47818e2f2d.json\", \"output\": \"input.json\", \"output_hash\": \"7fe4f0b8895ea1cb7c3554c400ec58884606b57010921c80787368ae84fecaca\", \"source\": \"files/work/input.json.tex\", \"source_revision\": \"743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf\", \"generated_line_count\": 2015}], \"artifacts\": [{\"id\": \"artifact-f8832823e371b85ceb01b8cd61527ae421f719656c54e35ac7eecf08723ae5d1\", \"path\": \"statistics.json\", \"expected_sha256\": \"0f5564df6b350e0042e60957d86d4026fb42cea9b02e96f37670fea8d10bbe1b\", \"valid\": true, \"snapshot_id\": \"e7eac4fdae483d6797a590a36c7a58add947f32a297d8377e06c56143dfc6c3c\", \"source_set\": \"e7eac4fdae483d6797a590a36c7a58add947f32a297d8377e06c56143dfc6c3c\", \"expected_executable\": false, \"actual_sha256\": \"0f5564df6b350e0042e60957d86d4026fb42cea9b02e96f37670fea8d10bbe1b\", \"bytes\": 2433, \"actual_executable\": false, \"bytes_verified\": true}], \"issues\": [], \"executed\": false, \"replay_allowed\": false, \"execution\": {\"receipt_available\": true, \"exit_code\": 0, \"cleanup_confirmed\": true, \"output_complete\": true, \"output_truncated\": false, \"adapter\": \"linux-bubblewrap\"}}}"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"ok\": true, \"result\": {\"message\": {\"message_id\": \"ai-chat-bf5981b3f59d1ad6fe683f91:5\", \"chat_id\": \"ai-chat-bf5981b3f59d1ad6fe683f91\", \"seq\": 5, \"sender_node_id\": \"ai-node-23b38ace66650e92d0480cce\", \"text\": \"已回读audit.py.tex@6263134b680391980de263ff409e80114d2b11f5d599fc4e43742e2ed721d30f，代码符合标准库/当前input计算/strict true/result解包/outcome顺序，无硬编码输入答案。实际读取stats任务stdout：2433字节、exit0、完整单JSON，全部汇总及逐项字段与EVENTS一致；STATISTICS正文与stdout完全相同。等待AUDIT保存后再做最后一次引用检查，即结束，不启动第三节点/新工作。\", \"reply_to\": null, \"created_at\": 1794044824.8337278, \"provenance\": null}, \"wake_requests\": {}, \"tasks\": {}, \"duplicate\": false}}"
+          }
+        ],
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b565-9b06-7852-b3dd-65140e178f67",
+          "create_time": 1794044824.9611924
+        }
+      },
+      "metadata": {
+        "client_authored": false,
+        "fallback_token_limit_override": 12000
+      }
+    }
+  }
+}

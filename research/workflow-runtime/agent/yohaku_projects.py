@@ -1,0 +1,124 @@
+"""Trusted native Project/Task facade; all public names come from one schema.
+
+The model supplies project/request identities, never host roots, mount arguments,
+backend argv or private state paths. Legacy tool/PTY/chat entry points stay intact.
+"""
+import time
+from pathlib import Path
+from yohaku_project_schema import ProjectError, TOOL_NAMES, VERSION
+
+
+class Control:
+    def __init__(self, world, projects=None, tasks=None, ui_sdk=None):
+        self.world = Path(world).resolve(strict=True)
+        self._projects = projects
+        self._tasks = tasks
+        self._ui_sdk = ui_sdk
+
+    @property
+    def projects(self):
+        if self._projects is None:
+            from yohaku_project_sources import Projects
+            self._projects = Projects(self.world)
+        return self._projects
+
+    @property
+    def tasks(self):
+        if self._tasks is None:
+            from yohaku_project_tasks import Tasks
+            self._tasks = Tasks(self.world)
+        return self._tasks
+
+    @property
+    def ui_sdk(self):
+        if self._ui_sdk is None:
+            from yohaku_ui_sdk import UiSdk
+            self._ui_sdk = UiSdk(self.projects.workspace, Path(__file__).resolve().parents[1])
+        return self._ui_sdk
+
+    def call(self, name, args):
+        if name not in TOOL_NAMES:
+            raise ProjectError('unsupported_tool', 'Unknown Project/Task operation')
+        if name == 'ui_sdk_info':
+            return self.ui_sdk.info()
+        if name == 'ui_sdk_prepare':
+            return self.ui_sdk.prepare(args['project_root'])
+        if name == 'project_schema':
+            from yohaku_project_schema import manifest_contract
+            return manifest_contract(args.get('runtime'))
+        if name == 'project_drift':
+            from yohaku_project_consistency import Consistency
+            return Consistency(self.projects).drift(args['project_id'], args.get('expected_sources'))
+        if name == 'task_install_artifact':
+            from yohaku_artifact_install import Installer
+            return Installer(self.projects, self.tasks).install(args['task_id'], args['artifact_id'])
+        if name in ('task_provenance','task_diagnostics'):
+            from yohaku_project_consistency import Consistency
+            consistency = Consistency(self.projects, self.tasks)
+            if name == 'task_provenance':
+                return consistency.provenance(args['task_id'])
+            return consistency.diagnostics(args['task_id'], args.get('offset',0), args.get('limit',100))
+        if name == 'project_list':
+            return self.projects.list()
+        if name == 'project_register':
+            return self.projects.register(args['manifest_source'])
+        if name == 'project_describe':
+            return self.projects.describe(args['project_id'])
+        if name == 'project_plan':
+            return self.projects.plan(args['project_id'], args['action'], args.get('expected_sources'))
+        if name == 'project_materialize':
+            return self.projects.materialize(args['project_id'], args.get('expected_sources'))
+        if name == 'task_submit':
+            # Lost receipts are reconciled before touching the mutable project.
+            # An omitted expected_sources retains the first accepted snapshot.
+            try:
+                existing = self.tasks.status(request_id=args['request_id'])
+            except ProjectError as exc:
+                if exc.kind != 'unknown_task':
+                    raise
+            else:
+                if (existing.get('project_id') != args['project_id']
+                        or existing.get('action') != args['action']
+                        or (args.get('expected_sources') is not None
+                            and existing.get('source_set') != args['expected_sources'])):
+                    raise ProjectError('request_conflict', 'request_id already belongs to different inputs; inspect its original task',
+                                       task_id=existing.get('task_id'), request_id=args['request_id'])
+                return {**existing, 'duplicate': True, 'started_new_process': False}
+            plan = self.projects.plan(args['project_id'], args['action'], args.get('expected_sources'))
+            if plan.get('ok') is False or plan.get('missing'):
+                raise ProjectError('preflight_failed', 'Project requirements are not available; no task launched', plan=plan)
+            snapshot = self.projects.materialize(args['project_id'], plan['source_set'])
+            return self.tasks.submit(plan['manifest'], args['action'], args['request_id'], snapshot, plan)
+        if name == 'task_status':
+            if not args.get('task_id') and not args.get('request_id'):
+                raise ProjectError('invalid_request', 'Supply task_id or request_id')
+            return self.tasks.status(task_id=args.get('task_id'), request_id=args.get('request_id'))
+        if name == 'task_output':
+            return self.tasks.output(args['task_id'], args['stream'], args.get('cursor', 0), args.get('max_bytes', 65536))
+        if name == 'task_list':
+            return self.tasks.list(args.get('project_id'))
+        if name == 'task_cancel':
+            return self.tasks.cancel(args['task_id'])
+        if name == 'task_watch':
+            after = args.get('after_seq', 0)
+            wait_ms = args.get('wait_ms', 0)
+            if type(after) is not int or after < 0 or type(wait_ms) is not int or not 0 <= wait_ms <= 5000:
+                raise ProjectError('invalid_cursor', 'after_seq >=0 and wait_ms 0..5000 required')
+            deadline = time.monotonic() + wait_ms / 1000
+            while True:
+                status = self.tasks.status(task_id=args['task_id'])
+                seq = status.get('event_seq')
+                if seq is None and status.get('state') == 'unknown':
+                    return {**status, 'after_seq':after, 'next_seq':None,
+                            'no_progress':True, 'cursor_state':'unknown', 'replay_allowed':False}
+                if type(seq) is not int:
+                    raise ProjectError('unknown_cursor', 'Backend has no authoritative event sequence', task_id=args['task_id'])
+                changed = seq > after
+                if seq < after:
+                    raise ProjectError('invalid_cursor', 'Event cursor is ahead of this task; inspect status', task_id=args['task_id'])
+                terminal = status.get('state') in ('succeeded', 'failed', 'cancelled', 'unknown')
+                if changed or terminal or time.monotonic() >= deadline:
+                    return {**status, 'after_seq': after, 'next_seq': seq,
+                            'no_progress': not changed, 'replay_allowed': False}
+                time.sleep(min(.1, max(0, deadline - time.monotonic())))
+        raise ProjectError('unsupported_tool', 'Operation is not implemented in ' + VERSION)

@@ -1,0 +1,61 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+#!/usr/bin/env python3
+"""Check published trace projections; no model, external data, or network required."""
+import csv
+import hashlib
+import json
+from pathlib import Path
+import re
+
+ROOT = Path(__file__).resolve().parent
+
+def main():
+    manifest = json.loads((ROOT / "checksums.json").read_text(encoding="utf-8"))
+    for name, expected in manifest["files"].items():
+        path = ROOT / name
+        if path.is_symlink() or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+            raise SystemExit("Missing or changed evidence projection: " + name)
+    index = json.loads((ROOT / "trace-index.json").read_text(encoding="utf-8"))
+    with (ROOT / "trace-events.csv").open(encoding="utf-8-sig", newline="") as source:
+        rows = list(csv.DictReader(source))
+    if len(rows) != 43 or len(index) != 43 or len({r["id"] for r in rows}) != 43:
+        raise SystemExit("Unexpected trace count or duplicate ID")
+    indexed = {r["id"]: r for r in index}
+    for row in rows:
+        item = indexed[row["id"]]
+        for field in ("case", "time", "event", "source_id", "original_file_sha256", "raw_line_sha256", "redacted_excerpt"):
+            if str(item.get(field, "")) != row[field]:
+                raise SystemExit("Trace index mismatch: " + row["id"] + "/" + field)
+        projection = json.loads((ROOT / row["redacted_excerpt"]).read_text(encoding="utf-8"))
+        if projection["original_source"] != row["source_id"] or str(projection["original_line"]) != row["original_line"]:
+            raise SystemExit("Trace projection mismatch: " + row["id"])
+        for field in ("original_file_sha256", "raw_line_sha256"):
+            if not re.fullmatch(r"[0-9a-f]{64}", row[field]):
+                raise SystemExit("Invalid source hash: " + row["id"])
+    case_text = (ROOT / "case-checks.json").read_text(encoding="utf-8")
+    for name in set(re.findall(r"formal/excerpts/E[0-9]+\.json", case_text)):
+        if not (ROOT / name).is_file():
+            raise SystemExit("Missing case audit reference: " + name)
+    privacy = [r"/(?:root|home|mnt/c/Users)/", r"(?<![A-Za-z0-9])sk-[A-Za-z0-9_-]{16,}", r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"]
+    for name in manifest["files"]:
+        data = (ROOT / name).read_text(encoding="utf-8-sig")
+        if any(re.search(pattern, data, re.IGNORECASE) for pattern in privacy):
+            raise SystemExit("Privacy pattern requires manual review: " + name)
+    print("PASS: 43 indexed trace projections and case references; file hashes match.")
+    print("Boundary: original private-record hashes and semantic claims require the original archive.")
+
+if __name__ == "__main__":
+    main()
+````
+
+## 输出与关联
+```yaml
+output: "research/review-evidence/verify.py"
+```

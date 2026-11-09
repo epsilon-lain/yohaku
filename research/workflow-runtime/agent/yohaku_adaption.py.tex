@@ -1,0 +1,1152 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Adaption Responses transport with local Yohaku function execution.
+
+This development module is installed only into a separately named candidate.
+Network POSTs are never retried. Journals reserve identities before network/tool
+execution, so a crash is an unknown outcome rather than permission to replay.
+"""
+import argparse
+import contextlib
+import hashlib
+import http.client
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import stat
+import sys
+import threading
+import time
+import unicodedata
+import urllib.parse
+import uuid
+
+VERSION = 'yohaku-adaption-responses/2'
+API_BASE = 'https://api.prod.adaptionlabs.ai/api/v1'
+MAX_RESPONSE = 32 * 1024 * 1024
+SENSITIVE = {'authorization', 'api_key', 'adaption_api_key', 'access_token', 'refresh_token', 'password'}
+
+
+def sha(value):
+    raw = value if isinstance(value, bytes) else json.dumps(value, sort_keys=True, ensure_ascii=False).encode()
+    return hashlib.sha256(raw).hexdigest()
+
+
+def redact(value):
+    if isinstance(value, dict):
+        return {k: '[REDACTED]' if k.lower() in SENSITIVE else redact(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [redact(v) for v in value]
+    return value
+
+
+def credentials():
+    key = os.environ.get('ADAPTION_API_KEY')
+    org = os.environ.get('ADAPTION_ORGANIZATION_ID')
+    source = 'environment' if key else None
+    file = os.environ.get('YOHAKU_ADAPTION_CREDENTIAL_FILE')
+    if not key and file:
+        path = Path(file)
+        info = path.lstat()
+        if not stat.S_ISREG(info.st_mode) or path.is_symlink() or info.st_mode & 0o077:
+            raise ValueError('Adaption credential file must be a private regular file (0600)')
+        value = json.loads(path.read_bytes())
+        key = value.get('api_key') or value.get('ADAPTION_API_KEY')
+        org = value.get('organization_id') or value.get('ADAPTION_ORGANIZATION_ID')
+        source = 'private_file'
+    if not isinstance(key, str) or not key or any(c.isspace() for c in key):
+        raise ValueError('Missing ADAPTION_API_KEY or YOHAKU_ADAPTION_CREDENTIAL_FILE api_key')
+    if org is not None and (not isinstance(org, str) or '\r' in org or '\n' in org):
+        raise ValueError('Invalid Adaption organization id')
+    return key, org, source
+
+
+class OutcomeUnknown(RuntimeError):
+    pass
+
+
+class LocalCancelled(RuntimeError):
+    pass
+
+
+class BudgetExceeded(RuntimeError):
+    pass
+
+
+class Journal:
+    def __init__(self, directory):
+        self.root = Path(directory)
+        self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
+        if self.root.is_symlink():
+            raise ValueError('Journal directory cannot be a symlink')
+
+    def path(self, identity):
+        if not re.fullmatch(r'[A-Za-z0-9_.:-]{1,180}', identity):
+            raise ValueError('Use an immutable ASCII request identity')
+        return self.root / (identity + '.json')
+
+    def load(self, identity):
+        p = self.path(identity)
+        return json.loads(p.read_bytes()) if p.exists() else None
+
+    def save(self, identity, value):
+        p = self.path(identity)
+        tmp = p.with_suffix('.pending-' + uuid.uuid4().hex)
+        with tmp.open('x', encoding='utf-8') as stream:
+            os.chmod(tmp, 0o600)
+            json.dump(redact(value), stream, ensure_ascii=False, indent=2)
+            stream.write('\n'); stream.flush(); os.fsync(stream.fileno())
+        os.replace(tmp, p)
+
+    @contextlib.contextmanager
+    def lock(self, identity):
+        import fcntl
+        with self.path(identity).with_suffix('.lock').open('a') as stream:
+            fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
+            yield
+
+
+HTTP_DIAGNOSTICS_VERSION = 'http-response-observability/1'
+HTTP_SAFE_BODY_CHAR_LIMIT = 65536
+
+
+def _transport_safe_text(value, key, organization_id, limit=None):
+    text = str(value)
+    # Replace complete secrets before truncation, so the cutoff cannot expose
+    # a prefix of the current credential or organization identifier.
+    for secret in (key, organization_id):
+        if not isinstance(secret, str) or not secret:
+            continue
+        variants = {secret, json.dumps(secret, ensure_ascii=True)[1:-1],
+                    json.dumps(secret, ensure_ascii=False)[1:-1],
+                    urllib.parse.quote(secret, safe=''), urllib.parse.quote_plus(secret)}
+        for variant in sorted(variants, key=len, reverse=True):
+            if variant:
+                text = text.replace(variant, '[REDACTED]')
+    text = re.sub(r'(?i)(bearer\s+)[A-Za-z0-9._~+/=-]+', r'\1[REDACTED]', text)
+    # HTTP errors occasionally echo request credentials under named fields.
+    text = re.sub(r"""(?ix)(["']?(?:authorization|api[_-]?key|access[_-]?token|refresh[_-]?token|password|organization[_-]?id)["']?\s*[:=]\s*)["']?[^\s,"'<>}]+""",
+                  r'\1[REDACTED]', text)
+    return text if limit is None else text[:limit]
+
+
+def _transport_body_diagnostic(raw, key, organization_id, complete):
+    raw_hash = hashlib.sha256(raw).hexdigest()  # Before any redaction.
+    decoded = raw.decode('utf-8', errors='replace')
+    stripped = decoded.lstrip()
+    if not raw:
+        classification = 'empty'
+    elif stripped.lower().startswith(('<!doctype html', '<html', '<head', '<body')):
+        classification = 'html'
+    elif stripped.startswith(('{', '[')):
+        classification = 'json_like'
+    elif stripped.startswith('data:'):
+        classification = 'event_stream_like'
+    else:
+        classification = 'text_or_binary'
+    safe = _transport_safe_text(decoded, key, organization_id)
+    return {'bytes_observed': len(raw), 'raw_sha256': raw_hash,
+            'raw_sha256_covers_complete_body': bool(complete),
+            'body_read_complete': bool(complete), 'classification': classification,
+            'safe_body_copy': safe[:HTTP_SAFE_BODY_CHAR_LIMIT],
+            'safe_body_copy_truncated': len(safe) > HTTP_SAFE_BODY_CHAR_LIMIT,
+            'safe_body_char_limit': HTTP_SAFE_BODY_CHAR_LIMIT,
+            'redaction': 'Current key/org literals, JSON/URL forms and named credential patterns; raw bytes never persisted.'}
+
+
+
+SSE_TRANSPORT_VERSION = 'responses-sse-terminal-transport/3'
+MODEL_NAMESPACE_REGISTRY_SHA256 = 'f6b95428099977bb34221735b6af19f0770bf2244908d213aa70994a4014ff9c'
+MODEL_NAMESPACE_REGISTRY_FILE = Path(__file__).resolve().parent / 'MODEL-NAMESPACE-MAPPING.json'
+
+
+class ModelNamespaceIdentityError(RuntimeError):
+    pass
+
+
+def _transport_namespace_registration(requested_public_model):
+    path = MODEL_NAMESPACE_REGISTRY_FILE
+    if path.is_symlink() or not path.is_file():
+        raise ModelNamespaceIdentityError('Pinned model namespace registry missing')
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != MODEL_NAMESPACE_REGISTRY_SHA256:
+        raise ModelNamespaceIdentityError('Pinned model namespace registry changed')
+    registry = json.loads(raw)
+    bindings = registry.get('bindings')
+    if not isinstance(bindings, list) or len(bindings) != 1:
+        raise ModelNamespaceIdentityError('Exactly one pre-registered deployment required')
+    binding = bindings[0]
+    if (binding.get('provider'), binding.get('canonical_public_model'), binding.get('supplier_model_verbatim')) != ('adaption', 'glm-53-flash', 'glm-5.3-flash'):
+        raise ModelNamespaceIdentityError('Unsupported namespace registration')
+    if requested_public_model != binding['canonical_public_model']:
+        raise ModelNamespaceIdentityError('Requested public deployment has no registered mapping')
+    sources = binding.get('sources', [])
+    if len(sources) != 3 or {x.get('kind') for x in sources} != {'catalog', 'official_model_page', 'observed_terminal'}:
+        raise ModelNamespaceIdentityError('All three namespace evidence sources required')
+    evidence = {}
+    for source in sources:
+        p = Path(source['path'])
+        if not p.is_absolute():
+            p = path.parent / p
+        if p.is_symlink() or not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest() != source['sha256']:
+            raise ModelNamespaceIdentityError('Namespace mapping source missing or changed')
+        evidence[source['kind']] = p
+    catalog = json.loads(evidence['catalog'].read_bytes())
+    entries = (catalog.get('response') or {}).get('data', [])
+    if catalog.get('method') != 'GET' or catalog.get('http_status') != 200 or not any(x.get('id') == 'glm-53-flash' and x.get('display_name') == 'GLM 5.3 Flash' for x in entries):
+        raise ModelNamespaceIdentityError('Catalog does not establish the registered public deployment')
+    document = evidence['official_model_page'].read_text()
+    if 'glm-53-flash' not in document or 'https://huggingface.co/zai-org/GLM-5.3-Flash' not in document:
+        raise ModelNamespaceIdentityError('Official deployment/upstream card evidence missing')
+    prior = json.loads(evidence['observed_terminal'].read_bytes())
+    observed = (prior.get('sse_diagnostic') or {}).get('terminal_response_observed') or {}
+    fields = observed.get('public_model_fields', [])
+    if (prior.get('request') or {}).get('model') != 'glm-53-flash' or observed.get('status') != 'completed' or observed.get('model') != 'glm-5.3-flash':
+        raise ModelNamespaceIdentityError('Registered terminal observation does not match both namespaces')
+    if {'path': '$.model', 'value': 'glm-53-flash'} not in fields or {'path': '$.response.model', 'value': 'glm-5.3-flash'} not in fields:
+        raise ModelNamespaceIdentityError('Both exact public/upstream terminal fields required')
+    return registry, binding
+
+
+def _transport_verified_exact_identity(payload, candidate, origin, event_public_model=None):
+    requested = payload.get('model')
+    if not isinstance(candidate, dict) or candidate.get('object') != 'response' or candidate.get('model') != requested:
+        raise ModelNamespaceIdentityError('Raw complete response model is not the exact requested public ID')
+    if candidate.get('status') not in ('completed', 'incomplete', 'failed') or not isinstance(candidate.get('output'), list) or not isinstance(candidate.get('id'), str) or not candidate['id']:
+        raise ModelNamespaceIdentityError('Complete exact-model response shape required')
+    if event_public_model is not None and event_public_model != requested:
+        raise ModelNamespaceIdentityError('An outer model field contradicts the exact raw response model')
+    return {'format': 'verified-model-namespace-identity/1', 'provider': 'adaption',
+        'verification_source': 'host_verified_complete_exact_response',
+        'verification_method': 'exact_raw_response_model', 'proof_origin': origin,
+        'canonical_public_model': requested, 'event_public_model': event_public_model,
+        'supplier_model_verbatim': candidate['model'], 'upstream_model': None,
+        'response_id': candidate['id'], 'raw_response_object_sha256': sha(candidate),
+        'mapping_registry_id': None, 'mapping_registry_sha256': None, 'mapping_evidence': [],
+        'no_model_field_rewrite': True}
+
+
+def _transport_verified_namespace_identity(payload, event, candidate, observed_response_id):
+    if not isinstance(candidate, dict) or candidate.get('id') != observed_response_id:
+        raise ModelNamespaceIdentityError('Final response identity differs across the SSE stream')
+    if candidate.get('model') == payload.get('model'):
+        return _transport_verified_exact_identity(payload, candidate, 'client_complete_sse_terminal', event.get('model'))
+    registry, binding = _transport_namespace_registration(payload.get('model'))
+    if event.get('model') != payload.get('model'):
+        raise ModelNamespaceIdentityError('Final event public model differs from requested public deployment')
+    if not isinstance(candidate, dict) or candidate.get('model') != binding['supplier_model_verbatim']:
+        raise ModelNamespaceIdentityError('Final nested supplier model differs from pre-registered upstream label')
+    if not isinstance(candidate.get('id'), str) or not candidate['id'] or candidate['id'] != observed_response_id:
+        raise ModelNamespaceIdentityError('Final response identity differs across the SSE stream')
+    return {'format': 'verified-model-namespace-identity/1', 'provider': 'adaption',
+        'verification_source': 'host_verified_complete_terminal_namespace',
+        'verification_method': 'registered_public_upstream_namespace',
+        'proof_origin': 'client_complete_sse_terminal',
+        'canonical_public_model': payload['model'], 'event_public_model': event['model'],
+        'supplier_model_verbatim': candidate['model'], 'upstream_model': binding['supplier_model_verbatim'],
+        'response_id': candidate['id'], 'raw_response_object_sha256': sha(candidate),
+        'mapping_registry_id': registry['registry_id'],
+        'mapping_registry_sha256': MODEL_NAMESPACE_REGISTRY_SHA256,
+        'mapping_evidence': [{'kind': s['kind'], 'path': s['path'], 'sha256': s['sha256']} for s in binding['sources']],
+        'no_model_field_rewrite': True}
+
+
+def _transport_require_verified_identity(response, requested_public_model):
+    identity = response.get('verified_model_identity') if isinstance(response, dict) else None
+    if not isinstance(identity, dict):
+        raise ModelNamespaceIdentityError('Client-generated or trusted-journal model identity required')
+    if identity.get('verification_method') == 'exact_raw_response_model':
+        expected = {'provider': 'adaption', 'verification_source': 'host_verified_complete_exact_response',
+            'canonical_public_model': requested_public_model, 'supplier_model_verbatim': requested_public_model,
+            'upstream_model': None, 'response_id': response.get('id'),
+            'mapping_registry_id': None, 'mapping_registry_sha256': None, 'mapping_evidence': [],
+            'no_model_field_rewrite': True}
+        if any(identity.get(k) != v for k, v in expected.items()) or response.get('model') != requested_public_model or identity.get('proof_origin') not in ('client_complete_sse_terminal', 'client_complete_http_json'):
+            raise ModelNamespaceIdentityError('Invalid exact-model identity')
+        if identity.get('event_public_model') not in (None, requested_public_model):
+            raise ModelNamespaceIdentityError('Conflicting exact-model public tag')
+        return identity
+    registry, binding = _transport_namespace_registration(requested_public_model)
+    expected = {'provider': 'adaption', 'verification_source': 'host_verified_complete_terminal_namespace',
+        'verification_method': 'registered_public_upstream_namespace', 'proof_origin': 'client_complete_sse_terminal',
+        'canonical_public_model': requested_public_model, 'event_public_model': requested_public_model,
+        'supplier_model_verbatim': binding['supplier_model_verbatim'], 'upstream_model': binding['supplier_model_verbatim'],
+        'response_id': response.get('id'), 'mapping_registry_id': registry['registry_id'],
+        'mapping_registry_sha256': MODEL_NAMESPACE_REGISTRY_SHA256, 'no_model_field_rewrite': True}
+    if any(identity.get(k) != v for k, v in expected.items()) or response.get('model') != binding['supplier_model_verbatim']:
+        raise ModelNamespaceIdentityError('A verified final public/upstream namespace identity is required')
+    expected_sources = [{'kind': s['kind'], 'path': s['path'], 'sha256': s['sha256']} for s in binding['sources']]
+    if identity.get('mapping_evidence') != expected_sources:
+        raise ModelNamespaceIdentityError('Verified identity mapping evidence differs')
+    return identity
+
+
+def _transport_response_for_loop(raw_response, verified_identity):
+    if not isinstance(raw_response, dict):
+        return raw_response
+    result = dict(raw_response)
+    result.pop('verified_model_identity', None)  # Never trust a supplier field with this host-only name.
+    if verified_identity is not None:
+        result['verified_model_identity'] = verified_identity
+    return result
+
+
+def _transport_public_model_fields(value, key, organization_id, path='$'):
+    found = []
+    if isinstance(value, dict):
+        for name, item in value.items():
+            child = path + '.' + str(name)
+            if name == 'model' and isinstance(item, str):
+                found.append({'path': child, 'value': _transport_safe_text(item, key, organization_id)})
+            if isinstance(item, (dict, list)):
+                found.extend(_transport_public_model_fields(item, key, organization_id, child))
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            found.extend(_transport_public_model_fields(item, key, organization_id, path + '[' + str(index) + ']'))
+    return found
+
+
+def _transport_sse_remaining(client, deadline):
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise OutcomeUnknown('SSE absolute request deadline exhausted; original request not repeated')
+    sock = getattr(client.active, 'sock', None)
+    if sock is not None:
+        sock.settimeout(min(client.timeout, remaining))
+    return remaining
+
+
+def _transport_read_sse(client, response, row, identity, payload, deadline):
+    raw = bytearray()
+    buffer = bytearray()
+    fields = {'data': [], 'event': '', 'id': None}
+    counts = {}
+    seen = {}
+    events = duplicates = terminal_events = 0
+    terminal = None
+    terminal_kind = None
+    observed_id = observed_model = None
+    terminal_model_observed = None
+    intermediate_model_observations = []
+    terminal_response_observed = None
+    eof = False
+    last_checkpoint = 0
+    last_error = None
+    line_count = 0
+
+    def checkpoint(phase):
+        diagnostic = _transport_body_diagnostic(bytes(raw), client.key, client.org, eof)
+        diagnostic['classification'] = 'event_stream'
+        row.update(transport_phase=phase, requested_stream=True, actual_representation='sse',
+                   http_body_diagnostic=diagnostic,
+                   sse_diagnostic={'version': SSE_TRANSPORT_VERSION,
+                     'bytes_observed': len(raw), 'raw_sha256': diagnostic['raw_sha256'],
+                     'stream_eof_observed': eof, 'event_count': events, 'event_counts': dict(counts),
+                     'duplicate_events': duplicates, 'terminal_events_observed': terminal_events,
+                     'terminal_type': terminal_kind, 'response_id': observed_id, 'model': observed_model,
+                     'terminal_model_observed': terminal_model_observed,
+                     'intermediate_model_observations': list(intermediate_model_observations),
+                     'terminal_response_observed': terminal_response_observed,
+                     'model_confirmation_policy': 'Only exact registered final public/upstream namespaces with pinned evidence confirm deployment; raw supplier model remains unchanged.',
+                     'verified_model_identity': row.get('verified_model_identity'),
+                     'terminal_status': terminal.get('status') if terminal else None,
+                     'usage': terminal.get('usage') if terminal else None,
+                     'last_error_event_safe': last_error,
+                     'stop_policy': 'Only full terminal response; check already-buffered frames, then close without waiting for stream EOF.'})
+        client.journal.save(identity, row)
+
+    def fail(category, message):
+        row['error_category'] = category
+        raise OutcomeUnknown(message + '; original request not repeated')
+
+    def dispatch():
+        nonlocal events, duplicates, terminal_events, terminal, terminal_kind
+        nonlocal observed_id, observed_model, last_error, terminal_model_observed, terminal_response_observed
+        if not fields['data']:
+            fields.update(data=[], event='', id=None)
+            return
+        data = '\n'.join(fields['data'])
+        event_name = fields['event']
+        event_id = fields['id']
+        fields.update(data=[], event='', id=None)
+        events += 1
+        if data.strip() == '[DONE]':
+            counts['[DONE]'] = counts.get('[DONE]', 0) + 1
+            return
+        try:
+            value = json.loads(data)
+        except ValueError:
+            fail('http_response_sse_event_json_decode', 'SSE data event is not JSON')
+        if not isinstance(value, dict):
+            fail('http_response_sse_event_shape', 'SSE data event must be an object')
+        kind = value.get('type') or event_name
+        if not isinstance(kind, str) or not kind:
+            fail('http_response_sse_event_shape', 'SSE semantic event type missing')
+        if event_name and event_name != 'message' and value.get('type') and event_name != value['type']:
+            fail('http_response_sse_event_type_mismatch', 'SSE event and data types differ')
+        counts[kind] = counts.get(kind, 0) + 1
+        sequence = value.get('sequence_number')
+        if sequence is not None and type(sequence) is not int:
+            fail('http_response_sse_event_shape', 'SSE sequence number must be an integer')
+        dedup_key = ('id', event_id) if event_id else ('sequence', sequence) if sequence is not None else None
+        canonical = json.dumps(value, sort_keys=True, ensure_ascii=False)
+        if dedup_key is not None and dedup_key in seen:
+            if seen[dedup_key] != canonical:
+                fail('http_response_sse_duplicate_conflict', 'Conflicting duplicate SSE event')
+            duplicates += 1
+            return
+        if dedup_key is not None:
+            seen[dedup_key] = canonical
+        event_response_id = value.get('response_id')
+        if event_response_id is not None:
+            if not isinstance(event_response_id, str) or not event_response_id or (observed_id and observed_id != event_response_id):
+                fail('http_response_sse_response_id_mismatch', 'SSE event response identity changed')
+            observed_id = event_response_id
+        candidate = value.get('response')
+        if kind in ('response.completed', 'response.incomplete', 'response.failed'):
+            terminal_response_observed = {
+                'event_type': kind, 'event_object_sha256': sha(value),
+                'response_object_sha256': sha(candidate),
+                'id': _transport_safe_text(candidate.get('id'), client.key, client.org) if isinstance(candidate, dict) else None,
+                'model': _transport_safe_text(candidate.get('model'), client.key, client.org) if isinstance(candidate, dict) else None,
+                'status': candidate.get('status') if isinstance(candidate, dict) else None,
+                'usage_safe_json': _transport_safe_text(json.dumps(candidate.get('usage'), sort_keys=True, ensure_ascii=False), client.key, client.org) if isinstance(candidate, dict) else None,
+                'public_model_fields': _transport_public_model_fields(value, client.key, client.org),
+                'safe_response_json': _transport_safe_text(json.dumps(candidate, sort_keys=True, ensure_ascii=False), client.key, client.org),
+                'safe_response_truncated': False, 'accepted_as_terminal': False}
+        if isinstance(candidate, dict):
+            rid, model = candidate.get('id'), candidate.get('model')
+            if rid is not None:
+                if not isinstance(rid, str) or not rid or (observed_id and observed_id != rid):
+                    fail('http_response_sse_response_id_mismatch', 'SSE response identity changed')
+                observed_id = rid
+            if model is not None:
+                if kind in ('response.completed', 'response.incomplete', 'response.failed'):
+                    terminal_model_observed = model
+                else:
+                    intermediate_model_observations.append({'event': kind,
+                        'model': _transport_safe_text(model, client.key, client.org),
+                        'outer_model': _transport_safe_text(value.get('model'), client.key, client.org) if value.get('model') is not None else None,
+                        'public_model_fields': _transport_public_model_fields(value, client.key, client.org)})
+        if kind in ('error', 'response.error'):
+            last_error = _transport_safe_text(canonical, client.key, client.org, 2048)
+            fail('http_response_sse_error_event', 'SSE error event without full terminal response')
+        if kind in ('response.completed', 'response.incomplete', 'response.failed'):
+            terminal_events += 1
+            expected = kind.split('.', 1)[1]
+            # The gateway can label a max-output terminal event completed while
+            # the full response truthfully says incomplete. Keep both labels;
+            # never execute tools or claim completion from such a response.
+            capped_terminal = (kind == 'response.completed' and isinstance(candidate, dict)
+                and candidate.get('status') == 'incomplete'
+                and (candidate.get('incomplete_details') or {}).get('reason') == 'max_output_tokens'
+                and candidate.get('max_output_tokens') == payload.get('max_output_tokens')
+                and (candidate.get('usage') or {}).get('output_tokens') == payload.get('max_output_tokens'))
+            if not isinstance(candidate, dict) or candidate.get('object') != 'response' or (candidate.get('status') != expected and not capped_terminal):
+                fail('http_response_sse_terminal_shape', 'SSE terminal event lacks matching full response')
+            if not isinstance(candidate.get('id'), str) or not candidate['id'] or not isinstance(candidate.get('model'), str) or not isinstance(candidate.get('output'), list):
+                fail('http_response_sse_terminal_shape', 'SSE terminal response missing id/model/output')
+            try:
+                verified = _transport_verified_namespace_identity(payload, value, candidate, observed_id)
+            except (ModelNamespaceIdentityError, ValueError, KeyError, OSError):
+                fail('http_response_sse_model_identity', 'Final public/upstream namespace identity is not exactly registered with valid evidence')
+            row['verified_model_identity'] = verified
+            terminal_response_observed['verified_model_identity'] = verified
+            observed_model = verified['canonical_public_model']
+            if terminal is not None:
+                if candidate != terminal:
+                    fail('http_response_sse_duplicate_terminal_conflict', 'Conflicting SSE terminal responses')
+                duplicates += 1
+            else:
+                terminal, terminal_kind = candidate, kind
+                terminal_response_observed['accepted_as_terminal'] = True
+        elif terminal is not None:
+            fail('http_response_sse_event_after_terminal', 'Unexpected event after SSE terminal')
+
+    def line_received(line):
+        nonlocal line_count
+        if line.endswith(b'\r'):
+            line = line[:-1]
+        try:
+            text = line.decode('utf-8-sig' if line_count == 0 else 'utf-8')
+            line_count += 1
+        except UnicodeDecodeError:
+            fail('http_response_sse_event_encoding', 'SSE event is not UTF8')
+        if not text:
+            dispatch()
+            return
+        if text.startswith(':'):
+            return
+        name, separator, value = text.partition(':')
+        if separator and value.startswith(' '):
+            value = value[1:]
+        if name == 'data':
+            fields['data'].append(value)
+        elif name == 'event':
+            fields['event'] = value
+        elif name == 'id' and '\x00' not in value:
+            fields['id'] = value
+        # retry and unknown fields are ignored; no transport retry is enabled.
+
+    try:
+        checkpoint('http_response_sse_read')
+        while terminal is None:
+            chunk = None
+            try:
+                _transport_sse_remaining(client, deadline)
+                chunk = response.readline(min(65536, MAX_RESPONSE - len(raw) + 1))
+                _transport_sse_remaining(client, deadline)
+            except BaseException as exc:
+                if isinstance(chunk, bytes):
+                    raw.extend(chunk)
+                partial = getattr(exc, 'partial', None)
+                if isinstance(partial, bytes):
+                    raw.extend(partial)
+                if 'error_category' not in row:
+                    row['error_category'] = 'http_response_sse_deadline' if time.monotonic() >= deadline else 'http_response_sse_read'
+                raise
+            if not isinstance(chunk, bytes):
+                fail('http_response_sse_read_shape', 'SSE reader returned non-bytes')
+            if not chunk:
+                eof = True
+                break
+            raw.extend(chunk)
+            if len(raw) > MAX_RESPONSE:
+                fail('http_response_sse_body_size', 'SSE response exceeds original response byte limit')
+            buffer.extend(chunk)
+            while b'\n' in buffer:
+                line, rest = buffer.split(b'\n', 1)
+                buffer[:] = rest
+                line_received(bytes(line))
+            if len(raw) - last_checkpoint >= 65536:
+                checkpoint('http_response_sse_read')
+                last_checkpoint = len(raw)
+        if terminal is None:
+            fail('http_response_sse_missing_terminal', 'SSE stream ended without a complete terminal frame')
+        _transport_sse_remaining(client, deadline)
+        checkpoint('http_response_sse_terminal_ready')
+        return terminal
+    except BaseException:
+        checkpoint('http_response_sse_failed')
+        raise
+
+
+
+def _transport_rate_limit_headers(response, key, organization_id):
+    names=('retry-after','date','ratelimit','ratelimit-policy','ratelimit-limit','ratelimit-remaining','ratelimit-reset',
+           'x-ratelimit-limit','x-ratelimit-remaining','x-ratelimit-reset','x-ratelimit-limit-requests',
+           'x-ratelimit-remaining-requests','x-ratelimit-reset-requests','x-ratelimit-limit-tokens',
+           'x-ratelimit-remaining-tokens','x-ratelimit-reset-tokens')
+    pairs=response.getheaders() if hasattr(response,'getheaders') else [(name,response.getheader(name))for name in names]
+    result={}
+    for name,value in pairs:
+        name=name.lower()
+        if value is not None and (name in names or name.startswith(('ratelimit-','x-ratelimit-','x-rate-limit-','x-concurrency-'))):
+            result[name]=_transport_safe_text(str(value),key,organization_id,512)
+    return result
+
+
+class Client:
+    def __init__(self, journal, key=None, organization_id=None, timeout=1800, base_url=API_BASE,
+                 connection_factory=http.client.HTTPSConnection):
+        self.journal = journal
+        if key is None:
+            key, org, self.credential_source = credentials()
+            organization_id = organization_id or org
+        else:
+            self.credential_source = 'injected'
+        self.key, self.org = key, organization_id
+        self.timeout = timeout
+        self.base = urllib.parse.urlsplit(base_url)
+        if self.base.scheme != 'https' or self.base.hostname != 'api.prod.adaptionlabs.ai' or self.base.query:
+            raise ValueError('Adaption requests require the official HTTPS API origin')
+        self.connection_factory = connection_factory
+        self.cancel_event = threading.Event()
+        self.active = None
+        self.latest_inference_request_identity = None
+        self.remote = {'status': 'not_started', 'response_id': None}
+
+    def cancel(self):
+        self.cancel_event.set()
+        if self.active is not None:
+            self.active.close()
+        # Closing a local socket does not cancel server-side inference.
+        return {'local_cancel_requested': True, 'local_connection_closed': True,
+                'remote_request_status': self.remote.get('status') if self.remote.get('status') in
+                ('completed', 'failed', 'cancelled', 'incomplete') else 'unknown',
+                'remote_cancel_attempted': False, 'response_id': self.remote.get('response_id'),
+                'latest_inference_request_identity': self.latest_inference_request_identity}
+
+    def request(self, method, suffix, identity, payload=None):
+        fingerprint = sha({'method': method, 'suffix': suffix, 'payload': payload})
+        with self.journal.lock(identity):
+            prior = self.journal.load(identity)
+            if prior:
+                if prior['fingerprint'] != fingerprint:
+                    raise ValueError('Request identity has different immutable input')
+                if prior['state'] == 'received':
+                    if not 200 <= prior['http_status'] < 300:
+                        raise RuntimeError('Adaption HTTP ' + str(prior['http_status']) + '; original error receipt retained')
+                    return _transport_response_for_loop(prior['response'], prior.get('verified_model_identity'))
+                if prior['state']=='not_sent_budget_denied':raise RuntimeError('Original POST not sent: budget denied; immutable ID retained')
+                if method == 'POST':
+                    raise OutcomeUnknown('Original POST outcome unknown; query known response id, never resubmit')
+            if self.cancel_event.is_set():
+                raise LocalCancelled('Local cancellation already requested')
+            row = {'version': VERSION, 'identity': identity, 'fingerprint': fingerprint,
+                   'state': 'reserved', 'method': method, 'path': self.base.path + suffix,
+                   'request': payload, 'created': time.time(), 'automatic_retries': 0,
+                   'credential_source': self.credential_source, 'organization_id': self.org,
+                   'remote_request_status': 'unknown' if method == 'POST' else 'not_inference'}
+            reservation = None
+            if method == 'POST':
+                try:
+                    import batch_budget_guard
+                    grant_path = Path(os.environ['YOHAKU_BATCH_SPEND_GRANT'])
+                    if sha(grant_path.read_bytes()) != os.environ['YOHAKU_BATCH_SPEND_GRANT_SHA256']:raise ValueError('Approved spending grant changed before POST')
+                    reservation = batch_budget_guard.reserve_post(os.environ['YOHAKU_BATCH_ID'], identity, payload)
+                except Exception as exc:
+                    row.update(state='not_sent_budget_denied',network_dispatched=False,error_type=type(exc).__name__,remote_request_status='not_sent')
+                    self.journal.save(identity,row)
+                    raise
+            self.journal.save(identity,row)
+            if method == 'POST':
+                # A prior round's completion is not the state of this new request.
+                self.remote = {'status': 'unknown', 'response_id': None}
+                self.latest_inference_request_identity = identity
+            body = json.dumps(payload, ensure_ascii=False).encode() if payload is not None else None
+            headers = {'Authorization': 'Bearer ' + self.key, 'Content-Type': 'application/json',
+                       'User-Agent': VERSION, 'Connection': 'close'}
+            if self.org:
+                headers['X-Organization-Id'] = self.org
+            request_deadline = time.monotonic() + self.timeout
+            if payload is not None and payload.get('stream') is True:
+                headers['Accept'] = 'text/event-stream'
+            conn = self.connection_factory(self.base.hostname, timeout=self.timeout)
+            self.active = conn
+            try:
+                conn.request(method, self.base.path + suffix, body=body, headers=headers)
+                if payload is not None and payload.get('stream') is True:
+                    _transport_sse_remaining(self, request_deadline)
+                response = conn.getresponse()
+                row.update(transport_observability_version=HTTP_DIAGNOSTICS_VERSION,
+                           transport_phase='http_response_headers_received',
+                           http_status=response.status,
+                           rate_header_capture_version='retry-after-capture/1',
+                           rate_limit_headers=_transport_rate_limit_headers(response,self.key,self.org),
+                           http_content_type=_transport_safe_text(response.getheader('content-type') or '', self.key, self.org, 512),
+                           server_request_id=_transport_safe_text(response.getheader('x-request-id') or '', self.key, self.org, 512))
+                self.journal.save(identity, row)
+                row.update(requested_stream=bool(payload is not None and payload.get('stream') is True))
+                content_type = (response.getheader('content-type') or '').split(';', 1)[0].strip().lower()
+                if row['requested_stream'] and 200 <= response.status < 300 and content_type == 'text/event-stream':
+                    value = _transport_read_sse(self, response, row, identity, payload, request_deadline)
+                else:
+                    row['actual_representation'] = 'non_sse'
+                    try:
+                        if row['requested_stream']:
+                            _transport_sse_remaining(self, request_deadline)
+                        raw = response.read(MAX_RESPONSE + 1)
+                        row['http_body_diagnostic'] = _transport_body_diagnostic(raw, self.key, self.org, len(raw) <= MAX_RESPONSE)
+                        if row['requested_stream']:
+                            _transport_sse_remaining(self, request_deadline)
+                    except BaseException as read_exc:
+                        partial = getattr(read_exc, 'partial', None)
+                        row.update(transport_phase='http_response_body_read',
+                                   error_category='http_response_sse_deadline' if row['requested_stream'] and time.monotonic() >= request_deadline else 'http_response_body_read',
+                                   body_read_exception_type=type(read_exc).__name__)
+                        if isinstance(partial, bytes):
+                            row['http_body_diagnostic'] = _transport_body_diagnostic(partial, self.key, self.org, False)
+                        self.journal.save(identity, row)
+                        raise
+                    row.update(transport_phase='http_response_json_decode',
+                               http_body_diagnostic=_transport_body_diagnostic(raw, self.key, self.org, len(raw) <= MAX_RESPONSE))
+                    self.journal.save(identity, row)
+                    if len(raw) > MAX_RESPONSE:
+                        row.update(error_category='http_response_body_size')
+                        self.journal.save(identity, row)
+                        raise OutcomeUnknown('Response too large; original request not repeated')
+                    try:
+                        value = json.loads(raw)
+                    except ValueError as decode_exc:
+                        row.update(error_category='http_response_json_decode',
+                                   http_json_decode_exception_type=type(decode_exc).__name__)
+                        self.journal.save(identity, row)
+                        raise OutcomeUnknown('Non-JSON HTTP response; original request not repeated') from None
+                    row.update(transport_phase='http_response_json_decoded', http_json_envelope_type=type(value).__name__)
+                    row['actual_representation'] = 'json'
+                    if row['requested_stream'] and 200 <= response.status < 300 and not (content_type == 'application/json' or content_type.endswith('+json')):
+                        row.update(error_category='http_response_sse_content_type')
+                        self.journal.save(identity, row)
+                        raise OutcomeUnknown('Unexpected non-SSE response content type; original request not repeated')
+                # Host recovery: non-2xx is an HTTP error, not a model response.
+                # The existing worst-case POST reservation remains untouched.
+                if not 200 <= response.status < 300:
+                    row.update(state='received', error_category='http_response_status',
+                               remote_request_status='unknown', finished=time.time())
+                    self.journal.save(identity, row)
+                    raise RuntimeError('Adaption HTTP ' + str(response.status) + '; see redacted receipt ' + identity)
+                if method == 'POST' and row.get('verified_model_identity') is None:
+                    try:
+                        row['verified_model_identity'] = _transport_verified_exact_identity(payload, value, 'client_complete_http_json')
+                    except ModelNamespaceIdentityError:
+                        row.update(response_observed_unverified=value, error_category='http_response_model_identity')
+                        self.journal.save(identity, row)
+                        raise OutcomeUnknown('Complete response lacks an exact or verified namespaced model identity; original request not repeated')
+                if reservation is not None and isinstance(value,dict):
+                    accounting_response = _transport_response_for_loop(value, row.get('verified_model_identity'))
+                    batch_budget_guard.reconcile_post(reservation, accounting_response)
+                row.update(state='received', http_status=response.status, response=value,
+                           server_request_id=_transport_safe_text(response.getheader('x-request-id') or '', self.key, self.org, 512), finished=time.time())
+                if isinstance(value, dict) and value.get('object') == 'response':
+                    self.remote = {'status': value.get('status', 'unknown'), 'response_id': value.get('id')}
+                    row['remote_request_status'] = self.remote['status']
+                self.journal.save(identity, row)
+                if not 200 <= response.status < 300:
+                    raise RuntimeError('Adaption HTTP ' + str(response.status) + '; see redacted receipt ' + identity)
+                return _transport_response_for_loop(value, row.get('verified_model_identity'))
+            except BaseException as exc:
+                if row['state'] != 'received':
+                    row.update(state='local_cancelled' if self.cancel_event.is_set() else 'outcome_unknown',
+                               local_exception_type=type(exc).__name__, finished=time.time(),
+                               remote_request_status='unknown', remote_cancel_attempted=False)
+                    self.journal.save(identity, row)
+                raise
+            finally:
+                conn.close(); self.active = None
+
+    def models(self, identity='models-hosted'):
+        return self.request('GET', '/models?type=hosted', identity)
+
+    def create(self, payload, identity):
+        return self.request('POST', '/responses', identity, payload)
+
+    def retrieve(self, response_id, identity):
+        if (not isinstance(response_id, str) or not response_id.startswith('resp_') or
+                not 5 < len(response_id) <= 8192 or
+                any(unicodedata.category(c) == 'Cc' for c in response_id)):
+            raise ValueError('Invalid response id')
+        # Supplier IDs are opaque and may contain padding or path delimiters.
+        # The resp_ prefix excludes standalone dot segments, and encoding the
+        # entire component keeps '/', '?', '#', '%' and '=' out of URL structure.
+        component = urllib.parse.quote(response_id, safe='')
+        return self.request('GET', '/responses/' + component, identity)
+
+
+def function_definitions(definitions):
+    return [{'type': 'function', 'name': 'yohaku_' + d['name'],
+             'description': d['description'], 'parameters': d['parameters']} for d in definitions]
+
+
+def output_text(response):
+    return ''.join(c.get('text', '') for item in response.get('output', []) if item.get('type') == 'message'
+                   for c in item.get('content', []) if c.get('type') == 'output_text')
+
+
+def inherit_profile(parent, requested=None):
+    requested = requested or {}
+    chosen = json.loads(json.dumps(parent)); chosen.update(requested)
+    if chosen.get('provider') != 'adaption' or chosen.get('model') != parent['model']:
+        raise ValueError('Adaption descendants must inherit provider/model; no silent fallback')
+    if chosen.get('reasoning_effort') != 'none':
+        raise ValueError('Adaption reasoning effort is not exposed by this API contract; use none')
+    return chosen
+
+
+# four-lines-completed-turn-checkpoint/1
+def _completed_turn_checkpoint(loop, history, response, round_no):
+    node = getattr(loop.tools, 'node_context', {})
+    value = {'format': 'adaption-completed-turn-checkpoint/1',
+        'task_id': loop.identity, 'node_id': node.get('node_id'),
+        'generation': node.get('generation'), 'profile': node.get('profile'),
+        'session_id': loop.session_id, 'native_tools_sha256': sha(function_definitions(loop.tools.definitions)),
+        'completed_round': round_no, 'response_id': response.get('id'),
+        'history_sha256': sha(history),
+        'continuation': {'history': history, 'last_response_id': response.get('id'), 'store': loop.store, 'model': loop.model},
+        'boundary': 'Complete supplier terminal and all returned local tool outputs; never includes an unknown later POST.'}
+    loop.client.journal.save(loop.identity + ':checkpoint', value)
+
+def _completed_checkpoint_ancestor(previous_task, node, session_id=None):
+    expected_session = session_id or node.get('session_id')
+    expected_profile = node.get('profile')
+    if not expected_session:
+        raise OutcomeUnknown('No confirmed original session for checkpoint continuity')
+    base = Path.home() / '.local/state/yohaku'
+    current = previous_task
+    seen = set()
+    skipped = []
+    while current and current not in seen:
+        seen.add(current)
+        if not re.fullmatch(r'model-task-[a-f0-9]+', current):
+            raise ValueError('Invalid local checkpoint task identity')
+        path = base / 'adaption-tasks' / current / (current + ':checkpoint.json')
+        if path.is_file() and not path.is_symlink():
+            value = json.loads(path.read_bytes())
+            if (value.get('task_id') != current or value.get('node_id') != node.get('node_id')
+                    or value.get('generation') != node.get('generation') or value.get('profile') != expected_profile
+                    or value.get('session_id') != expected_session
+                    or value.get('history_sha256') != sha(value.get('continuation', {}).get('history'))):
+                raise ValueError('Completed checkpoint ancestor identity/profile/history mismatch')
+            if any(x['restored_history_sha256'] != value['history_sha256'] for x in skipped):
+                raise ValueError('No-tool carry-forward does not match the actual restored history')
+            return value, skipped
+        record_path = base / 'model-tasks' / (current + '.json')
+        if not record_path.is_file() or record_path.is_symlink():
+            raise OutcomeUnknown('No durable previous task record for checkpoint continuity')
+        record = json.loads(record_path.read_bytes())
+        context = record.get('node_context') or {}
+        if (record.get('task_id') != current or record.get('model_phase') != 'finished'
+                or record.get('commit_confirmed') is not True
+                or (record.get('receipt') or {}).get('native_cleanup_complete') is not True
+                or context.get('node_id') != node.get('node_id') or context.get('generation') != node.get('generation')
+                or context.get('profile') != expected_profile or context.get('session_id') != expected_session):
+            raise OutcomeUnknown('Checkpoint carry-forward requires exact confirmed terminal task/context/cleanup')
+        trace = base / 'model-tasks' / (current + '.node-events.jsonl')
+        events = [json.loads(line) for line in trace.read_text().splitlines()]
+        if any(e.get('event') in ('tool_call', 'tool_result') for e in events):
+            raise OutcomeUnknown('Task has tool events without a completed checkpoint; no replay or skip')
+        restores = [e for e in events if e.get('event') == 'completed_turn_continuation_restored']
+        previous = context.get('adaption_previous_task_id')
+        if len(restores) != 1 or restores[0].get('previous_task_id') != previous or restores[0].get('session_id') != expected_session:
+            raise OutcomeUnknown('No actual restore receipt before the no-tool HTTP failure')
+        rounds = list((base / 'adaption-tasks' / current).glob(current + ':round:*.json'))
+        if len(rounds) != 1:
+            raise OutcomeUnknown('Only a first-POST HTTP429 with no tool events can carry its inherited checkpoint')
+        row = json.loads(rounds[0].read_bytes())
+        if (row.get('identity') != current + ':round:0' or row.get('finished') is None
+                or (row.get('request') or {}).get('model') != expected_profile['model']):
+            raise OutcomeUnknown('Missing exact first-POST terminal receipt; no checkpoint skip')
+        response = row.get('response') or {}
+        verified = row.get('verified_model_identity') or {}
+        known_throttle = row.get('http_status') == 429
+        known_no_action_cap = (row.get('http_status') == 200 and row.get('state') == 'received'
+            and response.get('object') == 'response' and response.get('status') == 'incomplete'
+            and (response.get('incomplete_details') or {}).get('reason') == 'max_output_tokens'
+            and (response.get('usage') or {}).get('output_tokens') == (row.get('request') or {}).get('max_output_tokens')
+            and response.get('model') == verified.get('supplier_model_verbatim')
+            and verified.get('canonical_public_model') == expected_profile['model']
+            and verified.get('raw_response_object_sha256') == sha(response)
+            and not any(x.get('type') == 'function_call' for x in response.get('output', []) if isinstance(x, dict)))
+        if not (known_throttle or known_no_action_cap):
+            raise OutcomeUnknown('No confirmed no-action HTTP429/output-limit terminal; no checkpoint skip')
+        skipped.append({'task_id':current,'journal_path':str(rounds[0]),'journal_sha256':sha(rounds[0].read_bytes()),
+                        'restored_history_sha256':restores[0].get('history_sha256'),'http_status':row.get('http_status'),
+                        'terminal_kind':'confirmed_output_limit' if known_no_action_cap else 'http429','tool_events':0})
+        current = previous
+    raise OutcomeUnknown('Checkpoint ancestry is absent or cyclic; no inferred continuation')
+
+def _completed_prior_result(prior, previous_task, node, tools):
+    result = prior.get('final_result') or {}
+    if isinstance(result.get('continuation', {}).get('history'), list):
+        return result
+    value, skipped = _completed_checkpoint_ancestor(previous_task, node)
+    if value.get('native_tools_sha256') != sha(function_definitions(tools.definitions)):
+        raise ValueError('Completed checkpoint tool catalog mismatch')
+    if getattr(tools, 'node_event', None):
+        tools.node_event({'event':'completed_turn_continuation_restored','previous_task_id':previous_task,
+            'checkpoint_task_id':value['task_id'],'skipped_no_tool_terminal_tasks':skipped,
+            'session_id':value['session_id'],'history_sha256':value['history_sha256'],
+            'completed_round':value['completed_round'],'unknown_later_POSTs_replayed':False})
+    return value
+
+def _checkpoint_native_signature(task_id, node, session_id):
+    direct = Path.home() / '.local/state/yohaku/adaption-tasks' / task_id / (task_id + ':checkpoint.json')
+    if not direct.is_file():
+        record = Path.home() / '.local/state/yohaku/model-tasks' / (task_id + '.json')
+        if not record.is_file() or not (json.loads(record.read_bytes()).get('node_context') or {}).get('adaption_previous_task_id'):
+            return {}
+    value, skipped = _completed_checkpoint_ancestor(task_id, node, session_id or node.get('session_id'))
+    if skipped:
+        return dict(value, checkpoint_ancestor_carry_forward=True, skipped_no_tool_http429_tasks=skipped)
+    return value
+
+
+class Loop:
+    def __init__(self, client, tools, model, request_id, *, seconds=None, max_tools=None,
+                 max_output_tokens=32768, emit=lambda event: None, store=False):
+        self.client, self.tools, self.model, self.identity = client, tools, model, request_id
+        self.seconds, self.max_tools = seconds, max_tools
+        self.max_output_tokens, self.emit, self.store = max_output_tokens, emit, store
+        self.session_id = 'adaption-context-' + sha(self.identity)[:32]
+
+    def run(self, prompt, context=None, history=None, instructions='Use only the provided Yohaku world tools.'):
+        begin = time.monotonic()
+        context = context or {}
+        definitions = function_definitions(self.tools.definitions)
+        allowed = {d['name'] for d in definitions}
+        input_items = list(history or []) + [{'role': 'user', 'content': prompt}]
+        full_history = list(input_items)
+        usage, receipts, local_receipts, calls_total = [], [], [], 0
+        previous = None
+        self.emit({'event': 'requested_model_settings', 'provider': 'adaption', 'model': self.model,
+                   'reasoning_effort': 'none', 'selection_source': 'explicit immutable node profile',
+                   'scope': 'isolated Adaption candidate only'})
+        self.emit({'event': 'turn_settings', 'version': VERSION, 'seconds': self.seconds,
+                   'max_tool_calls': self.max_tools, 'automatic_retries': 0,
+                   'context_mode': 'stored_response_with_local_archive' if self.store else 'full_local_history',
+                   'remote_cancellation': 'unknown until supplier receipt; no cancel endpoint used'})
+        round_no=-1
+        while True:
+            round_no+=1
+            remaining = None if self.seconds is None else self.seconds - (time.monotonic() - begin)
+            if remaining is not None and remaining <= 0:
+                raise BudgetExceeded('Adaption local wall-clock budget exhausted')
+            self.client.timeout = 1800 if remaining is None else min(1800, remaining)
+            payload = {'model': self.model, 'input': input_items, 'tools': definitions,
+                       'instructions': instructions, 'stream': True, 'store': self.store,
+                       'background': False, 'max_output_tokens': self.max_output_tokens}
+            if previous:
+                payload['previous_response_id'] = previous
+            identity = self.identity + ':round:' + str(round_no)
+            response = self.client.create(payload, identity)
+            verified_identity = _transport_require_verified_identity(response, self.model)
+            self.emit({'event': 'model_settings', 'provider': 'adaption',
+                       'model': verified_identity['canonical_public_model'],
+                       'canonical_public_model': verified_identity['canonical_public_model'],
+                       'supplier_model_verbatim': response.get('model'),
+                       'upstream_model': verified_identity['upstream_model'],
+                       'verified_model_identity': verified_identity,
+                       'mapping_evidence': verified_identity['mapping_evidence'],
+                       'reasoning_effort': 'none',
+                       'selection_source': 'complete supplier terminal plus host-pinned namespace evidence',
+                       'response_id': response.get('id'), 'confirmed': True,
+                       'scope': 'isolated Adaption candidate only'})
+            if response.get('status') not in ('completed', 'incomplete'):
+                raise RuntimeError('Adaption response not completed: ' + str(response.get('status')))
+            output = response.get('output', [])
+            if not isinstance(output, list):
+                raise ValueError('Invalid response output')
+            function_calls = [item for item in output if item.get('type') == 'function_call']
+            ids = [c.get('call_id') for c in function_calls]
+            if any(not isinstance(i, str) or not i for i in ids) or len(set(ids)) != len(ids):
+                raise ValueError('Invalid/duplicate tool call IDs; no tools executed')
+            if any(c.get('name') not in allowed for c in function_calls):
+                raise ValueError('Unadvertised tool requested; no tools executed')
+            if payload.get('stream') and function_calls and (response.get('status') != 'completed' or any(c.get('status') not in (None, 'completed') for c in function_calls)):
+                raise RuntimeError('Streaming response has partial/incomplete tool calls; no tools executed')
+            parsed_arguments = [json.loads(c.get('arguments') or '{}') for c in function_calls]
+            if any(not isinstance(a, dict) for a in parsed_arguments):
+                raise ValueError('Tool arguments must be JSON objects; no tools executed')
+            if self.max_tools is not None and calls_total + len(function_calls) > self.max_tools:
+                raise BudgetExceeded('Adaption tool-call budget exhausted before execution')
+            full_history.extend(output)
+            usage.append(response.get('usage'))
+            receipts.append({'identity': identity, 'id': response.get('id'), 'status': response.get('status'),
+                             'model': response.get('model'), 'usage': response.get('usage'),
+                             'previous_response_id': previous, 'input_sha256': sha(input_items)})
+            self.emit({'event': 'node_session', 'thread_id': self.session_id})
+            self.emit({'event': 'node_usage', 'usage': {'source': 'Adaption Responses receipts', 'rounds': usage},
+                       'elapsed_seconds': time.monotonic() - begin})
+            if not function_calls:
+                if response['status'] != 'completed':
+                    raise RuntimeError('Incomplete response is not successful completion')
+                result = {'text': output_text(response), 'session_id': self.session_id,
+                          'native_tools_sha256': sha(definitions),
+                          'local_tool_receipts': local_receipts,
+                          'usage': {'source': 'Adaption Responses receipts', 'rounds': usage},
+                          'elapsed_seconds': time.monotonic() - begin,
+                          'provider_evidence': {'provider': 'adaption', 'requests': receipts,
+                                                'local_cleanup': 'HTTP connections closed',
+                                                'remote_request_status': response['status']},
+                          'submitted_context': {'policy': 'scoped_yohaku_tools', 'context': context,
+                                                'history_injected': bool(history)},
+                          'continuation': {'history': full_history, 'last_response_id': response.get('id'),
+                                           'store': self.store, 'model': self.model}}
+                self.client.journal.save(self.identity + ':result', result)
+                return result
+            results = []
+            for c, args in zip(function_calls, parsed_arguments):
+                if self.client.cancel_event.is_set():
+                    raise LocalCancelled('Local cancellation before tool execution')
+                if self.seconds is not None and time.monotonic() - begin >= self.seconds:
+                    raise BudgetExceeded('Adaption wall-clock budget exhausted before tool execution')
+                tool_identity = self.identity + ':tool:' + sha([response.get('id'), c['call_id']])[:32]
+                fingerprint = sha([c['name'], args])
+                with self.client.journal.lock(tool_identity):
+                    saved = self.client.journal.load(tool_identity)
+                    executed_now = saved is None
+                    if saved:
+                        if saved['fingerprint'] != fingerprint:
+                            raise ValueError('Tool call identity input conflict')
+                        if saved['state'] != 'returned':
+                            raise OutcomeUnknown('Local tool outcome unknown; never replay the operation')
+                        tool_result = saved['result']
+                    else:
+                        self.client.journal.save(tool_identity, {'state': 'reserved', 'fingerprint': fingerprint,
+                                                                 'name': c['name'], 'arguments': args,
+                                                                 'call_id': c['call_id'], 'response_id': response.get('id')})
+                        self.emit({'event': 'tool_call', 'tool': c['name'], 'arguments': args})
+                        tool_result = self.tools.call(c['name'].removeprefix('yohaku_'), args)
+                        self.client.journal.save(tool_identity, {'state': 'returned', 'fingerprint': fingerprint,
+                                                                 'name': c['name'], 'arguments': args,
+                                                                 'result': tool_result, 'call_id': c['call_id'],
+                                                                 'response_id': response.get('id')})
+                        self.emit({'event': 'tool_result', 'tool': c['name'], 'arguments': args, 'result': tool_result})
+                local_receipts.append({'identity': tool_identity, 'name': c['name'], 'arguments': args,
+                                       'result': tool_result, 'executed_now': executed_now,
+                                       'call_id': c['call_id'], 'response_id': response.get('id')})
+                calls_total += 1
+                results.append({'type': 'function_call_output', 'call_id': c['call_id'],
+                                'output': json.dumps(tool_result, ensure_ascii=False)})
+            full_history.extend(results)
+            _completed_turn_checkpoint(self, full_history, response, round_no)
+            if self.store:
+                previous = response['id']; input_items = results
+            else:
+                input_items = list(full_history)
+        raise BudgetExceeded('Adaption round guard exhausted')
+
+
+def catalog():
+    try:
+        key, org, source = credentials()
+    except ValueError:
+        return {'provider': 'adaption', 'configured': False, 'models': [],
+                'login': {'state': 'not_signed_in'}, 'reason': 'Missing Adaption API credential'}
+    journal = Journal(Path.home() / '.local/state/yohaku/adaption-catalog')
+    client = Client(journal, key=key, organization_id=org)
+    raw = client.models('hosted-' + str(time.time_ns()))
+    return {'provider': 'adaption', 'configured': True, 'login': {'state': 'api_key_present'},
+            'models': [{**m, 'executable_reasoning_efforts': ['none'],
+                        'inference_tested': False} for m in raw['data']],
+            'catalog_is_inference_test': False, 'credential_source': source,
+            'compatibility': {'backend': 'Adaption Responses direct function tools',
+                              'context': 'local full history; optional stored previous_response_id',
+                              'remote_cancel': 'unverified/no endpoint invoked'}}
+
+
+def run(initial, tools, emit):
+    """Candidate task-runner entry, preserving native scoped/group-wrapped tools."""
+    config = initial['config']
+    node = getattr(tools, 'node_context', {})
+    chosen = node.get('profile') or config.get('adaption_profile')
+    if not chosen or chosen.get('provider') != 'adaption':
+        raise ValueError('An explicit Adaption node profile is required')
+    inherit_profile(chosen)
+    task_id = initial.get('context', {}).get('task_id')
+    if not task_id:
+        raise ValueError('A durable task identity is required')
+    journal = Journal(Path.home() / '.local/state/yohaku/adaption-tasks' / task_id)
+    client = Client(journal)
+    if getattr(tools, 'node_event', None):
+        original_emit = emit
+        def emit(event):
+            tools.node_event(event); original_emit(event)
+    history = None
+    continuation = node.get('continuation')
+    if continuation and continuation.get('model') == chosen['model']:
+        history = continuation.get('history')
+    previous_task = node.get('adaption_previous_task_id')
+    if previous_task:
+        from yohaku_codex_tasks import read_record
+        prior = read_record(previous_task)
+        prior_node = prior.get('node_context', {})
+        previous_result = _completed_prior_result(prior, previous_task, node, tools)
+        if (prior_node.get('node_id') != node.get('node_id') or
+                prior_node.get('generation') != node.get('generation') or
+                any(prior_node.get('profile', {}).get(k) != node.get('profile', {}).get(k)
+                    for k in ('provider', 'model', 'reasoning_effort')) or
+                previous_result.get('native_tools_sha256') != sha(function_definitions(tools.definitions))):
+            raise ValueError('Previous Adaption context identity/profile/catalog mismatch')
+        history = previous_result.get('continuation', {}).get('history')
+        if not isinstance(history, list):
+            raise OutcomeUnknown('Previous Adaption continuation unavailable; no silent history loss')
+    # AI-node context includes only its own compact/current task and scoped assets.
+    prompt = json.dumps({'task': initial['prompt'], 'node': node,
+                         'bootstrap': tools.bootstrap(initial.get('context', {}))}, ensure_ascii=False)
+    loop = Loop(client, tools, chosen['model'], task_id, seconds=chosen['budget']['timeout_seconds'],
+                max_tools=chosen['budget']['max_tool_calls'], emit=emit)
+    if node.get('session_id'):
+        loop.session_id = node['session_id']
+    try:
+        return loop.run(prompt, initial.get('context'), history,
+                        instructions=getattr(tools, 'node_system', 'Use only provided Yohaku tools.'))
+    finally:
+        journal.save(task_id + ':local-cleanup', client.cancel())
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('mode', choices=['models', 'text', 'status', 'tool-loop'])
+    p.add_argument('--journal', required=True)
+    p.add_argument('--request-id', required=True)
+    p.add_argument('--model')
+    p.add_argument('--prompt')
+    p.add_argument('--response-id')
+    p.add_argument('--candidate')
+    p.add_argument('--world')
+    p.add_argument('--read-path')
+    a = p.parse_args()
+    c = Client(Journal(a.journal))
+    def interrupted(number, _frame):
+        receipt = c.cancel()
+        receipt['signal'] = number
+        c.journal.save(a.request_id + ':cancel', receipt)
+        raise LocalCancelled('Local CLI cancelled; supplier cancellation is not confirmed')
+    signal.signal(signal.SIGINT, interrupted)
+    signal.signal(signal.SIGTERM, interrupted)
+    if a.mode == 'models':
+        result = c.models(a.request_id)
+    elif a.mode == 'status':
+        result = c.retrieve(a.response_id, a.request_id)
+    elif a.mode == 'text':
+        if not a.model or not a.prompt:
+            p.error('text requires --model and --prompt')
+        result = c.create({'model': a.model, 'input': a.prompt, 'tools': [],
+                           'stream': False, 'store': False, 'background': False,
+                           'max_output_tokens': 256}, a.request_id)
+    else:
+        if not all((a.model, a.candidate, a.world, a.read_path)):
+            p.error('tool-loop requires --model --candidate --world --read-path')
+        candidate = Path(a.candidate).resolve()
+        # Installed copy's root is candidate/agent; source copy's is workflow/adaption.
+        if (candidate / 'agent/ADAPTION-INSTALL.json').is_file() is False:
+            raise ValueError('Read-only probe requires an installed isolated candidate')
+        sys.path.insert(0, str(candidate / 'agent'))
+        import yohaku_agent as agent
+        world = Path(a.world).resolve()
+        path = Path(a.read_path)
+        if path.is_absolute() or '..' in path.parts or not str(path):
+            raise ValueError('Probe needs an existing world-relative path')
+        workspace = agent.Workspace(world, candidate / 'bin/loom-linux-x86_64', candidate / 'bin/yohaku_workspace')
+        native_tools = agent.Tools(workspace.execute, lambda: {'root': str(world)},
+                                   {'read': True, 'write': False, 'run': False, 'delete': False, 'import': False}, native=True)
+        class ReadOnlyProbe:
+            definitions = [d for d in native_tools.definitions if d['name'] == 'read_text']
+            calls = []
+            def call(self, name, args):
+                if name != 'read_text' or args != {'path': a.read_path}:
+                    raise ValueError('Probe grants exactly one read-only path')
+                value = native_tools.call(name, args)
+                self.calls.append({'name': name, 'arguments': args, 'result': value})
+                return value
+        tools = ReadOnlyProbe()
+        prompt = a.prompt or ('Call yohaku_read_text exactly once with path ' + a.read_path +
+                               '. Then summarize the returned text in one sentence and cite its revision. Do not answer before reading.')
+        events = []
+        result = Loop(c, tools, a.model, a.request_id, seconds=120, max_tools=1,
+                      max_output_tokens=512, emit=events.append).run(prompt)
+        actual_tools = result['local_tool_receipts']
+        result['readonly_tool_loop_verified'] = (len(actual_tools) == 1 and
+            actual_tools[0]['result'].get('ok') is True and len(result['provider_evidence']['requests']) >= 2 and bool(result['text']))
+        result['actual_tool_receipts'] = actual_tools
+        c.journal.save(a.request_id + ':probe', {'result': result, 'events': events})
+    print(json.dumps(redact(result), ensure_ascii=False))
+
+
+if __name__ == '__main__':
+    main()
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_adaption.py"
+```

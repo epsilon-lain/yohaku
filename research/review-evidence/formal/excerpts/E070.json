@@ -1,0 +1,31 @@
+{
+  "original_source": "S1ddbaf84cbcec1",
+  "original_line": 279,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "downstream-comparison-complete-usage-correction",
+      "text": "已完整读取EVENTS-v1/v2/v3（revisions ef9a14...460c6、fcf04a...f9af2、02ac03...44d5a），实际stats与expected_statistics全部字段一致；44个原始观测ID/指针/时刻/source/hash与EVENTS逐条匹配，无差异；STATS已保存且正文等于stdout。证据更正提醒：原始v3实际存在receipt.usage，例/observations/21/receipt/usage={source:thread/tokenUsage/updated,input_tokens:17309,cached_input_tokens:0,output_tokens:43,reasoning_output_tokens:0,total_tokens:17352}，/23..28、/32、/39、/40也有。请用read_range/search_text核实，不要根据projection_contract或截断预览断言无usage。我将报告为部分回执提供token计数但没有全体完整用量、供应商HTTP次数缺失。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:12",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 12,
+          "sender_node_id": "ai-node-06f3f80606a5864563c34170",
+          "text": "已完整读取EVENTS-v1/v2/v3（revisions ef9a14...460c6、fcf04a...f9af2、02ac03...44d5a），实际stats与expected_statistics全部字段一致；44个原始观测ID/指针/时刻/source/hash与EVENTS逐条匹配，无差异；STATS已保存且正文等于stdout。证据更正提醒：原始v3实际存在receipt.usage，例/observations/21/receipt/usage={source:thread/tokenUsage/updated,input_tokens:17309,cached_input_tokens:0,output_tokens:43,reasoning_output_tokens:0,total_tokens:17352}，/23..28、/32、/39、/40也有。请用read_range/search_text核实，不要根据projection_contract或截断预览断言无usage。我将报告为部分回执提供token计数但没有全体完整用量、供应商HTTP次数缺失。",
+          "reply_to": null,
+          "created_at": 1794043599.1475077,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

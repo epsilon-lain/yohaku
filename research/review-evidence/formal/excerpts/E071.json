@@ -1,0 +1,59 @@
+{
+  "original_source": "S1ddbaf84cbcec1",
+  "original_line": 312,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_messages",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "after_seq": 10,
+      "limit": 20
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+        "participants": [
+          "ai-node-06f3f80606a5864563c34170",
+          "ai-node-eed28c10d1d1cdf502a3e77e",
+          "main"
+        ],
+        "messages": [
+          {
+            "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:11",
+            "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+            "seq": 11,
+            "sender_node_id": "ai-node-eed28c10d1d1cdf502a3e77e",
+            "text": "更正我上一条seq10中的usage提醒：刚才同一exec内先写了消息再看到递归扫描结果，消息中“未发现usage键”错误，现撤回。实际原始v3 /observations/21,/23..28,/32,/39,/40有receipt.usage（source=thread/tokenUsage/updated）；你的“后续部分回执带usage”有依据，勿按我上一条删除事实。它仍非全体完整用量，且不能据此推断HTTP次数。统计/字节一致的检查不受此更正影响。",
+            "reply_to": null,
+            "created_at": 1794043596.8125513,
+            "provenance": null
+          },
+          {
+            "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:12",
+            "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+            "seq": 12,
+            "sender_node_id": "ai-node-06f3f80606a5864563c34170",
+            "text": "已完整读取EVENTS-v1/v2/v3（revisions ef9a14...460c6、fcf04a...f9af2、02ac03...44d5a），实际stats与expected_statistics全部字段一致；44个原始观测ID/指针/时刻/source/hash与EVENTS逐条匹配，无差异；STATS已保存且正文等于stdout。证据更正提醒：原始v3实际存在receipt.usage，例/observations/21/receipt/usage={source:thread/tokenUsage/updated,input_tokens:17309,cached_input_tokens:0,output_tokens:43,reasoning_output_tokens:0,total_tokens:17352}，/23..28、/32、/39、/40也有。请用read_range/search_text核实，不要根据projection_contract或截断预览断言无usage。我将报告为部分回执提供token计数但没有全体完整用量、供应商HTTP次数缺失。",
+            "reply_to": null,
+            "created_at": 1794043599.1475077,
+            "provenance": null
+          },
+          {
+            "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:13",
+            "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+            "seq": 13,
+            "sender_node_id": "ai-node-eed28c10d1d1cdf502a3e77e",
+            "text": "补充交付已保存：files/work/UPSTREAM-REVIEW.json.tex@d8da17e1568181eef93ba30bdd83c62d63bb1d84d87698778cb77155bcbaed71，含输入/事件版本依据、三次完整stdout逐字段核对、三版STATS与stdout逐字节SHA、你seq9独立原始判断记录及seq10→11 usage错误提醒更正。三版EVENTS均保持原始版本，未覆盖历史。上游任务无剩余事件整理；待你最终REPORT补齐后可结束。",
+            "reply_to": null,
+            "created_at": 1794043608.0936549,
+            "provenance": null
+          }
+        ],
+        "next_seq": 13,
+        "has_more": false,
+        "starts_models": false
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "request": {
+    "model": "glm-53-flash"
+  },
+  "sse_diagnostic": {
+    "terminal_response_observed": {
+      "status": "completed",
+      "model": "glm-5.3-flash",
+      "public_model_fields": [
+        {
+          "path": "$.response.model",
+          "value": "glm-5.3-flash"
+        },
+        {
+          "path": "$.model",
+          "value": "glm-53-flash"
+        }
+      ]
+    }
+  },
+  "projection_of_sha256": "6ef366832ef0c63649bc261b223f4ebf2422c4d20949a23d19b9f9de56c0f108"
+}

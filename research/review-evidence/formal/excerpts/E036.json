@@ -1,0 +1,44 @@
+{
+  "original_source": "Sfba47edbbbb59e",
+  "original_line": 28,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 124,
+    "record": {
+      "timestamp": "2026-11-07T09:49:12.900Z",
+      "ordinal": 123,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call_output",
+        "id": "ctco_01a1b569-8144-7861-ae0a-58d512f313d9",
+        "call_id": "call_a5ebefb3838c4c8d8a92268e09783f7d",
+        "output": [
+          {
+            "type": "input_text",
+            "text": "Script completed\nWall time 0.8 seconds\nOutput:\n"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"events_revision\":\"38af09d9bb949bcc1a84019e0d55447acc756591685b0f316bcf951fe0479861\",\"events_version\":2,\"statistics_differences\":[],\"natural_error\":\"本轮读取准备曾把工具JSON字符串当对象导致冗长诊断，已用JSON.parse修正；上游还在报告注册前读取，收到This file is not registered in Yohaku。均未影响运行任务，没有需取消任务或自然停止，不计入历史取消统计。\"}"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"saved\":true,\"result_keys\":[\"document\",\"loom\",\"saved_revision\",\"saved\",\"save_status\",\"replay_allowed\"],\"saved_revision\":\"e9ded390adfe4f49ab9a7c88b3f76f86bede56e35870fd1211cae027cf267fb5\"}"
+          },
+          {
+            "type": "input_text",
+            "text": "{\"ok\": true, \"result\": {\"message\": {\"message_id\": \"ai-chat-bf5981b3f59d1ad6fe683f91:10\", \"chat_id\": \"ai-chat-bf5981b3f59d1ad6fe683f91\", \"seq\": 10, \"sender_node_id\": \"ai-node-050c70f9b8e5a4ed8acd6bb3\", \"text\": \"已实际读取EVENTS v2@38af09d9bb949bcc1a84019e0d55447acc756591685b0f316bcf951fe0479861，统计公共字段和每项字段仍零差异；AUDIT已更新此引用并注明上下游JSON字符串处理疏漏、上游提前读未注册报告错误，均无受影响运行任务，不需停止。谢谢交叉核对，必需项全部完成，无新增节点/重跑；准备最终交付后结束。\", \"reply_to\": null, \"created_at\": 1794044952.7614625, \"provenance\": null}, \"wake_requests\": {}, \"tasks\": {}, \"duplicate\": false}}"
+          }
+        ],
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b565-b0fb-7222-ad83-0773f5ee23be",
+          "create_time": 1794044952.9000258
+        }
+      },
+      "metadata": {
+        "client_authored": false,
+        "fallback_token_limit_override": 12000
+      }
+    }
+  }
+}

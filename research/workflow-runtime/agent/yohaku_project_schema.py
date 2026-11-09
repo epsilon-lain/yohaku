@@ -1,0 +1,201 @@
+"""Single public schema for project discovery, immutable inputs and task adapters.
+
+State names map existing Rust chat and Windows development receipts; this module
+contains no process launcher, credential or application-specific path.
+"""
+import copy
+import re
+from pathlib import PurePosixPath
+
+VERSION = 'yohaku-project-task/1'
+PROJECT_FORMAT = 'yohaku-project/1'
+TASK_FORMAT = 'yohaku-task/1'
+
+
+class ProjectError(ValueError):
+    def __init__(self, kind, message, **details):
+        super().__init__(message)
+        self.kind = kind
+        self.details = details
+
+    def to_dict(self):
+        return {'ok': False, 'error': str(self), 'kind': self.kind,
+                'replay_allowed': False, **self.details}
+
+
+def relative(value, label='path'):
+    if (not isinstance(value, str) or not value or len(value.encode('utf-8')) > 2048
+            or '\0' in value or '\\' in value or ':' in value
+            or value.startswith('/') or any(x in ('', '.', '..') for x in value.split('/'))):
+        raise ProjectError('invalid_path', label + ' must be a contained POSIX relative path')
+    if any(x in ('.loom', '.yohaku', '.git') for x in PurePosixPath(value).parts):
+        raise ProjectError('invalid_path', label + ' cannot include reserved state')
+    return value
+
+
+def identifier(value, label='id'):
+    if not isinstance(value, str) or not re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,63}', value):
+        raise ProjectError('invalid_manifest', label + ' must be lowercase ASCII, digits, - or _ (1..64)')
+    return value
+
+
+def validate_manifest(value):
+    if not isinstance(value, dict):
+        raise ProjectError('invalid_manifest', 'Project manifest must be an object')
+    required = {'format', 'id', 'root', 'sources', 'runtime', 'tasks'}
+    if not required <= set(value) or set(value) - required - {'name', 'assets'}:
+        raise ProjectError('invalid_manifest', 'Project fields: format/id/root/sources/runtime/tasks, optional name/assets')
+    if value['format'] != PROJECT_FORMAT:
+        raise ProjectError('unsupported_schema', 'Expected ' + PROJECT_FORMAT)
+    result = copy.deepcopy(value)
+    identifier(result['id'], 'project id')
+    relative(result['root'], 'root')
+    if not result['root'].startswith('files/'):
+        raise ProjectError('invalid_manifest', 'Project root must be below files/')
+    if 'name' in result and (not isinstance(result['name'], str) or not 1 <= len(result['name']) <= 160):
+        raise ProjectError('invalid_manifest', 'Project name must have 1..160 characters')
+    if result['runtime'] not in ('python', 'rust'):
+        raise ProjectError('unsupported_runtime', 'Supported offline runtimes: python, rust')
+    sources = result['sources']
+    if not isinstance(sources, list) or not 1 <= len(sources) <= 1000 or len(set(map(str, sources))) != len(sources):
+        raise ProjectError('invalid_manifest', 'sources must contain 1..1000 unique authoritative .tex paths')
+    for source in sources:
+        relative(source, 'source')
+        if not source.endswith('.tex'):
+            raise ProjectError('invalid_manifest', 'Every editable source must name its authoritative .tex')
+    assets = result.setdefault('assets', [])
+    if not isinstance(assets, list) or len(assets) > 1000:
+        raise ProjectError('invalid_manifest', 'assets must be an array of at most 1000 items')
+    asset_paths = set()
+    for asset in assets:
+        if not isinstance(asset, dict) or not {'path'} <= set(asset) or set(asset) - {'path', 'sha256'}:
+            raise ProjectError('invalid_manifest', 'Asset fields: path, optional sha256')
+        relative(asset['path'], 'asset')
+        if asset['path'] in asset_paths or asset['path'] in sources:
+            raise ProjectError('invalid_manifest', 'Duplicate source/asset path')
+        asset_paths.add(asset['path'])
+        if 'sha256' in asset and (not isinstance(asset['sha256'], str) or not re.fullmatch('[0-9a-f]{64}', asset['sha256'])):
+            raise ProjectError('invalid_manifest', 'Asset sha256 must be 64 lowercase hex characters')
+    tasks = result['tasks']
+    if not isinstance(tasks, dict) or not 1 <= len(tasks) <= 32:
+        raise ProjectError('invalid_manifest', 'tasks must be an object with 1..32 actions')
+    outputs = {s[:-4] for s in sources}
+    for action, task in tasks.items():
+        identifier(action, 'action')
+        if not isinstance(task, dict) or 'kind' not in task:
+            raise ProjectError('invalid_manifest', 'Task requires kind')
+        kind = task['kind']
+        allowed = {'kind', 'args', 'artifacts', 'timeout_seconds'}
+        if kind == 'python':
+            allowed.add('entry')
+            if 'entry' not in task or relative(task['entry'], 'entry') not in outputs:
+                raise ProjectError('invalid_manifest', 'Python entry must have a declared authoritative source')
+        elif kind == 'cargo':
+            if result['runtime'] != 'rust':
+                raise ProjectError('invalid_manifest', 'Cargo requires rust runtime')
+            if not {'Cargo.toml', 'Cargo.lock'} <= outputs:
+                raise ProjectError('invalid_manifest', 'Cargo tasks require authoritative Cargo.toml.tex and Cargo.lock.tex')
+        elif kind == 'artifact':
+            allowed |= {'from', 'artifact'}
+            if task.get('from') not in tasks or task.get('from') == action:
+                raise ProjectError('invalid_manifest', 'artifact.from must name a different declared build action')
+            relative(task.get('artifact'), 'artifact')
+        else:
+            raise ProjectError('invalid_manifest', 'Task kind must be python, cargo or artifact')
+        if set(task) - allowed:
+            raise ProjectError('invalid_manifest', 'Unknown task fields: ' + ', '.join(sorted(set(task) - allowed)))
+        args = task.setdefault('args', [])
+        if not isinstance(args, list) or len(args) > 40 or any(not isinstance(x, str) or '\0' in x or len(x.encode()) > 8192 for x in args):
+            raise ProjectError('invalid_manifest', 'args must contain at most 40 separate strings')
+        if kind == 'cargo':
+            if '--' in args:
+                raise ProjectError('invalid_manifest', 'Cargo test-program arguments are not supported in schema v1; platform offline/locked options cannot follow --')
+            if not args or args[0] not in ('build', 'check', 'test'):
+                raise ProjectError('invalid_manifest', 'Cargo action must be build, check or test')
+            if any(x in ('--manifest-path', '--target-dir', '--config', '--target') or x.startswith(('--manifest-path=', '--target-dir=', '--config=', '--target=')) for x in args):
+                raise ProjectError('invalid_manifest', 'Cargo paths/config/target are managed by the platform')
+        artifacts = task.setdefault('artifacts', [])
+        if not isinstance(artifacts, list) or len(artifacts) > 32 or len(set(map(str, artifacts))) != len(artifacts):
+            raise ProjectError('invalid_manifest', 'artifacts must be at most 32 unique output paths')
+        for artifact in artifacts:
+            relative(artifact, 'artifact')
+        timeout = task.setdefault('timeout_seconds', 900)
+        if type(timeout) is not int or not 1 <= timeout <= 86400:
+            raise ProjectError('invalid_manifest', 'timeout_seconds must be 1..86400')
+    for task in tasks.values():
+        if task['kind'] == 'artifact':
+            origin = tasks[task['from']]
+            if origin['kind'] == 'artifact' or task['artifact'] not in origin['artifacts']:
+                raise ProjectError('invalid_manifest', 'Artifact must be a declared output of a build action')
+    return result
+
+
+def _tool(name, description, props=None, required=()):
+    return {'name': name, 'description': description,
+            'parameters': {'type': 'object', 'properties': props or {},
+                           'required': list(required), 'additionalProperties': False}}
+
+
+S = {'type': 'string'}
+TOOLS = [
+    _tool('ui_sdk_info', 'Discover the built-in reusable interaction SDK: components, features, exact authoritative source availability and import workflow. Reads only; never starts a GUI or task.'),
+    _tool('ui_sdk_prepare', 'Import the built-in SDK as editable Loom documents under project_root/vendor/yohaku-ui. Existing changed sources are preserved as conflicts; repeated identical import is idempotent. No build, GUI or task launch.', {'project_root':S}, ('project_root',)),
+    _tool('project_list', 'Discover registered projects and their authoritative manifest paths. If empty, project_schema supplies validated manifest templates. Native only.'),
+    _tool('project_schema', 'Read the common manifest contract and validator-checked Python/Rust templates. Create source/manifest with existing Loom document tools, then register; no host path guessing.', {'runtime':{'type':'string','enum':['python','rust']}}),
+    _tool('project_drift', 'Read an aggregate source/macro/generated-output/resource drift report. Preserves all sides, never syncs or builds. expected_sources detects a stale plan.', {'project_id':S,'expected_sources':S}, ('project_id',)),
+    _tool('task_install_artifact', 'Install a task_provenance executable artifact into an immutable version and atomically switch the project application entry. Host verifies ownership, successful producer, snapshot, hash and mode. Repeated calls reuse; failure preserves the old entry. No model, build, launch or binary export.', {'task_id':S, 'artifact_id':S}, ('task_id', 'artifact_id')),
+    _tool('task_provenance', 'Verify this owned task snapshot and artifacts against recorded source/macro/output hashes. Returns stable artifact IDs and current validity, not private host file paths.', {'task_id':S}, ('task_id',)),
+    _tool('task_diagnostics', 'Map captured compiler/Python stderr to authoritative tex snapshot positions; current revision validity is separate. offset/limit page diagnostic results, task_output retains raw byte pagination.', {'task_id':S,'offset':{'type':'integer','minimum':0},'limit':{'type':'integer','minimum':1,'maximum':100}}, ('task_id',)),
+    _tool('project_register', 'Validate/register a Loom-managed manifest source with revision-checked persistence. Does not run project code.', {'manifest_source': S}, ('manifest_source',)),
+    _tool('project_describe', 'Read current manifest, sources/actions and schema versions by project_id. Edit returned authoritative .tex using existing document tools.', {'project_id': S}, ('project_id',)),
+    _tool('project_plan', 'Offline dependency/resource/source preflight, no project code execution. Returns actual missing requirements and source_set. No arbitrary mounts/host argv accepted.', {'project_id': S, 'action': S, 'expected_sources': S}, ('project_id', 'action')),
+    _tool('project_materialize', 'Validate current authoritative sources and generated bytes, then seal immutable input snapshot. Conflicts preserve both sides. Does not build or run.', {'project_id': S, 'expected_sources': S}, ('project_id',)),
+    _tool('task_submit', 'Persist one offline project action before launch. Stable request_id deduplicates: same input queries existing run; changed input rejects. Unknown never authorizes replay. Reuses isolated runtime and fixed source snapshot.', {'project_id': S, 'action': S, 'request_id': S, 'expected_sources': S}, ('project_id', 'action', 'request_id')),
+    _tool('task_status', 'Query the same durable task after a worker interruption using task_id OR request_id. Real target exit, cleanup and artifacts are separate from launcher/worker success.', {'task_id': S, 'request_id': S}),
+    _tool('task_output', 'Read stdout OR stderr by raw byte cursor; cursor defaults 0 and max_bytes is 1..65536 (default 65536). Set cursor to returned next_cursor, never text character count. bytes_returned=next_cursor-cursor. has_more=true means request the next page; read_state=complete/end_of_stream=true means this stream is drained: stop reading, do not reset cursor. pending means caught up while output may grow: use task_watch, not a busy read loop. exit_code is the task status observation, separate from output completion. Full raw logs retained; use stable task/artifact identities, never retype large binary/hex exports into model messages.', {'task_id': S, 'stream': {'type': 'string', 'enum': ['stdout', 'stderr']}, 'cursor': {'type': 'integer', 'minimum': 0}, 'max_bytes': {'type': 'integer', 'minimum': 1, 'maximum': 65536}}, ('task_id', 'stream')),
+    _tool('task_watch', 'Bounded wait for new task events/output/state without starting or replaying. after_seq is event sequence; output uses separate byte cursors. No progress is explicit.', {'task_id': S, 'after_seq': {'type': 'integer', 'minimum': 0}, 'wait_ms': {'type': 'integer', 'minimum': 0, 'maximum': 5000}}, ('task_id',)),
+    _tool('task_cancel', 'Request cancellation of only this owned task, then report confirmation/unknown. A local request is not proof of target cleanup. Does not stop unrelated tools, terminals or models.', {'task_id': S}, ('task_id',)),
+    _tool('task_list', 'Rediscover persisted project task history; never restart unknown or unfinished jobs.', {'project_id': S}),
+]
+TOOL_NAMES = {x['name'] for x in TOOLS}
+REQUIREMENTS = {x['name']: {'read'} for x in TOOLS}
+REQUIREMENTS.update(ui_sdk_prepare={'read', 'write'}, project_register={'read', 'write'}, project_materialize={'read', 'write'},
+                    task_install_artifact={'read', 'write', 'run'}, task_submit={'read', 'write', 'run'}, task_cancel={'read', 'write', 'run'})
+
+
+def permitted(name, permissions):
+    return all(permissions.get(g, g != 'run') is True for g in REQUIREMENTS.get(name, ()))
+
+
+def manifest_contract(runtime=None):
+    """Describe the same validator with templates checked by that validator."""
+    if runtime is not None and runtime not in ('python','rust'):
+        raise ProjectError('unsupported_runtime','Choose python or rust')
+    templates = {
+        'python': {'format':PROJECT_FORMAT,'id':'example-python','root':'files/example-python',
+            'sources':['main.py.tex'],'runtime':'python','assets':[],
+            'tasks':{'run':{'kind':'python','entry':'main.py','args':[],'artifacts':['result.txt']}}},
+        'rust': {'format':PROJECT_FORMAT,'id':'example-rust','root':'files/example-rust',
+            'sources':['Cargo.toml.tex','Cargo.lock.tex','src/main.rs.tex'],'runtime':'rust','assets':[],
+            'tasks':{'build':{'kind':'cargo','args':['build'],'artifacts':['target/debug/example']},
+                     'run':{'kind':'artifact','from':'build','artifact':'target/debug/example','args':[]}}},
+    }
+    names = [runtime] if runtime else ['python','rust']
+    return {'format':PROJECT_FORMAT,'interface_version':VERSION,
+        'validation':'validate_manifest is authoritative; templates below pass the same validator',
+        'fields':{'id':'stable lowercase project id; API calls this project_id',
+                  'root':'POSIX path below this world files/',
+                  'sources':'paths of registered authoritative .tex relative to root; adjacent generated outputs must match Loom',
+                  'assets':'raw resource path plus optional SHA-256, relative to root',
+                  'runtime':'python or rust; existing offline host profile only',
+                  'tasks':'fixed typed python/cargo/artifact actions; no host mount/env overrides'},
+        'workflow':['create documents via create_document/write_document',
+                    'create yohaku.project.json through create_document with the JSON manifest body',
+                    'project_register(manifest_source=returned authoritative tex path)',
+                    'project_describe then project_plan; task_submit with stable request_id',
+                    'query original task_status/task_output on interruption; do not resubmit unknown'],
+        'paths':{'cwd':'/project (read-only fixed input)','outputs':'/output (private per run)',
+                 'source_edits':'existing body/text document tools, preserving notes and revision'},
+        'limits':{'registered_projects':100,'source_files':1000,'snapshot_bytes':67108864,
+                  'output_bytes_per_stream':67108864,'cargo_test_separator_supported':False},
+        'templates':{name:validate_manifest(templates[name]) for name in names}}

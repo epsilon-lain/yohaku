@@ -1,0 +1,25 @@
+{
+  "original_source": "Sccf17211c6dc1a",
+  "original_line": 19,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 89,
+    "record": {
+      "timestamp": "2026-11-07T09:24:56.066Z",
+      "ordinal": 88,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_0e6ae4a61678d738016aeeee5b64ec87d0916f4b3944904a3b",
+        "status": "completed",
+        "call_id": "call_d5f267741372428d8c0089327a2b8918",
+        "name": "exec",
+        "input": "const doc={...load(\"doc_v3\"),body:load(\"text_v3\")};store(\"doc_v3\",doc);const e=eval(load(\"helpers\")+\"build(doc,doc.body)\");store(\"events_v3\",e);\ntext({sha:e.input_sha256,mismatches:e.receipt_hash_mismatches,stats:{...e.expected_statistics,tasks:undefined},new_events:e.events.slice(29).map(x=>({ref:x.reference,id:x.observation_id,dup:x.duplicate_of,status:x.state.status,time:x.observed_at_ms})),tasks:e.expected_statistics.tasks});\ntext(await tools.yohaku_create_document({directory:\"files/work\",name:\"EVENTS-v3.json\",body:JSON.stringify(e,null,2)+\"\\n\"}));\ntext(await tools.yohaku_ai_messages({chat_id:\"ai-chat-bf5981b3f59d1ad6fe683f91\",after_seq:5,limit:10}));\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-6a20-7370-860d-9164e42a309d",
+          "create_time": 1794043483.3983932
+        }
+      }
+    }
+  }
+}

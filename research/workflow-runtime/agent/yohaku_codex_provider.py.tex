@@ -1,0 +1,439 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Yohaku-only provider selection and credential-isolating Responses relay.
+
+Never edits shared Codex settings. The relay forwards only to DeepSeek HTTPS;
+its evidence contains metadata, never headers, prompts, output text, or secrets.
+"""
+import argparse
+import getpass
+import hmac
+import http.client
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import json
+import os
+from pathlib import Path
+import secrets
+import stat
+import sys
+import tempfile
+import threading
+import warnings
+import urllib.error
+from yohaku_provider_transport import Recovery, RecoveryCancelled, ObservedHTTPS, retryable
+from yohaku_provider_diagnostics import ProviderDiagnostics
+
+RELAY_VERSION = 'relay-failure-provenance-20261025-v1'
+MODEL = 'deepseek-flash'
+ENDPOINT = 'https://api.deepseek.com'
+ENV_KEY = 'YOHAKU_PROVIDER_TOKEN'
+MAX_BODY = 16*1024*1024
+
+
+def private_path():
+    override=os.environ.get('YOHAKU_CODEX_PROVIDER_FILE')
+    if not override:return Path.home()/'.config/yohaku/codex-provider.json'
+    path=Path(override)
+    if not path.is_absolute() or str(path).startswith('/mnt/') or path.resolve()!=path:
+        raise ValueError('Yohaku provider binding must be a native absolute non-symlink path')
+    return path
+
+
+def _private_directory():
+    directory = private_path().parent
+    directory.mkdir(mode=0o700,parents=True,exist_ok=True)
+    metadata = directory.lstat()
+    if not stat.S_ISDIR(metadata.st_mode) or metadata.st_uid!=os.getuid() or metadata.st_mode & 0o077:
+        raise ValueError('Yohaku provider directory must be an owned, non-symlink directory with mode 0700')
+    return directory
+
+
+def load():
+    path = private_path()
+    if not path.exists() and not path.is_symlink():
+        return {'active':'openai'}
+    _private_directory()
+    descriptor = os.open(path,os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC|os.O_NONBLOCK)
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_uid!=os.getuid() or metadata.st_mode & 0o077 or metadata.st_size>8192:
+            raise ValueError('Yohaku provider config must be an owned regular file with mode 0600')
+        with os.fdopen(descriptor,'r',closefd=False) as stream:
+            value = json.loads(stream.read(8193))
+    except (ValueError,UnicodeError):
+        raise ValueError('Invalid Yohaku private provider config') from None
+    finally:
+        os.close(descriptor)
+    if not isinstance(value,dict) or value.get('active') not in ('openai','deepseek') or set(value)-{'active','deepseek_key','openai_model','openai_reasoning_effort'}:
+        raise ValueError('Invalid Yohaku private provider config')
+    if 'openai_model' in value:
+        model=value['openai_model']
+        if not isinstance(model,str) or not 1<=len(model)<=200 or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-:/' for c in model):
+            raise ValueError('Invalid selected OpenAI model')
+    if 'openai_reasoning_effort' in value:
+        validate_reasoning_effort(value['openai_reasoning_effort'])
+    if 'deepseek_key' in value:
+        validate_key(value['deepseek_key'])
+    if value['active']=='deepseek' and not value.get('deepseek_key'):
+        raise ValueError('DeepSeek requires a key configured with the local hidden prompt')
+    return value
+
+
+def validate_reasoning_effort(value):
+    # Syntax only: supported values are always validated against native model/list.
+    if not isinstance(value,str) or not 1<=len(value)<=40 or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-' for c in value):
+        raise ValueError('Invalid selected OpenAI reasoning effort')
+    return value
+
+
+def validate_key(key):
+    if not isinstance(key,str) or not 16<=len(key)<=512 or any(not 33<=ord(character)<=126 for character in key):
+        raise ValueError('Invalid API key format; no key value is displayed')
+
+
+def save(value):
+    directory = _private_directory()
+    descriptor,temporary = tempfile.mkstemp(prefix='.provider-',dir=directory)
+    try:
+        with os.fdopen(descriptor,'w') as stream:
+            json.dump(value,stream)
+            stream.write('\n')
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary,private_path())
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
+
+
+def catalog():
+    return {'models':[{
+        'slug':MODEL,'display_name':'DeepSeek-Flash','description':'Yohaku DeepSeek Responses provider',
+        'default_reasoning_level':'high',
+        'supported_reasoning_levels':[{'effort':level,'description':level} for level in ('low','high','max')],
+        'shell_type':'shell_command','visibility':'list','supported_in_api':True,'priority':1,
+        'base_instructions':'Use only the provided Yohaku world tools. Follow the developer instructions and current world permissions.',
+        'supports_reasoning_summaries':True,'default_reasoning_summary':'none',
+        'support_verbosity':True,'default_verbosity':'low','apply_patch_tool_type':'freeform',
+        'web_search_tool_type':'text','truncation_policy':{'mode':'tokens','limit':10000},
+        'supports_parallel_tool_calls':True,'context_window':1048576,'effective_context_window_percent':95,
+        'experimental_supported_tools':[],'input_modalities':['text','image'],
+        'prefer_websockets':False,'supports_search_tool':False,'minimal_client_version':'0.144.0'
+    }]}
+
+
+def runtime_config(home,base_url,policy):
+    return '''model = "deepseek-flash"
+model_provider = "deepseek"
+forced_login_method = "api"
+model_reasoning_effort = "high"
+web_search = "disabled"
+model_catalog_json = '''+json.dumps(str(home/'models.json'))+'\n'+policy+'''
+[model_providers.deepseek]
+name = "DeepSeek"
+base_url = '''+json.dumps(base_url)+'''
+wire_api = "responses"
+env_key = "YOHAKU_PROVIDER_TOKEN"
+requires_openai_auth = false
+request_max_retries = 0
+stream_max_retries = 0
+'''
+
+
+class Relay:
+    def __init__(self,key):
+        validate_key(key)
+        self.key = key
+        self.token = secrets.token_urlsafe(32)
+        self.records = []
+        self.request_count = 0
+        self.lock = threading.Lock()
+        self.recovery=Recovery()
+        self.diagnostics=ProviderDiagnostics('responses',MODEL,ENDPOINT+'/responses',key,backend='codex-relay')
+        relay = self
+
+        class Handler(BaseHTTPRequestHandler):
+            protocol_version = 'HTTP/1.1'
+
+            def log_message(self,*arguments):
+                pass
+
+            def reject(self,status,detail=None):
+                payload=json.dumps({'error':detail},ensure_ascii=True).encode() if detail else b''
+                self.send_response(status)
+                if detail:self.send_header('Content-Type','application/json')
+                self.send_header('Content-Length',str(len(payload)))
+                self.send_header('Connection','close')
+                self.end_headers()
+                self.close_connection = True
+                if payload:self.wfile.write(payload)
+
+            def do_POST(self):
+                upstream = None
+                started = False
+                try:
+                    self.connection.settimeout(120)
+                    if self.path!='/responses':
+                        return self.reject(404)
+                    if not hmac.compare_digest(self.headers.get('Authorization',''),'Bearer '+relay.token):
+                        return self.reject(403)
+                    try:length = int(self.headers.get('Content-Length','0'))
+                    except ValueError:return self.reject(400)
+                    if self.headers.get('Transfer-Encoding') or not 0<length<=MAX_BODY:
+                        return self.reject(413)
+                    body = self.rfile.read(length)
+                    try:request = json.loads(body)
+                    except (ValueError,UnicodeError):return self.reject(400)
+                    if not isinstance(request,dict) or request.get('model')!=MODEL or not isinstance(request.get('reasoning'),dict) or request['reasoning'].get('effort')!='high':
+                        return self.reject(400)
+                    record = {'relay_version':RELAY_VERSION,'target':ENDPOINT+'/responses','request_model':request['model'],
+                              'reasoning_effort':'high','response_models':[],'usage':None,'completed':False}
+                    with relay.lock:
+                        relay.request_count += 1
+                        record['request_index'] = relay.request_count
+                        first_sequence=relay.diagnostics.sequence
+                        relay.records.append(record)
+                        relay.records = relay.records[-128:]
+                    # Nothing reaches Codex until transport and the terminal SSE event
+                    # are complete. Failed-attempt deltas/tool arguments are discarded.
+                    payload=relay.recovery.run(lambda:relay.fetch(body,request,record),
+                        lambda:{'phase':relay.diagnostics.transport.failed_phase,
+                                'http_status':relay.diagnostics.transport.origin_status,
+                                'request_sequence':relay.diagnostics.sequence,
+                                'diagnostic_path':relay.diagnostics.last_failure_path})
+                    record['recovery']=list(relay.recovery.request_events)
+                    record['upstream_attempt_count']=relay.diagnostics.sequence-first_sequence
+                    self.send_response(200)
+                    self.send_header('Content-Type','text/event-stream')
+                    self.send_header('Connection','close')
+                    started = True
+                    record['downstream_started']=True
+                    record['relay_http_status']=200
+                    self.end_headers()
+                    self.close_connection = True
+                    record['delivery_started']=True
+                    relay.recovery.check()
+                    self.wfile.write(payload)
+                    self.wfile.flush()
+                except (OSError,ValueError,TypeError,http.client.HTTPException,RecoveryCancelled) as error:
+                    if 'record' in locals():
+                        record['recovery']=list(relay.recovery.request_events)
+                        record['upstream_attempt_count']=relay.diagnostics.sequence-first_sequence
+                        if started and not isinstance(error,RecoveryCancelled):
+                            relay.diagnostics.transport.failure('downstream_delivery',error)
+                            relay.diagnostics.failure(error,request,relay.diagnostics.transport.origin_status,stage='downstream_delivery')
+                        failure=relay.failure(error,record)
+                        record['failure']=failure
+                        record['relay_http_status']=200 if started else 502
+                    else:
+                        return self.reject(400,{'type':'yohaku_bad_request','message':'Invalid local relay request'})
+                    if not started:
+                        self.reject(502,{'type':'yohaku_'+failure['kind'],'code':failure['kind'],
+                            'message':relay.failure_message(failure),**failure})
+                finally:
+                    if upstream is not None:
+                        upstream.close()
+
+        self.server = HTTPServer(('127.0.0.1',0),Handler)
+        self.server.timeout = 1
+        self.thread = threading.Thread(target=self.server.serve_forever,daemon=True)
+        self.thread.start()
+
+    def failure(self, error, record):
+        trace=self.diagnostics.transport
+        status=trace.origin_status if trace else None
+        phase=trace.failed_phase if trace else None
+        if record.get('upstream_attempt_count')==0:status=None;phase=None
+        if isinstance(error,RecoveryCancelled):kind='cancelled';phase='cancelled'
+        elif record.get('downstream_started') or record.get('delivery_started'):kind='downstream_delivery';phase='downstream_delivery'
+        elif isinstance(error,urllib.error.HTTPError):kind='upstream_http'
+        elif isinstance(error,(ValueError,TypeError)):kind='response_parse' if status is not None else 'local_adapter'
+        else:kind='connection' if status is None else 'response_read'
+        return {'kind':kind,'upstream_http_status':status,
+            'phase':phase or ('response_decode' if kind=='response_parse' else kind),
+            'exception_type':type(error).__name__,'diagnostic_id':self.diagnostics.session+'-'+str(self.diagnostics.sequence),
+            'diagnostic_path':self.diagnostics.last_failure_path,
+            'attempts':record.get('upstream_attempt_count',0),'retryable':retryable(error) and not (record.get('downstream_started') or record.get('delivery_started')),
+            'retry_exhausted':bool(self.recovery.request_events and self.recovery.request_events[-1]['attempt']>=self.recovery.max_retries+1 and retryable(error)),
+            'tools_delivered':'unknown' if record.get('delivery_started') else False}
+
+    @staticmethod
+    def failure_message(failure):
+        status=failure['upstream_http_status']
+        return ('Yohaku relay failure: kind='+failure['kind']+'; upstream HTTP '+
+            ('not observed' if status is None else str(status))+'; phase='+failure['phase']+
+            '; attempts='+str(failure['attempts'])+'; diagnostic='+failure['diagnostic_id']+
+            ('; no incomplete model/tool output delivered' if failure.get('tools_delivered') is False else '; downstream delivery outcome unknown; inspect before replay'))
+
+    def configure_recovery(self,config,emit=lambda event:None):
+        # Configured once before turn/start. No change to account or native routes.
+        self.recovery=Recovery(config)
+        self.recovery.notify=emit
+
+    def sample_response(self,response):
+        # Bounded error evidence only, including 200 responses with a wrong MIME type.
+        if not hasattr(response,'read'):return
+        try:
+            sample=response.read(8193)
+            remaining=getattr(response,'length',None)
+            self.diagnostics.observe_body(sample[:8192],len(sample)<=8192 and not (type(remaining) is int and remaining>0),len(sample)>8192)
+        except (OSError,http.client.HTTPException) as error:
+            self.diagnostics.observe_body(getattr(error,'partial',b'')[:8192],False)
+
+    def fetch(self,body,request,record):
+        self.diagnostics.begin(timeout=120,request_bytes=len(body),messages=request.get('input'),recovery=self.recovery)
+        trace=self.diagnostics.transport
+        trace.metadata['connection_policy']='http.client HTTPS; new connection per upstream attempt; closed in finally'
+        record['confirmed_tool_results']=trace.metadata.get('confirmed_tool_results',0)
+        record['request_bytes']=len(body)
+        upstream=None;response=None;parts=[];size=0;read_complete=False;decode_started=False
+        try:
+            upstream=ObservedHTTPS(trace,'api.deepseek.com',timeout=120)
+            upstream.request('POST','/responses',body=body,headers={
+                'Authorization':'Bearer '+self.key,'Content-Type':'application/json','Accept':'text/event-stream',
+                'Accept-Encoding':'identity','User-Agent':'Yohaku-Codex-DeepSeek/1'})
+            response=upstream.getresponse()
+            record['http_status']=response.status
+            trace.origin_status=response.status
+            self.diagnostics.observe_response(response)
+            if response.status!=200:
+                import urllib.error
+                self.sample_response(response)
+                error=urllib.error.HTTPError(ENDPOINT+'/responses',response.status,'Provider status',{},None)
+                error.close()
+                raise error
+            if 'text/event-stream' not in response.getheader('Content-Type','').lower():
+                self.sample_response(response)
+                raise ValueError('Provider did not return an event stream')
+            trace.event('response_read_start')
+            try:
+                while True:
+                    self.recovery.check()
+                    line=response.readline(MAX_BODY+1)
+                    if not line:break
+                    size+=len(line)
+                    if size>MAX_BODY:raise ValueError('Provider stream exceeds 16 MiB buffered limit')
+                    parts.append(line)
+                if type(getattr(response,'length',None)) is int and response.length>0:raise http.client.IncompleteRead(b'',response.length)
+            except (OSError,http.client.HTTPException) as error:
+                trace.failure('response_read',error);raise
+            read_complete=True
+            self.diagnostics.observe_body(b''.join(parts),True)
+            trace.event('response_read_complete',bytes_read=size)
+            payload=b''.join(parts)
+            # SSE supports multiple data lines in a frame. JSON is validated only
+            # after receipt; partial function-call fragments never reach Codex.
+            decode_started=True
+            trace.event('response_decode_start')
+            completed=False
+            for frame_index,frame in enumerate(payload.replace(b'\r\n',b'\n').split(b'\n\n')):
+                data=b'\n'.join(line[5:].lstrip(b' ') for line in frame.split(b'\n') if line.startswith(b'data:'))
+                if not data or data==b'[DONE]':continue
+                try:event=json.loads(data)
+                except (json.JSONDecodeError,UnicodeDecodeError) as error:
+                    self.diagnostics.observe_parse_error(payload,frame_index,data,error)
+                    raise
+                if not isinstance(event,dict):raise ValueError('Invalid provider event')
+                if event.get('type') in ('response.failed','response.incomplete','error'):
+                    raise ValueError('Provider reported an incomplete or failed response; no tools delivered')
+                if event.get('type')=='response.completed':
+                    if not isinstance(event.get('response'),dict) or event['response'].get('status','completed')!='completed':
+                        raise ValueError('Invalid terminal response status')
+                    completed=True
+            self.diagnostics.response_evidence['terminal_event_received']=completed
+            if not completed:
+                trace.failure('response_read',http.client.IncompleteRead(b''))
+                raise http.client.IncompleteRead(b'')
+            for line in payload.splitlines():self.observe(line,record)
+            self.diagnostics.succeeded(response.status)
+            return payload
+        except (OSError,ValueError,TypeError,http.client.HTTPException) as error:
+            if not trace.failed_phase:
+                trace.failure('response_decode' if decode_started or isinstance(error,ValueError) else 'http_response' if trace.origin_status is not None else 'connection',error)
+            if parts and not read_complete:
+                received=b''.join(parts)+getattr(error,'partial',b'')
+                self.diagnostics.observe_body(received[:MAX_BODY],False,len(received)>MAX_BODY)
+            self.diagnostics.failure(error,request,trace.origin_status)
+            raise
+        finally:
+            if response is not None:response.close()
+            if upstream is not None:upstream.close()
+
+    @property
+    def base_url(self):
+        return 'http://127.0.0.1:'+str(self.server.server_port)
+
+    def observe(self,line,record):
+        if not line.startswith(b'data:'):
+            return
+        try:
+            event = json.loads(line[5:])
+            response = event.get('response',{})
+            model = response.get('model')
+            if isinstance(model,str) and len(model)<=128 and model not in record['response_models'] and len(record['response_models'])<8:
+                record['response_models'].append(model)
+            if event.get('type')=='response.completed':
+                usage = response.get('usage',{})
+                record['usage'] = {name:value for name,value in usage.items() if name in (
+                    'input_tokens','output_tokens','total_tokens') and type(value) is int and value>=0}
+                record['completed'] = True
+        except (ValueError,TypeError,AttributeError):
+            pass
+
+    def evidence(self):
+        with self.lock:
+            return json.loads(json.dumps(self.records))
+
+    def close(self):
+        self.recovery.finish_budget()
+        self.recovery.cancel()
+        self.server.shutdown()
+        self.server.server_close()
+        self.thread.join(timeout=5)
+        self.key = ''
+        self.token = ''
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('mode',choices=['configure-deepseek','use-deepseek','use-openai','status'])
+    arguments = parser.parse_args()
+    try:
+        value = load()
+        if arguments.mode=='configure-deepseek':
+            if not sys.stdin.isatty():
+                raise ValueError('Use a local interactive terminal for hidden key entry; do not pipe a key')
+            with warnings.catch_warnings():
+                warnings.simplefilter('error',getpass.GetPassWarning)
+                key = getpass.getpass('DeepSeek API key (hidden; Yohaku only): ')
+            validate_key(key)
+            value = {'active':'deepseek','deepseek_key':key}
+            save(value)
+        elif arguments.mode.startswith('use-'):
+            value['active'] = arguments.mode[4:]
+            if value['active']=='deepseek' and not value.get('deepseek_key'):
+                raise ValueError('First run configure-deepseek in a local terminal')
+            save(value)
+        print(json.dumps({'active':value['active'],'key_configured':bool(value.get('deepseek_key')),
+                          'model':MODEL if value['active']=='deepseek' else value.get('openai_model','Yohaku turn config model'),
+                          'private_path':str(private_path())}))
+    except (OSError,ValueError,EOFError,getpass.GetPassWarning):
+        print('Provider configuration failed; check private file permissions and use a local hidden prompt. No key is displayed.',file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__=='__main__':
+    sys.exit(main())
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_codex_provider.py"
+```

@@ -1,0 +1,388 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+#!/usr/bin/env python3
+"""Local tools run in a mandatory offline bubblewrap world sandbox."""
+import argparse
+import json
+import os
+from pathlib import Path
+import signal
+import stat
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+
+if __name__ == '__main__':
+    sys.modules['yohaku_tools'] = sys.modules[__name__]
+
+PACKAGE = Path(__file__).resolve().parents[1]
+REGISTRY = 'memory/tools.json'
+LIMIT = 65536
+_OUTPUT_LOCK=threading.Lock()
+
+class ToolError(Exception):
+    pass
+
+def emit(event, **values):
+    with _OUTPUT_LOCK:print(json.dumps({'event':event, **values}, ensure_ascii=False), flush=True)
+
+def validate(value):
+    if not isinstance(value,dict) or set(value)!={'format','tools'} or value['format']!='yohaku-tools/1':
+        raise ToolError('Expected format yohaku-tools/1 and tools array')
+    entries=value['tools']
+    if not isinstance(entries,list) or len(entries)>100:
+        raise ToolError('At most 100 tools')
+    ids=set()
+    for t in entries:
+        if not isinstance(t,dict) or not {'id','name','program','args','wayland'} <= set(t) or set(t)-{'id','name','program','args','wayland','parameters'}:
+            raise ToolError('Each tool needs id, name, program, args and wayland')
+        ident=t['id']
+        if not isinstance(ident,str) or not 1<=len(ident)<=40 or not all(c in 'abcdefghijklmnopqrstuvwxyz0123456789-_' for c in ident) or ident in ids:
+            raise ToolError('Tool id must be unique lowercase ASCII, digits, - or _')
+        ids.add(ident)
+        if not isinstance(t['name'],str) or not 1<=len(t['name'])<=80 or any(ord(c)<32 for c in t['name']):
+            raise ToolError('Tool name must be 1-80 visible characters')
+        if not isinstance(t['program'],str) or '\0' in t['program'] or len(t['program'])>1024:
+            raise ToolError('Invalid program')
+        if not isinstance(t['args'],list) or len(t['args'])>40 or any(not isinstance(a,str) or '\0' in a or len(a)>8192 for a in t['args']):
+            raise ToolError('args must be at most 40 strings, each at most 8 KiB')
+        if not isinstance(t['wayland'],bool):
+            raise ToolError('wayland must be true or false')
+        validate_parameters(t)
+        p=t['program']
+        if p.startswith('world:'):
+            relative=p[6:]
+            if not relative or Path(relative).is_absolute() or '..' in Path(relative).parts:raise ToolError('World program must stay inside the world')
+        if p not in ('builtin:window','builtin:dev','builtin:browser') and not p.startswith('world:') and not p.startswith(('/usr/','/bin/')):
+            raise ToolError('Program must be /usr/..., /bin/..., world:... or a supported builtin')
+        if p=='builtin:browser' and (t['args'] or t['wayland'] is not True or t.get('parameters',[])):
+            raise ToolError('Browser builtin requires empty args, wayland=true and no parameters; its host broker binding is fixed')
+    return value
+
+def inside(root, name):
+    path=Path(name)
+    if path.is_absolute() or not name or any(x in ('..','.') for x in path.parts):
+        raise ToolError('Use a relative path inside the world')
+    out=root
+    for part in path.parts:
+        out=out/part
+        if out.is_symlink():
+            raise ToolError('Tool paths must not use world symlinks')
+    return out
+
+
+def validate_parameters(entry):
+    specs=entry.get('parameters',[])
+    if not isinstance(specs,list) or len(specs)>16:raise ToolError('At most 16 parameters')
+    names=set()
+    for spec in specs:
+        if not isinstance(spec,dict) or set(spec)!={'name','type','default'}:raise ToolError('Parameter fields: name, type, default')
+        name=spec['name']
+        if not isinstance(name,str) or not 1<=len(name)<=40 or not all(c in 'abcdefghijklmnopqrstuvwxyz0123456789_' for c in name) or name in names:raise ToolError('Invalid parameter name')
+        names.add(name)
+        if spec['type'] not in ('world_file','world_output'):raise ToolError('Only world_file/world_output parameters are supported')
+        if not isinstance(spec['default'],str) or not spec['default'] or len(spec['default'].encode())>8192 or '\0' in spec['default']:raise ToolError('Invalid parameter default')
+        default=Path(spec['default'])
+        if default.is_absolute() or '..' in default.parts:raise ToolError('Use a relative world file default')
+    if entry['program'].startswith('builtin:') and specs:raise ToolError('Builtins do not accept parameters')
+    if len(entry['args'])+len(specs)>40:raise ToolError('At most 40 combined arguments')
+
+
+def parameter_args(root,entry,parameters=None):
+    validate_parameters(entry)
+    if parameters is None:parameters={}
+    if not isinstance(parameters,dict):raise ToolError('parameters must be an object')
+    specs=entry.get('parameters',[])
+    if set(parameters)-{s['name'] for s in specs}:raise ToolError('Unknown parameter')
+    result=[]
+    for spec in specs:
+        value=parameters.get(spec['name'],spec['default'])
+        if not isinstance(value,str) or not value or len(value.encode())>8192 or '\0' in value:raise ToolError('Invalid parameter value')
+        path=inside(root,value)
+        if spec['type']=='world_file':
+            if not path.is_file():raise ToolError('Parameter must name an existing world file')
+        elif not path.parent.is_dir() or (path.exists() and not path.is_file()):
+            raise ToolError('Output requires an existing world directory and a regular-file destination')
+        result.append('/world/'+str(path.relative_to(root)))
+    return result
+
+
+def world(path):
+    root=Path(path).resolve(strict=True)
+    if root in [Path(x) for x in ('/','/root','/home','/usr','/mnt','/tmp')]:
+        raise ToolError('Choose a Yohaku world, not a host directory')
+    reg=inside(root,'.yohaku/files.json')
+    if json.loads(reg.read_text())['format']!='yohaku-workspace/0.1':
+        raise ToolError('Not an initialized Yohaku world')
+    return root
+
+def read_registry(root):
+    p=inside(root,REGISTRY)
+    with p.open('r',encoding='utf-8') as f:text=f.read(LIMIT+1)
+    if len(text.encode('utf-8'))>LIMIT:raise ToolError('Tool registry exceeds 64 KiB')
+    return validate(json.loads(text))
+
+def bwrap_path():
+    # Do not trust a executable in the world, inherited PATH, or custom flags.
+    p=Path('/usr/bin/bwrap')
+    if not p.is_file() or not os.access(p,os.X_OK):
+        raise ToolError('bubblewrap is required; install it in WSL. No unsandboxed fallback.')
+    return str(p)
+
+def resolve_program(root, program):
+    mounts=[]
+    if program=='builtin:window':
+        host=PACKAGE/'bin/yohaku-tool-window';target='/opt/yohaku/tool-window'
+        if not host.is_file() or not os.access(host,os.X_OK):raise ToolError('Missing bundled tool window')
+        mounts=['--ro-bind',str(host),target]
+    elif program=='builtin:dev':
+        target='/usr/bin/python3'
+    elif program.startswith('world:'):
+        relative=program[len('world:'):];host=inside(root,relative)
+        target='/world/'+relative
+        if not host.is_file() or not os.access(host,os.X_OK):raise ToolError('World program is missing or not executable')
+    else:
+        host=Path(program).resolve(strict=True)
+        if not host.is_relative_to('/usr') or not host.is_file() or not os.access(host,os.X_OK):
+            raise ToolError('System program must resolve inside /usr; copy private tools into the world')
+        target=str(host)
+    return target,mounts
+
+def command(root, entry, socket_path=None, parameters=None, model_channel=None):
+    validate({'format':'yohaku-tools/1','tools':[entry]})
+    supplied=parameter_args(root,entry,parameters)
+    if entry['program']=='builtin:browser':
+        # A plan names the fixed trusted broker, not arbitrary Chromium args or
+        # a network grant for the ordinary offline world sandbox.
+        return ['/usr/bin/python3','-B',str(PACKAGE/'agent/yohaku_browser_runtime.py'),'techne','--root',str(root)]
+    target,extra=resolve_program(root,entry['program'])
+    development_env={}
+    if entry['program']=='builtin:dev':
+        from yohaku_dev import runtime_mounts
+        extra,development_env=runtime_mounts(entry)
+    # A private HOME and caches live within this world, never the host home.
+    inside(root,'tools/state/'+entry['id'])
+    args=[bwrap_path(),'--unshare-all','--unshare-user','--disable-userns','--assert-userns-disabled',
+          '--die-with-parent','--new-session','--cap-drop','ALL','--clearenv','--hostname','yohaku-tool']
+    for path in ['/usr','/bin','/lib','/lib64','/sbin']:
+        p=Path(path)
+        if p.is_symlink():args+=['--symlink',os.readlink(p),path]
+        elif p.is_dir():args+=['--ro-bind',path,path]
+    args+=['--proc','/proc','--dev','/dev','--tmpfs','/dev/shm','--tmpfs','/tmp','--tmpfs','/run','--dir','/etc']
+    for path in ['/etc/ld.so.cache','/etc/fonts','/etc/localtime']:
+        if Path(path).exists():args+=['--ro-bind',path,path]
+    args+=['--bind',str(root),'/world']
+    # Preserve all Loom/registry metadata; refuse nested host mounts.
+    count=0
+    for folder,dirs,files in os.walk(root,followlinks=False):
+        count+=1
+        if count>10000:raise ToolError('World has too many folders for sandbox inspection')
+        for name in list(dirs):
+            p=Path(folder)/name
+            if p.is_symlink():dirs.remove(name);continue
+            if os.path.ismount(p):raise ToolError('Nested host mounts are not allowed in a tool world')
+            if name in ('.loom','.yohaku'):
+                if entry['program']=='builtin:dev' and entry['args']==['preview'] and p.is_relative_to(root/'files/yohaku-default/worlds'):
+                    # The candidate owns its child world; the outer world's tracking stays read-only.
+                    dirs.remove(name);continue
+                args+=['--ro-bind',str(p),'/world/'+str(p.relative_to(root))];dirs.remove(name)
+    args+=extra
+    args+=['--dir','/world/tools','--dir','/world/tools/state','--dir','/world/tools/state/'+entry['id']]
+    env={'PATH':'/usr/bin:/bin','HOME':'/world/tools/state/'+entry['id'],
+         'XDG_CONFIG_HOME':'/world/tools/state/'+entry['id']+'/config',
+         'XDG_CACHE_HOME':'/world/tools/state/'+entry['id']+'/cache',
+         'XDG_DATA_HOME':'/world/tools/state/'+entry['id']+'/data','TMPDIR':'/tmp',
+         'LANG':'C.UTF-8','XDG_RUNTIME_DIR':'/run/yohaku','PYTHONDONTWRITEBYTECODE':'1',
+         'LIBGL_ALWAYS_SOFTWARE':'1','GDK_BACKEND':'wayland','QT_QPA_PLATFORM':'wayland',
+         'WINIT_UNIX_BACKEND':'wayland','QT_QUICK_BACKEND':'software'}
+    env.update(development_env)
+    args+=['--perms','0700','--dir','/run/yohaku']
+    if entry['wayland']:
+        if not socket_path:raise ToolError('A live Yohaku Wayland socket is required')
+        sock=Path(socket_path).resolve(strict=True)
+        if not stat.S_ISSOCK(sock.stat().st_mode):raise ToolError('Not a Wayland socket')
+        args+=['--ro-bind',str(sock),'/run/yohaku/wayland-0'];env['WAYLAND_DISPLAY']='wayland-0'
+    if model_channel is not None:
+        args+=['--ro-bind',str(model_channel),'/run/yohaku/model-tasks.sock'];env['YOHAKU_MODEL_TASK_SOCKET']='/run/yohaku/model-tasks.sock'
+    for k,v in env.items():args+=['--setenv',k,v]
+    argv=['-B','/opt/yohaku/dev-runtime.py',*entry['args']] if entry['program']=='builtin:dev' else [*entry['args'],*supplied]
+    args+=['--chdir','/world','--',target,*argv]
+    return args
+
+def create_log(root, ident):
+    """Open a world log through pinned, no-follow directory descriptors."""
+    fd=os.open(root,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC)
+    try:
+        for part in ('tools','logs'):
+            try:os.mkdir(part,0o700,dir_fd=fd)
+            except FileExistsError:pass
+            child=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=fd)
+            os.close(fd);fd=child
+        name=f'{time.time_ns()}-{ident}.log'
+        log_fd=os.open(name,os.O_RDWR|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW|os.O_CLOEXEC,0o600,dir_fd=fd)
+        return 'tools/logs/'+name,os.fdopen(log_fd,'w+b')
+    finally:os.close(fd)
+
+class PinnedMounts:
+    def __init__(self,argv,root):
+        self.argv=list(argv);self.fds=[]
+        try:
+            root_fd=os.open(root,os.O_PATH|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC)
+            self.fds.append(root_fd)
+            i=0
+            while i<len(self.argv):
+                if self.argv[i] in ('--bind','--ro-bind'):
+                    source=Path(self.argv[i+1])
+                    if source.is_relative_to(root):
+                        parts=source.relative_to(root).parts;fd=root_fd
+                        for part in parts:
+                            new_fd=os.open(part,os.O_PATH|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=fd)
+                            if fd!=root_fd:os.close(fd)
+                            fd=new_fd
+                            if stat.S_ISLNK(os.fstat(fd).st_mode):os.close(fd);raise ToolError('World mount changed into a symlink')
+                        if fd!=root_fd:self.fds.append(fd)
+                        self.argv[i]='--bind-fd' if self.argv[i]=='--bind' else '--ro-bind-fd'
+                        self.argv[i+1]=str(fd)
+                    i+=3
+                else:i+=1
+        except BaseException:
+            self.close();raise
+    def close(self):
+        for fd in self.fds:os.close(fd)
+        self.fds=[]
+    def __enter__(self):return self
+    def __exit__(self,*_):self.close()
+
+def check(root):
+    # Actual filesystem, environment and namespace check, not command inspection.
+    with tempfile.TemporaryDirectory(prefix='yohaku-outside-') as temp:
+        sentinel=Path(temp)/'private.txt';sentinel.write_text('outside-data')
+        host_ns={n:os.readlink('/proc/self/ns/'+n) for n in ['mnt','pid','net','ipc','user']}
+        script="""import os,json,socket,pathlib,sys,stat
+outside=pathlib.Path(sys.argv[1]);expected=json.loads(sys.argv[2])
+assert not outside.exists(),'host file exposed'
+assert not pathlib.Path('/mnt/c').exists(),'Windows disk exposed'
+assert not pathlib.Path('/root').exists(),'host root home exposed'
+for item in pathlib.Path('/proc/self/fd').iterdir():
+ try:
+  if int(item.name)>=3:assert not stat.S_ISDIR(os.fstat(int(item.name)).st_mode),'mount directory fd leaked'
+ except OSError:pass
+assert 'DISPLAY' not in os.environ and 'WSL_INTEROP' not in os.environ and 'DEEPSEEK_API_KEY' not in os.environ
+for name,value in expected.items():assert os.readlink('/proc/self/ns/'+name)!=value,name+' namespace shared'
+try:pathlib.Path('/usr/.yohaku-write-probe').write_text('bad')
+except OSError:pass
+else:raise AssertionError('system runtime writable')
+try:pathlib.Path('/world/.yohaku/.tool-write-probe').write_text('bad')
+except OSError:pass
+else:raise AssertionError('tracking metadata writable')
+p=pathlib.Path('/world/files/.tool-check-'+str(os.getpid()));p.write_text('inside');assert p.read_text()=='inside';p.unlink()
+print('YOHAKU_SANDBOX_OK')
+"""
+        entry={'id':'sandbox-check','name':'Sandbox check','program':'/usr/bin/python3','args':['-c',script,str(sentinel),json.dumps(host_ns)],'wayland':False}
+        args=command(root,entry)
+        try:
+            with PinnedMounts(args,root) as pinned:
+                r=subprocess.run(pinned.argv,pass_fds=pinned.fds,stdin=subprocess.DEVNULL,capture_output=True,text=True,timeout=15,env={},close_fds=True)
+        except (OSError,subprocess.TimeoutExpired) as e:raise ToolError('Sandbox check failed: '+str(e)) from e
+        if r.returncode!=0 or 'YOHAKU_SANDBOX_OK' not in r.stdout:
+            raise ToolError('Sandbox unavailable or boundary check failed. Tool not started. '+r.stderr.strip()[:1200])
+    return {'ok':True,'filesystem':'world-only writable data; read-only system runtime','network':'isolated','host_environment':'cleared'}
+
+def run(root, ident, socket_path, parameters=None):
+    entry=next((t for t in read_registry(root)['tools'] if t['id']==ident),None)
+    if entry is None:raise ToolError('Unknown tool id')
+    if entry['program']=='builtin:browser':
+        parameter_args(root,entry,parameters)  # No caller-selected host binding.
+        from yohaku_browser_runtime import techne
+        return techne(root,socket_path)
+    channel=None
+    if ident=='swarm-lab-open':
+        if entry['args']!=['files/swarm-lab/launch.py'] or entry['program']!='/usr/bin/python3.14':raise ToolError('Unexpected app launch binding')
+        from yohaku_app_model_bridge import AppBridge
+        channel=AppBridge(root)
+    args=command(root,entry,socket_path,parameters,channel.path if channel else None)
+    emit('status',text='Checking sandbox...')
+    check(root) # Mandatory for every launch, with no alternative execution path.
+    log_path,log=create_log(root,ident)
+    log_lock=threading.Lock()
+    def record(text):
+        data=(text+'\n').encode('utf-8','replace')
+        with log_lock:
+            log.write(data)
+            if log.tell()>2*1024*1024:
+                log.seek(-1024*1024,os.SEEK_END);tail=log.read();tail=tail.split(b'\n',1)[-1]
+                log.seek(0);log.truncate();log.write(b'[earlier output truncated]\n'+tail)
+            log.flush()
+    try:
+        with PinnedMounts(args,root) as pinned:
+            child=subprocess.Popen(pinned.argv,pass_fds=pinned.fds,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env={},close_fds=True)
+    except BaseException:
+        log.close();raise
+    def output(stream,channel):
+        while True:
+            line=stream.readline(4096)
+            if not line:break
+            text=line.decode('utf-8','replace').rstrip()
+            record(channel+': '+text)
+            emit('log',text=text,channel=channel)
+    def stop(*_):
+        if child.poll() is None:child.kill()
+    signal.signal(signal.SIGTERM,stop);signal.signal(signal.SIGINT,stop)
+    readers=[threading.Thread(target=output,args=(child.stdout,'stdout'),daemon=True),threading.Thread(target=output,args=(child.stderr,'stderr'),daemon=True)]
+    for t in readers:t.start()
+    emit('running',tool=ident,wayland=entry['wayland'],log_path=log_path)
+    try:code=child.wait()
+    finally:
+        if child.poll() is None:child.kill();child.wait()
+    for t in readers:t.join()
+    record('exit_code: '+str(code));log.close()
+    if channel is not None:channel.close()
+    emit('exit',code=code,log_path=log_path)
+    return 0 if code==0 else 1
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--root',default=str(PACKAGE/'worlds/default'))
+    p.add_argument('--socket');p.add_argument('--path');p.add_argument('mode',choices=['check','list','plan','run','discover','import-address','inspect']);p.add_argument('id',nargs='?')
+    p.add_argument('--parameters',default='{}')
+    a=p.parse_args()
+    try:
+        parameters=json.loads(a.parameters)
+        if not isinstance(parameters,dict):raise ToolError('parameters must be an object')
+        root=world(a.root)
+        if a.mode=='inspect':
+            from yohaku_apps import inspect_tool
+            if not a.path:raise ToolError('Provide an explicit executable path')
+            emit('inspection',result=inspect_tool(a.path,root));return 0
+        if a.mode in ('discover','import-address'):
+            import yohaku_apps
+            if a.mode=='discover':
+                apps,report=yohaku_apps.discover(root,with_report=True)
+                emit('apps',apps=apps,report=report);return 0
+            if not a.path:raise ToolError('Enter an application address')
+            emit('app',app=yohaku_apps.import_address(a.path,root));return 0
+        if a.mode=='check':emit('check',result=check(root));return 0
+        if a.mode=='list':emit('tools',tools=read_registry(root)['tools']);return 0
+        if not a.id:raise ToolError('Choose a tool id')
+        if a.mode=='plan':
+            entry=next(t for t in read_registry(root)['tools'] if t['id']==a.id)
+            emit('plan',argv=command(root,entry,a.socket,parameters));return 0
+        return run(root,a.id,a.socket,parameters)
+    except (ToolError,OSError,ValueError,KeyError,StopIteration) as e:
+        emit('error',text=str(e));return 1
+
+if __name__=='__main__':sys.exit(main())
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_tools.py"
+```

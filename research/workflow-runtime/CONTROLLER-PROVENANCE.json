@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "path": "diagnostics/reusable-workflow-20261107-01/sol-workflow/workflow.py",
+      "original_sha256": "ae0fad0acb88c53ffd7cbcf34e2dae7a3fe14ea74798d67c7c5a0922e24a5e71",
+      "published_sha256": "18ed88cf3eefcf650a4a5b4b4a65e807d7b05734aac6558ee5564d7155c3ea73",
+      "changes": "externalized private input, candidate and run directories; not yet revalidated with live models"
+    },
+    {
+      "path": "diagnostics/sol-autonomous-workflow-20261108-01/controller.py",
+      "original_sha256": "935f6c1dda8265efa6e456983897110d4e958b6a6ee7cf2d7b2ab480618cecf8",
+      "published_sha256": "f8ebb32be7cd8287abdb10c2e6e1ce7fd329ee461411f33c943c3bf8cad5c29c",
+      "changes": "externalized private input, candidate and run directories; not yet revalidated with live models"
+    }
+  ],
+  "control_inputs_published": false,
+  "new_live_model_run": false
+}

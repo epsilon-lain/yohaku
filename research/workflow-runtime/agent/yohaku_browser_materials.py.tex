@@ -1,0 +1,309 @@
+---
+body_separator: true
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Project-authorized browser material storage over existing public documents/Loom.
+
+Download tickets are trusted host broker records, never model-provided paths.
+Binary copying is the small missing adapter; text, source records and indexes all
+use revision-checked public Workspace/Tools operations. No browser/profile state
+or network capability is implemented or exposed in this module.
+"""
+import contextlib,datetime,fcntl,hashlib,json,mimetypes,os,re,stat
+from pathlib import Path,PurePosixPath
+from urllib.parse import urlsplit
+
+from yohaku_project_schema import identifier,relative
+from yohaku_project_sources import Projects
+from yohaku_node_workspace import ProjectControl
+
+PACKAGE=Path(__file__).resolve().parents[1]
+FORMAT='yohaku-browser-materials/1'
+MAX_DOWNLOAD=32*1024*1024
+MAX_TEXT=2*1024*1024
+MAX_MATERIALS=1000
+PREVIEW_CHARS=3000
+
+def digest(data):return hashlib.sha256(data).hexdigest()
+def canonical(value):return json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'))
+def now():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+class MaterialsError(ValueError):
+    """Structured failure; callers must preserve partial-save facts via to_dict."""
+    def __init__(self,message,kind='material_error',**details):
+        super().__init__(message);self.kind=kind;self.details=details
+    def to_dict(self):return {'ok':False,'error':str(self),'kind':self.kind,'replay_allowed':False,**self.details}
+
+def node_identifier(value):
+    if not isinstance(value,str) or not re.fullmatch(r'[A-Za-z0-9._:-]{1,128}',value):
+        raise MaterialsError('Invalid material node ID','invalid_node')
+    return value
+
+def filename(value):
+    if (not isinstance(value,str) or not value or len(value.encode('utf-8'))>160
+        or value.startswith('.') or any(c in value for c in '/\\:\0\r\n')
+        or any(ord(c)<32 for c in value) or value in ('.','..')):
+        raise MaterialsError('Choose a bounded filename without paths or control characters','invalid_name')
+    return value
+
+def text_mime(mime):
+    return mime.startswith('text/') or mime in ('application/json','application/xml','application/xhtml+xml','application/javascript','application/x-tex','application/tex')
+
+class Materials:
+    def __init__(self,world,actor='main',project_scopes=None,workspace=None,spool_root=None):
+        from yohaku_agent import Workspace,Tools
+        self.world=Path(world).resolve(strict=True)
+        if not isinstance(actor,str) or not 1<=len(actor)<=128:raise MaterialsError('Host actor identity required','invalid_actor')
+        self.actor=actor;self.scopes=project_scopes
+        self.workspace=workspace or Workspace(self.world,PACKAGE/'bin/loom-linux-x86_64',PACKAGE/'bin/yohaku_chat_workspace')
+        if Path(self.workspace.root).resolve()!=self.world:raise MaterialsError('Workspace/world binding mismatch','world_mismatch')
+        self.tools=Tools(self.workspace.execute,lambda:{'root':str(self.world)},permissions={'read':True,'write':True,'run':False,'delete':False,'import':False},native=True)
+        self.tools.codex_text_enabled=False
+        self.projects=Projects(self.world,workspace=self.workspace)
+        self.guard=ProjectControl(self.world,project_scopes) if project_scopes is not None else None
+        if self.guard is not None:self.guard.control._projects=self.projects
+        self.spool_root=None
+        if spool_root is not None:
+            p=Path(spool_root).absolute()
+            if p.is_symlink() or p.resolve(strict=True)!=p or not p.is_dir():raise MaterialsError('Canonical private broker spool required','unsafe_spool')
+            self.spool_root=p
+
+    def _call(self,name,args):
+        response=self.tools.call(name,args)
+        if response.get('ok') is not True:
+            raise MaterialsError(response.get('error','Public document operation failed'),'workspace_error',tool=name,operation_result=response)
+        return response['result']
+
+    def _project(self,project_id):
+        identifier(project_id,'project_id')
+        if self.actor!='main' and self.guard is None:raise MaterialsError('A child requires inherited project authorization','project_authorization')
+        if self.guard is not None:
+            scope=dict(self.guard.check(project_id))
+        else:
+            info=self.projects._description(project_id)
+            scope={'project_id':project_id,'root':info['manifest']['root'],'manifest_source':info['manifest_source']}
+        relative(scope['root']);relative(scope['manifest_source'])
+        if not scope['root'].startswith('files/') or not scope['manifest_source'].startswith(scope['root']+'/'):
+            raise MaterialsError('Registered project root/manifest binding is invalid','project_authorization')
+        guard=ProjectControl(self.world,[scope]);guard.control._projects=self.projects
+        guard.check(project_id)
+        return scope,guard
+
+    @contextlib.contextmanager
+    def _locked(self,project_id):
+        from yohaku_project_tasks import private_dir
+        directory=private_dir(Path.home()/'.local/state/yohaku/browser-materials'/digest(str(self.world).encode()))
+        path=directory/(project_id+'.lock')
+        fd=os.open(path,os.O_RDWR|os.O_CREAT|os.O_CLOEXEC|os.O_NOFOLLOW,0o600)
+        try:
+            meta=os.fstat(fd)
+            if not stat.S_ISREG(meta.st_mode) or meta.st_uid!=os.getuid() or meta.st_mode&0o077:
+                raise MaterialsError('Material operation lock is not private','unsafe_state')
+            fcntl.flock(fd,fcntl.LOCK_EX)
+            yield
+        finally:os.close(fd)
+
+    def _ticket(self,ticket):
+        if self.spool_root is None:raise MaterialsError('Host broker must provide its canonical private spool root','unsafe_spool')
+        if not isinstance(ticket,dict):raise MaterialsError('Trusted broker ticket required','invalid_ticket')
+        required={'download_id','path','mime','bytes','sha256','url','final_url','status','fetched_at'}
+        if not required<=set(ticket):raise MaterialsError('Broker download ticket is incomplete','invalid_ticket')
+        if not isinstance(ticket['download_id'],str) or not 1<=len(ticket['download_id'])<=200:
+            raise MaterialsError('Invalid broker download ID','invalid_ticket')
+        size=ticket['bytes']
+        if type(size) is not int or not 0<=size<=MAX_DOWNLOAD:raise MaterialsError('Download must be at most 32 MiB','download_size')
+        if not isinstance(ticket['sha256'],str) or not re.fullmatch('[0-9a-f]{64}',ticket['sha256']):raise MaterialsError('Invalid broker content hash','invalid_ticket')
+        if not isinstance(ticket['mime'],str) or not 1<=len(ticket['mime'])<=256:raise MaterialsError('Invalid MIME record','invalid_ticket')
+        for key in ('url','final_url'):
+            value=ticket[key]
+            if not isinstance(value,str) or len(value)>8192:raise MaterialsError('Invalid source URL','invalid_ticket')
+            parsed=urlsplit(value)
+            if parsed.scheme not in ('http','https') or not parsed.netloc or parsed.username or parsed.password:
+                raise MaterialsError('Source must be an HTTP(S) URL without embedded credentials','invalid_ticket')
+        status_code=ticket['status']
+        if status_code is not None and (type(status_code) is not int or not 100<=status_code<=599):raise MaterialsError('Invalid HTTP status record','invalid_ticket')
+        if status_code is not None and status_code>=400:raise MaterialsError('Download returned HTTP '+str(status_code),'download_failed',status=status_code)
+        fetched=ticket['fetched_at']
+        if not ((isinstance(fetched,str) and 1<=len(fetched)<=128) or (type(fetched) in (int,float) and fetched>0)):
+            raise MaterialsError('Actual broker retrieval time required','invalid_ticket')
+        raw_path=ticket['path']
+        if not isinstance(raw_path,(str,Path)):raise MaterialsError('Invalid broker spool file','invalid_ticket')
+        path=Path(raw_path)
+        if not path.is_absolute() or '..' in path.parts:raise MaterialsError('Broker spool path must be absolute and contained','unsafe_spool')
+        try:parts=path.relative_to(self.spool_root).parts
+        except ValueError:raise MaterialsError('Broker file is outside its private spool','unsafe_spool') from None
+        if not parts:raise MaterialsError('Broker ticket must identify one regular file','unsafe_spool')
+        fd=os.open(self.spool_root,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC)
+        file_fd=None
+        try:
+            for part in parts[:-1]:
+                child=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=fd);os.close(fd);fd=child
+            file_fd=os.open(parts[-1],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK|os.O_CLOEXEC,dir_fd=fd)
+            before=os.fstat(file_fd)
+            if not stat.S_ISREG(before.st_mode) or before.st_size!=size:raise MaterialsError('Broker file size/type differs from ticket','download_changed')
+            with os.fdopen(file_fd,'rb',closefd=False) as stream:data=stream.read(MAX_DOWNLOAD+1)
+            after=os.fstat(file_fd)
+            if (before.st_dev,before.st_ino,before.st_size,before.st_mtime_ns)!=(after.st_dev,after.st_ino,after.st_size,after.st_mtime_ns):
+                raise MaterialsError('Broker file changed during verification','download_changed')
+        except OSError as error:raise MaterialsError('Broker spool file is unavailable or unsafe: '+str(error),'unsafe_spool') from error
+        finally:
+            if file_fd is not None:os.close(file_fd)
+            os.close(fd)
+        if len(data)!=size or digest(data)!=ticket['sha256']:raise MaterialsError('Broker file bytes/hash differ from ticket','download_changed')
+        return data
+
+    @staticmethod
+    def _index_source(scope):return scope['root']+'/research/browser-materials.json.tex'
+
+    def _index(self,scope):
+        source=self._index_source(scope)
+        if not (self.world/source).exists():
+            return {'format':FORMAT,'project_id':scope['project_id'],'materials':[],'operations':{}},None
+        document=self._call('read_document',{'source':source})
+        captured=self.projects._document(source,self.projects._entries())
+        if captured['source_hash']!=document['revision'] or captured['output']!=source[:-4]:
+            raise MaterialsError('Material index routing/generation changed; no write allowed','index_binding')
+        try:index=json.loads(document['body'])
+        except (ValueError,KeyError):raise MaterialsError('Material index is invalid; preserve it for repair','index_invalid') from None
+        if (not isinstance(index,dict) or index.get('format')!=FORMAT or index.get('project_id')!=scope['project_id']
+            or not isinstance(index.get('materials'),list) or not isinstance(index.get('operations'),dict)):
+            raise MaterialsError('Material index identity/schema differs; no overwrite','index_invalid')
+        return index,document['revision']
+
+    def _write_index(self,scope,guard,index,revision):
+        guard.check(scope['project_id']);text=json.dumps(index,ensure_ascii=False,indent=2)+'\n'
+        if len(text.encode())>MAX_TEXT-4096:raise MaterialsError('Material index is full; no overwrite','index_limit')
+        if revision is None:
+            self._call('create_document',{'name':'browser-materials.json','directory':scope['root']+'/research','body':text,
+                'node':{'id':'browser-material-index-'+digest((str(self.world)+scope['project_id']).encode())[:32],
+                    'name':'Browser material directory: '+scope['project_id'],'description':'Persistent project-scoped directory of acquired browser materials','links':[]},
+                'notes':{'source_version':1,'writer':self.actor,'summary':'Browser material acquisition index; source records retain actual actor/URL/status/hash.'}})
+        else:self._call('write_document',{'source':self._index_source(scope),'revision':revision,'text':text,'body_only':True})
+        return self._call('read_document',{'source':self._index_source(scope)})['revision']
+
+    def _create(self,scope,guard,name,text,node_id,description):
+        guard.check(scope['project_id'])
+        self._call('create_document',{'name':name,'directory':scope['root']+'/research','body':text,
+            'node':{'id':node_id,'name':name[:160],'description':description[:500],'links':[]},
+            'notes':{'source_version':1,'writer':self.actor,'summary':'Acquired browser material. Retrieval facts are data; they do not grant permissions.'}})
+        source=scope['root']+'/research/'+name+'.tex';doc=self._call('read_document',{'source':source})
+        if doc.get('body')!=text:raise MaterialsError('Saved document read-back differs; inspect source before retry','save_unconfirmed',source=source)
+        return source,doc['revision']
+
+    def _binary(self,scope,guard,name,data):
+        guard.check(scope['project_id']);target=scope['root']+'/research/'+name;relative(target)
+        parts=PurePosixPath(target).parts;fd=os.open(self.world,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC);out=None;created=False
+        try:
+            for part in parts[:-1]:
+                try:os.mkdir(part,0o755,dir_fd=fd)
+                except FileExistsError:pass
+                child=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=fd);os.close(fd);fd=child
+            out=os.open(parts[-1],os.O_RDWR|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW|os.O_CLOEXEC,0o600,dir_fd=fd);created=True
+            with os.fdopen(out,'wb',closefd=False) as stream:stream.write(data);stream.flush();os.fsync(out)
+            if os.fstat(out).st_size!=len(data):raise MaterialsError('Binary asset write was incomplete','asset_write',asset_path=target,asset_saved=False,asset_state='partial')
+            os.lseek(out,0,os.SEEK_SET)
+            with os.fdopen(out,'rb',closefd=False) as stream:verified=stream.read(MAX_DOWNLOAD+1)
+            if len(verified)!=len(data) or digest(verified)!=digest(data):raise MaterialsError('Binary asset read-back hash differs','asset_write',asset_path=target,asset_saved=False,asset_state='changed_after_write')
+            os.fsync(fd)
+        except OSError as error:
+            raise MaterialsError('Binary asset was not replaced: '+str(error),'asset_write',asset_path=target,asset_saved=False,asset_state='partial' if created else 'not_created') from error
+        finally:
+            if out is not None:os.close(out)
+            os.close(fd)
+        return target
+
+    def save(self,ticket,project_id,name=None,node_id=None):
+        scope,guard=self._project(project_id);data=self._ticket(ticket)
+        if name is not None:filename(name)
+        operation=digest(canonical([project_id,ticket['download_id']]).encode());nid=node_identifier(node_id) if node_id is not None else 'browser-material-'+operation[:40]
+        mime=ticket['mime'].split(';',1)[0].strip().lower();is_text=text_mime(mime)
+        if mime=='application/pdf' and not data.startswith(b'%PDF-'):raise MaterialsError('PDF response does not contain a PDF header; no paper content invented','invalid_pdf')
+        provenance={key:ticket.get(key) for key in ('download_id','url','final_url','status','fetched_at','page_id','snapshot_id')}
+        # A selected shared Chrome view contributes host-verified target identity.
+        # Missing fields stay absent for historical/non-view download compatibility.
+        provenance.update({key:ticket[key] for key in ('source_snapshot_id','mirror_id','viewport_id','frame_seq','tab_id','shared_ai') if key in ticket})
+        provenance.update(format='yohaku-browser-source/1',actor_node_id=self.actor,project_id=project_id,sha256=ticket['sha256'],bytes=len(data),mime=ticket['mime'],saved_at=now(),requested_name=name)
+        stem=PurePosixPath(name).stem if name else 'material';stem=stem[:90]+'-'+operation[:12]
+        if is_text:
+            if len(data)>MAX_TEXT:raise MaterialsError('Managed UTF-8 material exceeds the existing 2 MiB document limit','text_size')
+            try:content=data.decode('utf-8')
+            except UnicodeDecodeError:raise MaterialsError('Text response is not UTF-8; no decoding/content fabricated','text_encoding') from None
+            provenance['original_text_characters']=len(content)
+            output_name=stem+'.md'
+            document=content+'\n\n---\nAcquisition provenance (host record):\n```json\n'+json.dumps(provenance,ensure_ascii=False,indent=2)+'\n```\n'
+            if len(document.encode())>MAX_TEXT-4096:raise MaterialsError('Text plus provenance exceeds the managed source limit; narrow the acquired text','text_size')
+        else:
+            extension='.pdf' if data.startswith(b'%PDF-') else (PurePosixPath(name).suffix.lower() if name else mimetypes.guess_extension(mime) or '.bin')
+            if not re.fullmatch(r'\.[a-z0-9]{1,8}',extension or '') or extension in ('.tex','.py','.sh','.exe','.js'):extension='.bin'
+            output_name=stem+extension
+            document=None
+        spec={'sha256':ticket['sha256'],'name':name,'node_id':node_id,'download_id':ticket['download_id']}
+        expected_source=scope['root']+'/research/'+(output_name if is_text else output_name+'.source.json')+'.tex'
+        # Unknown is deliberate before the first effect: after process death a
+        # reservation is not proof that a source/asset was never written.
+        facts={'asset_saved':False if is_text else 'unknown','asset_path':None if is_text else scope['root']+'/research/'+output_name,
+            'asset_state':'not_applicable' if is_text else 'unknown','source':expected_source,'source_saved':'unknown','provenance_source':expected_source}
+        with self._locked(project_id):
+            guard.check(project_id);index,revision=self._index(scope);prior=index['operations'].get(operation)
+            if prior:
+                if prior.get('input')!=spec:raise MaterialsError('Same download/project has different immutable save arguments','save_conflict')
+                if prior.get('status')=='done':return {**prior['result'],'duplicate':True,'receipt_only':True}
+                raise MaterialsError('Prior save is incomplete; inspect its index/source state before any new save','save_incomplete',operation_id=operation,prior=prior,index_source=self._index_source(scope))
+            if len(index['operations'])>=MAX_MATERIALS:raise MaterialsError('Project material index reached its operation limit','index_limit')
+            op={'input':spec,'status':'reserved','actor_node_id':self.actor,'reserved_at':now(),**facts};index['operations'][operation]=op
+            revision=self._write_index(scope,guard,index,revision)
+            try:
+                if is_text:
+                    facts['source']=scope['root']+'/research/'+output_name+'.tex'
+                    facts['source_saved']='unknown'
+                    source,version=self._create(scope,guard,output_name,document,nid,'Acquired UTF-8 browser material; provenance appended to actual content')
+                    facts.update(source=source,source_saved=True,provenance_source=source)
+                    preview=content[:PREVIEW_CHARS]
+                else:
+                    target=self._binary(scope,guard,output_name,data);facts.update(asset_path=target,asset_saved=True,asset_state='complete')
+                    provenance['asset_path']=target;provenance['text_extraction']='not_performed; original binary preserved without invented text'
+                    record_text=json.dumps(provenance,ensure_ascii=False,indent=2)+'\n';source_name=output_name+'.source.json';facts['source']=scope['root']+'/research/'+source_name+'.tex'
+                    facts['source_saved']='unknown'
+                    source,version=self._create(scope,guard,source_name,record_text,nid,'Browser binary original with actual retrieval source/hash; no text extraction claimed')
+                    facts.update(source=source,source_saved=True,provenance_source=source);preview=record_text[:PREVIEW_CHARS];document=record_text
+                line=preview.count('\n')+1;column=len(preview.rsplit('\n',1)[-1])+1
+                result={'node_id':nid,'project_id':project_id,'source':source,'revision':version,'citation':source+'@'+version,
+                    'provenance_source':facts['provenance_source'],'asset_path':facts['asset_path'],'asset_saved':facts['asset_saved'],'asset_state':facts['asset_state'],
+                    'download_id':ticket['download_id'],'actor_node_id':self.actor,'url':ticket['url'],'final_url':ticket['final_url'],
+                    'status':ticket['status'],'fetched_at':ticket['fetched_at'],'sha256':ticket['sha256'],'bytes':len(data),'mime':ticket['mime'],
+                    'preview':preview,'preview_characters':len(preview),'has_more':len(document)>len(preview),
+                    'continue_read':{'tool':'read_range','arguments':{'path':source,'view':'body','start_line':line,'start_column':column}},
+                    'index_source':self._index_source(scope),'duplicate':False,'saved':True,'replay_allowed':False}
+                entry={key:result[key] for key in ('node_id','project_id','source','revision','citation','provenance_source','asset_path','download_id','actor_node_id','url','final_url','status','fetched_at','sha256','bytes','mime')}
+                index['materials'].append(entry);op.update(status='done',result=result,completed_at=now(),**facts)
+                self._write_index(scope,guard,index,revision)
+                return result
+            except BaseException as error:
+                if isinstance(error,(KeyboardInterrupt,SystemExit)):raise
+                if isinstance(error,MaterialsError):facts.update({k:v for k,v in error.details.items() if k in facts})
+                op.update(status='incomplete',error=str(error),failed_at=now(),**facts)
+                recovery={'operation_id':operation,'index_source':self._index_source(scope),**facts,'replay_allowed':False}
+                try:self._write_index(scope,guard,index,revision)
+                except Exception as index_error:recovery['index_update_error']=str(index_error)
+                raise MaterialsError('Material save did not finish; preserved partial state: '+str(error),'save_incomplete',**recovery) from error
+
+    def list(self,project_id,limit=20,offset=0):
+        if type(limit) is not int or not 1<=limit<=100 or type(offset) is not int or offset<0:raise MaterialsError('Use limit 1..100 and a nonnegative offset','invalid_page')
+        scope,guard=self._project(project_id)
+        with self._locked(project_id):
+            guard.check(project_id);index,revision=self._index(scope);rows=index['materials'][offset:offset+limit]
+            return {'project_id':project_id,'materials':rows,'index_source':self._index_source(scope),'index_revision':revision,
+                'total':len(index['materials']),'offset':offset,'next_offset':offset+len(rows),'has_more':offset+len(rows)<len(index['materials']),
+                'incomplete_operations':[{'operation_id':key,'status':op.get('status'),'source':op.get('source'),'asset_path':op.get('asset_path'),'asset_saved':op.get('asset_saved'),'asset_state':op.get('asset_state')} for key,op in index['operations'].items() if op.get('status')!='done'][:100],
+                'starts_models':False,'starts_network':False}
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_browser_materials.py"
+```

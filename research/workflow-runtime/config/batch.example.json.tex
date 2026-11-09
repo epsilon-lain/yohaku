@@ -1,0 +1,49 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+{
+  "enabled": false,
+  "batch_id": "REPLACE_WITH_UNIQUE_BATCH_ID",
+  "provider": "adaption",
+  "model": "glm-53-flash",
+  "reasoning_effort": "none",
+  "funding_scope": "account_existing_balance",
+  "pricing_verified": false,
+  "pricing_evidence": {
+    "path": "/absolute/private/verified-pricing-evidence",
+    "sha256": "REPLACE_WITH_SHA256"
+  },
+  "currency": "VERIFY_UNIT",
+  "authorization": {
+    "source": "explicit_user_authorization",
+    "reference": "PROVIDE_PRIVATE_AUTHORIZATION",
+    "amount": "0"
+  },
+  "pricing": {
+    "input_per_million": "0",
+    "output_per_million": "0",
+    "input_token_cap": 0,
+    "max_output_tokens": 0,
+    "supplier_caps_verified": false
+  },
+  "limits": {
+    "max_payload_bytes": 0
+  },
+  "open_runtime": true,
+  "session": {
+    "grant_path": "/absolute/private/session-grant.json",
+    "grant_sha256": "REPLACE_WITH_SHA256",
+    "ledger_path": "/absolute/private/existing-session-ledger.json"
+  }
+}
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/config/batch.example.json"
+```

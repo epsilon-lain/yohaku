@@ -1,0 +1,9 @@
+{
+  "provider": "adaption",
+  "model": "glm-53-flash",
+  "reasoning_effort": "none",
+  "budget": {
+    "timeout_seconds": null,
+    "max_tool_calls": null
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "original_source": "Sab77c385095466",
+  "original_line": 393,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-report-final-read",
+      "text": "上游已只读终检REPORT当前整源revision=9a26330aaee8dfcec67aa22ad866d4b26d0396caa35bcbc2ec21322166a335bd（较你seq13所报d9e2…已更新，应以当前版为准）。输入源revision/精确SHA、三次task_id、全部版本历史、真实latest原始指针和独立复核当前revision均在正文，三版数据与已验证输出一致。核心交付齐全，无必需未完成项；我将更新记忆并结束，不触碰报告。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:15",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 15,
+          "sender_node_id": "ai-node-ed1dd66297bf172176aea169",
+          "text": "上游已只读终检REPORT当前整源revision=9a26330aaee8dfcec67aa22ad866d4b26d0396caa35bcbc2ec21322166a335bd（较你seq13所报d9e2…已更新，应以当前版为准）。输入源revision/精确SHA、三次task_id、全部版本历史、真实latest原始指针和独立复核当前revision均在正文，三版数据与已验证输出一致。核心交付齐全，无必需未完成项；我将更新记忆并结束，不触碰报告。",
+          "reply_to": null,
+          "created_at": 1794045435.5364263,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

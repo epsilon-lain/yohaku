@@ -1,0 +1,315 @@
+{
+  "format": "yohaku-workflow-runtime-source-export/1",
+  "source": "isolated GLM candidate used in agc079-d-challenge-20261109-01",
+  "mapping_note": "Selected actual fields projected with raw hashes; complete records remain private.",
+  "modules": [
+    {
+      "path": "agent/batch_budget_guard.py",
+      "original_sha256": "22f2c3f770359a64059e973a905adfb061fd7c815fb4a1983fa221c854a96619",
+      "published_sha256": "638021defc090ca558e957113f6ccbe3806320aa2dd121e422131ba878ef8085",
+      "change": "portable grant binding; automated grant generation disabled; no new live verification"
+    },
+    {
+      "path": "agent/open_capacity.py",
+      "original_sha256": "3704b32944f0c31484340287a5e61a6d4d0ed91ae5c95b9079872adacbfccdc2",
+      "published_sha256": "3704b32944f0c31484340287a5e61a6d4d0ed91ae5c95b9079872adacbfccdc2",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_adaption.py",
+      "original_sha256": "5e3cda295cd0c2f54a66e22224f14323416f7970f130cf118e4f25a17635427b",
+      "published_sha256": "a8ed98b80db218b29632c31100e0c4caa4a7fc71b7b308435560a540d9e6df37",
+      "change": "portable redacted model-mapping verification; no new live verification"
+    },
+    {
+      "path": "agent/yohaku_agent.py",
+      "original_sha256": "012d3278cf83bf7313ffc7da911ae7572c5f3011c2fad36445583d25cfb8bb6b",
+      "published_sha256": "012d3278cf83bf7313ffc7da911ae7572c5f3011c2fad36445583d25cfb8bb6b",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_ai_context.py",
+      "original_sha256": "c1554507b17670e95e28cc1915536f7ec45997f1de568852dc9e5abbb47c8c42",
+      "published_sha256": "c1554507b17670e95e28cc1915536f7ec45997f1de568852dc9e5abbb47c8c42",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_ai_nodes.py",
+      "original_sha256": "45156c02802447787b80aaa38510c9f2909b242005215b081a777514e0a4a55e",
+      "published_sha256": "45156c02802447787b80aaa38510c9f2909b242005215b081a777514e0a4a55e",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_app_model_bridge.py",
+      "original_sha256": "432312f07d751f0a79d2d073cf064b94b33efe8a14619dc52685ddf405c4e9db",
+      "published_sha256": "432312f07d751f0a79d2d073cf064b94b33efe8a14619dc52685ddf405c4e9db",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_apps.py",
+      "original_sha256": "c633a3017084cc77756c3892cfeda82ded5dcbad8950f1aaccd62523e030de17",
+      "published_sha256": "c633a3017084cc77756c3892cfeda82ded5dcbad8950f1aaccd62523e030de17",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_artifact_install.py",
+      "original_sha256": "c2954205d6ce8f113d914f76839afa23bfbee2fc7f3d47989b37ba42a9d75022",
+      "published_sha256": "c2954205d6ce8f113d914f76839afa23bfbee2fc7f3d47989b37ba42a9d75022",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_browser.py",
+      "original_sha256": "c7f68f5b7e1e8312b5ce06fc69aa010343d8f045e9a9c732fd2a125d42f64c21",
+      "published_sha256": "c7f68f5b7e1e8312b5ce06fc69aa010343d8f045e9a9c732fd2a125d42f64c21",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_browser_exec.py",
+      "original_sha256": "c6a4e30ab263ca2bd18648da244258886c71649083dd713f8bed90b3516ba32a",
+      "published_sha256": "c6a4e30ab263ca2bd18648da244258886c71649083dd713f8bed90b3516ba32a",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_browser_materials.py",
+      "original_sha256": "39863093264335989d87d80af5a21b99812aff478cf5b64969238724556d8f84",
+      "published_sha256": "39863093264335989d87d80af5a21b99812aff478cf5b64969238724556d8f84",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_browser_recipes.py",
+      "original_sha256": "735edcad8aba5eb30f949d1dc32d8523a13ffce8a661e30596d72c07f609d636",
+      "published_sha256": "735edcad8aba5eb30f949d1dc32d8523a13ffce8a661e30596d72c07f609d636",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_browser_runtime.py",
+      "original_sha256": "b964e60a9813fce776de22bdfcc18131cce4d29f6a2b3e11b7c034896151f5b2",
+      "published_sha256": "b964e60a9813fce776de22bdfcc18131cce4d29f6a2b3e11b7c034896151f5b2",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_candidate.py",
+      "original_sha256": "4cbac9852c63e80b1123b3982eadc9bd6246ceb85a2f83f322846a82a5d89ad3",
+      "published_sha256": "4cbac9852c63e80b1123b3982eadc9bd6246ceb85a2f83f322846a82a5d89ad3",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_chat_object.py",
+      "original_sha256": "d2a5d91b85824e0c497f17f7b1ad1f36e5373e871d46ae756de8d2824df83c2a",
+      "published_sha256": "d2a5d91b85824e0c497f17f7b1ad1f36e5373e871d46ae756de8d2824df83c2a",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex.py",
+      "original_sha256": "8d732014bc05a7528aaeee3b71b6a1eeff99fa64b37b502f8dc510503ee65ffb",
+      "published_sha256": "8d732014bc05a7528aaeee3b71b6a1eeff99fa64b37b502f8dc510503ee65ffb",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_diagnostics.py",
+      "original_sha256": "04c42a56485b686bc43b425831824497c2b6c03797d02bee45662d1e80e11399",
+      "published_sha256": "04c42a56485b686bc43b425831824497c2b6c03797d02bee45662d1e80e11399",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_linux.py",
+      "original_sha256": "36ab1954794d8097e590d556e7a9d40914b566ed906a3db67e8add95f4fd59b1",
+      "published_sha256": "36ab1954794d8097e590d556e7a9d40914b566ed906a3db67e8add95f4fd59b1",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_models.py",
+      "original_sha256": "bb0c9a6c562afde6f8619308b81e42b7769f127bfaba02e974e3b96a1380a140",
+      "published_sha256": "bb0c9a6c562afde6f8619308b81e42b7769f127bfaba02e974e3b96a1380a140",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_payloads.py",
+      "original_sha256": "e9d27cdeefef4981ba763834a3dee6ea053e8fb0f0573cf926a8c2b85c8cf3b0",
+      "published_sha256": "e9d27cdeefef4981ba763834a3dee6ea053e8fb0f0573cf926a8c2b85c8cf3b0",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_provider.py",
+      "original_sha256": "ff779d37d9036315a78c471305fdf30f7082f8fee2bb10289e7d6acf19837984",
+      "published_sha256": "ff779d37d9036315a78c471305fdf30f7082f8fee2bb10289e7d6acf19837984",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_tasks.py",
+      "original_sha256": "046bf37db8cd81506e13637eb50e3641840b920c69cb7f9bcbb1efad8450048d",
+      "published_sha256": "046bf37db8cd81506e13637eb50e3641840b920c69cb7f9bcbb1efad8450048d",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_text.py",
+      "original_sha256": "b4538b4963a3d32a54a19bd6f5f03b15dba4f42b581e1a15d578a1067aea45fb",
+      "published_sha256": "b4538b4963a3d32a54a19bd6f5f03b15dba4f42b581e1a15d578a1067aea45fb",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_codex_text_service.py",
+      "original_sha256": "d64e5c7348d2f2799409d829f4a02cf23afe2c4dbd2ce0d4e72023343b5f58fc",
+      "published_sha256": "d64e5c7348d2f2799409d829f4a02cf23afe2c4dbd2ce0d4e72023343b5f58fc",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_collaboration_update.py",
+      "original_sha256": "cd6120dd6e9ca01e1fde7f9f7c2371b47364a512f2df2c90736c7b1565875668",
+      "published_sha256": "cd6120dd6e9ca01e1fde7f9f7c2371b47364a512f2df2c90736c7b1565875668",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_coordinates.py",
+      "original_sha256": "d7e245fc216a393c6484a77e975915921103efa572cf3d07d85fe45926446cea",
+      "published_sha256": "d7e245fc216a393c6484a77e975915921103efa572cf3d07d85fe45926446cea",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_delegation.py",
+      "original_sha256": "aab8f751cf95597d0015b9209443ec9e5a50b4042c22cfef8776fb9b839fd0bc",
+      "published_sha256": "aab8f751cf95597d0015b9209443ec9e5a50b4042c22cfef8776fb9b839fd0bc",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_dev.py",
+      "original_sha256": "008ab19ee09068df2157c7398562c213a61524a0cda533e973c93e33f1bb5ca1",
+      "published_sha256": "008ab19ee09068df2157c7398562c213a61524a0cda533e973c93e33f1bb5ca1",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_dev_runtime.py",
+      "original_sha256": "1be735cae17986e3da7d77cd84045daf4eb8034ffc280d2b7d8b49ec774fc523",
+      "published_sha256": "1be735cae17986e3da7d77cd84045daf4eb8034ffc280d2b7d8b49ec774fc523",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_entries.py",
+      "original_sha256": "ade5348479e756db476a3f724aed0b7c422706383ca32c29e22cc2c1ac28e3cc",
+      "published_sha256": "ade5348479e756db476a3f724aed0b7c422706383ca32c29e22cc2c1ac28e3cc",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_experiment_groups.py",
+      "original_sha256": "9a368adc13f13321c022ef2b7e37f6f01df1d353c16bce102837415da2c26251",
+      "published_sha256": "9a368adc13f13321c022ef2b7e37f6f01df1d353c16bce102837415da2c26251",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_host_update.py",
+      "original_sha256": "0bbf75111af45331f28c332b00c1d99c3187b76155659788d46669a3295bb2fc",
+      "published_sha256": "0bbf75111af45331f28c332b00c1d99c3187b76155659788d46669a3295bb2fc",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_ime.py",
+      "original_sha256": "0b18b92da687b49aacbdfca7d245dcc78e74cac368eab631e17ab9f0f9b70534",
+      "published_sha256": "0b18b92da687b49aacbdfca7d245dcc78e74cac368eab631e17ab9f0f9b70534",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_ime_check.py",
+      "original_sha256": "2850198f4c5ca011c4bf33dae0e3d252dee12a718282705527e0459579fe7de1",
+      "published_sha256": "2850198f4c5ca011c4bf33dae0e3d252dee12a718282705527e0459579fe7de1",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_launcher.py",
+      "original_sha256": "fe83e1c5526abeee81bbad2867484f24c409b011265fabd53aaf1c0d484db9e4",
+      "published_sha256": "fe83e1c5526abeee81bbad2867484f24c409b011265fabd53aaf1c0d484db9e4",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_node_workspace.py",
+      "original_sha256": "3f4915687e45456d8aebc95597e73d179cc29608af2c93fda9cb291da9e39f9d",
+      "published_sha256": "3f4915687e45456d8aebc95597e73d179cc29608af2c93fda9cb291da9e39f9d",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_project_consistency.py",
+      "original_sha256": "92f2ec228abcd10b8635fe785f4131712a647b8b9ba828086570c052761db609",
+      "published_sha256": "92f2ec228abcd10b8635fe785f4131712a647b8b9ba828086570c052761db609",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_project_schema.py",
+      "original_sha256": "37cdf90939e5ed41cea8549a1b9aee650d00f4ce1693b2983a6ae63098da9ac7",
+      "published_sha256": "37cdf90939e5ed41cea8549a1b9aee650d00f4ce1693b2983a6ae63098da9ac7",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_project_sources.py",
+      "original_sha256": "8fe42b67472d58078a1cddd720fa0a2c1594b4692bdeb01611d940007ac95c99",
+      "published_sha256": "8fe42b67472d58078a1cddd720fa0a2c1594b4692bdeb01611d940007ac95c99",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_project_tasks.py",
+      "original_sha256": "14da702f6efa1a961f5ccdacce76a14c8c7be89ce780d28444ac46fc456880ad",
+      "published_sha256": "14da702f6efa1a961f5ccdacce76a14c8c7be89ce780d28444ac46fc456880ad",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_project_ui.py",
+      "original_sha256": "3c49924bed279dae73579a5922e471bd0d48c1b6d2c60a260284a668403a0fe6",
+      "published_sha256": "3c49924bed279dae73579a5922e471bd0d48c1b6d2c60a260284a668403a0fe6",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_projects.py",
+      "original_sha256": "d97006d7a172fa5a8316ba768ea7d41ed27460cb0e223805a5a33f77be909b90",
+      "published_sha256": "d97006d7a172fa5a8316ba768ea7d41ed27460cb0e223805a5a33f77be909b90",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_provider_diagnostics.py",
+      "original_sha256": "c138e1c7e5d1be04fc51ac03060e2fc3632b036af10021d239139a4d333560c3",
+      "published_sha256": "c138e1c7e5d1be04fc51ac03060e2fc3632b036af10021d239139a4d333560c3",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_provider_transport.py",
+      "original_sha256": "8bf752b1ecd406557c2924bcd3924686e0582faa700f6aeb8bedb3fa18ccb0e1",
+      "published_sha256": "8bf752b1ecd406557c2924bcd3924686e0582faa700f6aeb8bedb3fa18ccb0e1",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_shared_tex.py",
+      "original_sha256": "885bbd97097f9a715463c52ba5f6d1ecb46fb4f86dc23c4edc3ba7b2a567e03f",
+      "published_sha256": "885bbd97097f9a715463c52ba5f6d1ecb46fb4f86dc23c4edc3ba7b2a567e03f",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_source_closure.py",
+      "original_sha256": "bb9ffbf72ac53091306dc17438731ef0cbca05d30d49412313d7772064364107",
+      "published_sha256": "bb9ffbf72ac53091306dc17438731ef0cbca05d30d49412313d7772064364107",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_terminal.py",
+      "original_sha256": "32811f51872561007c6a0bbc226445e810d85c79e57e8f854a027e22be2f70df",
+      "published_sha256": "32811f51872561007c6a0bbc226445e810d85c79e57e8f854a027e22be2f70df",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_tools.py",
+      "original_sha256": "06d965f31767732faf2805c7e7da25b16e62fe135f7512afb2a02dd663f3fca6",
+      "published_sha256": "06d965f31767732faf2805c7e7da25b16e62fe135f7512afb2a02dd663f3fca6",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_ui_sdk.py",
+      "original_sha256": "67d2a7ee16e4c456f72be94bd012acb73cc56506c7080acac361b030e1aad323",
+      "published_sha256": "67d2a7ee16e4c456f72be94bd012acb73cc56506c7080acac361b030e1aad323",
+      "change": "unchanged"
+    },
+    {
+      "path": "agent/yohaku_wired_runtime.py",
+      "original_sha256": "4c9c07825dce721f16c4f67736f5908b2bf603c4afdd991b0b2c8acc9c64350d",
+      "published_sha256": "4c9c07825dce721f16c4f67736f5908b2bf603c4afdd991b0b2c8acc9c64350d",
+      "change": "unchanged"
+    }
+  ],
+  "not_integrated_into_default_ui": true,
+  "portable_changes_live_acceptance": "not performed"
+}

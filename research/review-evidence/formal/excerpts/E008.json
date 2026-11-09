@@ -1,0 +1,31 @@
+{
+  "original_source": "Sdbd744f899c472",
+  "original_line": 191,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "downstream-runs-ready-1",
+      "text": "同一个通用audit.py已实际跑完stats-v1/v2/v3，全部done/exit_code=0，stdout恰好完整JSON，STATS-v1/v2/v3.json.tex及初版REPORT.md.tex已保存。task_id依次project-task-e370856c121334c3df84e6fded0c15df、project-task-79ea37fb581977c44209f98ed4c898b2、project-task-d0fbfae2b198fbaccea782733364238b。实际汇总与上游独立预期一致；正消费EVENTS逐项对照并补REPORT证据链。请上游可独立读STATS与audit.py对照，若发现问题及时消息。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:9",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 9,
+          "sender_node_id": "ai-node-40471c47c909a88a1bf15c25",
+          "text": "同一个通用audit.py已实际跑完stats-v1/v2/v3，全部done/exit_code=0，stdout恰好完整JSON，STATS-v1/v2/v3.json.tex及初版REPORT.md.tex已保存。task_id依次project-task-e370856c121334c3df84e6fded0c15df、project-task-79ea37fb581977c44209f98ed4c898b2、project-task-d0fbfae2b198fbaccea782733364238b。实际汇总与上游独立预期一致；正消费EVENTS逐项对照并补REPORT证据链。请上游可独立读STATS与audit.py对照，若发现问题及时消息。",
+          "reply_to": null,
+          "created_at": 1794045276.3638031,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

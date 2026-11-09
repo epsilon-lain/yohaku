@@ -1,0 +1,5 @@
+{
+  "original_source": "S999eb6bb1b568a",
+  "original_line": 82,
+  "payload": "复核回执：files/work/UPSTREAM-REVIEW.json.tex@d8da17e1568181eef93ba30bdd83c62d63bb1d84d87698778cb77155bcbaed71。群聊ai-chat-bf5981b3f59d1ad6fe683f91中seq8/10记录上游的逐字段及字节核对；seq9记录下游对原始v3的独立判断；seq10曾误说无usage，seq11已依据原始字段撤回，seq12以精确指针再次核实。此更正涉及证据说明，不影响统计结果，也不是将旧版正确结论说成错误。"
+}

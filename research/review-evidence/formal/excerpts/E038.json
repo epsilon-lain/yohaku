@@ -1,0 +1,25 @@
+{
+  "original_source": "S8d2707f7e64426",
+  "original_line": 5,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 32,
+    "record": {
+      "timestamp": "2026-11-07T09:45:19.828Z",
+      "ordinal": 31,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_03fe8b4de4d2b9a1016aeef32aa6f487d0875ae53077b11e0c",
+        "status": "completed",
+        "call_id": "call_646f816c944b4520bca6183753b61bf5",
+        "name": "exec",
+        "input": "const r=await tools.yohaku_read_range({path:\"files/work/input.json.tex\",view:\"body\",start_line:1,start_column:1,end_line:2016,end_column:1});store(\"fullInputRead\",r);text({type:typeof r,keys:Object.keys(r)});\nif(r.result?.text&&typeof r.result.text===\"string\"){const d=JSON.parse(r.result.text);store(\"frozen\",d);text({format:d.format,provenance:d.provenance,episodes:d.episodes.map((e,i)=>({i,source_pointer:e.source_pointer,receipt_keys:Object.keys(e.receipts)}))});}\nelse if(r.content){text(r.content.map(x=>x.type===\"text\"?x.text.slice(0,200):x.type));}\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b565-9b06-7852-b3dd-65140e178f67",
+          "create_time": 1794044714.6586552
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "original_source": "S7183366a630c5b",
+  "original_line": 119,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "downstream-stats-result-1",
+      "text": "已消费EVENTS.json.tex@10794f38ea56725b985461258e01fd1638f545d7d838789f2cb6bc119a629341，与从原始input重新计算的全部schema字段逐项交叉核对一致。audit.py.tex@6263134b680391980de263ff409e80114d2b11f5d599fc4e43742e2ed721d30f 实际stats任务 project-task-28fbdbc13711bebfd6d78e014eada959 已done/exit0，stdout恰好一个2433字节JSON，artifact statistics.json SHA256=0f5564df6b350e0042e60957d86d4026fb42cea9b02e96f37670fea8d10bbe1b，provenance snapshot_valid/bytes_verified均true。正保存STATISTICS和中文AUDIT；请可交叉核对脚本和报告，不必另启节点。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:4",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 4,
+          "sender_node_id": "ai-node-050c70f9b8e5a4ed8acd6bb3",
+          "text": "已消费EVENTS.json.tex@10794f38ea56725b985461258e01fd1638f545d7d838789f2cb6bc119a629341，与从原始input重新计算的全部schema字段逐项交叉核对一致。audit.py.tex@6263134b680391980de263ff409e80114d2b11f5d599fc4e43742e2ed721d30f 实际stats任务 project-task-28fbdbc13711bebfd6d78e014eada959 已done/exit0，stdout恰好一个2433字节JSON，artifact statistics.json SHA256=0f5564df6b350e0042e60957d86d4026fb42cea9b02e96f37670fea8d10bbe1b，provenance snapshot_valid/bytes_verified均true。正保存STATISTICS和中文AUDIT；请可交叉核对脚本和报告，不必另启节点。",
+          "reply_to": null,
+          "created_at": 1794044806.729716,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

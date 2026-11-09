@@ -1,0 +1,49 @@
+---
+body_separator: true
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Host input assembly by durable node context segment; no provider internals."""
+import json
+
+def assemble(initial,context,node=None,isolated=False):
+ if isolated:return initial['prompt'],[],{'node_id':None,'generation':0},None,0
+ bootstrap=context.get('world_bootstrap',{}).get('ai_nodes',{}) if isinstance(context,dict) else {}
+ segment={'node_id':node['node_id'],'generation':node.get('generation',0)} if node else bootstrap.get('context_segment',{'node_id':'main','generation':0})
+ continuation=(node.get('continuation') if node else bootstrap.get('continued_context')) or {}
+ supplied=initial.get('history',[]);supplied=supplied if isinstance(supplied,list) else []
+ history=[]
+ for message in supplied:
+  if not isinstance(message,dict) or message.get('role') not in ('user','assistant') or not isinstance(message.get('content'),str):continue
+  tag=message.get('context_segment')
+  if tag==segment or (node is None and segment['generation']==0 and tag is None):history.append({'role':message['role'],'content':message['content'],'context_segment':dict(segment)})
+ history=history[-8:]
+ if node:
+  try:request=json.loads(initial['prompt'])
+  except (TypeError,ValueError):request={'current_task':initial['prompt']}
+  payload={'identity':{'node_id':node['node_id'],'role':node['role']},
+           'current_task':request.get('current_task',initial['prompt']),
+           'user_constraints':continuation.get('user_constraints',request.get('user_constraints',[])),
+           'summary':continuation.get('summary'),'node_index':node.get('node_index',request.get('node_index',[])),
+           'archive':continuation.get('archive'),'continued_work':{k:continuation.get(k) for k in ('current_task','user_constraints','summary','node_index','archive','memory_versions')},'memory_source':node.get('memory_source'),
+           'memory_origin':node.get('memory_origin'),'project_scopes':node.get('project_scopes',[]),'context_segment':segment,'recent_conversation':history}
+ else:
+  payload={'recent_conversation':history,'context':context,'request':initial['prompt'],'context_segment':segment}
+  if continuation:payload['continued_work']={k:continuation.get(k) for k in ('current_task','user_constraints','summary','node_index','archive','memory_versions')}
+ return json.dumps(payload,ensure_ascii=False),history,segment,continuation,max(0,len(supplied)-len(history))
+
+def snapshot(thread_method,thread_parameters,turn_parameters,segment,discarded_history):
+ return {'layer':'host submission to Codex app-server RPC; NOT the complete model/provider request',
+         'thread_method':thread_method,'thread_parameters':thread_parameters,
+         'turn_method':'turn/start','turn_parameters':turn_parameters,
+         'context_segment':segment,'discarded_history_count':discarded_history}
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_ai_context.py"
+```

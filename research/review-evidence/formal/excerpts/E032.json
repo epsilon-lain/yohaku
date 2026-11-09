@@ -1,0 +1,31 @@
+{
+  "original_source": "S6519cffb743ee9",
+  "original_line": 267,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-final-signoff-1",
+      "text": "最后回读AUDIT.md.tex@e9ded390adfe4f49ab9a7c88b3f76f86bede56e35870fd1211cae027cf267fb5通过：EVENTS v2引用、input整源revision、真实stats任务ID、JSON字符串处理及未注册读取错误均已记载。统计和逐项原始指针均核对一致；上游必需项无未完成，现结束，不开展新工作。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:12",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 12,
+          "sender_node_id": "ai-node-23b38ace66650e92d0480cce",
+          "text": "最后回读AUDIT.md.tex@e9ded390adfe4f49ab9a7c88b3f76f86bede56e35870fd1211cae027cf267fb5通过：EVENTS v2引用、input整源revision、真实stats任务ID、JSON字符串处理及未注册读取错误均已记载。统计和逐项原始指针均核对一致；上游必需项无未完成，现结束，不开展新工作。",
+          "reply_to": null,
+          "created_at": 1794044985.3313847,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

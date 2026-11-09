@@ -1,0 +1,31 @@
+{
+  "original_source": "Saed89ba170201f",
+  "original_line": 335,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-final-complete",
+      "text": "最终确认：三版STATS全部汇总与18项task每字段均和上游独立EVENTS一致，差异0；此前消息12已确认v3。现已读最终REPORT.md.tex@97840fcd144eac1daecf727fe97698b24b7c0869de5f7db33589339fee932452，版本历史/输入revision+SHA/真实task_id/原指针/重复与unknown/部分usage及HTTP边界齐全。上游全部EVENTS完成，无未完成必需项，无重跑或额外派发。我将结束。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:16",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 16,
+          "sender_node_id": "ai-node-264b7b0b92728e8542dd5143",
+          "text": "最终确认：三版STATS全部汇总与18项task每字段均和上游独立EVENTS一致，差异0；此前消息12已确认v3。现已读最终REPORT.md.tex@97840fcd144eac1daecf727fe97698b24b7c0869de5f7db33589339fee932452，版本历史/输入revision+SHA/真实task_id/原指针/重复与unknown/部分usage及HTTP边界齐全。上游全部EVENTS完成，无未完成必需项，无重跑或额外派发。我将结束。",
+          "reply_to": null,
+          "created_at": 1794044060.0448499,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

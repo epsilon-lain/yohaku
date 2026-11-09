@@ -1,0 +1,25 @@
+{
+  "original_source": "Sfba47edbbbb59e",
+  "original_line": 5,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 31,
+    "record": {
+      "timestamp": "2026-11-07T09:45:23.236Z",
+      "ordinal": 30,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_09ac0cf7031e1ade016aeef32e6fac87d093a622f3cc731891",
+        "status": "completed",
+        "call_id": "call_f9c40a2d5d3343dfbb80828480b3ea80",
+        "name": "exec",
+        "input": "const r=await tools.yohaku_read_range({path:\"files/work/input.json.tex\",view:\"body\",start_line:1,start_column:1,end_line:2016,end_column:1});\nstore(\"rawInputRange\",r);\nconst rr=r.result || r;\ntext(Object.keys(r));\ntext(Object.keys(rr));\nif(typeof rr.text===\"string\"){\n const data=JSON.parse(rr.text);store(\"input\",data);store(\"inputRevision\",rr.revision);\n const unwrap=x=>x?.result??x??{};\n text({provenance:data.provenance,episodes:data.episodes.map((e,i)=>({reference:`/episodes/${i}`,source_pointer:e.source_pointer,receiptKeys:Object.keys(e.receipts),before:unwrap(e.receipts.before),started:unwrap(e.receipts.started),cancel:unwrap(e.receipts.cancel),final:unwrap(e.receipts.final)}))});\n}\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b565-b0fb-7222-ad83-0773f5ee23be",
+          "create_time": 1794044718.4447482
+        }
+      }
+    }
+  }
+}

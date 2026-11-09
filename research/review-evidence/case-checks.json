@@ -1,0 +1,1024 @@
+{
+  "format": "yohaku-submission-audit-case-checks/1",
+  "scope": {
+    "purpose": "比赛初稿的自主复核产生、实际接收、可见采用三阶段证据核对",
+    "source_round": "sealed R3; no original archive changes",
+    "additional_yohaku_model_dispatches": 0,
+    "additional_yohaku_tool_experiments": 0,
+    "paid_cost": "unknown",
+    "controller_assistant_model_usage": "unknown",
+    "official_competition_criteria": "Awaiting exact official URL from user; not researched or inferred",
+    "time_definition": "All epoch fields are Unix seconds. Message created_at differs from native tool completion time. UTC log timestamps are converted to Asia/Shanghai UTC+08:00."
+  },
+  "shared_chat": "ai-chat-bf5981b3f59d1ad6fe683f91",
+  "cases": {
+    "T2-A": {
+      "role_scope": "Two roles were preset; workers chose to perform review within their assigned roles. No autonomous role/node creation claim.",
+      "rules": [
+        {
+          "line": 13,
+          "original_source": "S2162e6b77742ba",
+          "excerpts": [
+            "formal/excerpts/E001.json"
+          ]
+        },
+        {
+          "line": 27,
+          "original_source": "S2162e6b77742ba",
+          "excerpts": [
+            "formal/excerpts/E002.json"
+          ]
+        }
+      ],
+      "rule_quote": "工作质量与分工由你们负责，自行决定是否以及如何复核。",
+      "upstream_task_id": "model-task-933e90f9dac71d311b2a15af787d19eb",
+      "downstream_task_id": "model-task-f363c046e1ce912db15527cc2abf795b",
+      "revisions": {
+        "script": "315c18441bfe10230c40704eac5781e75c05e3f3045270d37b76e28bbfbbaaa9",
+        "persisted_review": "a1d8cf58a2dcfd45877279b613d913ad127d3264d1e252fadc03993418ef3b54",
+        "final_report": "9a26330aaee8dfcec67aa22ad866d4b26d0396caa35bcbc2ec21322166a335bd"
+      },
+      "timeline": [
+        {
+          "epoch_seconds": 1794045163.8207192,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:52:43.820+08:00",
+          "action": "Upstream seq6 voluntarily offers independent comparison: 请下游消费真实成果后将实际运行task_id/STATS/REPORT版本发群，我可独立对照latest。",
+          "evidence": {
+            "line": 184,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E003.json"
+            ]
+          },
+          "seq": 6
+        },
+        {
+          "epoch_seconds": 1794045264.693,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:54:24.693+08:00",
+          "action": "Upstream actually reads audit.py exact revision.",
+          "evidence": {
+            "line": 241,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E004.json"
+            ]
+          },
+          "revision": "315c18441bfe10230c40704eac5781e75c05e3f3045270d37b76e28bbfbbaaa9"
+        },
+        {
+          "epoch_seconds": 1794045274.992,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:54:34.992+08:00",
+          "action": "Upstream reads actual v1 stdout.",
+          "evidence": {
+            "line": 254,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E005.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794045275.114,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:54:35.114+08:00",
+          "action": "Upstream reads actual v2 stdout.",
+          "evidence": {
+            "line": 258,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E006.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794045275.21,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:54:35.210+08:00",
+          "action": "Upstream reads actual v3 stdout.",
+          "evidence": {
+            "line": 262,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E007.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794045276.3638031,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:54:36.363+08:00",
+          "action": "Downstream seq9 invites independent STATS/script check, after actual upstream checking had already begun.",
+          "evidence": {
+            "line": 191,
+            "original_source": "Sdbd744f899c472",
+            "excerpts": [
+              "formal/excerpts/E008.json"
+            ]
+          },
+          "seq": 9
+        },
+        {
+          "epoch_seconds": 1794045303.29175,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:55:03.291+08:00",
+          "action": "Seq10 reports completed three-version whole-field comparison.",
+          "evidence": {
+            "line": 312,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E009.json"
+            ]
+          },
+          "seq": 10
+        },
+        {
+          "epoch_seconds": 1794045313.377,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:55:13.377+08:00",
+          "action": "Persisted review is updated to include source revisions and exact STATS/stdout identity.",
+          "evidence": {
+            "line": 11,
+            "original_source": "Sf59000f2c8c3fd",
+            "excerpts": [
+              "formal/excerpts/E010.json"
+            ]
+          },
+          "revision": "a1d8cf58a2dcfd45877279b613d913ad127d3264d1e252fadc03993418ef3b54"
+        },
+        {
+          "epoch_seconds": 1794045405.21,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:56:45.210+08:00",
+          "action": "Consumer actually reads current persisted review exact revision.",
+          "evidence": {
+            "line": 321,
+            "original_source": "Sdbd744f899c472",
+            "excerpts": [
+              "formal/excerpts/E011.json"
+            ]
+          },
+          "revision": "a1d8cf58a2dcfd45877279b613d913ad127d3264d1e252fadc03993418ef3b54"
+        },
+        {
+          "epoch_seconds": 1794045414.356,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:56:54.356+08:00",
+          "action": "Consumer patches final REPORT to add independent-review section with exact review revision.",
+          "evidence": {
+            "line": 330,
+            "original_source": "Sdbd744f899c472",
+            "excerpts": [
+              "formal/excerpts/E012.json"
+            ]
+          },
+          "revision": "9a26330aaee8dfcec67aa22ad866d4b26d0396caa35bcbc2ec21322166a335bd",
+          "write_archive": {
+            "line": 14,
+            "original_source": "Sf59000f2c8c3fd",
+            "excerpts": [
+              "formal/excerpts/E013.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794045422.277,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:57:02.277+08:00",
+          "action": "Reviewer actually rereads final REPORT after adoption.",
+          "evidence": {
+            "line": 385,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E014.json"
+            ]
+          },
+          "revision": "9a26330aaee8dfcec67aa22ad866d4b26d0396caa35bcbc2ec21322166a335bd"
+        },
+        {
+          "epoch_seconds": 1794045435.5364263,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:57:15.536+08:00",
+          "action": "Seq15 gives final version-specific review conclusion.",
+          "evidence": {
+            "line": 393,
+            "original_source": "Sab77c385095466",
+            "excerpts": [
+              "formal/excerpts/E015.json"
+            ]
+          },
+          "seq": 15
+        }
+      ],
+      "actual_comparison_not_only_self_report": {
+        "code": {
+          "line": 35,
+          "original_rollout_line": 158,
+          "original_source": "S292c3b3c5fe291",
+          "excerpts": [
+            "formal/excerpts/E016.json"
+          ]
+        },
+        "output": {
+          "line": 36,
+          "original_source": "S292c3b3c5fe291",
+          "excerpts": [
+            "formal/excerpts/E017.json"
+          ]
+        },
+        "utc_call_timestamp": "2026-11-07T09:54:51.083Z",
+        "result": "Canonical full schema comparison from independent raw-derived EVENTS against actual stdout; all three matches_upstream_independent_algorithm=true."
+      },
+      "may_claim": [
+        "A voluntarily initiated and executed peer review; actual checking precedes later explicit downstream invitation.",
+        "Review produced, consumer actually read, report visibly adopted its exact revision, reviewer reread the final revision."
+      ],
+      "must_not_claim": [
+        "Preset roles were autonomously created.",
+        "Review corrected wrong numerical statistics; statistics were already correct.",
+        "A single trace proves generalization to arbitrary future input or superiority over B/C."
+      ]
+    },
+    "T1-A": {
+      "upstream_task_id": "model-task-065e20973e25272ed2cb67d6bda5d00b",
+      "downstream_task_id": "model-task-897d0f444e450f9247cccdc2ecc60d1a",
+      "rules": [
+        {
+          "line": 13,
+          "original_source": "Sf698e3cbe27cce",
+          "excerpts": [
+            "formal/excerpts/E018.json"
+          ]
+        },
+        {
+          "line": 24,
+          "original_source": "Sf698e3cbe27cce",
+          "excerpts": [
+            "formal/excerpts/E019.json"
+          ]
+        }
+      ],
+      "revisions": {
+        "script": "6263134b680391980de263ff409e80114d2b11f5d599fc4e43742e2ed721d30f",
+        "statistics": "589cc813f386de89de277ae2ec8b9689402f17dd9f69c3eaaf144f31ea487964",
+        "corrected_events": "38af09d9bb949bcc1a84019e0d55447acc756591685b0f316bcf951fe0479861",
+        "final_report": "e9ded390adfe4f49ab9a7c88b3f76f86bede56e35870fd1211cae027cf267fb5"
+      },
+      "timeline": [
+        {
+          "epoch_seconds": 1794044761.0110753,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:46:01.011+08:00",
+          "action": "Upstream seq3 invites cross-checking with actual task/version identity.",
+          "evidence": {
+            "line": 109,
+            "original_source": "S6519cffb743ee9",
+            "excerpts": [
+              "formal/excerpts/E020.json"
+            ]
+          },
+          "seq": 3
+        },
+        {
+          "epoch_seconds": 1794044806.729716,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:46:46.729+08:00",
+          "action": "Downstream seq4 reciprocally invites script/report check.",
+          "evidence": {
+            "line": 119,
+            "original_source": "S7183366a630c5b",
+            "excerpts": [
+              "formal/excerpts/E021.json"
+            ]
+          },
+          "seq": 4
+        },
+        {
+          "epoch_seconds": 1794044812.838,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:46:52.838+08:00",
+          "action": "Actual script read.",
+          "evidence": {
+            "line": 142,
+            "original_source": "S6519cffb743ee9",
+            "excerpts": [
+              "formal/excerpts/E022.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794044812.97,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:46:52.970+08:00",
+          "action": "Actual stats stdout read.",
+          "evidence": {
+            "line": 147,
+            "original_source": "S6519cffb743ee9",
+            "excerpts": [
+              "formal/excerpts/E023.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794044824.682,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:47:04.682+08:00",
+          "action": "Actual STATISTICS read.",
+          "evidence": {
+            "line": 160,
+            "original_source": "S6519cffb743ee9",
+            "excerpts": [
+              "formal/excerpts/E024.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794044909.05,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:48:29.050+08:00",
+          "action": "Upstream writes corrected EVENTS v2; numerical fields unchanged.",
+          "evidence": {
+            "line": 7,
+            "original_source": "Sd9ee9ccbce09ab",
+            "excerpts": [
+              "formal/excerpts/E025.json"
+            ]
+          },
+          "revision": "38af09d9bb949bcc1a84019e0d55447acc756591685b0f316bcf951fe0479861"
+        },
+        {
+          "epoch_seconds": 1794044909.2386286,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:48:29.238+08:00",
+          "action": "Seq8 requests report reference update and fuller error history.",
+          "evidence": {
+            "line": 233,
+            "original_source": "S6519cffb743ee9",
+            "excerpts": [
+              "formal/excerpts/E026.json"
+            ]
+          },
+          "seq": 8
+        },
+        {
+          "epoch_seconds": 1794044936.639,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:48:56.639+08:00",
+          "action": "Consumer actually receives seq8 in messages result.",
+          "evidence": {
+            "line": 180,
+            "original_source": "S7183366a630c5b",
+            "excerpts": [
+              "formal/excerpts/E027.json"
+            ]
+          },
+          "returned_sequences": [
+            8,
+            9
+          ]
+        },
+        {
+          "epoch_seconds": 1794044952.242,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:49:12.242+08:00",
+          "action": "Consumer actually reads corrected EVENTS.",
+          "evidence": {
+            "line": 193,
+            "original_source": "S7183366a630c5b",
+            "excerpts": [
+              "formal/excerpts/E028.json"
+            ]
+          },
+          "revision": "38af09d9bb949bcc1a84019e0d55447acc756591685b0f316bcf951fe0479861"
+        },
+        {
+          "epoch_seconds": 1794044952.706,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:49:12.706+08:00",
+          "action": "Consumer writes new AUDIT with changed EVENTS reference and handling-error account.",
+          "evidence": {
+            "line": 201,
+            "original_source": "S7183366a630c5b",
+            "excerpts": [
+              "formal/excerpts/E029.json"
+            ]
+          },
+          "revision": "e9ded390adfe4f49ab9a7c88b3f76f86bede56e35870fd1211cae027cf267fb5",
+          "write_archive": {
+            "line": 11,
+            "original_source": "Sd9ee9ccbce09ab",
+            "excerpts": [
+              "formal/excerpts/E030.json"
+            ]
+          }
+        },
+        {
+          "epoch_seconds": 1794044985.275,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:49:45.275+08:00",
+          "action": "Reviewer actually rereads final AUDIT.",
+          "evidence": {
+            "line": 263,
+            "original_source": "S6519cffb743ee9",
+            "excerpts": [
+              "formal/excerpts/E031.json"
+            ]
+          },
+          "revision": "e9ded390adfe4f49ab9a7c88b3f76f86bede56e35870fd1211cae027cf267fb5"
+        },
+        {
+          "epoch_seconds": 1794044985.3313847,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:49:45.331+08:00",
+          "action": "Seq12 final version-specific review.",
+          "evidence": {
+            "line": 267,
+            "original_source": "S6519cffb743ee9",
+            "excerpts": [
+              "formal/excerpts/E032.json"
+            ]
+          },
+          "seq": 12
+        }
+      ],
+      "actual_comparison_and_adoption": {
+        "comparison_code": {
+          "line": 23,
+          "original_rollout_line": 89,
+          "original_source": "S8d2707f7e64426",
+          "excerpts": [
+            "formal/excerpts/E033.json"
+          ]
+        },
+        "comparison_output": {
+          "line": 24,
+          "original_source": "S8d2707f7e64426",
+          "excerpts": [
+            "formal/excerpts/E034.json"
+          ]
+        },
+        "comparison_result": "counts_match=true, episodes_match=true, saved body equals stdout",
+        "adoption_code": {
+          "line": 27,
+          "original_rollout_line": 118,
+          "original_source": "Sfba47edbbbb59e",
+          "excerpts": [
+            "formal/excerpts/E035.json"
+          ]
+        },
+        "adoption_output": {
+          "line": 28,
+          "original_source": "Sfba47edbbbb59e",
+          "excerpts": [
+            "formal/excerpts/E036.json"
+          ]
+        },
+        "adoption_result": "Executed text replacements, statistics_differences=[], saved_revision equals final AUDIT."
+      },
+      "intermediate_error_boundary": {
+        "early_inaccurate_no_error_assertion": {
+          "line": 1,
+          "original_source": "Sd9ee9ccbce09ab",
+          "excerpts": [
+            "formal/excerpts/E037.json"
+          ]
+        },
+        "prior_native_string_object_misuse": [
+          {
+            "line": 5,
+            "original_rollout_line": 32,
+            "original_source": "S8d2707f7e64426",
+            "excerpts": [
+              "formal/excerpts/E038.json"
+            ]
+          },
+          {
+            "line": 6,
+            "original_source": "S8d2707f7e64426",
+            "excerpts": [
+              "formal/excerpts/E039.json"
+            ]
+          },
+          {
+            "line": 7,
+            "original_rollout_line": 39,
+            "original_source": "S8d2707f7e64426",
+            "excerpts": [
+              "formal/excerpts/E040.json"
+            ]
+          },
+          {
+            "line": 5,
+            "original_rollout_line": 31,
+            "original_source": "Sfba47edbbbb59e",
+            "excerpts": [
+              "formal/excerpts/E041.json"
+            ]
+          },
+          {
+            "line": 6,
+            "original_source": "Sfba47edbbbb59e",
+            "excerpts": [
+              "formal/excerpts/E042.json"
+            ]
+          },
+          {
+            "line": 7,
+            "original_rollout_line": 38,
+            "original_source": "Sfba47edbbbb59e",
+            "excerpts": [
+              "formal/excerpts/E043.json"
+            ]
+          }
+        ],
+        "initial_consumer_report_already_discloses_string_misuse": {
+          "line": 5,
+          "original_source": "Sd9ee9ccbce09ab",
+          "excerpts": [
+            "formal/excerpts/E044.json"
+          ]
+        },
+        "correction": {
+          "line": 7,
+          "original_source": "Sd9ee9ccbce09ab",
+          "excerpts": [
+            "formal/excerpts/E025.json"
+          ]
+        },
+        "wrong_assertion_adoption": "not observed",
+        "proven_error_affected_running_stop_opportunities": 0,
+        "unproven_exposure_candidates": 1
+      },
+      "may_claim": [
+        "Voluntary reciprocal review led to observable documentary correction and exact version adoption followed by final reread."
+      ],
+      "must_not_claim": [
+        "Core statistics required repair or rerun.",
+        "Consumer adopted the false broad no-error assertion: its initial report already disclosed its own handling misuse.",
+        "Mere running recipient proves an error-affected running dependency or an eligible stop opportunity."
+      ]
+    },
+    "T2-B": {
+      "upstream_task_id": "model-task-9d90bfbda7ef9f4c7cfeec050f23ba55",
+      "downstream_task_id": "model-task-518a05d9b1c19e746a77635d04f1d878",
+      "revisions": {
+        "reviewed_v3_statistics": "1dab20c11f998522cb18f3efdc8c9cca8648857ea66ace445ab5d32a082784bd",
+        "reviewed_final_report": "97840fcd144eac1daecf727fe97698b24b7c0869de5f7db33589339fee932452"
+      },
+      "timeline": [
+        {
+          "epoch_seconds": 1794043941.251,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:32:21.251+08:00",
+          "action": "Consumer polls after_seq10 and receives only seq11 (v1/v2 conclusion).",
+          "evidence": {
+            "line": 287,
+            "original_source": "S56c09d02445c86",
+            "excerpts": [
+              "formal/excerpts/E045.json"
+            ]
+          },
+          "after_seq": 10,
+          "returned_sequences": [
+            11
+          ],
+          "call_id": "exec-22a92d8a-aeb6-4d79-8f4a-01ec7375d18c"
+        },
+        {
+          "epoch_seconds": 1794043943.8508086,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:32:23.850+08:00",
+          "action": "Reviewer sends seq12 completing v3 all-field review.",
+          "evidence": {
+            "line": 276,
+            "original_source": "Saed89ba170201f",
+            "excerpts": [
+              "formal/excerpts/E046.json"
+            ]
+          },
+          "seq": 12,
+          "revision": "1dab20c11f998522cb18f3efdc8c9cca8648857ea66ace445ab5d32a082784bd"
+        },
+        {
+          "epoch_seconds": 1794043950.1158671,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:32:30.115+08:00",
+          "action": "Consumer sends own seq13, after seq12 existed.",
+          "evidence": {
+            "line": 295,
+            "original_source": "S56c09d02445c86",
+            "excerpts": [
+              "formal/excerpts/E047.json"
+            ]
+          },
+          "seq": 13
+        },
+        {
+          "epoch_seconds": 1794043998.898,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:33:18.898+08:00",
+          "action": "Consumer advances cursor to after_seq13; receives seq14 only and skips unread seq12.",
+          "evidence": {
+            "line": 309,
+            "original_source": "S56c09d02445c86",
+            "excerpts": [
+              "formal/excerpts/E048.json"
+            ]
+          },
+          "after_seq": 13,
+          "returned_sequences": [
+            14
+          ],
+          "call_id": "exec-405905b3-5ea6-4755-9298-f1ecfb161fe9"
+        },
+        {
+          "epoch_seconds": 1794044009.453,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:33:29.453+08:00",
+          "action": "Consumer polls after_seq14, receives own seq15 only.",
+          "evidence": {
+            "line": 326,
+            "original_source": "S56c09d02445c86",
+            "excerpts": [
+              "formal/excerpts/E049.json"
+            ]
+          },
+          "after_seq": 14,
+          "returned_sequences": [
+            15
+          ]
+        },
+        {
+          "epoch_seconds": 1794044026.157,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:33:46.157+08:00",
+          "action": "Consumer polls after_seq15, empty.",
+          "evidence": {
+            "line": 339,
+            "original_source": "S56c09d02445c86",
+            "excerpts": [
+              "formal/excerpts/E050.json"
+            ]
+          },
+          "after_seq": 15,
+          "returned_sequences": []
+        },
+        {
+          "epoch_seconds": 1794044044.429,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:34:04.429+08:00",
+          "action": "Last observed consumer poll after_seq15, empty.",
+          "evidence": {
+            "line": 357,
+            "original_source": "S56c09d02445c86",
+            "excerpts": [
+              "formal/excerpts/E051.json"
+            ]
+          },
+          "after_seq": 15,
+          "returned_sequences": [],
+          "call_id": "exec-844cf1de-c1ca-4482-b9ee-0a11f146696e"
+        },
+        {
+          "epoch_seconds": 1794044060.0448499,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:34:20.044+08:00",
+          "action": "Seq16 final-report review appears 15.61585 seconds after last observed consumer poll.",
+          "evidence": {
+            "line": 335,
+            "original_source": "Saed89ba170201f",
+            "excerpts": [
+              "formal/excerpts/E052.json"
+            ]
+          },
+          "seq": 16,
+          "revision": "97840fcd144eac1daecf727fe97698b24b7c0869de5f7db33589339fee932452",
+          "prior_actual_report_read": {
+            "line": 317,
+            "original_source": "Saed89ba170201f",
+            "excerpts": [
+              "formal/excerpts/E053.json"
+            ]
+          }
+        }
+      ],
+      "may_claim": [
+        "Reviewer actually completed v3 and final-report checks.",
+        "No observed consumer receipt/adoption of these two conclusions: seq12 was skipped by cursor, seq16 arrived after last recorded poll.",
+        "v1/v2 conclusion was actually received, separate from v3 gap."
+      ],
+      "must_not_claim": [
+        "No review happened.",
+        "Consumer read then rejected or adopted seq12/16.",
+        "Final correct output proves consumer received every peer conclusion.",
+        "Host dropped seq12: trace instead shows consumer after_seq13 excluding it."
+      ]
+    },
+    "T2-C": {
+      "upstream_task_id": "model-task-bbeb6f1e673035c6358ddf90fbdc8d05",
+      "downstream_task_id": "model-task-ce494f61eff6ff0d9508099a11ba76a6",
+      "input_checks": {
+        "json_pointer": "/C_operational_compliance",
+        "original_source": "S122dcb23f95044"
+      },
+      "independence": {
+        "upstream_raw_computations": [
+          {
+            "version": "v1",
+            "utc_call_time": "2026-11-07T09:24:10.121Z",
+            "code": {
+              "line": 11,
+              "original_rollout_line": 52,
+              "original_source": "Sccf17211c6dc1a",
+              "excerpts": [
+                "formal/excerpts/E054.json"
+              ]
+            }
+          },
+          {
+            "version": "v2",
+            "utc_call_time": "2026-11-07T09:24:22.746Z",
+            "code": {
+              "line": 13,
+              "original_rollout_line": 60,
+              "original_source": "Sccf17211c6dc1a",
+              "excerpts": [
+                "formal/excerpts/E055.json"
+              ]
+            }
+          },
+          {
+            "version": "v3",
+            "utc_call_time": "2026-11-07T09:24:56.066Z",
+            "code": {
+              "line": 19,
+              "original_rollout_line": 89,
+              "original_source": "Sccf17211c6dc1a",
+              "excerpts": [
+                "formal/excerpts/E056.json"
+              ]
+            }
+          }
+        ],
+        "first_downstream_result_exposure": [
+          {
+            "what": "script read",
+            "utc_call_time": "2026-11-07T09:25:15.324Z",
+            "evidence": {
+              "line": 23,
+              "original_rollout_line": 106,
+              "original_source": "Sccf17211c6dc1a",
+              "excerpts": [
+                "formal/excerpts/E057.json"
+              ]
+            }
+          },
+          {
+            "what": "stdout read",
+            "utc_call_time": "2026-11-07T09:25:21.313Z",
+            "evidence": {
+              "line": 25,
+              "original_rollout_line": 115,
+              "original_source": "Sccf17211c6dc1a",
+              "excerpts": [
+                "formal/excerpts/E058.json"
+              ]
+            }
+          },
+          {
+            "what": "all-field comparison",
+            "utc_call_time": "2026-11-07T09:25:40.820Z",
+            "evidence": {
+              "line": 27,
+              "original_rollout_line": 124,
+              "original_source": "Sccf17211c6dc1a",
+              "excerpts": [
+                "formal/excerpts/E059.json"
+              ]
+            }
+          }
+        ],
+        "downstream_v2_limit": {
+          "own_program_finished_epoch_seconds": 1794043476.0750203,
+          "first_incoming_peer_chat_utc": "2026-11-07T09:25:03.620Z",
+          "first_chat_evidence": {
+            "line": 15,
+            "original_rollout_line": 75,
+            "original_source": "Sf456be4e6ff845",
+            "excerpts": [
+              "formal/excerpts/E060.json"
+            ]
+          },
+          "established": "Generic own program computed v2 before peer-chat exposure.",
+          "not_established": "Separate explicit model numerical judgment before that exposure."
+        },
+        "downstream_v3_boundary": {
+          "first_peer_chat_utc": "2026-11-07T09:25:03.620Z",
+          "first_peer_chat_saw_versions": [
+            "v1",
+            "v2"
+          ],
+          "peer_v3_conclusion_created_epoch_seconds": 1794043510.0382335,
+          "failed_partial_preview_not_full_read": {
+            "line": 13,
+            "original_rollout_line": 68,
+            "original_source": "Sf456be4e6ff845",
+            "excerpts": [
+              "formal/excerpts/E061.json"
+            ]
+          },
+          "actual_full_bounded_read": {
+            "utc_call_time": "2026-11-07T09:25:38.707Z",
+            "evidence": {
+              "line": 19,
+              "original_rollout_line": 98,
+              "original_source": "Sf456be4e6ff845",
+              "excerpts": [
+                "formal/excerpts/E062.json"
+              ]
+            }
+          },
+          "own_explicit_judgment_then_first_EVENTS_read": {
+            "utc_call_time": "2026-11-07T09:25:49.483Z",
+            "evidence": {
+              "line": 21,
+              "original_rollout_line": 109,
+              "original_source": "Sf456be4e6ff845",
+              "excerpts": [
+                "formal/excerpts/E063.json"
+              ]
+            }
+          },
+          "limit": "Prior-version peer exposure is distinguished from version3 conclusion exposure; no intervening incoming-chat read before v3 own judgment."
+        }
+      },
+      "usage_confound": {
+        "shared_frozen_source": {
+          "line": 5,
+          "original_source": "Sd4074dc84daa81",
+          "excerpts": [
+            "formal/excerpts/E064.json"
+          ]
+        },
+        "top_fields_inventory": {
+          "line": 6,
+          "original_source": "Sd4074dc84daa81",
+          "excerpts": [
+            "formal/excerpts/E065.json"
+          ]
+        },
+        "receipt_fields_inventory": {
+          "line": 24,
+          "original_source": "Sd4074dc84daa81",
+          "excerpts": [
+            "formal/excerpts/E066.json"
+          ]
+        },
+        "input_sha256": "99503de74ea993f5832604abf8d6fe6bf900ff4bc03ec3067dc6b25b1cfc55b0",
+        "actual_usage_observation_indices": [
+          21,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          32,
+          39,
+          40
+        ],
+        "actual_usage_source_lines": [
+          880,
+          966,
+          1016,
+          1066,
+          1116,
+          1166,
+          1216,
+          1401,
+          1694,
+          1744
+        ],
+        "issue": "Controller's field inventory omits usage although selected real receipt.usage counts were retained. Excluding raw provider logs is not excluding these counts. May have contributed to false usage advice; not a deliberate injected error or fabricated field value.",
+        "same_frozen_bytes_in_ABC": true
+      },
+      "usage_error_timeline": [
+        {
+          "epoch_seconds": 1794043581.9143631,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:26:21.914+08:00",
+          "action": "Seq10 wrong no-usage warning is sent.",
+          "evidence": {
+            "line": 270,
+            "original_source": "Se4327fdedd5125",
+            "excerpts": [
+              "formal/excerpts/E067.json"
+            ]
+          },
+          "seq": 10
+        },
+        {
+          "epoch_seconds": 1794043584.04,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:26:24.040+08:00",
+          "action": "Consumer actually receives seq10.",
+          "evidence": {
+            "line": 266,
+            "original_source": "S1ddbaf84cbcec1",
+            "excerpts": [
+              "formal/excerpts/E068.json"
+            ]
+          },
+          "returned_sequences": [
+            8,
+            9,
+            10
+          ]
+        },
+        {
+          "epoch_seconds": 1794043596.8125513,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:26:36.812+08:00",
+          "action": "Seq11 self-retracts wrong warning after observing scan output.",
+          "evidence": {
+            "line": 279,
+            "original_source": "Se4327fdedd5125",
+            "excerpts": [
+              "formal/excerpts/E069.json"
+            ]
+          },
+          "seq": 11
+        },
+        {
+          "epoch_seconds": 1794043599.1475077,
+          "time_kind": "message_created_at",
+          "beijing_iso": "2026-11-07T17:26:39.147+08:00",
+          "action": "Consumer seq12 independently rebuts with original usage pointers before actually fetching retraction.",
+          "evidence": {
+            "line": 279,
+            "original_source": "S1ddbaf84cbcec1",
+            "excerpts": [
+              "formal/excerpts/E070.json"
+            ]
+          },
+          "seq": 12
+        },
+        {
+          "epoch_seconds": 1794043612.398,
+          "time_kind": "native_tool_completed_at",
+          "beijing_iso": "2026-11-07T17:26:52.398+08:00",
+          "action": "Consumer only now actually receives retraction seq11.",
+          "evidence": {
+            "line": 312,
+            "original_source": "S1ddbaf84cbcec1",
+            "excerpts": [
+              "formal/excerpts/E071.json"
+            ]
+          },
+          "returned_sequences": [
+            11,
+            12,
+            13
+          ]
+        }
+      ],
+      "final_report": {
+        "revision": "aef69d38607dce99d22edd6f677f080abe727d3da64faab5db6061c178793459",
+        "correction_history": {
+          "line": 82,
+          "original_source": "S999eb6bb1b568a",
+          "excerpts": [
+            "formal/excerpts/E072.json"
+          ]
+        },
+        "actual_usage_and_HTTP_unknown": {
+          "line": 87,
+          "original_source": "S999eb6bb1b568a",
+          "excerpts": [
+            "formal/excerpts/E073.json"
+          ]
+        }
+      },
+      "may_claim": [
+        "C requirement supported using another existing worker: upstream independently computes all three raw versions before reading downstream program/results, then actually compares.",
+        "Intermediate false evidence advice was really delivered, retracted, and independently rebutted; communication/checking cost is observable.",
+        "Final report retains correct partial-usage boundary; no wrong statistical or report adoption was observed."
+      ],
+      "must_not_claim": [
+        "C invitation itself was autonomous discovery of review need: C rule requires independent review.",
+        "Every cognitive step of both workers was completely isolated; v2 explicit-model-judgment pre-exposure proof is missing.",
+        "The partial failed v3 preview was a full raw read.",
+        "Usage false warning is purely model-origin independent of controller metadata.",
+        "Healthy running models alone establish an eligible error-affected stop opportunity."
+      ],
+      "stop_opportunity": {
+        "proven": 0,
+        "unproven_exposure_candidates": 1
+      }
+    }
+  },
+  "source_scope_note": "Only existing sealed BEHAVIOR-FINDINGS, INPUT-CHECKS, POSTHOC and listed raw source lines were read. No new Yohaku model/tool experiment and no edits inside R2/R3.",
+  "claim_limit": "This is evidence selection for a submission draft, not a new experiment or statistical comparison. Paid fees and controller/auditor assistant usage remain unknown."
+}

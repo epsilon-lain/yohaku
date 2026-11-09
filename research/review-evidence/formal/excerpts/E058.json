@@ -1,0 +1,25 @@
+{
+  "original_source": "Sccf17211c6dc1a",
+  "original_line": 25,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 115,
+    "record": {
+      "timestamp": "2026-11-07T09:25:21.313Z",
+      "ordinal": 114,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_0e6ae4a61678d738016aeeee7c707c87d0903e0060641a987b",
+        "status": "completed",
+        "call_id": "call_c0b3d1c8f44341cc9b9ca7152ebfc238",
+        "name": "exec",
+        "input": "const runs=[[\"v1\",\"project-task-66ff952260a92fdcc5d326e12a8e7147\"],[\"v2\",\"project-task-ea95e0a83769a6759cad92325c57e341\"],[\"v3\",\"project-task-239f8c36494b825e9d2c09d494f22869\"]];\nfor(const [v,id] of runs){const r=JSON.parse(await tools.yohaku_task_output({task_id:id,stream:\"stdout\"}));store(\"run_\"+v,r);text({v,ok:r.ok,keys:Object.keys(r.result||{}),preview:r.ok?undefined:r});}\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-6a20-7370-860d-9164e42a309d",
+          "create_time": 1794043516.4472477
+        }
+      }
+    }
+  }
+}

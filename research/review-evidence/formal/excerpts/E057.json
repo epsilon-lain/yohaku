@@ -1,0 +1,25 @@
+{
+  "original_source": "Sccf17211c6dc1a",
+  "original_line": 23,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 106,
+    "record": {
+      "timestamp": "2026-11-07T09:25:15.324Z",
+      "ordinal": 105,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_0e6ae4a61678d738016aeeee7798bc87d08cdc940c225ae5ae",
+        "status": "completed",
+        "call_id": "call_0ee5794ea4714d5dbdcfbadea1591d30",
+        "name": "exec",
+        "input": "const d=JSON.parse(await tools.yohaku_read_document({source:\"files/work/audit.py.tex\"}));text(d);\ntext(await tools.yohaku_task_list({project_id:\"hackathon-r3-t2-c\"}));\ntext(await tools.yohaku_ai_messages({chat_id:\"ai-chat-bf5981b3f59d1ad6fe683f91\",after_seq:6,limit:10}));\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-6a20-7370-860d-9164e42a309d",
+          "create_time": 1794043511.6034415
+        }
+      }
+    }
+  }
+}

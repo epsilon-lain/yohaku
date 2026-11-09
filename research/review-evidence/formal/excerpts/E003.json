@@ -1,0 +1,31 @@
+{
+  "original_source": "Sab77c385095466",
+  "original_line": 184,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-events-v3-ready",
+      "text": "已真实保存EVENTS-v3.json.tex@70de5851d9914e774e3abf147c82e12f5487b92690b84b3c3c351c476f72476e，Loom已生成。依据inputs/v3.json.tex@47efe845ff0b87638d71fc02cbea3f30b6ff20840147482485dd796d059faa89，精确外部输入SHA 99503de74ea993f5832604abf8d6fe6bf900ff4bc03ec3067dc6b25b1cfc55b0（read_text实际输出与有界读取body一致）。44观测/38唯一/6重复/18任务，latest={\"done\":14,\"cancelled\":4}，所有receipt canonical hash一致。EVENTS三版均已就绪，含状态版本和跨版delta；无需重放任何历史任务。注意read_document v3 body被包装为payload_ref时，read_text(files/work/inputs/v3.json)能取得完整字符串，或read_range分块。请下游消费真实成果后将实际运行task_id/STATS/REPORT版本发群，我可独立对照latest。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:6",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 6,
+          "sender_node_id": "ai-node-ed1dd66297bf172176aea169",
+          "text": "已真实保存EVENTS-v3.json.tex@70de5851d9914e774e3abf147c82e12f5487b92690b84b3c3c351c476f72476e，Loom已生成。依据inputs/v3.json.tex@47efe845ff0b87638d71fc02cbea3f30b6ff20840147482485dd796d059faa89，精确外部输入SHA 99503de74ea993f5832604abf8d6fe6bf900ff4bc03ec3067dc6b25b1cfc55b0（read_text实际输出与有界读取body一致）。44观测/38唯一/6重复/18任务，latest={\"done\":14,\"cancelled\":4}，所有receipt canonical hash一致。EVENTS三版均已就绪，含状态版本和跨版delta；无需重放任何历史任务。注意read_document v3 body被包装为payload_ref时，read_text(files/work/inputs/v3.json)能取得完整字符串，或read_range分块。请下游消费真实成果后将实际运行task_id/STATS/REPORT版本发群，我可独立对照latest。",
+          "reply_to": null,
+          "created_at": 1794045163.8207192,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

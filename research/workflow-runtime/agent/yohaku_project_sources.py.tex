@@ -1,0 +1,740 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Loom-authoritative project discovery, planning and immutable source snapshots.
+
+Projects are registered through the existing Workspace revision/expected contract.
+The planner never executes project code or repairs generation by overwriting files.
+The worker consumes only snapshots returned here, not a mutable world directory.
+"""
+import errno
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import shutil
+import stat
+import tempfile
+import tomllib
+
+from yohaku_project_schema import ProjectError, validate_manifest
+
+PACKAGE = Path(__file__).resolve().parents[1]
+REGISTRY = 'memory/projects.json'
+REGISTRY_FORMAT = 'yohaku-project-registry/1'
+SNAPSHOT_FORMAT = 'yohaku-project-snapshot/1'
+MAX_FILE = 16 * 1024 * 1024
+MAX_TOTAL = 64 * 1024 * 1024
+RESERVED = {'.git', '.loom', '.yohaku', '.provenance'}
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def canonical(value):
+    return json.dumps(value, ensure_ascii=False, sort_keys=True,
+                      separators=(',', ':')).encode('utf-8')
+
+
+def relative(name, *, metadata=False):
+    if not isinstance(name, str) or not name or '\\' in name or '\0' in name:
+        raise ProjectError('invalid_path', 'Use a nonempty POSIX relative path', path=name)
+    p = PurePosixPath(name)
+    # PurePath normalizes dots and duplicate separators; reject them before parsing.
+    if p.is_absolute() or any(x in ('', '.', '..') for x in name.split('/')):
+        raise ProjectError('invalid_path', 'Project paths must stay inside their root', path=name)
+    if ':' in name or (not metadata and (p.name == '.project-snapshot.json' or any(x in RESERVED for x in p.parts))):
+        raise ProjectError('invalid_path', 'Reserved metadata is not a project input', path=name)
+    return p
+
+
+def contained(root, name, *, metadata=False):
+    p = relative(name, metadata=metadata)
+    current = root
+    for part in p.parts:
+        current = current / part
+        if current.is_symlink():
+            raise ProjectError('symlink', 'Project paths cannot use symlinks', path=name)
+    return current
+
+
+def _read_bytes(root, name, *, metadata=False, limit=MAX_FILE):
+    """Read ordinary bytes; Unix descriptors prevent ancestor/path substitution."""
+    p = relative(name, metadata=metadata)
+    if os.name == 'posix':
+        fd = os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC)
+        try:
+            for part in p.parts[:-1]:
+                child = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC,
+                                dir_fd=fd)
+                os.close(fd)
+                fd = child
+            file_fd = os.open(p.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC, dir_fd=fd)
+            try:
+                before = os.fstat(file_fd)
+                if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
+                    raise ProjectError('input_size', 'Input must be a bounded regular file', path=name)
+                with os.fdopen(file_fd, 'rb', closefd=False) as stream:
+                    data = stream.read(limit + 1)
+                after = os.fstat(file_fd)
+                if (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) != (
+                        after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns):
+                    raise ProjectError('source_conflict', 'Input changed while reading', path=name)
+            finally:
+                os.close(file_fd)
+        finally:
+            os.close(fd)
+    else:
+        # Windows source inspection is portable; this is not a native execution fallback.
+        file = contained(root, name, metadata=metadata)
+        before = file.stat()
+        if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
+            raise ProjectError('input_size', 'Input must be a bounded regular file', path=name)
+        with file.open('rb') as stream:
+            data = stream.read(limit + 1)
+        after = file.stat()
+        contained(root, name, metadata=metadata)
+        if (before.st_size, before.st_mtime_ns, before.st_ino) != (
+                after.st_size, after.st_mtime_ns, after.st_ino):
+            raise ProjectError('source_conflict', 'Input changed while reading', path=name)
+    if len(data) > limit:
+        raise ProjectError('input_size', 'Input exceeds project limit', path=name, limit=limit)
+    return data
+
+
+def read_bytes(root, name, *, metadata=False, limit=MAX_FILE):
+    try:
+        return _read_bytes(root, name, metadata=metadata, limit=limit)
+    except OSError as error:
+        kind = 'symlink' if error.errno == errno.ELOOP else 'missing_input' if isinstance(error, FileNotFoundError) else 'input_unavailable'
+        raise ProjectError(kind, 'Project input could not be read', path=name, detail=str(error)) from error
+
+
+class Projects:
+    def __init__(self, world, workspace=None, state_dir=None):
+        self.world = Path(world).resolve(strict=True)
+        if workspace is None:
+            from yohaku_agent import Workspace
+            workspace = Workspace(self.world, PACKAGE / 'bin/loom-linux-x86_64')
+        self.workspace = workspace
+        self.state_dir = Path(state_dir) if state_dir is not None else (
+            Path.home() / '.local/state/yohaku/project-snapshots' /
+            digest(str(self.world).encode('utf-8')))
+
+    def _execute(self, request):
+        try:
+            return self.workspace.execute(request)
+        except ProjectError:
+            raise
+        except Exception as error:
+            raise ProjectError('workspace_error', str(error), operation=request['command'],
+                               replay_allowed=False) from error
+
+    def _registry(self):
+        file = contained(self.world, REGISTRY)
+        if not file.exists():
+            return {'format': REGISTRY_FORMAT, 'projects': []}, None
+        captured = read_bytes(self.world, REGISTRY, limit=2 * 1024 * 1024)
+        result = self._execute({'command': 'read_text', 'path': REGISTRY})
+        text = result.get('text')
+        if not isinstance(text, str) or text.encode('utf-8') != captured:
+            raise ProjectError('source_conflict', 'Project registry changed during read')
+        try:
+            value = json.loads(text)
+        except (ValueError, TypeError) as error:
+            raise ProjectError('registry_invalid', 'Project registry must be JSON') from error
+        if not isinstance(value, dict) or set(value) != {'format', 'projects'} or (
+                value['format'] != REGISTRY_FORMAT or not isinstance(value['projects'], list)):
+            raise ProjectError('registry_invalid', 'Unknown project registry format')
+        seen = set()
+        for row in value['projects']:
+            if not isinstance(row, dict) or set(row) != {'id', 'source'} or (
+                    not isinstance(row['id'], str) or row['id'] in seen):
+                raise ProjectError('registry_invalid', 'Invalid or duplicate project registration')
+            seen.add(row['id'])
+            relative(row['source'])
+        if len(seen) > 100:
+            raise ProjectError('registry_invalid', 'Project registry exceeds 100 entries')
+        return value, text
+
+    def _entries(self):
+        result = self._execute({'command': 'list'})
+        files = result.get('files')
+        if not isinstance(files, list):
+            raise ProjectError('workspace_error', 'Workspace list omitted registered sources')
+        return {row['source']: row for row in files if isinstance(row, dict) and isinstance(row.get('source'), str)}
+
+    def _world_path(self, value, *, metadata=False):
+        if not isinstance(value, str):
+            raise ProjectError('generation_invalid', 'Loom metadata has no file path')
+        # Normalize only trusted Workspace/Loom metadata, never caller manifest paths.
+        # Rust canonicalize uses extended Windows paths; Python's world root may not.
+        if os.name == 'nt':
+            value = value.replace(chr(92), '/')
+            if value.startswith('//?/UNC/'):
+                value = '//' + value[8:]
+            elif value.startswith('//?/'):
+                value = value[4:]
+        file = Path(value)
+        if file.is_absolute():
+            try:
+                name = file.relative_to(self.world).as_posix()
+            except ValueError as error:
+                raise ProjectError('generation_invalid', 'Loom metadata points outside this world') from error
+        else:
+            name = value
+        contained(self.world, name, metadata=metadata)
+        return name
+
+    def _document(self, source, entries, *, generation=True):
+        relative(source)
+        entry = entries.get(source)
+        if not entry:
+            raise ProjectError('unregistered_source', 'Register the authoritative tex with Workspace first',
+                               source=source, recovery={'tool': 'adopt_file', 'path': source})
+        captured_source = read_bytes(self.world, source, limit=2 * 1024 * 1024)
+        document = self._execute({'command': 'read', 'source': source})
+        if document.get('valid') is not True or not isinstance(document.get('text'), str):
+            raise ProjectError('generation_invalid', 'Authoritative tex is invalid', source=source,
+                               detail=document.get('error'))
+        source_data = document['text'].encode('utf-8')
+        if captured_source != source_data or read_bytes(self.world, source) != source_data:
+            raise ProjectError('source_conflict', 'Source changed after Workspace read', source=source)
+        if not generation:
+            return {'source': source, 'source_data': source_data, 'source_hash': digest(source_data),
+                    'body': document.get('body')}
+        synced = entry.get('last_sync') or {}
+        if not isinstance(synced, dict) or not isinstance(synced.get('result', {}), dict):
+            raise ProjectError('generation_invalid', 'Invalid Workspace generation receipt', source=source)
+        build = synced.get('result', {}).get('build') or {}
+        if not isinstance(build, dict):
+            raise ProjectError('generation_invalid', 'Invalid Loom build receipt', source=source)
+        if synced.get('ok') is not True or synced.get('result', {}).get('state') != 'generated':
+            raise ProjectError('generation_required', 'Source has no successful current Loom generation',
+                               source=source, generation=synced,
+                               recovery={'tool': 'sync_document', 'source': source})
+        try:
+            map_name = self._world_path(build.get('map_path'), metadata=True)
+            map_bytes = read_bytes(self.world, map_name, metadata=True)
+            mapping = json.loads(map_bytes)
+        except ProjectError:
+            raise
+        except (OSError, ValueError) as error:
+            raise ProjectError('generation_invalid', 'Loom source map is unavailable', source=source) from error
+        if not isinstance(mapping, dict) or mapping.get('format') != 'loom-source-map/0.1':
+            raise ProjectError('generation_invalid', 'Unsupported Loom source map', source=source)
+        output = self._world_path(entry.get('output'))
+        if self._world_path(mapping.get('source')) != source or self._world_path(mapping.get('output')) != output:
+            raise ProjectError('generation_invalid', 'Loom map and Workspace routing differ', source=source)
+        macro = self._world_path(mapping.get('macro'))
+        macro_data = read_bytes(self.world, macro)
+        output_data = read_bytes(self.world, output)
+        current = {'source_hash': digest(source_data), 'macro_hash': digest(macro_data),
+                   'output_hash': digest(output_data)}
+        changes = {key: {'expected': mapping.get(key), 'actual': value}
+                   for key, value in current.items() if mapping.get(key) != value}
+        if changes:
+            raise ProjectError('generation_drift', 'Authoritative input or generated output differs from its Loom build',
+                               source=source, output=output, changes=changes, preserved=True,
+                               recovery={'tool': 'read_document', 'source': source})
+        if mapping.get('source_snapshot') != document['text'] or (
+                not isinstance(mapping.get('macro_snapshot'), str) or
+                mapping['macro_snapshot'].encode('utf-8') != macro_data):
+            raise ProjectError('generation_invalid', 'Loom map snapshots do not match its current input hashes', source=source)
+        return {'source': source, 'output': output, 'macro': macro,
+                'source_data': source_data, 'output_data': output_data, 'macro_data': macro_data,
+                'map_data': map_bytes, 'map': mapping, 'body': document.get('body'), **current}
+
+    def _manifest(self, source, entries=None, *, generation=True):
+        entries = self._entries() if entries is None else entries
+        doc = self._document(source, entries, generation=generation)
+        try:
+            value = json.loads(doc['body'])
+        except (ValueError, TypeError) as error:
+            raise ProjectError('manifest_invalid', 'Project manifest body must be JSON') from error
+        manifest = validate_manifest(value)
+        prefix = manifest['root'].rstrip('/') + '/'
+        if not source.startswith(prefix):
+            raise ProjectError('manifest_invalid', 'Manifest source must be inside its declared project root', source=source)
+        return manifest, doc
+
+    def register(self, manifest_source):
+        relative(manifest_source)
+        if not manifest_source.endswith('.tex'):
+            raise ProjectError('manifest_invalid', 'Register the authoritative manifest .tex, not generated JSON')
+        manifest, doc = self._manifest(manifest_source)
+        registry, expected = self._registry()
+        old = next((row for row in registry['projects'] if row['id'] == manifest['id']), None)
+        if old and old['source'] != manifest_source:
+            raise ProjectError('project_conflict', 'Project id is already bound to another manifest', project_id=manifest['id'])
+        if any(row['source'] == manifest_source and row['id'] != manifest['id'] for row in registry['projects']):
+            raise ProjectError('project_conflict', 'Manifest is registered under another project id')
+        if old is None:
+            registry['projects'].append({'id': manifest['id'], 'source': manifest_source})
+            text = json.dumps(registry, ensure_ascii=False, indent=2) + '\n'
+            self._execute({'command': 'write_text', 'path': REGISTRY, 'expected': expected, 'text': text})
+            actual, _ = self._registry()
+            if {'id': manifest['id'], 'source': manifest_source} not in actual['projects']:
+                raise ProjectError('outcome_unknown', 'Registration read-back mismatch; query before retry', replay_allowed=False)
+        return {'project_id': manifest['id'], 'manifest_source': manifest_source,
+                'manifest_revision': doc['source_hash'], 'registered': True, 'duplicate': old is not None,
+                'executed': False}
+
+    def list(self):
+        registry, _ = self._registry()
+        rows = []
+        for row in registry['projects']:
+            try:
+                info = self.describe(row['id'])
+                rows.append({'project_id': row['id'], 'manifest_source': row['source'],
+                             'root': info['project']['root'], 'runtime': info['project']['runtime'],
+                             'tasks': info['tasks'], 'available': info['available'],
+                             'generation': info['generation']})
+            except ProjectError as error:
+                rows.append({'project_id': row['id'], 'manifest_source': row['source'],
+                             'available': False, 'error': error.to_dict()})
+        return {'format': REGISTRY_FORMAT, 'projects': rows}
+
+    def _description(self, project_id):
+        registry, _ = self._registry()
+        row = next((row for row in registry['projects'] if row['id'] == project_id), None)
+        if row is None:
+            raise ProjectError('project_not_found', 'Unknown project_id; register a manifest first', project_id=project_id)
+        manifest, doc = self._manifest(row['source'], generation=False)
+        if manifest['id'] != project_id:
+            raise ProjectError('project_conflict', 'Registered manifest changed its project id', project_id=project_id)
+        return {'format': 'yohaku-project-description/1', 'project_id': project_id,
+                'project': manifest, 'manifest': manifest, 'manifest_source': row['source'],
+                'manifest_revision': doc['source_hash'], 'revision': doc['source_hash'], 'tasks': sorted(manifest['tasks']),
+                'editable_sources': [manifest['root'] + '/' + source for source in manifest['sources']],
+                'output_root': '/output', 'executed': False}
+
+    def describe(self, project_id):
+        # Discovery stays useful when a source needs repair. Only plan/materialize
+        # require a clean generation barrier; no bad input is allowed to execute.
+        info = self._description(project_id)
+        try:
+            current, _, mappings, source_set = self._collect(project_id)
+            return {**current, 'source_set': source_set, 'mappings': mappings,
+                    'available': True, 'generation': {'ok': True}}
+        except ProjectError as error:
+            return {**info, 'source_set': None, 'mappings': [], 'available': False,
+                    'generation': error.to_dict()}
+
+    def _collect(self, project_id, expected_sources=None):
+        info = self._description(project_id)
+        project = info['project']
+        entries = self._entries()
+        prefix = project['root'].rstrip('/') + '/'
+        names = [info['manifest_source']] + [prefix + source for source in project['sources']]
+        names = list(dict.fromkeys(names))
+        files = {}
+        mappings = []
+        checks = []
+        total = 0
+
+        def put(name, data, role, *, internal=False, **fields):
+            nonlocal total
+            relative(name, metadata=internal)
+            if any(name.startswith(existing + '/') or existing.startswith(name + '/') for existing in files):
+                raise ProjectError('input_conflict', 'Project file and directory paths overlap', path=name)
+            if name in files:
+                if files[name]['data'] != data or files[name]['role'] != role:
+                    raise ProjectError('input_conflict', 'Two project inputs have the same snapshot path', path=name)
+                return
+            total += len(data)
+            if total > MAX_TOTAL:
+                raise ProjectError('input_size', 'Project snapshot exceeds 64 MiB', limit=MAX_TOTAL)
+            files[name] = {'path': name, 'data': data, 'sha256': digest(data),
+                           'bytes': len(data), 'role': role, **fields}
+
+        for source in names:
+            doc = self._document(source, entries)
+            if not doc['output'].startswith(prefix):
+                raise ProjectError('output_outside_project', 'Declared source generates outside its project root',
+                                   source=source, output=doc['output'])
+            source_rel = source[len(prefix):]
+            output_rel = doc['output'][len(prefix):]
+            put(source_rel, doc['source_data'], 'source', source=source)
+            put(output_rel, doc['output_data'], 'generated', source=source,
+                source_revision=doc['source_hash'])
+            map_name = '.provenance/maps/' + digest(source.encode()) + '.json'
+            # Only internally constructed provenance names may enter the reserved subtree.
+            put(map_name, doc['map_data'], 'map', internal=True)
+            macro_name = '.provenance/macros/' + doc['macro']
+            put(macro_name, doc['macro_data'], 'macro', internal=True)
+            mappings.append({'source': source, 'source_revision': doc['source_hash'],
+                             'output': output_rel, 'output_hash': doc['output_hash'],
+                             'macro': doc['macro'], 'macro_hash': doc['macro_hash'],
+                             'map': map_name,
+                             'generated_to_source_line': doc['map'].get('generated_to_source_line'),
+                             'body_source_line': doc['map'].get('body_source_line')})
+            checks.extend([(source, doc['source_hash']), (doc['output'], doc['output_hash']),
+                           (doc['macro'], doc['macro_hash'])])
+        for asset in project.get('assets', []):
+            name = asset['path'] if isinstance(asset, dict) else asset
+            data = read_bytes(self.world, prefix + name)
+            expected = asset.get('sha256') if isinstance(asset, dict) else None
+            if expected is not None and digest(data) != expected:
+                raise ProjectError('asset_drift', 'Asset does not match its declared hash', path=name,
+                                   expected=expected, actual=digest(data), preserved=True)
+            put(name, data, 'asset')
+            checks.append((prefix + name, digest(data)))
+        # Fingerprint all captured bytes and manifest revision, not just source mtimes.
+        fingerprint = {'project_id': project_id, 'manifest_revision': info['manifest_revision'],
+                       'files': [{key: row[key] for key in ('path', 'sha256', 'bytes', 'role')}
+                                 for row in sorted(files.values(), key=lambda x: x['path'])]}
+        source_set = digest(canonical(fingerprint))
+        if expected_sources is not None and expected_sources != source_set:
+            raise ProjectError('source_conflict', 'Project sources changed since planning',
+                               expected_sources=expected_sources, actual_sources=source_set,
+                               recovery={'tool': 'project_plan', 'project_id': project_id})
+        for name, expected in checks:
+            if digest(read_bytes(self.world, name)) != expected:
+                raise ProjectError('source_conflict', 'Project changed while collecting inputs', path=name)
+        return info, files, mappings, source_set
+
+    def _runtime(self, project):
+        missing = []
+        runtime = {'kind': project['runtime'], 'platform': 'linux', 'offline': True}
+        if os.name != 'posix' or not os.access('/usr/bin/bwrap', os.X_OK):
+            missing.append({'kind': 'runtime_unavailable', 'resource': 'linux-bubblewrap',
+                            'message': 'Linux execution requires the existing mandatory bwrap backend; no native fallback'})
+        if project['runtime'] == 'python':
+            runtime['program'] = '/usr/bin/python3'
+            if os.name != 'posix' or not os.access('/usr/bin/python3', os.X_OK):
+                missing.append({'kind': 'runtime_missing', 'resource': '/usr/bin/python3'})
+        else:
+            try:
+                from yohaku_dev import validate_profile
+                profile = json.loads((PACKAGE / 'config/development-runtime.json').read_text('utf-8'))
+                toolchain, registry = validate_profile(profile)
+                runtime.update(toolchain=str(toolchain), registry=str(registry),
+                               program='/opt/yohaku/rust/bin/cargo',
+                               fingerprint=digest(canonical(profile)))
+            except Exception as error:
+                missing.append({'kind': 'runtime_missing', 'resource': 'rust-offline-profile', 'message': str(error)})
+        return runtime, missing
+
+    def _cargo_dependencies(self, files, runtime, *, details=False):
+        """Cache evidence, not a Cargo cfg/features/semver resolver.
+
+        A unique locked version of a definitely-required direct registry dependency
+        may fail preflight when missing. Other missing lock entries are unresolved
+        warnings: only the mandatory isolated Cargo --offline --locked run determines
+        activation. A present corrupt archive is always fatal, even if inactive.
+        """
+        report = {'missing': [], 'dependency_warnings': [], 'cache_coverage_partial': False,
+                  'required_direct_packages': [], 'coverage': {
+                      'activation_resolved': False, 'registry_packages': 0, 'cached_packages': 0,
+                      'scope': 'top-level non-optional dependencies/build-dependencies/dev-dependencies; aliases use package name; no cfg/features/semver resolution',
+                      'final_resolver': 'mandatory isolated Cargo --offline --locked'}}
+        missing = report['missing']
+        warnings = report['dependency_warnings']
+        def finish():
+            report['cache_coverage_partial'] = bool(warnings)
+            return report if details else missing
+        if 'Cargo.toml' not in files or 'Cargo.lock' not in files:
+            missing.append({'kind': 'dependency_manifest_missing', 'resource': 'Cargo.toml and Cargo.lock',
+                            'message': 'Declare their authoritative tex sources for an offline locked build'})
+            return finish()
+        try:
+            manifest = tomllib.loads(files['Cargo.toml']['data'].decode('utf-8'))
+            lock = tomllib.loads(files['Cargo.lock']['data'].decode('utf-8'))
+        except (ValueError, UnicodeError) as error:
+            missing.append({'kind': 'dependency_manifest_invalid', 'message': str(error)})
+            return finish()
+        required = set()
+        tables = []
+        groups = ('dependencies', 'dev-dependencies', 'build-dependencies')
+        for group in groups:
+            table = manifest.get(group, {})
+            if not isinstance(table, dict):
+                missing.append({'kind': 'dependency_manifest_invalid', 'resource': group})
+                return finish()
+            tables.append((group, table, True))
+        targets = manifest.get('target', {})
+        if not isinstance(targets, dict):
+            missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'target'})
+            return finish()
+        for target, target_tables in targets.items():
+            if not isinstance(target_tables, dict):
+                missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'target.' + str(target)})
+                return finish()
+            for group in groups:
+                table = target_tables.get(group, {})
+                if not isinstance(table, dict):
+                    missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'target.' + str(target) + '.' + group})
+                    return finish()
+                tables.append(('target.' + str(target) + '.' + group, table, False))
+        # Patches can change a registry dependency into local/alternate input. Do
+        # not claim its cache version is definitely required without resolving it.
+        patched = set()
+        patches = manifest.get('patch', {})
+        if not isinstance(patches, dict):
+            missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'patch'})
+            return finish()
+        for table in patches.values():
+            if not isinstance(table, dict):
+                missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'patch table'})
+                return finish()
+            for alias, value in table.items():
+                patched_name = value.get('package', alias) if isinstance(value, dict) else alias
+                if not isinstance(patched_name, str) or not patched_name:
+                    missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'patch package name'})
+                    return finish()
+                patched.add(patched_name)
+                tables.append(('patch', {alias: value}, False))
+        for group, table, top_level in tables:
+            for alias, value in table.items():
+                if isinstance(value, str):
+                    if not value:
+                        missing.append({'kind': 'dependency_manifest_invalid', 'resource': group + '.' + alias + '.version'})
+                        continue
+                    name, optional, is_registry = alias, False, True
+                elif isinstance(value, dict):
+                    name = value.get('package', alias)
+                    optional = value.get('optional', False)
+                    if 'version' in value and (not isinstance(value['version'], str) or not value['version']):
+                        missing.append({'kind': 'dependency_manifest_invalid', 'resource': group + '.' + alias + '.version'})
+                        continue
+                    if type(optional) is not bool:
+                        missing.append({'kind': 'dependency_manifest_invalid', 'resource': group + '.' + alias + '.optional'})
+                        continue
+                    is_registry = not any(key in value for key in ('path', 'git', 'workspace'))
+                    if 'path' in value:
+                        try:
+                            dependency_path = relative(value['path'])
+                            candidate = (dependency_path / 'Cargo.toml').as_posix()
+                            if candidate not in files:
+                                item = {'kind': 'dependency_missing', 'resource': candidate,
+                                        'message': 'Declared path dependency is not in the fixed input snapshot'}
+                                (missing if top_level and not optional else warnings).append(item)
+                        except ProjectError:
+                            missing.append({'kind': 'dependency_path_outside', 'resource': value['path']})
+                else:
+                    missing.append({'kind': 'dependency_manifest_invalid', 'resource': group + '.' + alias})
+                    continue
+                if not isinstance(name, str) or not name or any(x in name for x in ('/', '\\', ':', '\0')):
+                    missing.append({'kind': 'dependency_manifest_invalid', 'resource': group + '.' + alias + '.package'})
+                    continue
+                if is_registry and top_level and not optional and name not in patched:
+                    required.add(name)
+        report['required_direct_packages'] = sorted(required)
+        packages = lock.get('package', [])
+        if not isinstance(packages, list) or any(not isinstance(row, dict) for row in packages):
+            missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'Cargo.lock package array'})
+            return finish()
+        registry_packages = []
+        package_ids = set()
+        for package in packages:
+            name, version, source = package.get('name'), package.get('version'), package.get('source')
+            if not isinstance(name, str) or not isinstance(version, str) or (
+                    not name or not version or any(x in name + version for x in ('/', '\\', ':', '\0'))):
+                missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'package name/version'})
+                continue
+            package_id = (name, version, source) if isinstance(source, (str, type(None))) else None
+            if package_id is None or package_id in package_ids:
+                missing.append({'kind': 'dependency_manifest_invalid', 'resource': 'duplicate or invalid package identity'})
+                continue
+            package_ids.add(package_id)
+            if source is None:
+                continue
+            if not isinstance(source, str) or not source.startswith('registry+'):
+                missing.append({'kind': 'dependency_source_unsupported', 'resource': source})
+                continue
+            checksum = package.get('checksum')
+            if not isinstance(checksum, str) or len(checksum) != 64 or any(c not in '0123456789abcdef' for c in checksum):
+                missing.append({'kind': 'dependency_manifest_invalid', 'resource': name + '@' + version + ' checksum'})
+                continue
+            registry_packages.append(package)
+        report['coverage']['registry_packages'] = len(registry_packages)
+        candidates = {}
+        for package in registry_packages:
+            candidates.setdefault(package['name'], []).append(package)
+        for name in required:
+            if name not in candidates:
+                missing.append({'kind': 'dependency_not_locked', 'resource': name,
+                                'message': 'Definitely-required direct registry dependency is absent from Cargo.lock'})
+        if 'registry' not in runtime:
+            warnings.append({'kind': 'dependency_cache_unresolved', 'message': 'Prepared registry unavailable; runtime preflight reports the fatal runtime requirement'})
+            return finish()
+        registry = Path(runtime['registry'])
+        try:
+            cache_dirs = [p for p in (registry / 'cache').iterdir() if p.is_dir()]
+            source_dirs = [p for p in (registry / 'src').iterdir() if p.is_dir()]
+        except OSError as error:
+            missing.append({'kind': 'dependency_cache_unavailable', 'message': type(error).__name__})
+            return finish()
+        for package in registry_packages:
+            name, version, checksum = package['name'], package['version'], package['checksum']
+            archives = [p / (name + '-' + version + '.crate') for p in cache_dirs
+                        if (p / (name + '-' + version + '.crate')).is_file()]
+            unpacked = next((p / (name + '-' + version) for p in source_dirs
+                             if (p / (name + '-' + version) / '.cargo-checksum.json').is_file()), None)
+            available = False
+            corrupt = False
+            for archive in archives:
+                try:
+                    with archive.open('rb') as stream:
+                        actual = hashlib.file_digest(stream, 'sha256').hexdigest()
+                except OSError as error:
+                    missing.append({'kind': 'dependency_cache_unavailable', 'resource': name + '@' + version,
+                                    'message': type(error).__name__})
+                    corrupt = True
+                    continue
+                if actual != checksum:
+                    missing.append({'kind': 'dependency_checksum_mismatch', 'resource': name + '@' + version,
+                                    'expected_sha256': checksum, 'actual_sha256': actual,
+                                    'message': 'Existing archive checksum differs from Cargo.lock; no fallback to unpacked source'})
+                    corrupt = True
+                else:
+                    available = True
+            if corrupt:
+                continue
+            if not available and unpacked is not None:
+                try:
+                    source_checksum = json.loads((unpacked / '.cargo-checksum.json').read_text('utf-8'))
+                    available = source_checksum.get('package') == checksum
+                except (OSError, ValueError, AttributeError):
+                    available = False
+            if available:
+                report['coverage']['cached_packages'] += 1
+                continue
+            item = {'kind': 'dependency_missing' if name in required and len(candidates[name]) == 1 else 'dependency_cache_unresolved',
+                    'resource': name + '@' + version,
+                    'message': 'Not available in the prepared read-only offline Cargo cache'}
+            if name in required and len(candidates[name]) == 1:
+                missing.append(item)
+            else:
+                item.update(activation='unresolved',
+                            reason='ambiguous locked versions' if name in required else 'optional, target-specific or lockfile-only activation is not resolved',
+                            final_resolver='mandatory isolated Cargo --offline --locked')
+                warnings.append(item)
+        return finish()
+
+    def plan(self, project_id, action, expected_sources=None):
+        info, files, mappings, source_set = self._collect(project_id, expected_sources)
+        project = info['project']
+        task = project['tasks'].get(action)
+        if task is None:
+            raise ProjectError('task_not_found', 'Unknown project action', project_id=project_id,
+                               action=action, available=sorted(project['tasks']))
+        runtime, missing = self._runtime(project)
+        args = task.get('args', [])
+        result = {'format': 'yohaku-project-plan/1', 'project_id': project_id, 'action': action,
+                  'project': project, 'manifest': project, 'manifest_revision': info['manifest_revision'],
+                  'source_set': source_set, 'runtime': runtime, 'cwd': '/project',
+                  'read_only': ['/project'], 'writable': ['/output'],
+                  'capabilities': {'network': 'isolated', 'filesystem': 'declared-snapshot-only'},
+                  'artifacts': task.get('artifacts', []), 'missing': missing,
+                  'executed': False, 'mappings': mappings, 'dependency_warnings': [],
+                  'cache_coverage_partial': False}
+        if task['kind'] == 'python':
+            if task['entry'] not in files or files[task['entry']]['role'] != 'generated':
+                missing.append({'kind': 'entry_missing', 'resource': task['entry'],
+                                'message': 'Python entry must be a successfully generated declared source'})
+            result['argv'] = ['/usr/bin/python3', '-B', '/project/' + task['entry'], *args]
+        elif task['kind'] == 'cargo':
+            dependencies = self._cargo_dependencies(files, runtime, details=True)
+            missing.extend(dependencies['missing'])
+            result['dependency_warnings'] = dependencies['dependency_warnings']
+            result['cache_coverage_partial'] = dependencies['cache_coverage_partial']
+            result['dependency_coverage'] = dependencies['coverage']
+            managed_args = list(args)
+            for flag in ('--offline', '--locked'):
+                if flag not in managed_args:
+                    managed_args.append(flag)
+            result['argv'] = ['/opt/yohaku/rust/bin/cargo', *managed_args]
+            result['dependency_preflight'] = 'Partial cache evidence: definitely-required direct non-optional package versions may fail preflight; optional/target/transitive activation and ambiguous versions are unresolved warnings. Existing corrupt archives remain fatal. No cfg/features/semver resolver; only the mandatory isolated Cargo --offline --locked run resolves and verifies the active dependency graph.'
+        else:
+            result['argv'] = ['/output/' + task['artifact'], *args]
+            result['requires_artifact'] = {'action': task['from'], 'path': task['artifact'],
+                                           'source_set': source_set}
+        result['ok'] = not missing
+        return result
+
+    def materialize(self, project_id, expected_sources=None):
+        info, files, mappings, source_set = self._collect(project_id, expected_sources)
+        self.state_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+        if self.state_dir.is_symlink() or not self.state_dir.is_dir():
+            raise ProjectError('state_invalid', 'Snapshot state directory must be an ordinary private directory')
+        if os.name == 'posix':
+            meta = self.state_dir.stat()
+            if meta.st_uid != os.getuid() or meta.st_mode & 0o077:
+                raise ProjectError('state_invalid', 'Snapshot state must be owned and private')
+        target = self.state_dir / source_set
+        manifest = {'format': SNAPSHOT_FORMAT, 'id': source_set, 'source_set': source_set,
+                    'project_id': project_id, 'manifest_revision': info['manifest_revision'],
+                    'files': [{key: value for key, value in row.items() if key != 'data'}
+                              for row in sorted(files.values(), key=lambda x: x['path'])],
+                    'mappings': mappings}
+        if target.is_symlink():
+            raise ProjectError('state_invalid', 'Snapshot identity is a symlink')
+        if target.exists():
+            try:
+                recorded = json.loads(read_bytes(target, '.project-snapshot.json', metadata=True))
+            except (OSError, ValueError) as error:
+                raise ProjectError('snapshot_conflict', 'Existing snapshot has no valid receipt') from error
+            if recorded != manifest:
+                raise ProjectError('snapshot_conflict', 'Existing snapshot receipt differs from source set')
+            expected_files = {row['path'] for row in manifest['files']} | {'.project-snapshot.json'}
+            actual_files = set()
+            for folder, dirs, names in os.walk(target, followlinks=False):
+                if any((Path(folder) / name).is_symlink() for name in dirs + names):
+                    raise ProjectError('snapshot_conflict', 'Existing snapshot contains a symlink')
+                actual_files.update((Path(folder) / name).relative_to(target).as_posix() for name in names)
+            if actual_files != expected_files:
+                raise ProjectError('snapshot_conflict', 'Existing snapshot file set was modified')
+            for row in manifest['files']:
+                if digest(read_bytes(target, row['path'], metadata=True)) != row['sha256']:
+                    raise ProjectError('snapshot_conflict', 'Existing immutable snapshot was modified', path=row['path'])
+            return {**manifest, 'path': str(target), 'reused': True}
+        temporary = Path(tempfile.mkdtemp(prefix='.preparing-', dir=self.state_dir))
+        try:
+            for row in files.values():
+                dest = contained(temporary, row['path'], metadata=True)
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                with dest.open('xb') as stream:
+                    stream.write(row['data'])
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                if digest(dest.read_bytes()) != row['sha256']:
+                    raise ProjectError('snapshot_conflict', 'Snapshot copy verification failed', path=row['path'])
+                if os.name == 'posix':
+                    dest.chmod(0o444)
+            receipt = temporary / '.project-snapshot.json'
+            with receipt.open('xb') as stream:
+                stream.write(canonical(manifest) + b'\n')
+                stream.flush()
+                os.fsync(stream.fileno())
+            # Recheck the current whole source set after the copy, not just mtimes.
+            self._collect(project_id, source_set)
+            try:
+                temporary.rename(target)
+                if os.name == 'posix':
+                    descriptor = os.open(self.state_dir, os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
+                    try:
+                        os.fsync(descriptor)
+                    finally:
+                        os.close(descriptor)
+            except OSError as error:
+                if error.errno in (errno.EEXIST, errno.ENOTEMPTY) and target.exists():
+                    return self.materialize(project_id, source_set)
+                raise
+        finally:
+            if temporary.exists():
+                shutil.rmtree(temporary)
+        return {**manifest, 'path': str(target), 'reused': False}
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_project_sources.py"
+```

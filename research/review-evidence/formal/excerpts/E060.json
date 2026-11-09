@@ -1,0 +1,25 @@
+{
+  "original_source": "Sf456be4e6ff845",
+  "original_line": 15,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 75,
+    "record": {
+      "timestamp": "2026-11-07T09:25:03.620Z",
+      "ordinal": 74,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_067b9467756af992016aeeee6ba1ac87d0b69030c9320a731a",
+        "status": "completed",
+        "call_id": "call_c4e76e93f07340ce8a9ccded326296fd",
+        "name": "exec",
+        "input": "const x=load(\"input-v3\");text({keys:Object.keys(x),bodyType:typeof x.body,body:x.body,payload:x.payload_delivery});\ntext(await tools.yohaku_task_status({task_id:load(\"run-v1\").result.task_id}));\ntext(await tools.yohaku_ai_messages({chat_id:\"ai-chat-bf5981b3f59d1ad6fe683f91\",limit:20}));\ntext(await tools.yohaku_list_directory({path:\"files/work\"}));\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-8288-7233-a26c-877239f9484a",
+          "create_time": 1794043499.6356912
+        }
+      }
+    }
+  }
+}

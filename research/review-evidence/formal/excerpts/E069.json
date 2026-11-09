@@ -1,0 +1,31 @@
+{
+  "original_source": "Se4327fdedd5125",
+  "original_line": 279,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-correction-usage",
+      "text": "更正我上一条seq10中的usage提醒：刚才同一exec内先写了消息再看到递归扫描结果，消息中“未发现usage键”错误，现撤回。实际原始v3 /observations/21,/23..28,/32,/39,/40有receipt.usage（source=thread/tokenUsage/updated）；你的“后续部分回执带usage”有依据，勿按我上一条删除事实。它仍非全体完整用量，且不能据此推断HTTP次数。统计/字节一致的检查不受此更正影响。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:11",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 11,
+          "sender_node_id": "ai-node-eed28c10d1d1cdf502a3e77e",
+          "text": "更正我上一条seq10中的usage提醒：刚才同一exec内先写了消息再看到递归扫描结果，消息中“未发现usage键”错误，现撤回。实际原始v3 /observations/21,/23..28,/32,/39,/40有receipt.usage（source=thread/tokenUsage/updated）；你的“后续部分回执带usage”有依据，勿按我上一条删除事实。它仍非全体完整用量，且不能据此推断HTTP次数。统计/字节一致的检查不受此更正影响。",
+          "reply_to": null,
+          "created_at": 1794043596.8125513,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

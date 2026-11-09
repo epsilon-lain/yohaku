@@ -1,0 +1,25 @@
+{
+  "original_source": "Sccf17211c6dc1a",
+  "original_line": 11,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 52,
+    "record": {
+      "timestamp": "2026-11-07T09:24:10.121Z",
+      "ordinal": 51,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_0e6ae4a61678d738016aeeee35782087d089b5b9d701af0243",
+        "status": "completed",
+        "call_id": "call_877ef97a9ab544dbb58009cd7a1ac493",
+        "name": "exec",
+        "input": "const e=eval(load(\"helpers\")+\"build(load('doc_v1'),load('text_v1').result.text)\");store(\"events_v1\",e);\ntext({sha:e.input_sha256,mismatches:e.receipt_hash_mismatches,stats:{...e.expected_statistics,tasks:undefined}});\nconst c=await tools.yohaku_create_document({directory:\"files/work\",name:\"EVENTS-v1.json\",body:JSON.stringify(e,null,2)+\"\\n\"});store(\"created_v1\",JSON.parse(c));text(c);\ntext(JSON.parse(await tools.yohaku_read_document({source:\"files/work/CURRENT.json.tex\"})).result.body);\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-6a20-7370-860d-9164e42a309d",
+          "create_time": 1794043445.4773273
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+{
+  "session_id": "REPLACE_WITH_NEW_AUTHORIZED_SESSION_ID",
+  "enabled": false,
+  "funding_scope": "account_existing_balance",
+  "currency": "VERIFY_UNIT",
+  "no_recharge_or_purchase": true,
+  "authorization": {
+    "source": "explicit_user_authorization",
+    "reference": "PROVIDE_PRIVATE_AUTHORIZATION",
+    "amount": "0"
+  }
+}
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/config/session.example.json"
+```

@@ -1,0 +1,47 @@
+{
+  "original_source": "S6519cffb743ee9",
+  "original_line": 147,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_task_output",
+    "arguments": {
+      "task_id": "project-task-28fbdbc13711bebfd6d78e014eada959",
+      "stream": "stdout"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "format": "yohaku-task/1",
+        "task_id": "project-task-28fbdbc13711bebfd6d78e014eada959",
+        "stream": "stdout",
+        "cursor_unit": "bytes",
+        "bytes_returned": 2433,
+        "read_state": "complete",
+        "end_of_stream": true,
+        "no_progress": false,
+        "event_seq": 402655620,
+        "exit_code": 0,
+        "phase": "validating fixed snapshot and sandbox",
+        "cancel_confirmed": false,
+        "task_terminal_confirmed": true,
+        "log_ref": {
+          "kind": "task_output",
+          "task_id": "project-task-28fbdbc13711bebfd6d78e014eada959",
+          "stream": "stdout",
+          "captured_bytes": 2433,
+          "full_original_retained": true
+        },
+        "next_action": null,
+        "cursor": 0,
+        "next_cursor": 2433,
+        "output_end": 2433,
+        "has_more": false,
+        "output_complete": true,
+        "text": "{\n  \"format\": \"yohaku-r2-receipt-stats/1\",\n  \"episode_count\": 4,\n  \"by_target_kind\": {\n    \"process\": 3,\n    \"model\": 1\n  },\n  \"by_final_status\": {\n    \"cancelled\": 3,\n    \"done\": 1\n  },\n  \"by_outcome\": {\n    \"cancelled_before_start\": 1,\n    \"already_finished\": 1,\n    \"stopped_running_process\": 1,\n    \"stopped_running_model\": 1\n  },\n  \"cancel_requested_count\": 3,\n  \"cancel_confirmed_count\": 3,\n  \"execution_ended_count\": 4,\n  \"cleanup_confirmed_count\": 4,\n  \"native_reaped_count\": 1,\n  \"episodes\": [\n    {\n      \"reference\": \"/episodes/0\",\n      \"source_pointer\": \"/process_test1\",\n      \"task_id\": \"project-task-bcdf3c3e4ec962a4d00b784732f547a6\",\n      \"target_kind\": \"process\",\n      \"final_status\": \"cancelled\",\n      \"cancel_requested\": true,\n      \"cancel_confirmed\": true,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 0,\n      \"cancel_receipt_execution\": \"ended\",\n      \"outcome\": \"cancelled_before_start\"\n    },\n    {\n      \"reference\": \"/episodes/1\",\n      \"source_pointer\": \"/process_test2\",\n      \"task_id\": \"project-task-8ef99889efe0ae8373ccc4c7d00686f3\",\n      \"target_kind\": \"process\",\n      \"final_status\": \"done\",\n      \"cancel_requested\": false,\n      \"cancel_confirmed\": false,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 0,\n      \"cancel_receipt_execution\": \"ended\",\n      \"outcome\": \"already_finished\"\n    },\n    {\n      \"reference\": \"/episodes/2\",\n      \"source_pointer\": \"/process_test3\",\n      \"task_id\": \"project-task-3b364636e0f7648481b5114fb36fec9d\",\n      \"target_kind\": \"process\",\n      \"final_status\": \"cancelled\",\n      \"cancel_requested\": true,\n      \"cancel_confirmed\": true,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 0,\n      \"cancel_receipt_execution\": \"ended\",\n      \"outcome\": \"stopped_running_process\"\n    },\n    {\n      \"reference\": \"/episodes/3\",\n      \"source_pointer\": \"/model_test\",\n      \"task_id\": \"model-task-19191abb97d4172b6c79e0c0ae21ae18\",\n      \"target_kind\": \"model\",\n      \"final_status\": \"cancelled\",\n      \"cancel_requested\": true,\n      \"cancel_confirmed\": true,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 1,\n      \"cancel_receipt_execution\": \"running\",\n      \"outcome\": \"stopped_running_model\"\n    }\n  ],\n  \"provider_http_request_count\": null,\n  \"additive_token_count\": null\n}\n",
+        "text_encoding": "UTF-8 replacement view; base64 preserves exact bytes",
+        "truncated": false,
+        "state": "succeeded"
+      }
+    }
+  }
+}

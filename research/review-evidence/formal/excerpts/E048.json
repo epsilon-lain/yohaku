@@ -1,0 +1,39 @@
+{
+  "original_source": "S56c09d02445c86",
+  "original_line": 309,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_messages",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "after_seq": 13,
+      "limit": 10
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+        "participants": [
+          "ai-node-264b7b0b92728e8542dd5143",
+          "ai-node-5289044b8b7b62c7ad37746f",
+          "main"
+        ],
+        "messages": [
+          {
+            "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:14",
+            "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+            "seq": 14,
+            "sender_node_id": "ai-node-264b7b0b92728e8542dd5143",
+            "text": "确认实际v3 receipt.usage可见于/observations/21、23–28、32、39、40，source均thread/tokenUsage/updated，故不应说完全没有用量。32与21的usage相同但receipt其他字段有变仍是不同唯一状态版本；不能累加跨观测/状态的usage当额外调用。可用32/39作报告例证，不能从部分tokenUsage推出供应商HTTP次数或全任务完整用量。",
+            "reply_to": null,
+            "created_at": 1794043985.0137854,
+            "provenance": null
+          }
+        ],
+        "next_seq": 14,
+        "has_more": false,
+        "starts_models": false
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "original_source": "S56c09d02445c86",
+  "original_line": 295,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "downstream-usage-evidence",
+      "text": "注意原始v3 /observations/32、39含receipt.usage（虽然projection_contract未列usage），会在REPORT说明部分tokenUsage可见但不推出供应商HTTP或全任务完整用量。v3 STATS已保存并读回确认body=实际stdout，revision=1dab20c11f998522cb18f3efdc8c9cca8648857ea66ace445ab5d32a082784bd，可直接比对。三版task_provenance snapshot_valid、artifact bytes_verified均true；独立按receipt规范字符串去重+选latest+所有task字段比对无差异。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:13",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 13,
+          "sender_node_id": "ai-node-5289044b8b7b62c7ad37746f",
+          "text": "注意原始v3 /observations/32、39含receipt.usage（虽然projection_contract未列usage），会在REPORT说明部分tokenUsage可见但不推出供应商HTTP或全任务完整用量。v3 STATS已保存并读回确认body=实际stdout，revision=1dab20c11f998522cb18f3efdc8c9cca8648857ea66ace445ab5d32a082784bd，可直接比对。三版task_provenance snapshot_valid、artifact bytes_verified均true；独立按receipt规范字符串去重+选latest+所有task字段比对无差异。",
+          "reply_to": null,
+          "created_at": 1794043950.1158671,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

@@ -1,0 +1,171 @@
+"""Single-instance lifecycle and reproducible world setup for the trusted text service."""
+import argparse,contextlib,fcntl,hashlib,json,logging,logging.handlers,os
+from pathlib import Path
+import re,signal,subprocess,sys,time,threading
+from yohaku_codex_tasks import atomic,state_root,identity,alive
+ROOT=Path(__file__).resolve().parents[1]
+VERSION='codex-text-service/2'
+
+READINESS_SOURCE='files/codex-text/READINESS.json.tex'
+
+def publish_readiness(workspace, info, observations):
+    """A timestamped projection, never a replacement for private PID/state authority."""
+    value={k:info.get(k) for k in ('version','operator_version','world','project','pid','heartbeat','service_state','operator_sha256','manager_sha256')}
+    value.update(format='codex-text-readiness/1',observed_at=time.time(),expires_after_seconds=15,
+                 sources=observations,notice='Timestamped service observation; stale/missing is unknown, never proof of stopped. Editable text is not task authority.')
+    body=json.dumps(value,ensure_ascii=False,indent=2)+'\n'
+    try:
+        doc=workspace.execute({'command':'read','source':READINESS_SOURCE})
+    except Exception:
+        # Create only absent status files; never replace unregistered human text.
+        target=Path(info['world'])/READINESS_SOURCE
+        if target.exists() or target.with_suffix('').exists():raise ValueError('Existing readiness document must be registered/reconciled')
+        header='---\nformat: yohaku/0.2\ntarget: text\nmacro: "[[macros/raw]]"\nnode: {"id":"codex-text-readiness","name":"Codex 文本后台实时观察","description":"时间戳及逐页连接投影；过期视为未知","entry":true,"links":[]}\n---\n\n## 正文\n```text\n'
+        target.parent.mkdir(parents=True,exist_ok=True)
+        with target.open('x') as stream:stream.write(header+body+'```\n\n## 输出与关联\n```yaml\noutput: "files/codex-text/READINESS.json"\n```\n')
+        workspace.execute({'command':'adopt','path':READINESS_SOURCE})
+        doc=workspace.execute({'command':'read','source':READINESS_SOURCE})
+    result=workspace.execute({'command':'save','source':READINESS_SOURCE,'expected':doc['text'],'text':body,'body_only':True})
+    if result.get('sync_error') or result.get('loom',{}).get('ok') is False:raise ValueError('Readiness Loom sync failed')
+
+
+def paths(world,source='files/codex-text/OPERATOR.md.tex'):
+    key=hashlib.sha256((str(Path(world).resolve())+'\n'+source).encode()).hexdigest()[:32]
+    stem=state_root()/('codex-text-service-'+key)
+    return Path(str(stem)+'.json'),Path(str(stem)+'.lock'),Path(str(stem)+'.log')
+
+def status(world,source='files/codex-text/OPERATOR.md.tex'):
+    path,_,_=paths(world,source)
+    value=json.loads(path.read_text()) if path.is_file() else {}
+    running=bool(value and alive(value))
+    return {**value,'running':running,'healthy':running and time.time()-value.get('heartbeat',0)<45}
+
+def setup(world):
+    """Install only missing data templates; existing chat requests/journals are never replaced."""
+    from yohaku_agent import Workspace
+    world=Path(world).resolve();world.mkdir(parents=True,exist_ok=True)
+    if world.is_symlink():raise ValueError('World must not be a symlink')
+    macro=world/'macros/raw.source.md';macro.parent.mkdir(parents=True,exist_ok=True)
+    original=ROOT/'macros/raw.source.md'
+    if not macro.exists():macro.write_bytes(original.read_bytes())
+    elif macro.read_bytes()!=original.read_bytes():raise ValueError('Existing raw macro differs; preserve it and reconcile before installation')
+    workspace=Workspace(world,ROOT/'bin/loom-linux-x86_64',ROOT/'bin/yohaku_workspace')
+    manifest=json.loads((ROOT/'config/codex-text-templates/manifest.json').read_text());rows=[]
+    for item in manifest['templates']:
+        source=world/item['source'];output=world/item['output'];existing=source.exists() or output.exists()
+        if source.is_symlink() or output.is_symlink() or source.parent.resolve()!=source.parent:raise ValueError('Template target must not traverse symlinks')
+        if existing:
+            if not source.is_file():raise ValueError('Output exists without tex source; preserve and adopt/reconcile manually: '+item['output'])
+            rows.append({'source':item['source'],'preserved':True})
+        else:
+            template=ROOT/item['asset'];raw=template.read_text()
+            # Assets are reviewed data, with target-world output routes already canonical.
+            source.parent.mkdir(parents=True,exist_ok=True);source.write_text(raw)
+            result=subprocess.run([str(ROOT/'bin/loom-linux-x86_64'),'sync',str(source),'--root',str(world),'--json'],capture_output=True,text=True)
+            if result.returncode:raise ValueError('Template Loom generation failed; source retained: '+item['source'])
+            rows.append({'source':item['source'],'installed':True})
+        workspace.execute({'command':'adopt','path':item['source']})
+    return {'world':str(world),'templates':rows,'existing_data_preserved':True}
+
+def ensure(world,source='files/codex-text/OPERATOR.md.tex'):
+    current=status(world,source)
+    if current.get('running'):
+        if current.get('project')!=str(ROOT):raise ValueError('Another project owns the existing service; preserve it and inspect')
+        return {**current,'started_new_process':False}
+    child=subprocess.Popen(['/usr/bin/python3','-B',str(ROOT/'agent/yohaku_codex_text.py'),'--world',str(Path(world).resolve()),'--source',source,'--grant-read-write-run'],cwd=ROOT,stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
+    threading.Thread(target=child.wait,daemon=True).start()
+    end=time.monotonic()+15
+    while time.monotonic()<end:
+        current=status(world,source)
+        if current.get('running'):return {**current,'started_new_process':True}
+        if child.poll() not in (None,0):raise ValueError('Text service exited before readiness; inspect fixed service log; code='+str(child.returncode))
+        time.sleep(.05)
+    raise ValueError('Text service readiness not confirmed; inspect status before starting again')
+
+def ensure_configured(project):
+    project=Path(project).resolve();path=project/'config/codex-text-service.json'
+    if not path.is_file():return {'enabled':False,'reason':'no text service config'}
+    config=json.loads(path.read_text())
+    if not config.get('enabled_by_default') or not config.get('launch_on_yohaku_start'):return {'enabled':False}
+    if project!=ROOT:raise ValueError('Text service manager/project mismatch')
+    world=(project/config['world']).resolve()
+    if not world.is_relative_to(project/'worlds'):raise ValueError('Configured world must be inside project/worlds')
+    if set(config.get('required_permissions',[]))!={'read','write','run'}:raise ValueError('Text service Read/Write/Run grant must be explicit')
+    setup(world)
+    return ensure(world)
+
+def stop_service(world):
+    current=status(world)
+    if not current.get('running'):return {**current,'stopped':True}
+    if current.get('project')!=str(ROOT):raise ValueError('Refusing to stop a service from another project')
+    os.kill(current['pid'],signal.SIGTERM)
+    end=time.monotonic()+5
+    while time.monotonic()<end:
+        if not alive(current):return {**status(world),'stopped':True,'model_tasks_cancelled':False}
+        time.sleep(.05)
+    return {**status(world),'stopped':False,'reason':'service exit unconfirmed; no task signal sent'}
+
+def serve(args):
+    from yohaku_agent import Workspace
+    from yohaku_codex_text import Operator,SOURCE,VERSION as OPERATOR_VERSION
+    world=Path(args.world).resolve();meta,lock,log=paths(world,args.source)
+    fd=os.open(lock,os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+    try:
+        try:fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:
+            print(json.dumps({'version':OPERATOR_VERSION,'already_running':True,'service':status(world,args.source)}),flush=True);return 0
+        logger=logging.getLogger('yohaku-codex-text-'+str(os.getpid()));logger.setLevel(logging.INFO);logger.propagate=False
+        handler=logging.handlers.RotatingFileHandler(log,maxBytes=512*1024,backupCount=3);logger.addHandler(handler)
+        info={'version':VERSION,'operator_version':OPERATOR_VERSION,'project':str(ROOT),'world':str(world),'source':args.source,
+              **identity(os.getpid()),'operator_sha256':hashlib.sha256((ROOT/'agent/yohaku_codex_text.py').read_bytes()).hexdigest(),
+              'workspace_sha256':hashlib.sha256((ROOT/'bin/yohaku_workspace').read_bytes()).hexdigest(),'workspace_path':str(ROOT/'bin/yohaku_workspace'),'manager_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'agent_sha256':hashlib.sha256((ROOT/'agent/yohaku_agent.py').read_bytes()).hexdigest(),'log_path':str(log),'heartbeat':time.time(),'service_state':'running'}
+        for name,key in (('yohaku_workspace','workspace'),('yohaku_chat_workspace','chat_workspace')):
+            path=ROOT/'bin'/name;identity_result=subprocess.run([str(path),'--identity'],capture_output=True,text=True,timeout=10)
+            if identity_result.returncode:raise ValueError('Workspace identity unavailable: '+str(path))
+            info[key+'_path']=str(path);info[key+'_sha256']=hashlib.sha256(path.read_bytes()).hexdigest();info[key+'_identity']=json.loads(identity_result.stdout)
+        atomic(meta,info);logger.info(json.dumps({'event':'started',**info}));print(json.dumps({'event':'started',**info}),flush=True)
+        stopped=False
+        def interrupt(*_):
+            nonlocal stopped
+            stopped=True
+        old={n:signal.signal(n,interrupt) for n in (signal.SIGTERM,signal.SIGINT)}
+        workspace=Workspace(world,ROOT/'bin/loom-linux-x86_64',ROOT/'bin/yohaku_workspace');operators={};previous={};last_heartbeat=0;observations={};last_projection=0
+        try:
+            while not stopped:
+                sources=[args.source]
+                if not args.once and args.source==SOURCE:sources += [str(p.relative_to(world)) for p in sorted((world/'files/codex-text/operators').glob('*.md.tex'))]
+                for source in sources:
+                    info.update(heartbeat=time.time(),processing_source=source);atomic(meta,info)
+                    try:
+                        op=operators.setdefault(source,Operator(world,workspace.execute,source=source));actual=op.tick()
+                        summary={k:actual[k] for k in ('version','status','task_id','request_id','model_phase','cancel_confirmed','operator_error','dispatched') if k in actual}
+                        summary={'event':'poll','version':OPERATOR_VERSION,'source':source,**summary}
+                        if args.once:print(json.dumps({'source':source,'result':actual},ensure_ascii=False),flush=True)
+                    except Exception as error:
+                        summary={'event':'operator_error','version':OPERATOR_VERSION,'source':source,'operator_error':str(error)[:512],'replay_allowed':False}
+                        if args.once:print(json.dumps(summary,ensure_ascii=False),flush=True);return 2
+                    observations[source]={'observed_at':time.time(),'connected':summary.get('event')=='poll',**{k:v for k,v in summary.items() if k not in ('event','source')}}
+                    encoded=json.dumps(summary,ensure_ascii=False)
+                    if previous.get(source)!=encoded:logger.info(encoded);previous[source]=encoded
+                if time.time()-last_projection>=5:
+                    try:publish_readiness(workspace,info,observations);last_projection=time.time()
+                    except Exception as error:logger.warning(json.dumps({'event':'readiness_error','error':str(error)[:512]}))
+                if time.time()-last_heartbeat>=30:
+                    logger.info(json.dumps({'event':'heartbeat','version':OPERATOR_VERSION,'pid':os.getpid(),'sources':len(sources),'time':time.time()}));last_heartbeat=time.time()
+                if args.once:return 0
+                # Keep service stop responsive without cancelling independent tasks.
+                for _ in range(10):
+                    if stopped:break
+                    time.sleep(.1)
+        finally:
+            info.update(service_state='stopped',heartbeat=time.time());atomic(meta,info);logger.info(json.dumps({'event':'stopped','pid':os.getpid()}));handler.close()
+            for n,h in old.items():signal.signal(n,h)
+    finally:os.close(fd)
+    return 0
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('mode',choices=['setup','ensure','status','stop']);p.add_argument('--world',required=True);a=p.parse_args()
+    result={'setup':setup,'ensure':ensure,'status':status,'stop':stop_service}[a.mode](a.world)
+    print(json.dumps(result,ensure_ascii=False),flush=True)
+
+if __name__=='__main__':main()

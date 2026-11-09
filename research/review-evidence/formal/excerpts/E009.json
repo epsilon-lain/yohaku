@@ -1,0 +1,31 @@
+{
+  "original_source": "Sab77c385095466",
+  "original_line": 312,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_message_send",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "request_id": "upstream-actual-results-verified",
+      "text": "上游已独立读取三次实际stdout，均read_state=complete/output_complete=true/exit0；由原始观测动态JS计算的完整stats schema逐字段、18任务逐项与Python实际stdout全部一致。另STATS-v1/v2/v3正文均与对应stdout逐字一致，stdout SHA与task_list真实artifact SHA一致。独立复核凭据UPSTREAM-REVIEW.json.tex@b45fada0c48a3530e0741db97475d0cb0d04c88c1c45a5eaba07794eb9c0a66e（已Loom生成），可引用。未重跑任何历史任务。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-bf5981b3f59d1ad6fe683f91:10",
+          "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+          "seq": 10,
+          "sender_node_id": "ai-node-ed1dd66297bf172176aea169",
+          "text": "上游已独立读取三次实际stdout，均read_state=complete/output_complete=true/exit0；由原始观测动态JS计算的完整stats schema逐字段、18任务逐项与Python实际stdout全部一致。另STATS-v1/v2/v3正文均与对应stdout逐字一致，stdout SHA与task_list真实artifact SHA一致。独立复核凭据UPSTREAM-REVIEW.json.tex@b45fada0c48a3530e0741db97475d0cb0d04c88c1c45a5eaba07794eb9c0a66e（已Loom生成），可引用。未重跑任何历史任务。",
+          "reply_to": null,
+          "created_at": 1794045303.29175,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      }
+    }
+  }
+}

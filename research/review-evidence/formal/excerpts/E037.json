@@ -1,0 +1,191 @@
+{
+  "original_source": "Sd9ee9ccbce09ab",
+  "original_line": 1,
+  "payload": {
+    "task_id": "model-task-065e20973e25272ed2cb67d6bda5d00b",
+    "node_id": "ai-node-23b38ace66650e92d0480cce",
+    "tool": "create_document",
+    "call_id": "exec-9ab72ed3-e7fc-464e-a7a2-fb152a0bb83a",
+    "line": 98,
+    "reference": "evidence/tasks/model-task-065e20973e25272ed2cb67d6bda5d00b.events.jsonl:98",
+    "at": 1794044749.364,
+    "started_at": 1794044749.259,
+    "observed_at": 1794044749.9042253,
+    "timing_unknown": false,
+    "source": "files/work/EVENTS.json.tex",
+    "ok": true,
+    "output_revision": null,
+    "input_revision": null,
+    "body_sha256": "9af090ab534adafe42c1371c84192124d9c8c80987855f06dfd3fd45f0ebea3c",
+    "body": "{\n  \"format\": \"yohaku-r2-receipt-events/1\",\n  \"version\": 1,\n  \"source\": {\n    \"document\": \"files/work/input.json.tex\",\n    \"revision\": \"743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf\",\n    \"citation\": \"files/work/input.json.tex@743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf\",\n    \"view\": \"body\"\n  },\n  \"method\": {\n    \"receipt_unwrap\": \"If result exists, use result object.\",\n    \"final_authoritative\": true,\n    \"strict_boolean\": true,\n    \"outcome_order\": [\n      \"stopped_running_model\",\n      \"cancelled_before_start\",\n      \"stopped_running_process\",\n      \"already_finished\",\n      \"unknown\"\n    ]\n  },\n  \"episode_count\": 4,\n  \"by_target_kind\": {\n    \"process\": 3,\n    \"model\": 1\n  },\n  \"by_final_status\": {\n    \"cancelled\": 3,\n    \"done\": 1\n  },\n  \"by_outcome\": {\n    \"cancelled_before_start\": 1,\n    \"already_finished\": 1,\n    \"stopped_running_process\": 1,\n    \"stopped_running_model\": 1\n  },\n  \"cancel_requested_count\": 3,\n  \"cancel_confirmed_count\": 3,\n  \"execution_ended_count\": 4,\n  \"cleanup_confirmed_count\": 4,\n  \"native_reaped_count\": 1,\n  \"episodes\": [\n    {\n      \"reference\": \"/episodes/0\",\n      \"source_pointer\": \"/process_test1\",\n      \"task_id\": \"project-task-bcdf3c3e4ec962a4d00b784732f547a6\",\n      \"target_kind\": \"process\",\n      \"final_status\": \"cancelled\",\n      \"cancel_requested\": true,\n      \"cancel_confirmed\": true,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 0,\n      \"cancel_receipt_execution\": \"ended\",\n      \"outcome\": \"cancelled_before_start\",\n      \"evidence\": {\n        \"submit\": \"/episodes/0/receipts/submit/result\",\n        \"before\": \"/episodes/0/receipts/before/result\",\n        \"cancel\": \"/episodes/0/receipts/cancel/result\",\n        \"final\": \"/episodes/0/receipts/final/result\"\n      },\n      \"observations\": {\n        \"before_model_phase\": null,\n        \"final_phase\": null,\n        \"final_model_phase\": null,\n        \"final_execution\": \"ended\",\n        \"final_adapter\": \"not-started\",\n        \"started_text\": null,\n        \"cancel_accepted\": true\n      }\n    },\n    {\n      \"reference\": \"/episodes/1\",\n      \"source_pointer\": \"/process_test2\",\n      \"task_id\": \"project-task-8ef99889efe0ae8373ccc4c7d00686f3\",\n      \"target_kind\": \"process\",\n      \"final_status\": \"done\",\n      \"cancel_requested\": false,\n      \"cancel_confirmed\": false,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 0,\n      \"cancel_receipt_execution\": \"ended\",\n      \"outcome\": \"already_finished\",\n      \"evidence\": {\n        \"submit\": \"/episodes/1/receipts/submit/result\",\n        \"cancel\": \"/episodes/1/receipts/cancel/result\",\n        \"final\": \"/episodes/1/receipts/final/result\"\n      },\n      \"observations\": {\n        \"before_model_phase\": null,\n        \"final_phase\": \"project process running\",\n        \"final_model_phase\": null,\n        \"final_execution\": \"ended\",\n        \"final_adapter\": \"linux-bubblewrap\",\n        \"started_text\": null,\n        \"cancel_accepted\": false\n      }\n    },\n    {\n      \"reference\": \"/episodes/2\",\n      \"source_pointer\": \"/process_test3\",\n      \"task_id\": \"project-task-3b364636e0f7648481b5114fb36fec9d\",\n      \"target_kind\": \"process\",\n      \"final_status\": \"cancelled\",\n      \"cancel_requested\": true,\n      \"cancel_confirmed\": true,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 0,\n      \"cancel_receipt_execution\": \"ended\",\n      \"outcome\": \"stopped_running_process\",\n      \"evidence\": {\n        \"submit\": \"/episodes/2/receipts/submit/result\",\n        \"started\": \"/episodes/2/receipts/started/result\",\n        \"cancel\": \"/episodes/2/receipts/cancel/result\",\n        \"final\": \"/episodes/2/receipts/final/result\",\n        \"output\": \"/episodes/2/receipts/output/result\"\n      },\n      \"observations\": {\n        \"before_model_phase\": null,\n        \"final_phase\": \"validating fixed snapshot and sandbox\",\n        \"final_model_phase\": null,\n        \"final_execution\": \"ended\",\n        \"final_adapter\": \"linux-bubblewrap\",\n        \"started_text\": \"WAIT_STARTED\\n\",\n        \"cancel_accepted\": true\n      }\n    },\n    {\n      \"reference\": \"/episodes/3\",\n      \"source_pointer\": \"/model_test\",\n      \"task_id\": \"model-task-19191abb97d4172b6c79e0c0ae21ae18\",\n      \"target_kind\": \"model\",\n      \"final_status\": \"cancelled\",\n      \"cancel_requested\": true,\n      \"cancel_confirmed\": true,\n      \"execution_ended\": true,\n      \"cleanup_confirmed\": true,\n      \"native_reaped_count\": 1,\n      \"cancel_receipt_execution\": \"running\",\n      \"outcome\": \"stopped_running_model\",\n      \"evidence\": {\n        \"node\": \"/episodes/3/receipts/node/result\",\n        \"dispatch\": \"/episodes/3/receipts/dispatch/result\",\n        \"before\": \"/episodes/3/receipts/before/result\",\n        \"cancel\": \"/episodes/3/receipts/cancel/result\",\n        \"final\": \"/episodes/3/receipts/final/result\"\n      },\n      \"observations\": {\n        \"before_model_phase\": \"model_running\",\n        \"final_phase\": null,\n        \"final_model_phase\": \"finished\",\n        \"final_execution\": \"ended\",\n        \"final_adapter\": null,\n        \"started_text\": null,\n        \"cancel_accepted\": true\n      }\n    }\n  ],\n  \"limits\": {\n    \"nature\": \"历史明确指令工具测试；不是本组自然自主错误或停止。未重放历史任务。\",\n    \"historical_provider_http_requests\": null,\n    \"additive_total_tokens\": null,\n    \"token_note\": \"模型final含单次usage记录，但无完整可加总历史账本；重复cancel/final usage不可相加。\",\n    \"natural_error\": \"未观察到本组自然错误；历史stop/failed字样不作为本组自然错误。\",\n    \"inference\": \"一次先导，不训练，不作统计推断。\"\n  }\n}\n",
+    "actual": {
+      "format": "yohaku-r2-receipt-events/1",
+      "version": 1,
+      "source": {
+        "document": "files/work/input.json.tex",
+        "revision": "743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf",
+        "citation": "files/work/input.json.tex@743012369c0c633e9b28fcb4e80a158f9558a23960e63140d461864e1632e3bf",
+        "view": "body"
+      },
+      "method": {
+        "receipt_unwrap": "If result exists, use result object.",
+        "final_authoritative": true,
+        "strict_boolean": true,
+        "outcome_order": [
+          "stopped_running_model",
+          "cancelled_before_start",
+          "stopped_running_process",
+          "already_finished",
+          "unknown"
+        ]
+      },
+      "episode_count": 4,
+      "by_target_kind": {
+        "process": 3,
+        "model": 1
+      },
+      "by_final_status": {
+        "cancelled": 3,
+        "done": 1
+      },
+      "by_outcome": {
+        "cancelled_before_start": 1,
+        "already_finished": 1,
+        "stopped_running_process": 1,
+        "stopped_running_model": 1
+      },
+      "cancel_requested_count": 3,
+      "cancel_confirmed_count": 3,
+      "execution_ended_count": 4,
+      "cleanup_confirmed_count": 4,
+      "native_reaped_count": 1,
+      "episodes": [
+        {
+          "reference": "/episodes/0",
+          "source_pointer": "/process_test1",
+          "task_id": "project-task-bcdf3c3e4ec962a4d00b784732f547a6",
+          "target_kind": "process",
+          "final_status": "cancelled",
+          "cancel_requested": true,
+          "cancel_confirmed": true,
+          "execution_ended": true,
+          "cleanup_confirmed": true,
+          "native_reaped_count": 0,
+          "cancel_receipt_execution": "ended",
+          "outcome": "cancelled_before_start",
+          "evidence": {
+            "submit": "/episodes/0/receipts/submit/result",
+            "before": "/episodes/0/receipts/before/result",
+            "cancel": "/episodes/0/receipts/cancel/result",
+            "final": "/episodes/0/receipts/final/result"
+          },
+          "observations": {
+            "before_model_phase": null,
+            "final_phase": null,
+            "final_model_phase": null,
+            "final_execution": "ended",
+            "final_adapter": "not-started",
+            "started_text": null,
+            "cancel_accepted": true
+          }
+        },
+        {
+          "reference": "/episodes/1",
+          "source_pointer": "/process_test2",
+          "task_id": "project-task-8ef99889efe0ae8373ccc4c7d00686f3",
+          "target_kind": "process",
+          "final_status": "done",
+          "cancel_requested": false,
+          "cancel_confirmed": false,
+          "execution_ended": true,
+          "cleanup_confirmed": true,
+          "native_reaped_count": 0,
+          "cancel_receipt_execution": "ended",
+          "outcome": "already_finished",
+          "evidence": {
+            "submit": "/episodes/1/receipts/submit/result",
+            "cancel": "/episodes/1/receipts/cancel/result",
+            "final": "/episodes/1/receipts/final/result"
+          },
+          "observations": {
+            "before_model_phase": null,
+            "final_phase": "project process running",
+            "final_model_phase": null,
+            "final_execution": "ended",
+            "final_adapter": "linux-bubblewrap",
+            "started_text": null,
+            "cancel_accepted": false
+          }
+        },
+        {
+          "reference": "/episodes/2",
+          "source_pointer": "/process_test3",
+          "task_id": "project-task-3b364636e0f7648481b5114fb36fec9d",
+          "target_kind": "process",
+          "final_status": "cancelled",
+          "cancel_requested": true,
+          "cancel_confirmed": true,
+          "execution_ended": true,
+          "cleanup_confirmed": true,
+          "native_reaped_count": 0,
+          "cancel_receipt_execution": "ended",
+          "outcome": "stopped_running_process",
+          "evidence": {
+            "submit": "/episodes/2/receipts/submit/result",
+            "started": "/episodes/2/receipts/started/result",
+            "cancel": "/episodes/2/receipts/cancel/result",
+            "final": "/episodes/2/receipts/final/result",
+            "output": "/episodes/2/receipts/output/result"
+          },
+          "observations": {
+            "before_model_phase": null,
+            "final_phase": "validating fixed snapshot and sandbox",
+            "final_model_phase": null,
+            "final_execution": "ended",
+            "final_adapter": "linux-bubblewrap",
+            "started_text": "WAIT_STARTED\n",
+            "cancel_accepted": true
+          }
+        },
+        {
+          "reference": "/episodes/3",
+          "source_pointer": "/model_test",
+          "task_id": "model-task-19191abb97d4172b6c79e0c0ae21ae18",
+          "target_kind": "model",
+          "final_status": "cancelled",
+          "cancel_requested": true,
+          "cancel_confirmed": true,
+          "execution_ended": true,
+          "cleanup_confirmed": true,
+          "native_reaped_count": 1,
+          "cancel_receipt_execution": "running",
+          "outcome": "stopped_running_model",
+          "evidence": {
+            "node": "/episodes/3/receipts/node/result",
+            "dispatch": "/episodes/3/receipts/dispatch/result",
+            "before": "/episodes/3/receipts/before/result",
+            "cancel": "/episodes/3/receipts/cancel/result",
+            "final": "/episodes/3/receipts/final/result"
+          },
+          "observations": {
+            "before_model_phase": "model_running",
+            "final_phase": null,
+            "final_model_phase": "finished",
+            "final_execution": "ended",
+            "final_adapter": null,
+            "started_text": null,
+            "cancel_accepted": true
+          }
+        }
+      ],
+      "limits": {
+        "nature": "历史明确指令工具测试；不是本组自然自主错误或停止。未重放历史任务。",
+        "historical_provider_http_requests": null,
+        "additive_total_tokens": null,
+        "token_note": "模型final含单次usage记录，但无完整可加总历史账本；重复cancel/final usage不可相加。",
+        "natural_error": "未观察到本组自然错误；历史stop/failed字样不作为本组自然错误。",
+        "inference": "一次先导，不训练，不作统计推断。"
+      }
+    }
+  }
+}

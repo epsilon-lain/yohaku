@@ -1,0 +1,36 @@
+{
+  "format": "read-reuse/2.0.0",
+  "records": [
+    {
+      "path": "inherited/brief.py",
+      "sha256": "0a7b3cd32b5d935ee29555030306ab69903e0ad5c9538d60a36436abd24dd56d",
+      "use": "参考动态围栏、先暂存再替换、证据自检和输出保护"
+    },
+    {
+      "path": "inherited/retriever_core.py",
+      "sha256": "820925f203c3cd1aa19448ad36bc8ad4eb9277c49758ee00f817efbfa72228eb",
+      "use": "复用 snippet；不调用旧 load_dataset"
+    },
+    {
+      "path": "inherited/verify.py",
+      "sha256": "d83cd66c183b789c61dcb49b9b4cd2421aacf433a87bd93477b1c7c417413006",
+      "use": "审阅旧测试/验证契约；不运行其旧 baseline 入口"
+    },
+    {
+      "path": "inherited/test_brief.py",
+      "sha256": "16f19f5b734fe31dd720ea4ecdbbfa53291d96d8de0ed15f46c9fff9e09bd04b",
+      "use": "参考动态围栏、先暂存再替换、证据自检和输出保护"
+    },
+    {
+      "path": "inherited/README.md",
+      "sha256": "a5b6bae4f14384a30db2e213bd4a0412be2ac0ff4c9419aaebc39429a3c5338d",
+      "use": "确认旧格式和新资料适配要求"
+    },
+    {
+      "path": "inherited/EXPERIENCE.md",
+      "sha256": "e7f8e43b94cdfc0cd191774024105c0376b3247de4e15786fdbe2f494a4c3241",
+      "use": "用于适配设计与验收边界"
+    }
+  ],
+  "basis": "实际 world read_text 回执；hash 为工具返回的原始 UTF-8 字节 SHA256。所有 inherited 文件均只读，旧 baseline 加载器及旧测试入口不运行。"
+}

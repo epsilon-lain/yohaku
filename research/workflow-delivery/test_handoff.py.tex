@@ -1,0 +1,176 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Stage-two real contract tests and explicitly synthetic edge cases."""
+import sys
+from pathlib import Path
+ROOT = Path(__file__).resolve().parent
+sys.dont_write_bytecode = True
+sys.path = [p for p in sys.path if Path(p or ".").resolve() != ROOT]
+import copy
+import json
+import shutil
+import subprocess
+import tempfile
+import unittest
+sys.dont_write_bytecode = True
+import importlib.util
+spec = importlib.util.spec_from_file_location("rerun", ROOT/"rerun.py")
+b = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(b)
+
+OUT = Path("/output")
+class Contract(unittest.TestCase):
+    def generate(self, root, out, expected=0):
+        out = Path(out)
+        p = subprocess.run([sys.executable, "-B", str(Path(root) / "rerun.py"),
+            "--evidence", str(out / "evidence.json"), "--brief", str(out / "brief.md"),
+            "--provenance", str(out / "provenance.json")], cwd=out, capture_output=True)
+        self.assertEqual(p.returncode, expected, p.stderr.decode())
+        return p
+
+    def test_01_frozen_origin_and_independent_line_oracle(self):
+        meta, body, core = b.load_inputs()
+        value = b.make_evidence(meta, body, core)
+        lines = body.splitlines(keepends=True)
+        self.assertEqual(len(value["citations"]), 4)
+        expected_queries = ["2. 按当前工程源码准备独立副本", "缺少编译器/缓存时",
+                            chr(96)+"yohaku-test"+chr(96)+" 执行", "源与自动检查通过仅表示自动部分通过"]
+        for row, query in zip(value["citations"], expected_queries):
+            i = next(i for i, line in enumerate(lines) if query in line)
+            self.assertEqual(row, dict(line_start=i+1, line_end=i+1, snippet=lines[i],
+                                      citation_status="unknown"))
+        self.assertEqual(value["source"], "README_DEVELOPMENT.md.tex")
+        self.assertEqual(value["source_version"], b.sha((b.ROOT/"input/source.tex").read_bytes()))
+        brief = b.render_brief(value)
+        for row in value["citations"]:
+            self.assertIn(row["snippet"], brief)
+            self.assertIn(value["source_version"], brief)
+
+    def test_02_cli_roundtrip_determinism_cwd_and_saved_delivery(self):
+        with tempfile.TemporaryDirectory(dir=OUT) as directory:
+            self.generate(b.ROOT, directory)
+            paths = [Path(directory)/p for p in ("evidence.json", "brief.md", "provenance.json")]
+            first = tuple(p.read_bytes() for p in paths)
+            self.assertEqual(first, b.payloads())
+            self.generate(b.ROOT, directory)
+            self.assertEqual(first, tuple(p.read_bytes() for p in paths))
+            for name, raw in zip(("evidence.json", "brief.md", "provenance.json"), first):
+                delivered = b.ROOT/name
+                if delivered.exists():
+                    self.assertEqual(delivered.read_bytes(), raw, "managed delivery must match rerun")
+
+    def test_03_evidence_tamper_rejected(self):
+        meta, body, core = b.load_inputs()
+        original = b.make_evidence(meta, body, core)
+        for key, bad in [("snippet", "forged\n"), ("line_start", True), ("line_end", 9000),
+                         ("citation_status", "exists"), ("citation_status", "missing")]:
+            value = copy.deepcopy(original)
+            value["citations"][0][key] = bad
+            with self.subTest(key=key, bad=bad), self.assertRaises(ValueError):
+                b.verify_evidence(value, meta, body)
+        for key, bad in [("source_version", b.sha(body.encode())), ("source", "other.tex"),
+                         ("citations", [])]:
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                b.verify_evidence(dict(original, **{key:bad}), meta, body)
+        with self.assertRaises(ValueError):
+            json.loads('{"a":1,"a":2}', object_pairs_hook=b.unique)
+
+    def test_04_synthetic_crlf_unicode_and_fences(self):
+        _, _, core = b.load_inputs()
+        text = "\r\nStraße\r\n" + chr(96)*8 + "\r\nTAIL"
+        for query, expected in [
+            ("strasse", ("Straße\r\n", 2, 2)),
+            ("sse\r\n"+chr(96)*3, ("Straße\r\n"+chr(96)*8+"\r\n", 2, 3)),
+            ("tail", ("TAIL", 4, 4))]:
+            self.assertEqual(core.snippet(text, query), expected)
+        rendered = b.fence(chr(96)*8+"\r\nTAIL")
+        self.assertTrue(rendered.startswith(chr(96)*9+"text\n"))
+        self.assertIn(chr(96)*8+"\r\nTAIL\n", rendered)
+
+    def test_05_tampered_isolated_inputs_fail_before_outputs(self):
+        for name in ("input/document.md", "input/source.tex", "input/metadata.json",
+                     "inherited/retriever_core.py", "inherited/EXPERIENCE.md"):
+            with self.subTest(name=name), tempfile.TemporaryDirectory(dir=OUT) as directory:
+                root = Path(directory)/"root"
+                root.mkdir()
+                shutil.copyfile(b.ROOT/"rerun.py", root/"rerun.py")
+                for asset in b.SEALS:
+                    target = root/asset
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(b.ROOT/asset, target)
+                target = root/name
+                target.write_bytes(target.read_bytes()+b" ")
+                dest = Path(directory)/"dest"
+                dest.mkdir()
+                self.generate(root, dest, expected=2)
+                self.assertEqual(list(dest.iterdir()), [])
+
+    def test_06_output_safety_and_overwrite(self):
+        with tempfile.TemporaryDirectory(dir=OUT) as directory:
+            p = Path(directory)
+            common = [p/"e", p/"b", p/"p"]
+            for target in (b.ROOT/"rerun.py", b.ROOT/"input/document.md",
+                           b.ROOT/"inherited/EXPERIENCE.md", b.ROOT/"project.json"):
+                with self.subTest(target=target), self.assertRaises(ValueError):
+                    b.output_targets([target, common[1], common[2]])
+            for paths in ([common[0]]*3, [p/"missing/e", common[1], common[2]]):
+                with self.assertRaises(ValueError):
+                    b.output_targets(paths)
+            alias = p/"alias"
+            alias.symlink_to(b.ROOT/"input", target_is_directory=True)
+            with self.assertRaises(ValueError):
+                b.output_targets([alias/"document.md", common[1], common[2]])
+
+    def test_07_read_use_records_and_provenance(self):
+        records = json.loads((b.ROOT/"READ-REUSE.json").read_bytes())["records"]
+        self.assertEqual(len(records), 6)
+        for row in records:
+            self.assertEqual(b.sha((b.ROOT/row["path"]).read_bytes()), row["sha256"])
+        provenance = b.make_provenance()
+        self.assertEqual(len(provenance), 6)
+        for prefix in ("inherited_tool", "experience", "delivered_tool"):
+            path = provenance[prefix+"_path"]
+            self.assertFalse(Path(path).is_absolute())
+            self.assertEqual(b.sha((b.ROOT/path).read_bytes()), provenance[prefix+"_sha256"])
+
+    def test_08_no_frozen_input_mutation(self):
+        for name, digest in b.SEALS.items():
+            self.assertEqual(b.sha((b.ROOT/name).read_bytes()), digest)
+        self.assertFalse((b.ROOT/"inherited/__pycache__").exists())
+
+def main():
+    OUT.mkdir(exist_ok=True)
+    result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Contract))
+    report = dict(ok=result.wasSuccessful(), tool_version=b.VERSION, tests_run=result.testsRun,
+                  failures=[dict(test=str(t), traceback=e) for t,e in result.failures],
+                  errors=[dict(test=str(t), traceback=e) for t,e in result.errors],
+                  real_documents=1, citations=4, reference_status="unknown",
+                  synthetic_only="CRLF, Unicode expansion, long fences and isolated tampering")
+    (OUT/"test-report.json").write_bytes(b.json_bytes(report))
+    if not result.wasSuccessful():
+        print(json.dumps(report))
+        return 1
+    code = b.main(["--evidence", str(OUT/"evidence.json"), "--brief", str(OUT/"brief.md"),
+                   "--provenance", str(OUT/"provenance.json")])
+    if code:
+        return code
+    print(json.dumps(dict(report=report, delivery_files={
+        name:(OUT/name).read_bytes().decode("utf-8")
+        for name in ("evidence.json", "brief.md", "provenance.json", "test-report.json")
+    }), ensure_ascii=False))
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-delivery/test_handoff.py"
+```

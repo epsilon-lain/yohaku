@@ -1,0 +1,23 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+# Review evidence: selected traces
+
+This package publishes redacted projections of selected **work-task** events for the paper *Review Creation, Receipt, and Adoption in Yohaku Agent Workflows*. It contains 43 indexed trace rows (T1-A, T2-A, T2-B, T2-C), the case audit and the 73 projections referenced by that audit. Round 2/3 are archive labels; earlier rounds are outside the paper. Other trial details and the complete original archive are not included.
+
+The host preset one lead per stage, permissions, a shared group budget, inputs and control expectations. Creating or contacting a peer, completing a check, reading or adopting feedback, and re-reading after a modification are separate observations. An assigned relationship, an invitation, self-test or final product success does not establish peer review. T2-B retains the after_seq cursor and version distinction; T2-C records a common-input defect as a possible contributing factor, not an established cause. Engineering stop testing is not observed autonomous stopping in the formal trials. The audit also preserves failure, unknown and missing observations.
+
+The included files are redacted projections, not original complete chats or a claim of a replayable private world. Source IDs are pseudonyms; original raw-file and line SHA-256 values are anchors to the retained private archive. Those hashes alone do not enable a public reader to reconstruct or independently authenticate unavailable originals. Times are recorded host observations, not independent timestamp attestations. For the exact quotations in context see the paper's Appendix C.
+
+Run `python3 research/review-evidence/verify.py` from the repository root. The verifier checks checksums, 43 trace-to-projection source/line links, audit references, schema and a limited local privacy-pattern scan. It cannot prove every interpretation or guarantee complete anonymization. No model, internet access or original private data is required.
+````
+
+## 输出与关联
+```yaml
+output: "research/review-evidence/README.md"
+```

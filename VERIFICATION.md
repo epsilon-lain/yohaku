@@ -119,3 +119,6 @@ lack standalone notice files; see THIRD_PARTY_NOTICES.md. Fonts and prebuilt
 programs are excluded. No claim is made that this source preparation completes
 a future binary-distribution license audit, cross-platform test or new real-model
 test of the clean configuration.
+## Workflow snapshot offline verification
+
+The public export has a eight-test synthetic suite for monetary reservation, cross-batch cumulative caps, duplicate/unknown POST handling, model inheritance and exact-node stop. A separate 21-check temporary-world test exercises actual Loom, shared `.tex`, revision conflict handling and Project/Task using supplied local binaries. The independently accepted stage-two handoff tool has eight offline tests and a separate CLI execution against one frozen project document. The trace checker verifies 43 selected index/projection links and case-audit references. These are mechanical or synthetic checks, not new model experiments or proof of autonomous review. Exact current checks are in `research/workflow-runtime/README.md`.

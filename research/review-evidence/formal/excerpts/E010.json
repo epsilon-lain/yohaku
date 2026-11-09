@@ -1,0 +1,97 @@
+{
+  "original_source": "Sf59000f2c8c3fd",
+  "original_line": 11,
+  "payload": {
+    "task_id": "model-task-933e90f9dac71d311b2a15af787d19eb",
+    "node_id": "ai-node-ed1dd66297bf172176aea169",
+    "tool": "write_document",
+    "call_id": "exec-200d8782-e9e7-494a-b05c-2de92830bb1f",
+    "line": 325,
+    "reference": "evidence/tasks/model-task-933e90f9dac71d311b2a15af787d19eb.events.jsonl:325",
+    "at": 1794045313.377,
+    "started_at": 1794045313.019,
+    "observed_at": 1794045314.281215,
+    "timing_unknown": false,
+    "source": "files/work/UPSTREAM-REVIEW.json.tex",
+    "ok": true,
+    "output_revision": "a1d8cf58a2dcfd45877279b613d913ad127d3264d1e252fadc03993418ef3b54",
+    "input_revision": "b45fada0c48a3530e0741db97475d0cb0d04c88c1c45a5eaba07794eb9c0a66e",
+    "body_sha256": "289c6a5fd4cdf079e78ddb01eb81d33028c8616f67e2f12b83582272800455ca",
+    "body": "{\n  \"format\": \"yohaku-r3-upstream-review/1\",\n  \"nature\": \"Independent JS computation from raw observations compared to actual downstream Python task stdout; no historical task replay\",\n  \"audit_source\": \"files/work/audit.py.tex\",\n  \"audit_revision\": \"315c18441bfe10230c40704eac5781e75c05e3f3045270d37b76e28bbfbbaaa9\",\n  \"results\": [\n    {\n      \"input_version\": \"v1\",\n      \"task_id\": \"project-task-e370856c121334c3df84e6fded0c15df\",\n      \"output_complete\": true,\n      \"read_state\": \"complete\",\n      \"exit_code\": 0,\n      \"stdout_sha256\": \"cfef63ab93e1c53d8b68c7479ed9d40ce3ddc037eb66cdd4ce95e56a2d193dc9\",\n      \"matches_upstream_independent_algorithm\": true,\n      \"expected_input_sha256\": \"efbe374dacd7c225e541a5fbb210af3a2625c209c58794ec5545dc8992c96e22\",\n      \"events_source\": {\n        \"source\": \"files/work/EVENTS-v1.json.tex\",\n        \"revision\": \"68c8c2c311aa498e2af7769d527bd315aafa4dfa7761dd8e8fa65a6b82bca29b\"\n      }\n    },\n    {\n      \"input_version\": \"v2\",\n      \"task_id\": \"project-task-79ea37fb581977c44209f98ed4c898b2\",\n      \"output_complete\": true,\n      \"read_state\": \"complete\",\n      \"exit_code\": 0,\n      \"stdout_sha256\": \"a60a77c43d8efcf36ceeb7dc418973e48b59ef66ae9e13a9a908cde8184954ad\",\n      \"matches_upstream_independent_algorithm\": true,\n      \"expected_input_sha256\": \"42f783f16004957b31b3614e321b6b47399e5ab5a66fef93b7a86802b744ca38\",\n      \"events_source\": {\n        \"source\": \"files/work/EVENTS-v2.json.tex\",\n        \"revision\": \"ad1a73c4893792370f54e7d6adbcc5ae790c62c426413e04b15f03f90a789910\"\n      }\n    },\n    {\n      \"input_version\": \"v3\",\n      \"task_id\": \"project-task-d0fbfae2b198fbaccea782733364238b\",\n      \"output_complete\": true,\n      \"read_state\": \"complete\",\n      \"exit_code\": 0,\n      \"stdout_sha256\": \"2eee6bd784aefec3129ce525358572f0b2180711ba465aee3b0ac4078642c5c2\",\n      \"matches_upstream_independent_algorithm\": true,\n      \"expected_input_sha256\": \"99503de74ea993f5832604abf8d6fe6bf900ff4bc03ec3067dc6b25b1cfc55b0\",\n      \"events_source\": {\n        \"source\": \"files/work/EVENTS-v3.json.tex\",\n        \"revision\": \"70de5851d9914e774e3abf147c82e12f5487b92690b84b3c3c351c476f72476e\"\n      }\n    }\n  ],\n  \"limitations\": \"Static script check and exhaustive field comparison for these three real input versions; not a claim of exhaustive all-input testing.\",\n  \"saved_stats_checks\": [\n    {\n      \"version\": \"v1\",\n      \"source\": \"files/work/STATS-v1.json.tex\",\n      \"revision\": \"c80632145883521a53f7d0fcd522a4de444448f6a5a63c9144b88391dcf18c4f\",\n      \"body_equals_actual_stdout\": true,\n      \"sha256\": \"cfef63ab93e1c53d8b68c7479ed9d40ce3ddc037eb66cdd4ce95e56a2d193dc9\"\n    },\n    {\n      \"version\": \"v2\",\n      \"source\": \"files/work/STATS-v2.json.tex\",\n      \"revision\": \"2295e74a0d74e692bcf5325587ffef74e9e8a2f589983feee75438b7bde94556\",\n      \"body_equals_actual_stdout\": true,\n      \"sha256\": \"a60a77c43d8efcf36ceeb7dc418973e48b59ef66ae9e13a9a908cde8184954ad\"\n    },\n    {\n      \"version\": \"v3\",\n      \"source\": \"files/work/STATS-v3.json.tex\",\n      \"revision\": \"79d276744f384472bf773782b627f1a4bc60ae5bbc78c1af9a4339f7fa47dbd5\",\n      \"body_equals_actual_stdout\": true,\n      \"sha256\": \"2eee6bd784aefec3129ce525358572f0b2180711ba465aee3b0ac4078642c5c2\"\n    }\n  ],\n  \"artifact_hash_check\": \"Each stdout SHA256 equals statistics.json SHA256 recorded by actual project task_list for its matching task_id.\"\n}\n",
+    "actual": {
+      "format": "yohaku-r3-upstream-review/1",
+      "nature": "Independent JS computation from raw observations compared to actual downstream Python task stdout; no historical task replay",
+      "audit_source": "files/work/audit.py.tex",
+      "audit_revision": "315c18441bfe10230c40704eac5781e75c05e3f3045270d37b76e28bbfbbaaa9",
+      "results": [
+        {
+          "input_version": "v1",
+          "task_id": "project-task-e370856c121334c3df84e6fded0c15df",
+          "output_complete": true,
+          "read_state": "complete",
+          "exit_code": 0,
+          "stdout_sha256": "cfef63ab93e1c53d8b68c7479ed9d40ce3ddc037eb66cdd4ce95e56a2d193dc9",
+          "matches_upstream_independent_algorithm": true,
+          "expected_input_sha256": "efbe374dacd7c225e541a5fbb210af3a2625c209c58794ec5545dc8992c96e22",
+          "events_source": {
+            "source": "files/work/EVENTS-v1.json.tex",
+            "revision": "68c8c2c311aa498e2af7769d527bd315aafa4dfa7761dd8e8fa65a6b82bca29b"
+          }
+        },
+        {
+          "input_version": "v2",
+          "task_id": "project-task-79ea37fb581977c44209f98ed4c898b2",
+          "output_complete": true,
+          "read_state": "complete",
+          "exit_code": 0,
+          "stdout_sha256": "a60a77c43d8efcf36ceeb7dc418973e48b59ef66ae9e13a9a908cde8184954ad",
+          "matches_upstream_independent_algorithm": true,
+          "expected_input_sha256": "42f783f16004957b31b3614e321b6b47399e5ab5a66fef93b7a86802b744ca38",
+          "events_source": {
+            "source": "files/work/EVENTS-v2.json.tex",
+            "revision": "ad1a73c4893792370f54e7d6adbcc5ae790c62c426413e04b15f03f90a789910"
+          }
+        },
+        {
+          "input_version": "v3",
+          "task_id": "project-task-d0fbfae2b198fbaccea782733364238b",
+          "output_complete": true,
+          "read_state": "complete",
+          "exit_code": 0,
+          "stdout_sha256": "2eee6bd784aefec3129ce525358572f0b2180711ba465aee3b0ac4078642c5c2",
+          "matches_upstream_independent_algorithm": true,
+          "expected_input_sha256": "99503de74ea993f5832604abf8d6fe6bf900ff4bc03ec3067dc6b25b1cfc55b0",
+          "events_source": {
+            "source": "files/work/EVENTS-v3.json.tex",
+            "revision": "70de5851d9914e774e3abf147c82e12f5487b92690b84b3c3c351c476f72476e"
+          }
+        }
+      ],
+      "limitations": "Static script check and exhaustive field comparison for these three real input versions; not a claim of exhaustive all-input testing.",
+      "saved_stats_checks": [
+        {
+          "version": "v1",
+          "source": "files/work/STATS-v1.json.tex",
+          "revision": "c80632145883521a53f7d0fcd522a4de444448f6a5a63c9144b88391dcf18c4f",
+          "body_equals_actual_stdout": true,
+          "sha256": "cfef63ab93e1c53d8b68c7479ed9d40ce3ddc037eb66cdd4ce95e56a2d193dc9"
+        },
+        {
+          "version": "v2",
+          "source": "files/work/STATS-v2.json.tex",
+          "revision": "2295e74a0d74e692bcf5325587ffef74e9e8a2f589983feee75438b7bde94556",
+          "body_equals_actual_stdout": true,
+          "sha256": "a60a77c43d8efcf36ceeb7dc418973e48b59ef66ae9e13a9a908cde8184954ad"
+        },
+        {
+          "version": "v3",
+          "source": "files/work/STATS-v3.json.tex",
+          "revision": "79d276744f384472bf773782b627f1a4bc60ae5bbc78c1af9a4339f7fa47dbd5",
+          "body_equals_actual_stdout": true,
+          "sha256": "2eee6bd784aefec3129ce525358572f0b2180711ba465aee3b0ac4078642c5c2"
+        }
+      ],
+      "artifact_hash_check": "Each stdout SHA256 equals statistics.json SHA256 recorded by actual project task_list for its matching task_id."
+    }
+  }
+}

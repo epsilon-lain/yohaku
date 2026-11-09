@@ -1,0 +1,337 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Project-scoped .tex associations and immutable versions over existing Loom.
+
+No model/provider, permission, budget or acceptance implementation lives here.
+"""
+import contextlib,fcntl,hashlib,json,os,re,time,subprocess,tempfile
+from pathlib import Path,PurePosixPath
+
+VERSION='shared-tex-capability/3'
+def digest(raw):return hashlib.sha256(raw).hexdigest()
+def _relative(source):
+    p=PurePosixPath(source)
+    if not isinstance(source,str)or p.is_absolute()or'..'in p.parts or not source.startswith('files/')or not source.endswith('.tex'):
+        raise ValueError('Use an authorized world-relative files/... .tex source')
+    return p
+def _root(world,state_dir=None):
+    if state_dir is None:
+        from yohaku_codex_tasks import state_root
+        state_dir=state_root()
+    p=Path(state_dir)/'shared-tex'/digest(str(Path(world).resolve()).encode())
+    p.mkdir(parents=True,exist_ok=True,mode=0o700)
+    for part in (p.parent.parent,p.parent,p):
+        if part.is_symlink():raise ValueError('Shared tex store must not use symlinks')
+    return p
+@contextlib.contextmanager
+def _index(world,state_dir=None):
+    root=_root(world,state_dir)
+    with(root/'LOCK').open('a+b')as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        path=root/'index.json'
+        value=json.loads(path.read_bytes())if path.exists()else{'format':VERSION,'world':str(Path(world).resolve()),'sources':{},'links':[]}
+        if value['world']!=str(Path(world).resolve()):raise ValueError('Shared tex world mismatch')
+        before=json.dumps(value,sort_keys=True)
+        yield root,value
+        if json.dumps(value,sort_keys=True)!=before:
+            temp=path.with_suffix('.tmp');temp.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n');temp.replace(path)
+def _blob(root,revision,raw=None):
+    if not isinstance(revision,str)or re.fullmatch('[a-f0-9]{64}',revision)is None:raise ValueError('Expected exact SHA256 revision')
+    folder=root/'blobs';folder.mkdir(exist_ok=True,mode=0o700);path=folder/(revision+'.tex')
+    if folder.is_symlink()or path.is_symlink():raise ValueError('Shared tex blob symlink refused')
+    if raw is not None:
+        if digest(raw)!=revision:raise ValueError('Shared tex revision mismatch')
+        if not path.exists():
+            with path.open('xb')as stream:stream.write(raw)
+    if not path.is_file()or digest(path.read_bytes())!=revision:raise ValueError('Shared tex version missing or corrupt')
+    return path
+def capture(world,source,doc,*,actor=None,operation='read',state_dir=None):
+    _relative(source);raw=doc['text'].encode();revision=digest(raw)
+    with _index(world,state_dir)as(root,index):
+        _blob(root,revision,raw)
+        item=index['sources'].setdefault(source,{'versions':{}})
+        version=item['versions'].setdefault(revision,{'body':doc.get('body'),'observations':[]})
+        observation={'actor_node_id':actor,'operation':operation}
+        if observation not in version['observations']:version['observations'].append(observation)
+        item['current_observed_revision']=revision
+    return revision
+def _inside(source,project_root):return source.startswith(project_root.rstrip('/')+'/')
+def import_source_version(world,source,raw_bytes,*,project_root,state_dir=None,body=None,origin_reference=None):
+    """Host-only preservation of approved original public source, never sync it."""
+    _relative(source)
+    if not _inside(source,project_root):raise ValueError('Imported source outside explicit project')
+    if not isinstance(raw_bytes,bytes):raise ValueError('Original source must be exact bytes')
+    text=raw_bytes.decode();revision=digest(raw_bytes)
+    if body is None:
+        match=re.search(r'(?m)^## 正文\s*\n(`{3,})[^\n]*\n',text)
+        if match:
+            end=text.find('\n'+match[1],match.end())
+            if end>=0:body=text[match.end():end]
+    with _index(world,state_dir)as(root,index):
+        _blob(root,revision,raw_bytes);item=index['sources'].setdefault(source,{'versions':{}})
+        item['versions'].setdefault(revision,{'body':body,'observations':[{'actor_node_id':None,'operation':'host_preserve_original_source'}],
+            'origin_reference':origin_reference})
+    return {'source':source,'revision':revision,'citation':source+'@'+revision,'immutable_snapshot':True,'source_file_written':False}
+def export_public_project(world,project_root,destination,*,state_dir=None,sources=None):
+    _relative(project_root.rstrip('/')+'/validation.tex');destination=Path(destination)
+    if destination.exists()and any(destination.iterdir()):raise ValueError('Export destination must be empty; no version overwrite')
+    destination.mkdir(parents=True,exist_ok=True);rows=[]
+    selected=set(sources)if sources is not None else None
+    # A closed project's public current notes need not have been linked, read,
+    # or declared in a successful Task. Host supplies an explicit public allowlist.
+    current={};current_raw={}
+    for source in selected or():
+        _relative(source)
+        if not _inside(source,project_root):raise ValueError('Export source outside explicit project')
+        path=Path(world)
+        for part in PurePosixPath(source).parts:
+            path=path/part
+            if path.is_symlink():raise ValueError('Export source symlink refused')
+        if path.is_file():
+            raw=path.read_bytes();current[source]=digest(raw);current_raw[source]=raw
+    # Export is strictly read-only with respect to the old HOME/world. Do not
+    # create LOCK/index/directories or capture current data back into a sealed run.
+    if state_dir is None:
+        state_dir=Path.home()/'.local/state/yohaku/model-tasks'
+    root=Path(state_dir)/'shared-tex'/digest(str(Path(world).resolve()).encode())
+    if any(p.is_symlink()for p in(root.parent.parent,root.parent,root,root/'index.json')):raise ValueError('Export archive symlink refused')
+    index=json.loads((root/'index.json').read_bytes())if(root/'index.json').is_file()else{'sources':{},'links':[]}
+    if index.get('world',str(Path(world).resolve()))!=str(Path(world).resolve()):raise ValueError('Export world mismatch')
+    entries=dict(index['sources'])
+    for source,raw in current_raw.items():
+        revision=digest(raw);item=json.loads(json.dumps(entries.get(source,{'versions':{}})))
+        if revision not in item['versions']:
+            text=raw.decode();body=None;match=re.search(r'(?m)^## 正文\s*\n(`{3,})[^\n]*\n',text)
+            if match:
+                end=text.find('\n'+match[1],match.end())
+                if end>=0:body=text[match.end():end]
+            item['versions'][revision]={'body':body,'observations':[{'actor_node_id':None,'operation':'read_only_public_current_export'}]}
+        entries[source]=item
+    for source,item in entries.items():
+            if not _inside(source,project_root)or selected is not None and source not in selected:continue
+            versions={}
+            for revision,value in item['versions'].items():
+                if current.get(source)==revision:raw=current_raw[source]
+                else:
+                    if re.fullmatch('[a-f0-9]{64}',revision)is None:raise ValueError('Invalid exported revision')
+                    old_blob=root/'blobs'/(revision+'.tex')
+                    if old_blob.is_symlink()or old_blob.parent.is_symlink():raise ValueError('Export blob symlink refused')
+                    raw=old_blob.read_bytes()
+                    if digest(raw)!=revision:raise ValueError('Exported old blob is corrupt')
+                target=destination/'blobs'/(revision+'.tex');target.parent.mkdir(exist_ok=True)
+                if not target.exists():target.write_bytes(raw)
+                versions[revision]={**value,'blob':'blobs/'+revision+'.tex'}
+            rows.append({'source_relative':str(PurePosixPath(source).relative_to(project_root)),
+                         'original_source':source,'versions':versions,'current_observed_revision':item.get('current_observed_revision'),
+                         'current_on_export_revision':current.get(source),'acceptance':'not_assessed_by_capability'})
+    allowed={r['original_source']for r in rows}
+    links=[x for x in index['links']if x['source']in allowed]
+    result={'format':'shared-tex-public-project-history/1','origin_world':str(Path(world).resolve()),
+            'origin_project_root':project_root,'sources':rows,'node_workfile_links':links,
+            'scope':'Selected authorized project sources only; no registry, chat, credentials or private HOME copied.'}
+    path=destination/'manifest.json';path.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    return {'manifest':str(path),'sha256':digest(path.read_bytes()),'sources':len(rows)}
+def import_public_project(world,project_root,bundle,*,state_dir=None,source_map=None):
+    _relative(project_root.rstrip('/')+'/validation.tex');bundle=Path(bundle).resolve()
+    manifest=json.loads((bundle/'manifest.json').read_bytes())
+    if manifest.get('format')!='shared-tex-public-project-history/1':raise ValueError('Unsupported shared tex export')
+    prepared=[];mapping={}
+    for row in manifest['sources']:
+        relative=row['source_relative']
+        if source_map is not None:
+            if relative not in source_map:continue
+            relative=source_map[relative]
+        target=project_root.rstrip('/')+'/'+relative;_relative(target)
+        if not _inside(target,project_root):raise ValueError('Import mapping outside project')
+        mapping[row['original_source']]=target
+        for revision,value in row['versions'].items():
+            expected='blobs/'+revision+'.tex'
+            if value.get('blob')!=expected:raise ValueError('Unexpected archive blob path')
+            path=bundle/expected
+            if path.is_symlink()or path.parent.is_symlink():raise ValueError('Import blob symlink refused')
+            raw=path.read_bytes()
+            if digest(raw)!=revision:raise ValueError('Imported tex bytes do not match revision')
+            prepared.append((target,revision,raw,value,row))
+    with _index(world,state_dir)as(root,index):
+        for source,revision,raw,value,row in prepared:
+            _blob(root,revision,raw);item=index['sources'].setdefault(source,{'versions':{}})
+            clean={k:v for k,v in value.items()if k!='blob'}
+            clean['origin_reference']={'source':row['original_source'],'revision':revision,'world':manifest['origin_world']}
+            prior=item['versions'].get(revision)
+            if prior is not None and prior.get('body')!=clean.get('body'):raise ValueError('Imported body conflicts with existing immutable version')
+            item['versions'].setdefault(revision,clean)
+            item['current_observed_revision']=row.get('current_observed_revision')
+        for link in manifest.get('node_workfile_links',[]):
+            if link['source']not in mapping:continue
+            imported={**link,'source':mapping[link['source']],'origin_node_id':link.get('node_id'),'imported':True}
+            if imported not in index['links']:index['links'].append(imported)
+    return {'imported_versions':len(prepared),'source_map':mapping,'manifest_sha256':digest((bundle/'manifest.json').read_bytes())}
+
+def install(ns):
+    if ns.get('SHARED_TEX_CAPABILITY_VERSION')==VERSION:return
+    Control=ns['Control'];MAIN=ns['MAIN'];definition=ns['definition'];S=ns['S']
+    from yohaku_node_workspace import Workspace as Scoped
+    original_init=Scoped.__init__;original_document=Scoped.document;original_execute=Scoped.execute
+    def scoped_init(self,workspace,node_context,persist=lambda **fields:None):
+        original_init(self,workspace,node_context,persist);self.shared_tex_actor=node_context.get('node_id')
+    def scoped_document(self,source,write=False):
+        # Documents need a valid registered source/route, not a successful
+        # generated-program receipt. ProjectTask still enforces generation=True.
+        self.path(source,write);doc=self.workspace.execute({'command':'read','source':source})
+        projects=self.projects.control.projects;entries=projects._entries()
+        captured=projects._document(source,entries,generation=False)
+        if digest(doc['text'].encode())!=captured['source_hash']:raise ValueError('Document changed during scoped source validation')
+        # Reuse Loom's parser on the exact captured bytes; never interpret YAML
+        # independently or trust a stale registry route after an external edit.
+        with tempfile.NamedTemporaryFile(suffix='.tex')as snapshot:
+            snapshot.write(doc['text'].encode());snapshot.flush()
+            parsed=subprocess.run([self.workspace.loom,'--json','inspect',snapshot.name],capture_output=True,text=True,timeout=30,cwd=self.root)
+        value=json.loads(parsed.stdout)
+        if parsed.returncode!=0 or value.get('ok')is not True:raise ValueError('Loom source inspection failed')
+        output=value['result']['routing']['output']
+        if entries[source].get('output')!=output:raise ValueError('Registered source output binding changed; no operation performed')
+        if source==self.memory:
+            if output!=source[:-4]:raise ValueError('Memory output binding changed')
+        elif source==self.archive:
+            if write or output!=source[:-4]:raise ValueError('Archive is read-only reference material')
+        else:self.path(output,write)
+        doc['shared_tex_read_mode']='existing_managed_document_parse_only'
+        if any(_inside(source,s['root'])for s in self.scopes):capture(self.root,source,doc,actor=getattr(self,'shared_tex_actor',None))
+        return doc
+    def scoped_execute(self,request):
+        result=original_execute(self,request)
+        if request.get('command')in('create','save','sync','write_text','adopt'):
+            source=request.get('source')or request.get('path')or(result.get('source')if isinstance(result,dict)else None)
+            if source and source.endswith('.tex')and any(_inside(source,s['root'])for s in self.scopes):
+                doc=original_document(self,source,False);capture(self.root,source,doc,actor=getattr(self,'shared_tex_actor',None),operation=request['command'])
+        return result
+    Scoped.__init__=scoped_init;Scoped.document=scoped_document;Scoped.execute=scoped_execute
+    def context(self):
+        with self.locked()as registry:node=dict(self.node(registry,self.actor))
+        return {'node_id':self.actor,'project_scopes':node.get('project_scopes',[]),'memory_source':node.get('memory_source'),'continuation':node.get('context')}
+    def scoped(self):return Scoped(self.workspace,context(self))
+    def authorized(self,source,write=False):return scoped(self).document(source,write)
+    def memory_node(self,value,node_id):
+        target=node_id or self.actor;node=self.node(value,target)
+        if not node.get('memory_source'):raise ValueError('No memory assigned')
+        if self.actor not in(MAIN,target):
+            own=self.node(value,self.actor)
+            guard=Scoped(self.workspace,{'node_id':self.actor,'project_scopes':own.get('project_scopes',[]),'memory_source':own.get('memory_source')})
+            guard.document(node['memory_source'],True)
+        return node
+    Control.memory_node=memory_node
+    old_read=Control.node_memory_read;old_write=Control.node_memory_write
+    def memory_read(self,node_id=None):
+        result=old_read(self,node_id)
+        if self.actor!=MAIN:
+            ctx=context(self)
+            if any(_inside(result['source'],s['root'])for s in ctx['project_scopes']):authorized(self,result['source'])
+        result['ownership_semantics']='Assigned node is primary maintainer; shared project authorization controls other participation.'
+        return result
+    def memory_write(self,revision,text,node_id=None):
+        # Capture the exact existing version before the original CAS write.
+        if self.actor!=MAIN:
+            with self.locked()as v:source=self.memory_node(v,node_id)['memory_source']
+            ctx=context(self)
+            if any(_inside(source,s['root'])for s in ctx['project_scopes']):authorized(self,source,True)
+        result=old_write(self,revision,text,node_id)
+        if self.actor!=MAIN:
+            ctx=context(self)
+            if any(_inside(result['source'],s['root'])for s in ctx['project_scopes']):authorized(self,result['source'])
+        return result
+    Control.node_memory_read=memory_read;Control.node_memory_write=memory_write
+    def node_workfile_link(self,source,revision,relation,node_id=None):
+        if relation not in('maintains','contributes','depends_on'):raise ValueError('Unsupported workfile relation')
+        target=node_id or self.actor
+        if self.actor not in(MAIN,target):raise ValueError('Link your own workfiles; main may initialize a node')
+        if self.actor==MAIN:
+            with self.locked()as v:n=dict(self.node(v,target))
+            doc=Scoped(self.workspace,{'node_id':target,'memory_source':n.get('memory_source'),'project_scopes':n.get('project_scopes',[])}).document(source)
+        else:doc=authorized(self,source)
+        current=digest(doc['text'].encode())
+        if revision!=current:raise ValueError('Stale workfile revision; re-read before linking')
+        link={'node_id':target,'source':source,'relation':relation,'linked_revision':revision,'linked_by':self.actor}
+        with self.locked()as v:
+            node=self.node(v,target);links=node.setdefault('workfiles',[])
+            if link not in links:links.append(link)
+        with _index(self.world)as(root,index):
+            if link not in index['links']:index['links'].append(link)
+        return {**link,'citation':source+'@'+revision,'grants_permission':False}
+    def node_workfiles(self,node_id=None,known_revisions=None):
+        known_revisions=known_revisions or{}
+        if not isinstance(known_revisions,dict):raise ValueError('known_revisions must map source to SHA256')
+        visible={n['node_id']for n in self.node_list()['nodes']}
+        with self.locked()as v:nodes=[dict(n)for n in v['nodes'].values()if n['node_id']in visible and(node_id is None or n['node_id']==node_id)]
+        rows=[];seen=set()
+        def append(link,historical=False):
+            try:doc=authorized(self,link['source'])
+            except ValueError:return
+            revision=digest(doc['text'].encode());source=link['source']
+            with _index(self.world)as(root,index):
+                metadata=index['sources'].get(source,{}).get('versions',{}).get(revision,{})
+            origin=metadata.get('origin_reference')or{}
+            classification=str(origin.get('classification',''))
+            host_namespace=bool(origin and origin.get('revision')!=revision and 'host'in classification.lower()and any(x in classification.lower()for x in('namespace','route')))
+            identity=link.get('origin_node_id')or link.get('node_id')
+            marker=(identity,source,link.get('relation'),link.get('linked_revision'),historical)
+            if marker in seen:return
+            seen.add(marker)
+            rows.append({**link,'current_revision':revision,'citation':source+'@'+revision,
+                'known_revision':known_revisions.get(source),
+                'changed_since_link':revision!=link.get('linked_revision'),
+                'changed_since_known':revision!=known_revisions[source]if source in known_revisions else None,
+                'maintainer_is_not_acl':True,'historical':historical,
+                'maintainer_status':'historical'if historical else'current_runtime_node',
+                'active_runtime_node':False if historical else True,
+                'origin_node_id':identity if historical else link.get('origin_node_id'),
+                'current_revision_origin_reference':origin or None,
+                'current_source_read_mode':doc.get('shared_tex_read_mode','existing_managed_document'),
+                'successful_generation_inferred':False,
+                'revision_change_attribution':'host_namespace_rebind'if host_namespace else'not_inferred_from_revision_difference',
+                'revision_difference_proves_AI_change':False})
+        for node in nodes:
+            links=list(node.get('workfiles',[]))
+            if node.get('memory_source'):links.insert(0,{'node_id':node['node_id'],'source':node['memory_source'],'relation':'maintains','linked_revision':node.get('memory_origin',{}).get('revision')})
+            for link in links:append(link)
+        # Imported links are historical data, not recreated runtime accounts.
+        # Their old maintainer UID must never act as an access-control filter.
+        with _index(self.world)as(root,index):imported=list(index.get('links',[]))
+        for link in imported:
+            if not link.get('imported'):continue
+            identity=link.get('origin_node_id')or link.get('node_id')
+            if node_id is not None and identity!=node_id and link.get('node_id')!=node_id:continue
+            append(link,True)
+        if node_id is not None and node_id not in visible and not rows:raise ValueError('No authorized historical workfiles for this node identity')
+        return {'workfiles':rows,'starts_models':False,'authorization':'Existing project scopes only; links grant no permission.'}
+    def workfile_version_read(self,source,revision):
+        _relative(source);guard=scoped(self);guard.path(source,False)
+        with _index(self.world)as(root,index):
+            version=index['sources'].get(source,{}).get('versions',{}).get(revision)
+            if version is None:raise ValueError('No archived exact version for this source; read current document first')
+            raw=_blob(root,revision).read_bytes()
+            return {'source':source,'revision':revision,'text':raw.decode(),'body':version.get('body'),
+                'citation':source+'@'+revision,'origin_reference':version.get('origin_reference'),
+                'immutable_snapshot':True,'scope':'Historical data only; does not execute or authorize old routing.'}
+    Control.node_workfile_link=node_workfile_link;Control.node_workfiles=node_workfiles
+    Control.workfile_version_read=workfile_version_read
+    # Control.call maps ai_* to method names.
+    new=[definition('ai_node_workfile_link','Associate YOUR node with an authorized .tex at an exact current revision. Maintainer/contributor/dependency is an index relation, not private ownership or a permission grant.',{'source':S,'revision':S,'relation':{'type':'string','enum':['maintains','contributes','depends_on']},'node_id':S},('source','revision','relation')),
+         definition('ai_node_workfiles','Discover related authorized node workfiles and current source@revision; compare known_revisions without starting a model. Sources remain shared under existing project scopes.',{'node_id':S,'known_revisions':{'type':'object','additionalProperties':{'type':'string'}}}),
+         definition('ai_workfile_version_read','Read exact archived .tex bytes/body by source@revision under current project authorization; never executes historical content.',{'source':S,'revision':S},('source','revision'))]
+    ns['TOOLS'].extend(new);ns['READ'].update(('ai_node_workfiles','ai_workfile_version_read'));ns['WRITE'].add('ai_node_workfile_link');ns['NAMES'].update(x['name']for x in new)
+    for tool in ns['TOOLS']:
+        if tool['name']in('ai_node_memory_read','ai_node_memory_write'):tool['description']+=' The assigned node is primary maintainer, not a privacy ACL: another node with the same project authorization may use this interface with its node_id.'
+    ns['NODE_INSTRUCTIONS']+=' Shared authorized work .tex files are live collaboration state. Discover ai_node_workfiles, associate files with ai_node_workfile_link, read exact source@revision, and use existing revision-checked document edits. A file maintained by another node is shared when project authorization permits; node links do not grant permissions. Re-read after CAS conflict; never overwrite source versions or infer review/adoption from file existence. Historical versions use ai_workfile_version_read. Messages can carry exact citations and ask related authorized nodes to participate; no predefined roles or forced peers.'
+    ns['SHARED_TEX_CAPABILITY_VERSION']=VERSION
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/yohaku_shared_tex.py"
+```

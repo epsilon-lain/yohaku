@@ -119,3 +119,6 @@ Thus navigation/editing/execution acceptance is assembled from **two real AI
 turns**, plus separate script and human observations. The clean source build
 and launch below are additional evidence, not a new physical IME or authenticated
 model test. There is no automatic credential import during preparation.
+## Workflow research snapshot (2026-11-09)
+
+The pre-event source package is the default application base. The later workflow work added host-coordinated nodes, group controls, shared versioned `.tex` access, model transport and checkpoint mechanisms in isolated candidates. `research/workflow-runtime/SOURCE-PROVENANCE.json` records original and exported hashes; `CONTROLLER-PROVENANCE.json` records the two path-parameterized controllers. The public mapping evidence is a selected projection, not the private raw response. The two portable host edits and controller path edits are offline-checked only; original real-run acceptance does not automatically validate the public port. The handoff delivery records its fixed producer-snapshot hashes in `research/workflow-delivery/ORIGINAL-SHA256.json`. User-specific accounts, grants, HOME and full worlds are excluded.

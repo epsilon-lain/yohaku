@@ -1,0 +1,5 @@
+{
+  "original_source": "S999eb6bb1b568a",
+  "original_line": 87,
+  "payload": "供应商HTTP次数：原始公开投影没有提供，保持未知而不是零。v1没有usage；v3实际10条观测（/observations/21,/23..28,/32,/39,/40）的receipt.usage带有source=thread/tokenUsage/updated及input/cached_input/output/reasoning_output/total_tokens，覆盖9个不同任务。例/observations/21/receipt/usage.total_tokens=17352，在/observations/32再次出现，是同一任务后续观测而非额外消耗证据。故可证明部分token计数存在，但不能将观测重复相加为全体用量，也不能据任务数、token数或清理确认推断供应商HTTP次数、全部付费调用、完整用量或费用。projection_contract未列usage，但真实receipt包含该字段，判断以实际字段为准。"
+}

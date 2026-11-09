@@ -1,0 +1,28 @@
+{
+  "original_source": "S56c09d02445c86",
+  "original_line": 357,
+  "payload": {
+    "event": "tool_result",
+    "tool": "yohaku_ai_messages",
+    "arguments": {
+      "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+      "after_seq": 15,
+      "limit": 10
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "chat_id": "ai-chat-bf5981b3f59d1ad6fe683f91",
+        "participants": [
+          "ai-node-264b7b0b92728e8542dd5143",
+          "ai-node-5289044b8b7b62c7ad37746f",
+          "main"
+        ],
+        "messages": [],
+        "next_seq": 15,
+        "has_more": false,
+        "starts_models": false
+      }
+    }
+  }
+}

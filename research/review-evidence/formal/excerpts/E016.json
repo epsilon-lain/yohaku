@@ -1,0 +1,25 @@
+{
+  "original_source": "S292c3b3c5fe291",
+  "original_line": 35,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 158,
+    "record": {
+      "timestamp": "2026-11-07T09:54:51.083Z",
+      "ordinal": 157,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_0b0e1ff73cb309be016aeef55dee8087d098390842ee4af8d8",
+        "status": "completed",
+        "call_id": "call_8658956b17514e5a928371761dd23a22",
+        "name": "exec",
+        "input": "function canon(x){if(Array.isArray(x))return \"[\"+x.map(canon).join(\",\")+\"]\";if(x!==null&&typeof x===\"object\")return \"{\"+Object.keys(x).sort().map(k=>JSON.stringify(k)+\":\"+canon(x[k])).join(\",\")+\"}\";return JSON.stringify(x);}\nconst sha=eval(\"(\"+load(\"shaSource\")+\")\");\nconst reviews=[];\nfor(const v of [\"v1\",\"v2\",\"v3\"]){const out=load(\"run-output-\"+v).result,actual=JSON.parse(out.text),ev=load(\"events-\"+v),expected={format:\"yohaku-r3-incremental-stats/1\",input_version:v,input_sha256:ev.input_sha256,...load(\"summaries\")[v],tasks:ev.tasks.map(t=>({task_id:t.task_id,target_kind:t.target_kind,latest_observation_id:t.latest.observation_id,reference:t.latest.reference,latest_observation_order:t.latest.observation_order,temporal_basis:t.temporal_basis,status:t.latest.status,execution:t.latest.execution,cancel_requested:t.latest.cancel_requested,cancel_confirmed:t.latest.cancel_confirmed,cleanup_confirmed:t.latest.cleanup_confirmed,native_reaped_count:t.latest.native_reaped_count,receipt_sha256:t.latest.receipt_sha256}))};\nconst matched=canon(actual)===canon(expected);const row={input_version:v,task_id:out.task_id,output_complete:out.output_complete,read_state:out.read_state,exit_code:out.exit_code,stdout_sha256:sha(out.text),matches_upstream_independent_algorithm:matched,expected_input_sha256:ev.input_sha256,events_source:load(\"events-source-\"+v)};reviews.push(row);\nif(!matched){text({actual,expected});throw Error(\"mismatch\");}\n}\nstore(\"reviews\",reviews);text(reviews);\ntext(await tools.yohaku_create_document({directory:\"files/work\",name:\"UPSTREAM-REVIEW.json\",body:JSON.stringify({format:\"yohaku-r3-upstream-review/1\",nature:\"Independent JS computation from raw observations compared to actual downstream Python task stdout; no historical task replay\",audit_source:\"files/work/audit.py.tex\",audit_revision:load(\"audit-read\").revision,results:reviews,limitations:\"Static script check and exhaustive field comparison for these three real input versions; not a claim of exhaustive all-input testing.\"},null,2)+\"\\n\"}));\ntext(await tools.yohaku_ai_messages({chat_id:\"ai-chat-bf5981b3f59d1ad6fe683f91\",after_seq:8}));\ntext(await tools.yohaku_list_directory({path:\"files/work\"}));\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b56a-9156-7040-9898-4d5bb36fe5d7",
+          "create_time": 1794045277.9512928
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "group_tests_derived_from_sha256": "66cc0b72dba6b83b04d35acee7d3a477ad1c981b25a61167c03913f0dd6d7ccb",
+  "scope": "identity inheritance and exact stop; removed limits are not asserted",
+  "accounting_fixtures": "synthetic; no model or network calls"
+}

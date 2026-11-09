@@ -1,0 +1,25 @@
+{
+  "original_source": "S8d2707f7e64426",
+  "original_line": 7,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 39,
+    "record": {
+      "timestamp": "2026-11-07T09:45:24.978Z",
+      "ordinal": 38,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_03fe8b4de4d2b9a1016aeef330438c87d0b5983aea81905656",
+        "status": "completed",
+        "call_id": "call_f9ee0021b96e4f4fb5c1f08ef9e25587",
+        "name": "exec",
+        "input": "const raw=load(\"fullInputRead\");const r=typeof raw===\"string\"?JSON.parse(raw):raw;store(\"fullReadParsed\",r);text({ok:r.ok,result_keys:Object.keys(r.result||{}),text_type:typeof r.result?.text});\nif(typeof r.result?.text===\"string\"){const d=JSON.parse(r.result.text);store(\"frozen\",d);store(\"inputRevision\",r.result.revision);text({format:d.format,provenance:d.provenance,episodes:d.episodes.map((e,i)=>({i,source_pointer:e.source_pointer,receipt_keys:Object.keys(e.receipts)}))});}\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b565-9b06-7852-b3dd-65140e178f67",
+          "create_time": 1794044720.2715442
+        }
+      }
+    }
+  }
+}

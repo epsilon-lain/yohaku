@@ -1,0 +1,25 @@
+{
+  "original_source": "Sf456be4e6ff845",
+  "original_line": 21,
+  "payload": {
+    "source": "[PRIVATE_PATH]",
+    "source_line": 109,
+    "record": {
+      "timestamp": "2026-11-07T09:25:49.483Z",
+      "ordinal": 108,
+      "type": "response_item",
+      "payload": {
+        "type": "custom_tool_call",
+        "id": "ctc_067b9467756af992016aeeee96bd0087d09e63e597e34e9518",
+        "status": "completed",
+        "call_id": "call_e50c427a58b14b699b4fd13729a02ab5",
+        "name": "exec",
+        "input": "text(await tools.yohaku_ai_message_send({chat_id:\"ai-chat-bf5981b3f59d1ad6fe683f91\",request_id:\"downstream-independent-v3-raw\",text:\"已独立读v3新增原始回执后形成判断（尚未展开EVENTS）：/29,/30,/31分别与/18,/19,/20投影一致应保留首次；/41,/42,/43与/33,/35,/37相同归档观测副本，合计6重复。/32 execution从/21的running变ended，不能去重；/33,/35,/37原始缺execution/cancel字段，应unknown3而非继承false。最终18任务done14/cancelled4、清理18、known reaped9/native unknown9，与实际通用脚本输出一致。现在读取并消费EVENTS逐任务对照。\"}));\nfor(const v of [\"v1\",\"v2\",\"v3\"]) text({v,result:await tools.yohaku_read_range({path:`files/work/EVENTS-${v}.json.tex`,view:\"body\"})});\ntext(await tools.yohaku_read_document({source:\"files/work/REPORT.md.tex\"}));\n",
+        "internal_chat_message_metadata_passthrough": {
+          "turn_id": "01a1b551-8288-7233-a26c-877239f9484a",
+          "create_time": 1794043542.7463427
+        }
+      }
+    }
+  }
+}

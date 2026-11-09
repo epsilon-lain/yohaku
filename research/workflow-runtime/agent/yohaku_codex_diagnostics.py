@@ -1,0 +1,298 @@
+"""Bounded, private Codex turn diagnostics; no conversation or tool payload log."""
+import datetime
+import json
+import os
+from pathlib import Path
+import re
+import stat
+import threading
+import uuid
+
+DIRECTORY = Path.home() / '.local/state/yohaku/codex-diagnostics'
+
+
+class StderrCapture:
+    def __init__(self, stream):
+        self.stream = stream
+        self.tail = b''
+        self.total = 0
+        self.lock = threading.Lock()
+        self.thread = None
+        if stream is not None:
+            self.thread = threading.Thread(target=self.read, daemon=True)
+            self.thread.start()
+
+    def read(self):
+        try:
+            while True:
+                chunk = self.stream.read1(4096) if hasattr(self.stream, 'read1') else self.stream.read(4096)
+                if not chunk:
+                    break
+                with self.lock:
+                    self.total += len(chunk)
+                    self.tail = (self.tail + chunk)[-16384:]
+        except (OSError, ValueError):
+            pass
+
+    def join(self):
+        if self.thread is not None:
+            self.thread.join(timeout=2)
+            if not self.thread.is_alive():
+                self.stream.close()
+
+    def snapshot(self):
+        with self.lock:
+            return self.tail.decode('utf-8', errors='replace'), self.total
+
+
+class TurnDiagnostics:
+    def __init__(self, initial):
+        self.secrets = []
+        self.payloads = []
+        self.protect(initial.get('prompt'))
+        for item in initial.get('history', []) if isinstance(initial.get('history'), list) else []:
+            if isinstance(item, dict):
+                self.protect(item.get('content'))
+        config = initial.get('config', {})
+        if isinstance(config, dict) and isinstance(config.get('api_key'), str):
+            self.secrets.append(config['api_key'])
+        self.data = dict(format='yohaku-codex-diagnostic/1', session_id=uuid.uuid4().hex,
+                         started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                         worker_pid=os.getpid(), thread_id=None, turn_id=None, status='in_progress',
+                         stage='initializing', failure_stage=None, errors=[], tools=[], tool_count=0,
+                         provider_requests=[], provider_request_count=0, process_exit_code=None,
+                         process_killed_for_cleanup=False, stderr_summary='', stderr_bytes_seen=0)
+        self.path = None
+        self.save_error = None
+        try:
+            directory = Path(DIRECTORY)
+            directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+            metadata = directory.lstat()
+            if not stat.S_ISDIR(metadata.st_mode) or metadata.st_uid != os.getuid() or stat.S_IMODE(metadata.st_mode) & 0o077:
+                raise OSError('Unsafe diagnostic directory')
+            self.path = directory / (self.data['session_id'] + '.json')
+        except OSError:
+            self.save_error = 'Private diagnostic directory unavailable; no diagnostic file saved'
+        self.save()
+
+    def protect(self, value):
+        if isinstance(value, str) and len(value) >= 8:
+            self.payloads.append(value)
+
+    def text(self, value, limit=512):
+        text = str(value)
+        for private in sorted(set(self.secrets + self.payloads), key=len, reverse=True):
+            if private:
+                text = text.replace(private, '[REDACTED]')
+        text = re.sub(r'\x1b\[[0-9;]*[A-Za-z]', '', text)
+        text = re.sub(r'(?i)\bBearer\s+[^\s,;"\']+', 'Bearer [REDACTED]', text)
+        text = re.sub(r'\b(?:sk-|sess-)[A-Za-z0-9_-]+', '[REDACTED]', text)
+        text = re.sub(r'\beyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\b', '[REDACTED]', text)
+        text = re.sub(r'(?i)(["\']?(?:api[_-]?key|authorization|access[_-]?token|refresh[_-]?token|token|secret|password|prompt|input|messages|conversation|body)["\']?\s*[:=]\s*)(?:"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|[^\r\n,;]+)', r'\1[REDACTED]', text)
+        text = re.sub(r'https?://[^\s"\'<>]+', '[URL REDACTED]', text)
+        text = re.sub(r'[\x00-\x08\x0b-\x1f\x7f]', '', text)
+        return text[:limit] + (' [truncated]' if len(text) > limit else '')
+
+    def location(self):
+        return str(self.path) if self.path is not None and self.save_error is None else self.save_error
+
+    def save(self):
+        if self.path is None:
+            return
+        temporary = self.path.with_suffix('.pending')
+        try:
+            body = json.dumps(self.data, ensure_ascii=False, indent=2).encode()
+            while len(body) > 32768:
+                candidates = [name for name in ('errors', 'tools', 'provider_requests') if len(self.data[name]) > 1]
+                if not candidates:
+                    raise OSError('Diagnostic length limit')
+                self.data[candidates[0]].pop(0)
+                self.data['diagnostic_truncated'] = True
+                body = json.dumps(self.data, ensure_ascii=False, indent=2).encode()
+            descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+            with os.fdopen(descriptor, 'wb') as stream:
+                stream.write(body)
+            os.replace(temporary, self.path)
+            self.save_error = None
+        except OSError:
+            self.save_error = 'Diagnostic save failed; no complete final diagnostic is guaranteed'
+            try:
+                temporary.unlink()
+            except OSError:
+                pass
+
+    def stage(self, value):
+        self.data['stage'] = value
+        self.save()
+
+    def identify(self, thread_id, turn_id):
+        self.data['thread_id'] = self.text(thread_id, 128) if thread_id is not None else None
+        self.data['turn_id'] = self.text(turn_id, 128) if turn_id is not None else None
+        self.save()
+
+    def attach(self, child):
+        self.data['process_pid'] = getattr(child, 'pid', None)
+        relay = getattr(child, 'yohaku_provider_relay', None)
+        if relay is not None:
+            self.secrets.extend(value for value in [getattr(relay, 'key', None), getattr(relay, 'token', None)] if isinstance(value, str))
+
+    def error_fields(self, error):
+        if not isinstance(error, dict):
+            return dict(received_type=type(error).__name__)
+        result = {}
+        for name in ['message', 'additionalDetails']:
+            if name in error:
+                result[name] = self.text(error[name], 768) if isinstance(error[name], str) else None
+        if 'codexErrorInfo' in error:
+            info = error['codexErrorInfo']
+            if isinstance(info, str):
+                result['codexErrorInfo'] = self.text(info, 128)
+            elif isinstance(info, dict):
+                result['codexErrorInfo'] = {}
+                for variant, fields in list(info.items())[:4]:
+                    safe = {}
+                    if isinstance(fields, dict):
+                        if type(fields.get('httpStatusCode')) is int:
+                            safe['httpStatusCode'] = fields['httpStatusCode']
+                        if isinstance(fields.get('turnKind'), str):
+                            safe['turnKind'] = self.text(fields['turnKind'], 64)
+                    result['codexErrorInfo'][self.text(variant, 64)] = safe
+            else:
+                result['codexErrorInfo'] = None
+        if 'misalignment' in error:
+            details = error['misalignment']
+            result['misalignment'] = {name:self.text(details[name], 512) for name in ('errorType', 'detailedExplanation') if isinstance(details.get(name), str)} if isinstance(details, dict) else None
+        return result
+
+    def rpc_error(self, method, error):
+        fields = self.error_fields(error)
+        if isinstance(error, dict):
+            if type(error.get('code')) is int:
+                fields['code'] = error['code']
+            fields['data_present_but_omitted'] = 'data' in error
+        self.data['errors'].append(dict(source='rpc/' + method, error=fields))
+        self.data['errors'] = self.data['errors'][-8:]
+        self.save()
+
+    def observe(self, event):
+        params = event.get('params', {})
+        if not isinstance(params, dict):
+            return
+        if params.get('threadId') not in (None, self.data['thread_id']):
+            return
+        turn = params.get('turn', {})
+        turn = turn if isinstance(turn, dict) else {}
+        event_turn = params.get('turnId', turn.get('id'))
+        if event_turn not in (None, self.data['turn_id']):
+            return
+        method = event.get('method')
+        if method in ('error', 'turn/completed'):
+            error = params.get('error') if method == 'error' else turn.get('error')
+            if error is not None:
+                self.data['errors'].append(dict(source=method, error=self.error_fields(error), willRetry=params.get('willRetry') if type(params.get('willRetry')) is bool else None))
+                self.data['errors'] = self.data['errors'][-8:]
+            if method == 'turn/completed':
+                self.data['received_turn_status'] = self.text(turn.get('status'), 32)
+        if self.data['tools'] and method in ('error', 'turn/completed', 'item/completed', 'item/tool/call'):
+            previous = self.data['tools'][-1]
+            replay = method == 'item/tool/call' and str(event.get('id')) == previous['call_id']
+            if previous['result_sent_to_codex_stdin'] and not replay:
+                previous['followup_observed_from_codex'] = True
+                previous['followup_event'] = method
+        self.save()
+
+    def tool_start(self, ident, name):
+        self.data['tool_count'] += 1
+        self.data['tools'].append(dict(call_id=self.text(ident, 64), name=self.text(name, 80), execution_returned=False,
+                                       tool_ok=None, result_sent_to_codex_stdin=False, followup_observed_from_codex=False))
+        self.data['tools'] = self.data['tools'][-16:]
+        self.stage('tool_execution')
+
+    def tool_executed(self, result):
+        item = self.data['tools'][-1]
+        item.update(execution_returned=True, tool_ok=result.get('ok') is True)
+        outcome = result.get('result')
+        if isinstance(outcome, dict):
+            if type(outcome.get('exit_code')) is int:
+                item['tool_exit_code'] = outcome['exit_code']
+            if isinstance(outcome.get('state'), str):
+                item['tool_state'] = self.text(outcome['state'], 32)
+        self.save()
+
+    def tool_sent(self):
+        self.data['tools'][-1]['result_sent_to_codex_stdin'] = True
+        self.stage('awaiting_tool_followup')
+
+    def turn_failure(self, turn):
+        self.data['stage_before_completion'] = self.data['stage']
+        self.data['stage'] = 'turn/completed'
+        detail = next((entry['error'] for entry in reversed(self.data['errors']) if entry['error']), {})
+        message = detail.get('message') or detail.get('additionalDetails')
+        if not message and isinstance(detail.get('misalignment'), dict):
+            message = detail['misalignment'].get('detailedExplanation') or detail['misalignment'].get('errorType')
+        if not message and detail.get('codexErrorInfo'):
+            message = json.dumps(detail['codexErrorInfo'], ensure_ascii=False)
+        if message and not turn.get('error'):
+            message = 'Terminal turn supplied no detailed error; observed error notification: ' + message
+        return 'Codex turn ' + self.text(turn.get('status'), 32) + ': ' + (message or 'No detailed error supplied by Codex') + '; completed file changes remain'
+
+    def process_closed(self, child, capture, forced):
+        self.data['process_exit_code'] = getattr(child, 'returncode', None)
+        self.data['process_killed_for_cleanup'] = forced
+        raw, total = capture.snapshot()
+        self.data['stderr_bytes_seen'] = total
+        summaries = []
+        for line in raw.splitlines():
+            if re.search(r'(?i)\b(error|warn|fatal|panic|exception|traceback)\b|[A-Za-z]+Error:', line):
+                safe = self.text(line, 512)
+                safe = re.sub(r'\{.*', '[structured stderr payload omitted]', safe)
+                summaries.append(safe)
+        self.data['stderr_summary'] = '\n'.join(summaries[-4:])[:1536]
+        self.data['stderr_capture_complete'] = capture.thread is None or not capture.thread.is_alive()
+        relay = getattr(child, 'yohaku_provider_relay', None)
+        if relay is not None:
+            records = relay.evidence()
+            self.data['provider_request_count'] = getattr(relay, 'request_count', len(records))
+            physical=getattr(getattr(relay,'diagnostics',None),'sequence',None)
+            if type(physical) is int:self.data['provider_attempt_count']=physical
+            self.data['provider_requests'] = []
+            for record in records[-16:]:
+                safe = {key:record[key] for key in ('http_status', 'completed') if type(record.get(key)) in (int, bool)}
+                if record.get('target') == 'https://api.deepseek.com/responses':
+                    safe['target'] = record['target']
+                if isinstance(record.get('request_model'), str):
+                    safe['request_model'] = self.text(record['request_model'], 64)
+                safe['response_models'] = [self.text(model, 64) for model in record.get('response_models', [])[:4] if isinstance(model, str)]
+                usage = record.get('usage')
+                safe['usage'] = {name:usage[name] for name in ('input_tokens', 'output_tokens', 'total_tokens') if type(usage.get(name)) is int} if isinstance(usage, dict) else None
+                for key in ('relay_http_status','upstream_attempt_count','request_index','confirmed_tool_results','request_bytes'):
+                    if type(record.get(key)) is int:safe[key]=record[key]
+                if isinstance(record.get('relay_version'),str):safe['relay_version']=self.text(record['relay_version'],128)
+                failure=record.get('failure')
+                if isinstance(failure,dict):
+                    safe['failure']={key:self.text(value,512) if isinstance(value,str) else value for key,value in failure.items()
+                        if key in ('kind','upstream_http_status','phase','exception_type','diagnostic_id','diagnostic_path','attempts','retryable','retry_exhausted','tools_delivered')}
+                safe['recovery']=[{key:self.text(value,512) if isinstance(value,str) else value for key,value in item.items()
+                    if key in ('attempt','max_attempts','exception_type','will_retry','phase','http_status','request_sequence','diagnostic_path')}
+                    for item in record.get('recovery',[])[-6:] if isinstance(item,dict)]
+                self.data['provider_requests'].append(safe)
+        self.save()
+
+    def fail(self, error):
+        self.data.update(status='failed', ended_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(), failure_stage=self.data['stage'], exception_type=type(error).__name__, exception_summary=self.text(error, 1024))
+        self.save()
+
+    def finish(self, status):
+        self.data.update(status=status, stage='finished', ended_utc=datetime.datetime.now(datetime.timezone.utc).isoformat())
+        self.save()
+
+    def failure_message(self):
+        detail=''
+        for record in reversed(self.data['provider_requests']):
+            failure=record.get('failure')
+            if failure:
+                from yohaku_codex_provider import Relay
+                if failure.get('diagnostic_id') not in self.data['exception_summary']:
+                    detail='; '+Relay.failure_message(failure)
+                break
+        return self.data['exception_summary'] + detail + '; diagnostic: ' + str(self.location())

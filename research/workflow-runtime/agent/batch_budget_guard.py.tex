@@ -1,0 +1,301 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+#!/usr/bin/env python3
+"""Host-only, fail-closed batch spending guard; no network and no retry.
+
+Each POST irreversibly consumes its verified worst-case liability. Receipts
+record actual usage but never release a reservation, including unknown outcomes.
+The world tools cannot configure this module or its host-owned grant/ledger.
+"""
+import contextlib
+from decimal import Decimal, InvalidOperation
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import time
+import uuid
+
+class BudgetBlocked(RuntimeError): pass
+class BudgetExceeded(RuntimeError): pass
+
+def fingerprint(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+def positive(value, name):
+    try: number = Decimal(str(value))
+    except InvalidOperation: raise BudgetBlocked('Unverified ' + name) from None
+    if not number.is_finite() or number <= 0: raise BudgetBlocked('Unverified ' + name)
+    return number
+
+def regular(path):
+    p = Path(path)
+    if p.is_symlink() or not p.is_file(): raise BudgetBlocked('Host budget evidence is not a regular file')
+    return p
+
+def verify_evidence(row):
+    if not isinstance(row, dict) or not row.get('path') or not row.get('sha256'):
+        raise BudgetBlocked('Missing gift-only entitlement or price evidence')
+    p = regular(row['path'])
+    if hashlib.sha256(p.read_bytes()).hexdigest() != row['sha256']:
+        raise BudgetBlocked('Host budget evidence hash changed')
+
+def load_grant(path):
+    grant = json.loads(regular(path).read_bytes())
+    if grant.get('provider') != 'adaption':
+        raise BudgetBlocked('This monetary guard only supports the verified Adaption POST transport')
+    # The user may explicitly authorize existing account balance regardless of
+    # origin. Historical gift-only grants retain their original strict rule.
+    if grant.get('funding_scope') == 'account_existing_balance':
+        if not grant.get('session'):
+            raise BudgetBlocked('Existing-balance grant requires the shared session authorization')
+    elif grant.get('gift_only_verified') is not True:
+        raise BudgetBlocked('Missing account evidence of gift-credit source and gift-only Responses balance; paid credits are not authorized')
+    if grant.get('pricing_verified') is not True:
+        raise BudgetBlocked('Inference pricing has not been verified')
+    if grant.get('enabled') is not True:
+        raise BudgetBlocked('Verified host spending grant has not been activated')
+    if grant.get('funding_scope') != 'account_existing_balance':verify_evidence(grant.get('entitlement_evidence'))
+    verify_evidence(grant.get('pricing_evidence'))
+    authorization = grant.get('authorization') or {}
+    if authorization.get('source') not in ('explicit_user_authorization','task_authorized_gift_only_batch') or not authorization.get('reference'):
+        raise BudgetBlocked('Missing explicit total-budget authorization')
+    cap = positive(authorization.get('amount'), 'authorized total cap')
+    if not isinstance(grant.get('currency'), str) or not grant['currency']:
+        raise BudgetBlocked('Missing verified cost unit')
+    rates = grant.get('pricing') or {}
+    input_rate = positive(rates.get('input_per_million'), 'input price')
+    output_rate = positive(rates.get('output_per_million'), 'output price')
+    for key in ('input_token_cap', 'max_output_tokens'):
+        if type(rates.get(key)) is not int or rates[key] <= 0:
+            raise BudgetBlocked('Missing supplier-enforced ' + key)
+    if rates.get('supplier_caps_verified') is not True:
+        raise BudgetBlocked('Supplier context/output caps not verified')
+    limits = grant.get('limits') or {}
+    if type(limits.get('max_payload_bytes')) is not int or limits['max_payload_bytes']<=0:
+        raise BudgetBlocked('Missing hard POST/payload limits')
+    # Ignore caching discounts: every request reserves the entire supplier input
+    # context plus capped output, whether or not that many tokens are submitted.
+    worst = (rates['input_token_cap'] * input_rate + rates['max_output_tokens'] * output_rate) / Decimal(1000000)
+    return grant, cap, worst
+
+def session_context(grant):
+    """Read the host-pinned session grant; no model/world input can alter it."""
+    binding=grant.get('session')
+    if not binding:return None
+    source=regular(binding['grant_path'])
+    if hashlib.sha256(source.read_bytes()).hexdigest()!=binding['grant_sha256']:
+        raise BudgetBlocked('Session authorization hash changed')
+    session=json.loads(source.read_bytes())
+    if (session.get('funding_scope')!='account_existing_balance' or session.get('enabled') is not True
+            or session.get('currency')!=grant['currency'] or session.get('no_recharge_or_purchase') is not True
+            or session.get('authorization',{}).get('source')!='explicit_user_authorization'):
+        raise BudgetBlocked('Session authorization is absent or invalid')
+    cap=positive(session['authorization']['amount'],'session total cap')
+    ledger=Path(binding['ledger_path'])
+    if ledger.is_symlink() or not ledger.is_file():
+        raise BudgetBlocked('Bound cumulative session ledger is missing; never reset an authorized budget')
+    return session,cap,ledger,binding['grant_sha256']
+
+def session_data(path,session,session_sha):
+    data=json.loads(path.read_bytes()) if path.exists() else {'session_id':session['session_id'],
+        'session_grant_sha256':session_sha,'currency':session['currency'],'reservations':{},
+        'project_runs':{},'platform_observations':[]}
+    if data['session_id']!=session['session_id'] or data['session_grant_sha256']!=session_sha:
+        raise BudgetBlocked('Session ledger identity cannot be reset')
+    return data
+
+def atomic(path, value):
+    p = Path(path); p.parent.mkdir(parents=True, exist_ok=True)
+    temp = p.with_name(p.name + '.partial-' + uuid.uuid4().hex)
+    with temp.open('x', encoding='utf-8') as f:
+        os.chmod(temp, 0o600)
+        json.dump(value, f, ensure_ascii=False, indent=2); f.write('\n'); f.flush(); os.fsync(f.fileno())
+    os.replace(temp, p)
+
+@contextlib.contextmanager
+def locked(path):
+    import fcntl
+    p = Path(path); p.parent.mkdir(parents=True, exist_ok=True)
+    fd = os.open(str(p) + '.lock', os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        if p.is_symlink(): raise BudgetBlocked('Budget ledger cannot be a symlink')
+        yield
+    finally: os.close(fd)
+
+def authorize_submit(config, request_id):
+    """Validate only; caller persists returned grant identity before first lead."""
+    path = config.get('spend_grant') or os.environ.get('YOHAKU_BATCH_SPEND_GRANT')
+    if not path: raise BudgetBlocked('Missing verified gift-only inference spending envelope (entitlement, prices, authorized total cap)')
+    grant, cap, worst = load_grant(path)
+    profile = config['profile']
+    if any(profile.get(k) != grant.get(k) for k in ('provider', 'model', 'reasoning_effort')):
+        raise BudgetBlocked('Budget grant model does not match explicit batch profile')
+    allowed = grant.get('batch_id')
+    if allowed != request_id: raise BudgetBlocked('Budget grant belongs to another immutable batch ID')
+    session=session_context(grant)
+    if session:
+        session_grant,session_cap,session_path,session_sha=session
+        with locked(session_path):
+            data=session_data(session_path,session_grant,session_sha)
+            if sum((Decimal(r['worst_liability']) for r in data['reservations'].values()),Decimal(0))+worst>session_cap:
+                raise BudgetExceeded('Session total spending cap exhausted')
+    return {'batch_id':request_id, 'grant_path':str(Path(path).resolve()),
+            'grant_sha256':hashlib.sha256(regular(path).read_bytes()).hexdigest(),
+            'currency':grant['currency'], 'authorized_cap':str(cap), 'worst_per_post':str(worst),
+            'max_posts':None,
+            'batch_worst_before_early_stop':None,
+            'reservation_policy':'Irreversible worst liability; unknown POSTs remain charged to local cap',
+            **({'session_id':session[0]['session_id'],'session_ledger_path':str(session[2]),
+                'session_root':str(session[2].parent),
+                'session_runner_lock':str(session[2].with_name('ACTIVE-CONTROLLER.lock')),
+                'session_cap':str(session[1])} if session else {})}
+
+def context(batch_id):
+    if not re.fullmatch(r'[A-Za-z0-9_.:-]{1,80}', batch_id): raise BudgetBlocked('Invalid batch ID')
+    grant_path = os.environ.get('YOHAKU_BATCH_SPEND_GRANT')
+    ledger_path = os.environ.get('YOHAKU_BATCH_SPEND_LEDGER')
+    if not grant_path or not ledger_path or os.environ.get('YOHAKU_BATCH_ID') != batch_id:
+        raise BudgetBlocked('Host batch spending environment is absent or mismatched')
+    grant, cap, worst = load_grant(grant_path)
+    if grant.get('open_runtime')is not True:raise BudgetBlocked('Open runtime requires a newly authorized open batch grant')
+    if grant.get('batch_id') != batch_id: raise BudgetBlocked('Grant batch mismatch')
+    digest = hashlib.sha256(regular(grant_path).read_bytes()).hexdigest()
+    if os.environ.get('YOHAKU_BATCH_SPEND_GRANT_SHA256') != digest:
+        raise BudgetBlocked('Grant differs from the authorization pinned before dispatch')
+    return grant, cap, worst, Path(ledger_path), digest
+
+def reserve_post(batch_id, immutable_identity, payload):
+    """Call before network POST. Duplicate reservation never authorizes replay."""
+    grant, cap, worst, path, grant_sha = context(batch_id)
+    if not isinstance(payload, dict) or payload.get('model') != grant['model']:
+        raise BudgetBlocked('POST model differs from grant')
+    if (type(payload.get('max_output_tokens')) is not int or payload['max_output_tokens'] <= 0
+            or payload['max_output_tokens'] > grant['pricing']['max_output_tokens']):
+        raise BudgetExceeded('POST output-token cap absent or exceeds grant')
+    if payload.get('store') is not False or payload.get('previous_response_id'):
+        raise BudgetBlocked('Unbounded stored context is not allowed by this budget grant')
+    if any(not isinstance(tool,dict) or tool.get('type')!='function' for tool in payload.get('tools',[])):
+        raise BudgetBlocked('Hosted tools are outside the verified token-only spending envelope')
+    raw = json.dumps(payload, ensure_ascii=False).encode()
+    if len(raw) > grant['limits']['max_payload_bytes']: raise BudgetExceeded('POST payload byte limit')
+    digest = fingerprint(payload)
+    session=session_context(grant)
+    if not session:raise BudgetBlocked('Open runtime requires one cumulative session ledger')
+    if session:
+        session_grant,session_cap,session_path,session_sha=session
+        global_identity=batch_id+'::'+immutable_identity
+        with locked(session_path):
+            data=session_data(session_path,session_grant,session_sha)
+            prior=data['reservations'].get(global_identity)
+            if prior:
+                if prior['payload_sha256']!=digest:raise BudgetBlocked('POST identity input conflict')
+                raise BudgetBlocked('POST identity already reserved; query original receipt, never replay')
+            total=sum((Decimal(r['worst_liability']) for r in data['reservations'].values()),Decimal(0))
+            batch_rows=[r for r in data['reservations'].values() if r['batch_id']==batch_id]
+            batch_total=sum((Decimal(r['worst_liability']) for r in batch_rows),Decimal(0))
+            if batch_total+worst>cap:raise BudgetExceeded('Batch worst-case spending cap exhausted before POST')
+            if total+worst>session_cap:raise BudgetExceeded('Session worst-case spending cap exhausted before POST')
+            row={'identity':immutable_identity,'batch_id':batch_id,'grant_sha256':grant_sha,
+                'payload_sha256':digest,'worst_liability':str(worst),'currency':grant['currency'],
+                'state':'reserved_outcome_unknown','reserved_at':time.time()}
+            data['reservations'][global_identity]=row
+            data['reserved_total']=str(total+worst)
+            data['batch_reserved_totals']={k:str(sum((Decimal(r['worst_liability']) for r in data['reservations'].values() if r['batch_id']==k),Decimal(0)))
+                for k in {r['batch_id'] for r in data['reservations'].values()}}
+            atomic(session_path,data)
+            # Session ledger is authoritative. A crash before this mirror write
+            # still retains global liability and prevents any POST replay.
+            mirror={'batch_id':batch_id,'grant_sha256':grant_sha,'reservations':{r['identity']:r for r in data['reservations'].values() if r['batch_id']==batch_id},
+                'reserved_total':str(batch_total+worst),'session_ledger':str(session_path)}
+            atomic(path,mirror)
+        return {'batch_id':batch_id,'identity':immutable_identity,'ledger_path':str(path),'payload_sha256':digest,
+                'session_ledger_path':str(session_path),'global_identity':global_identity}
+
+def reconcile_post(reservation, response):
+    """Preserve raw usage; no refund or inference about credit allocation."""
+    path = Path(reservation['ledger_path'])
+    if reservation.get('session_ledger_path'):
+        session_path=Path(reservation['session_ledger_path'])
+        with locked(session_path):
+            data=json.loads(regular(session_path).read_bytes());row=data['reservations'][reservation['global_identity']]
+            if row['payload_sha256']!=reservation['payload_sha256']:raise BudgetBlocked('Receipt reservation mismatch')
+            receipt={'response_id':response.get('id'),'model':response.get('model'),'status':response.get('status'),'usage':response.get('usage')}
+            if response.get('verified_model_identity') is not None:
+                receipt['verified_model_identity']=json.loads(json.dumps(response['verified_model_identity']))
+            if row.get('receipt') is not None and row['receipt']!=receipt:raise BudgetBlocked('Conflicting supplier receipt')
+            row.update(state='received',receipt=receipt,received_at=time.time(),
+                supplier_reported_cost_raw=(response.get('usage')or{}).get('cost'),
+                supplier_cost_note='Raw supplier usage.cost; not equated with platform account debit or worst-case reservation')
+            atomic(session_path,data)
+            mirror=json.loads(regular(path).read_bytes());mirror['reservations'][reservation['identity']]=row;atomic(path,mirror)
+            return row
+    with locked(path):
+        data = json.loads(regular(path).read_bytes())
+        if data['batch_id'] != reservation['batch_id']: raise BudgetBlocked('Receipt batch mismatch')
+        row = data['reservations'][reservation['identity']]
+        if row['payload_sha256'] != reservation['payload_sha256']: raise BudgetBlocked('Receipt reservation mismatch')
+        receipt = {'response_id':response.get('id'), 'model':response.get('model'),
+                   'status':response.get('status'), 'usage':response.get('usage')}
+        if response.get('verified_model_identity') is not None:
+            receipt['verified_model_identity']=json.loads(json.dumps(response['verified_model_identity']))
+        if row.get('receipt') is not None and row['receipt'] != receipt:
+            raise BudgetBlocked('Conflicting supplier receipt')
+        row.update(state='received', receipt=receipt)
+        atomic(path, data)
+    return row
+
+def reserve_project_run(batch_id, project_identity):
+    """Count each first dispatch once, including failures/timeouts/controls."""
+    grant,cap,worst,path,grant_sha=context(batch_id);session=session_context(grant)
+    if not session:raise BudgetBlocked('A cumulative project limit requires session authorization')
+    session_grant,session_cap,session_path,session_sha=session
+    identity=batch_id+'::'+project_identity
+    with locked(session_path):
+        data=session_data(session_path,session_grant,session_sha)
+        if identity in data['project_runs']:return {**data['project_runs'][identity],'duplicate':True}
+        row={'identity':project_identity,'batch_id':batch_id,'reserved_at':time.time(),'ordinal':len(data['project_runs'])+1}
+        data['project_runs'][identity]=row;atomic(session_path,data);return row
+
+@contextlib.contextmanager
+def session_work_lock(grant_path,blocking=False):
+    """One campaign/batch lease at a time; machine admission is separate."""
+    import fcntl
+    grant,_,_=load_grant(grant_path);session=session_context(grant)
+    if not session:raise BudgetBlocked('Session-wide controller lock requires shared authorization')
+    path=session[2].with_name('ACTIVE-CONTROLLER.lock');path.parent.mkdir(parents=True,exist_ok=True)
+    fd=os.open(path,os.O_CREAT|os.O_RDWR|os.O_NOFOLLOW,0o600)
+    try:
+        fcntl.flock(fd,fcntl.LOCK_EX|(0 if blocking else fcntl.LOCK_NB));yield
+    finally:os.close(fd)
+
+def record_platform_observation(grant_path,observation):
+    grant,_,_=load_grant(grant_path);session=session_context(grant)
+    if not session:raise BudgetBlocked('No session authorization')
+    sg,cap,path,ss=session
+    with locked(path):
+        data=session_data(path,sg,ss);data['platform_observations'].append({'observed_at':time.time(),'observation':observation,
+            'note':'Platform balance/debit observation is separate from worst-case reserved liability and supplier usage.cost'})
+        atomic(path,data)
+
+def create_batch_grant(*args, **kwargs):
+    raise BudgetBlocked('Automatic grant generation disabled; supply a verified host-owned grant')
+
+def load_grant_value(grant):
+    rates=grant['pricing'];worst=(rates['input_token_cap']*positive(rates['input_per_million'],'input price')+
+        rates['max_output_tokens']*positive(rates['output_per_million'],'output price'))/Decimal(1000000)
+    return grant,positive(grant['authorization']['amount'],'cap'),worst
+````
+
+## 输出与关联
+```yaml
+output: "research/workflow-runtime/agent/batch_budget_guard.py"
+```
