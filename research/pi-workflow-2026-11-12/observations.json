@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/3",
+  "format": "yohaku-pi-workflow-public-observations/4",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v05 research, offline engineering fixes, and final stopped-phase cleanup. v05 ran with user authorization and is closed. External review is separate from model actions; no further phase is authorized here.",
+  "evidence_scope": "Archived v03–v05 research and v06/v06c pre-inference startup failures. Both mixed stages are closed; the entry repair is isolated and unactivated. External audit is distinct from model action and confers no dispatch authority.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -82,15 +82,46 @@
       "stop_reason": "lead_terminal",
       "retained_worst_liability_credits": "2.2806528",
       "actual_debit_known": false
+    },
+    {
+      "stage": "v06-mixed-initial-activation",
+      "actual_POSTs": 0,
+      "completed": null,
+      "native_turns": 0,
+      "new_unknown": 0,
+      "actual_helpers": 0,
+      "status": "closed_before_inference",
+      "failure": "Requested model differs from immutable host batch profile; no fallback"
+    },
+    {
+      "stage": "v06c-mixed-manual-continuation-01",
+      "actual_POSTs": 0,
+      "completed": null,
+      "native_turns": 0,
+      "new_unknown": 0,
+      "created_helpers": 1,
+      "helpers_started": 0,
+      "helper_origin": "host_seeded",
+      "status": "closed_before_inference",
+      "failure": "Mixed lead tool contract omits bounded helper await",
+      "repair_status": "isolated_unactivated",
+      "second_manual_continuation_supported_by_current_gate": false
     }
   ],
   "aggregate": {
     "actual_POSTs": 38,
     "closed": true,
     "unknown_reservations": 79,
-    "new_helpers": 0,
+    "new_helpers": 1,
     "help_requests": 0,
-    "authorized_lineage_cap": 42
+    "authorized_lineage_cap": 54,
+    "host_seeded_helpers": 1,
+    "model_started_helpers": 0,
+    "old_v05_closed_lineage_cap": 42,
+    "new_mixed_adaption_POSTs": 0,
+    "new_mixed_native_turns": 0,
+    "mixed_worst_liability_reserved_credits": "0",
+    "helper_count_note": "One idle host-created node exists in v06c; no helper model task has run."
   },
   "observations": [
     {
@@ -414,6 +445,71 @@
         "first-bounded-result/",
         "cleanup-attempt-01/"
       ]
+    },
+    {
+      "id": "v06c-wire-contract-preinference-failure",
+      "status": "observed_engineering_failure_not_model_choice",
+      "root_cause": "Local ai_await_helper name checked after conversion to wire yohaku_ai_await_helper",
+      "repaired_modules": [
+        "yohaku_mixed_context.py",
+        "yohaku_ai_nodes.py",
+        "yohaku_autonomous_supervisor.py"
+      ],
+      "repair_manifest_sha256": "dec4a379e5886af6397b4d7b029c2906d98af04dd950827c1c68241b6e9c6a86",
+      "repairs": [
+        "Canonical wire name and executable integer timeout schema, inclusive 0..300",
+        "Preflight registered contract before initialize/context mutation"
+      ],
+      "original_reproduction_checks": 1,
+      "archived_repair_checks": 2,
+      "archived_suite_independently_rerun": false,
+      "matching_report_source_pins": 7,
+      "independent_pure_function_checks": 8,
+      "integration_coverage": "Real owner entry and tool cycle with fake catalog/HTTP; synthetic helper terminal/result, timeout 0, JSON rather than provider SSE",
+      "actual_collaboration_proven": false,
+      "evidence": [
+        "host/PUBLIC-START-FAILURE.json",
+        "host/OFFLINE-ADAPTION-LEAD-ORIGINAL-REPRODUCTION.json",
+        "host/OFFLINE-ADAPTION-LEAD-REPAIR.json",
+        "host/ADAPTION-LEAD-REPAIR-ATTEMPTS.json",
+        "host/test_adaption_lead_repair.py",
+        "engineering/unactivated-post-failure-repair/agent/"
+      ]
+    },
+    {
+      "id": "v06c-closed-lineage-unspent-envelope",
+      "status": "independently_compared_archived_data_and_source",
+      "reservations_before": 1044,
+      "reservations_after": 1044,
+      "reservations_equal": true,
+      "unknown_rows_equal": 79,
+      "mixed_POSTs": 0,
+      "mixed_native_turns": 0,
+      "new_worst_liability_credits": "0",
+      "helpers_created": 1,
+      "helpers_cap": 2,
+      "helpers_started": 0,
+      "first_model_admitted_at": null,
+      "deadline": null,
+      "both_stops_preserved": true,
+      "initial_cleanup_incomplete_preserved": true,
+      "final_cleanup_supported_by_later_archive_snapshot": true,
+      "current_gate_supported_phases": [
+        "pi-mixed-research-v06",
+        "pi-mixed-research-v06-continuation-01"
+      ],
+      "second_continuation_implemented": false,
+      "constraint": "Existing immutable envelope pins a single continuation. A further explicitly authorized continuation needs an append-only migration aggregating all historical requests, liabilities, turns, tools, helper slots and earliest clock; closed phases and stops cannot be reset.",
+      "checkpoint_confers_dispatch_authority": false,
+      "evidence": [
+        "workflow/SESSION-LEDGER.before.json",
+        "workflow/SESSION-LEDGER.after.json",
+        "host/USER-AUTHORIZATION.txt",
+        "host/FUTURE-CONTINUATION-CHECKPOINT.json",
+        "host/FINAL-CLEANUP-OBSERVATION.json",
+        "host/FINAL-AUDIT.json",
+        "engineering/agent/yohaku_mixed_gate.py"
+      ]
     }
   ],
   "not_established": [
@@ -423,7 +519,9 @@
     "general efficiency gain",
     "pi badly-approximable theorem",
     "new workflow invention in v05",
-    "cross-participant differentiation in v05"
+    "cross-participant differentiation in v05",
+    "actual mixed-model collaboration in v06/v06c",
+    "successful live activation of the v06c entry repair"
   ],
   "interventions": [
     "explicit external mathematical review",
@@ -433,7 +531,8 @@
     "host monitor maintenance and engineering repair",
     "host status-conflict and external-opinion overlay",
     "v04c host-only action-key normalization after all six model responses and budget denial; no model request or research-code execution added",
-    "v05 explicit user authorization, price binding, normal fresh context, delivery of four historical exchanges, read-only viewer correction and same-stopped-phase cleanup recovery; no host-written research route or mathematical text"
+    "v05 explicit user authorization, price binding, normal fresh context, delivery of four historical exchanges, read-only viewer correction and same-stopped-phase cleanup recovery; no host-written research route or mathematical text",
+    "v06/v06c mixed-profile integration, one explicit manual continuation, host-created idle Sol node, owner fresh-context entry, post-failure isolated repair and stopped-phase cleanup; no research inference occurred"
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
@@ -444,7 +543,10 @@
     "v04c explicitly capped helpers at zero; absence of a helper does not measure autonomous delegation preference.",
     "v05 begins with historical memory containing the unfinished verification plan and explicit external review cards; its open new goal does not imply an unprompted invention.",
     "Five successful review registrations are pending independent review, not mathematical acceptance.",
-    "No helper was requested despite a nonzero optional helper cap; this single small task does not identify why or establish delegation ability."
+    "No helper was requested despite a nonzero optional helper cap; this single small task does not identify why or establish delegation ability.",
+    "v06c full-entry regression uses fake inference HTTP and synthetic helper completion; it does not demonstrate real Sol work, pending waits or provider streaming.",
+    "Zero new reservations are supported by archived ledgers and tasks, not an independent provider billing audit.",
+    "The second manual continuation migration is not present in the reviewed repair; unused allowance is not permission to reopen a closed phase."
   ],
   "source_archives": [
     {
@@ -485,6 +587,14 @@
       "sha256": "6d141e61aef8956a98867627e050be5617867ffa4a830df0111538fd7d21e16b",
       "manifest_files_verified": 3296,
       "export_hashes_and_lengths_match": true
+    },
+    {
+      "name": "Yohaku-Pi-Mixed-v06c-process-20261112.zip",
+      "sha256": "3e6fa2b0630ad266571f51785930c97f49a054b418cc8a98940c40395fe82956",
+      "bytes": 28292192,
+      "manifest_files_verified": 3414,
+      "export_hashes_and_lengths_match": true,
+      "repair_manifest_sha256": "dec4a379e5886af6397b4d7b029c2906d98af04dd950827c1c68241b6e9c6a86"
     }
   ],
   "current_assessment": {
@@ -510,8 +620,16 @@
     "remaining_items": [
       "Mathematical formula error in revised response",
       "Two unresolved review-ancestry registration attempts",
-      "Cleanup latency root cause unconfirmed"
-    ]
+      "Cleanup latency root cause unconfirmed",
+      "Implement and verify append-only second manual continuation under the same mixed envelope before any further dispatch",
+      "Real owner/Sol delivery and adoption remain untested"
+    ],
+    "mixed_status": "both_stages_closed_before_inference",
+    "mixed_entry_repair": "isolated_unactivated",
+    "sol_join_authorization_exists": true,
+    "one_manual_continuation_authorization_consumed": true,
+    "next_manual_continuation_authorized_by_this_review": false,
+    "second_continuation_migration": "required_not_implemented_in_reviewed_candidate"
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
@@ -524,7 +642,7 @@
   ],
   "next_stage_design": {
     "id": "v06-mixed-model",
-    "status": "design_only_not_implemented_not_started",
+    "status": "implemented_preinference_failures_entry_repair_unactivated",
     "user_authorized_sol_trial": true,
     "limits_origin": "assistant-selected conservative implementation boundary, not verbatim user numeric authorization",
     "initial_sol_nodes": 1,
@@ -567,6 +685,11 @@
     "initial_collaborator_is_spontaneous_differentiation": false,
     "new_research_model_requests": 0,
     "source_review_mode": "read-only frozen-source static analysis; no uploaded runtime execution",
-    "independent_math_followup": "external fixed-depth note, not model trial result or an improvement in existing numerical coverage"
+    "independent_math_followup": "external fixed-depth note, not model trial result or an improvement in existing numerical coverage",
+    "initial_design_status": "design_only_not_implemented_not_started",
+    "latest_review_source": "Yohaku-Pi-Mixed-v06c-process-20261112.zip",
+    "actual_sol_nodes_created": 1,
+    "actual_sol_native_turns": 0,
+    "current_candidate_supports_second_manual_continuation": false
   }
 }
