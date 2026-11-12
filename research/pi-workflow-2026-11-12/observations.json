@@ -1,7 +1,7 @@
 {
   "format": "yohaku-pi-workflow-public-observations/2",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v04c research plus v05 offline preparation and shared-stop repair; no v05 live trial. Original stop counterexample resolved; supervisor stale-approval exception remains a startup blocker.",
+  "evidence_scope": "Archived v03–v04c research and v05 offline preparation/fixes. Scope-specific startup blockers resolved; ready for a bounded trial only after user authorization and launch revalidation. No v05 live study has run.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -60,6 +60,13 @@
       "completed": null,
       "new_unknown": 0,
       "review_status": "original_stop_gap_fixed_supervisor_exception_fix_required"
+    },
+    {
+      "stage": "v05-approval-failclosed",
+      "actual_POSTs": 0,
+      "completed": null,
+      "new_unknown": 0,
+      "review_status": "targeted_preparation_review_passed_pending_user_authorization"
     }
   ],
   "aggregate": {
@@ -275,6 +282,46 @@
         "Persist phase-wide stop before bounded cleanup on unexpected monitoring-loop failure",
         "Retain errors, unknown liabilities and explicit incomplete-cleanup state",
         "Verify restart does not reopen dispatch after such failure"
+      ],
+      "resolution_in_later_candidate": {
+        "status": "targeted_counterexample_recheck_passed",
+        "gate_sha256": "41197b493ed89e600f03a20100c0f711c886b3f81e582c200e0a1f6688fe9110",
+        "supervisor_sha256": "bca5bef8ed6999d6a5e4ead2bb0168e694929b1f21b19480f3b8cdc4c3b604b2",
+        "network_calls": 0
+      }
+    },
+    {
+      "id": "v05-approval-failclosed-acceptance",
+      "status": "ready_for_bounded_trial_after_explicit_user_authorization",
+      "archive_sha256": "cc663f20323ef252940996cef5542d7c5c15e7fa593cf5d9196b0625dbbecaec",
+      "candidate_manifest_sha256": "ea19bf1433ae7ae6a228e3f13607d16914f8ab51703ba1d8ebc1175151503b86",
+      "manifest_files_verified": 57,
+      "changed_modules": 2,
+      "final_report_hashes_verified": 7,
+      "tested_source_pins_verified": 24,
+      "archived_test_counts": {
+        "approval": 10,
+        "stale_supervisor_integration": 1,
+        "supervisor_exceptions": 8,
+        "control_flow": 2
+      },
+      "independent_checks": {
+        "stale_and_missing_source_locally_rejected": true,
+        "valid_same_batch_continues": true,
+        "no_automatic_rewrite_or_resubmission": true,
+        "unexpected_IO_reaches_supervisor": true,
+        "actual_tick_stale_escape_fixed": true,
+        "durable_stop_precedes_failure_record_and_cleanup": true,
+        "other_participant_POST_blocked_after_error": true,
+        "restart_prepare_dispatch_calls": 0,
+        "unverified_cleanup_remains_incomplete": true,
+        "failed_stop_write_is_not_falsely_confirmed": true
+      },
+      "independent_scope": "Actual Gate and Supervisor methods, real local budget locks and synthetic private state; no network, model or native process launch. Prior native test evidence retained, not rerun.",
+      "limitations": [
+        "A failed shared-stop storage write is explicitly unconfirmed, not a global fail-closed guarantee.",
+        "Frozen evidence cannot replace current-machine price/state/authorization binding checks.",
+        "No real model delivery, autonomous workflow result or parameter training established by these tests."
       ]
     }
   ],
@@ -331,6 +378,10 @@
     {
       "name": "Yohaku-v05-shared-stop-fix-20261112.zip",
       "sha256": "2c2f88892251f4d6b30ff1d80e4beb4c0728deef5edb2546a7c2f125e6381639"
+    },
+    {
+      "name": "Yohaku-v05-approval-failclosed-20261112.zip",
+      "sha256": "cc663f20323ef252940996cef5542d7c5c15e7fa593cf5d9196b0625dbbecaec"
     }
   ],
   "current_assessment": {
@@ -341,10 +392,15 @@
     "standalone_result_note_saved": false,
     "verification_script_executed": false,
     "stable_differentiation_or_parameter_training_established": false,
-    "v05_trial_ready": false,
+    "v05_trial_ready": true,
     "v05_new_model_POSTs": 0,
-    "v05_required_fix": "Per-request stale approval handling and persistent stop/cleanup on supervisor monitoring exceptions.",
-    "v05_original_shared_stop_gap_resolved": true
+    "v05_required_fix": null,
+    "v05_original_shared_stop_gap_resolved": true,
+    "v05_trial_execution_authorized_by_review": false,
+    "v05_launch_requires": [
+      "Explicit user approval of the existing bounded proposal",
+      "Current pricing/request-cap and exact candidate/policy/context binding revalidation"
+    ]
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
