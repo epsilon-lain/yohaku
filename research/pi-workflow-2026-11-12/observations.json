@@ -1,7 +1,7 @@
 {
   "format": "yohaku-pi-workflow-public-observations/2",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v04c research and v05 offline preparation; no v05 model trial has run. Independent review found a phase-wide stop gap before activation.",
+  "evidence_scope": "Archived v03–v04c research plus v05 offline preparation and shared-stop repair; no v05 live trial. Original stop counterexample resolved; supervisor stale-approval exception remains a startup blocker.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -53,6 +53,13 @@
       "completed": null,
       "new_unknown": 0,
       "review_status": "repair_required_before_trial"
+    },
+    {
+      "stage": "v05-shared-stop-fix",
+      "actual_POSTs": 0,
+      "completed": null,
+      "new_unknown": 0,
+      "review_status": "original_stop_gap_fixed_supervisor_exception_fix_required"
     }
   ],
   "aggregate": {
@@ -220,6 +227,54 @@
         "Distinguish historical unknowns, in-flight reservations and newly confirmed unknown outcomes",
         "Preserve accounting and reconcile already-in-flight work",
         "Verify host completion/cleanup/close wiring and actual new-context dispatch binding before activation"
+      ],
+      "resolution_in_later_candidate": {
+        "status": "counterexample_no_longer_reproduces",
+        "gate_sha256": "607735744c3ed9fed015e878e8493771567824c42f1284b468cb353c2f2d497b",
+        "independent_targeted_checks": 11,
+        "network_calls": 0
+      }
+    },
+    {
+      "id": "v05-shared-stop-fix-review",
+      "status": "partial_acceptance",
+      "manifest_files_verified": 134,
+      "changed_file_hashes_verified": 12,
+      "archived_test_counts": {
+        "shared_stop": 26,
+        "normal_context": 18,
+        "supervisor": 9
+      },
+      "independent_gate_boundary_checks": 11,
+      "independent_gate_checks_passed": true,
+      "independent_scope": "Actual Gate and original locking/atomic functions on synthetic state; sequential checks, zero network calls; supplied native/concurrency test evidence cross-checked rather than rerun.",
+      "normal_nonempty_session_begin_and_dispatch_evidence_verified": true,
+      "real_model_delivery_or_research": false,
+      "source_archive_sha256": "2c2f88892251f4d6b30ff1d80e4beb4c0728deef5edb2546a7c2f125e6381639"
+    },
+    {
+      "id": "v05-supervisor-stale-request-exception",
+      "status": "independently_reproduced_start_blocker",
+      "supervisor_sha256": "f2aaffcb589429b35ed7a1414e52253b8b370e78bbd0e15ed93c2b224c08f31e",
+      "gate_sha256": "607735744c3ed9fed015e878e8493771567824c42f1284b468cb353c2f2d497b",
+      "trigger": "Lead submits a valid artifact-version-bound help request, then updates that artifact before host approval.",
+      "actual": {
+        "exception": "GateError: Requested artifact version differs from actual bytes",
+        "request_status": "pending",
+        "phase": "open",
+        "shared_stop": null,
+        "existing_helper_new_POST_admitted": true
+      },
+      "reproduction_scope": "Actual Gate.request, Supervisor.tick and POST admission, local synthetic state; no native worker/provider execution. Actual run method separately checked for uncaught tick propagation.",
+      "evidence": [
+        "candidate/agent/yohaku_autonomous_supervisor.py:162–226",
+        "candidate/agent/yohaku_workflow_gate.py:454–480"
+      ],
+      "required_fix": [
+        "Turn expected stale-version failures into explicit per-request rejection receipts",
+        "Persist phase-wide stop before bounded cleanup on unexpected monitoring-loop failure",
+        "Retain errors, unknown liabilities and explicit incomplete-cleanup state",
+        "Verify restart does not reopen dispatch after such failure"
       ]
     }
   ],
@@ -272,6 +327,10 @@
     {
       "name": "Yohaku-v05-autonomous-preparation-20261112.zip",
       "sha256": "a168d9503d0873bc1db90b02381064f6e93bfee0e185cf490ff8332d5b12fc36"
+    },
+    {
+      "name": "Yohaku-v05-shared-stop-fix-20261112.zip",
+      "sha256": "2c2f88892251f4d6b30ff1d80e4beb4c0728deef5edb2546a7c2f125e6381639"
     }
   ],
   "current_assessment": {
@@ -284,7 +343,8 @@
     "stable_differentiation_or_parameter_training_established": false,
     "v05_trial_ready": false,
     "v05_new_model_POSTs": 0,
-    "v05_required_fix": "Phase-wide stopping on newly confirmed unknown; then verify activation binding and supervisor lifecycle."
+    "v05_required_fix": "Per-request stale approval handling and persistent stop/cleanup on supervisor monitoring exceptions.",
+    "v05_original_shared_stop_gap_resolved": true
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
