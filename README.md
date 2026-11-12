@@ -157,3 +157,7 @@ python3 -B research/workflow-delivery/verify_offline.py
 python3 -B research/review-evidence/verify.py
 python3 -B -m unittest discover -s research/workflow-runtime/tests -v
 ```
+
+## π research workflow observations (2026-11-12)
+
+The [bounded π research case note](research/pi-workflow-2026-11-12/README.md) records calculation, correction, persistent-memory delivery and method retrieval through v04. Method application was not yet observed when the request cap stopped the follow-up. This archived case is separate from the earlier multi-agent review trials and does not activate the isolated runtime repairs in the default product.

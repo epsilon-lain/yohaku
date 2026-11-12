@@ -1,0 +1,152 @@
+{
+  "format": "yohaku-pi-workflow-public-observations/1",
+  "as_of": "2026-11-12",
+  "evidence_scope": "Archived v03, v03b, v04 and offline-fix snapshots; no subsequent continuation included.",
+  "same_research_owner": true,
+  "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
+  "model": {
+    "provider": "adaption",
+    "model": "glm-53-flash",
+    "reasoning_effort": "none"
+  },
+  "stages": [
+    {
+      "stage": "v03",
+      "actual_POSTs": 8,
+      "completed": 7,
+      "new_unknown": 1
+    },
+    {
+      "stage": "v03b",
+      "actual_POSTs": 4,
+      "completed": 4,
+      "new_unknown": 0
+    },
+    {
+      "stage": "v04-A",
+      "actual_POSTs": 5,
+      "completed": 5,
+      "new_unknown": 0
+    },
+    {
+      "stage": "v04-B",
+      "actual_POSTs": 3,
+      "completed": 3,
+      "new_unknown": 0
+    },
+    {
+      "stage": "v04-offline-fix",
+      "actual_POSTs": 0,
+      "completed": null,
+      "new_unknown": 0
+    }
+  ],
+  "aggregate": {
+    "actual_POSTs": 20,
+    "closed": true,
+    "unknown_reservations": 79,
+    "new_helpers": 0,
+    "help_requests": 0
+  },
+  "observations": [
+    {
+      "id": "memory-delivered",
+      "status": "observed",
+      "claim": "Revised persistent memory entered actual sent B model inputs.",
+      "source_revision": "4a43a7331fc6772ca0773edf4a529dfee58a8938ffffd22c58fe4e048225adba",
+      "evidence": [
+        "v04/provider/ B request journals",
+        "v04/host/READ-DELIVERY-AUDIT.json",
+        "v04/host/B-ACTUAL-INPUT-CHECK.json"
+      ]
+    },
+    {
+      "id": "method-retrieval",
+      "status": "observed",
+      "claim": "B chose to request a method document and computation source after directory/result inspection.",
+      "source_revision": "64c95fcec6039eedb7b7e80607a8f24c0c8574cf0b80d336005e8868ee4d248b",
+      "evidence": [
+        "v04/analysis/TRANSCRIPT-followup.jsonl"
+      ]
+    },
+    {
+      "id": "method-delivery",
+      "status": "not_observed_before_cap",
+      "claim": "Method body and computation source returned to host but appeared only in the definitely-unsent next request.",
+      "evidence": [
+        "v04/provider/ B denied round 3 journal",
+        "offline-fix/checkpoint-B/public/CHECKPOINT.json"
+      ]
+    },
+    {
+      "id": "method-application",
+      "status": "not_established",
+      "claim": "No saved B target artifact or computation call in this bounded task; correctness alone would not establish causal method effect."
+    },
+    {
+      "id": "review-response",
+      "status": "observed_with_external_feedback",
+      "claim": "A saved response and revised progress, method and memory following explicit inf/liminf review; not an unprompted correction.",
+      "evidence": [
+        "v04/analysis/TRANSCRIPT-repair.jsonl",
+        "v04/world/ saved source versions"
+      ]
+    },
+    {
+      "id": "registration-contract",
+      "status": "engineering_failure_then_isolated_fix",
+      "claim": "Three historical registrations failed; isolated final native bridge later registered a fixture response, retaining pending independent review.",
+      "historical_failures_preserved": 3,
+      "fixture_author_responses": 1,
+      "fixture_explicit_supersedes": 1,
+      "fixture_independent_approvals": 0,
+      "candidate_module_sha256": "00affd698b64a78ea3d3abc2983ad8f35e676db901cec225eaded6524f35a148",
+      "evidence": [
+        "offline-fix/native/NATIVE-CLOSED-LOOP.json",
+        "offline-fix/native/NATIVE-PROCESS-LOG.json",
+        "offline-fix/native/NATIVE-PUBLIC-TOOL-LOG.json",
+        "offline-fix/native/NATIVE-REVIEW-EVENTS.json",
+        "offline-fix/host/ARCHIVED-RECEIPT-REGRESSION.json"
+      ]
+    }
+  ],
+  "not_established": [
+    "stable differentiation",
+    "parameter training",
+    "causal benefit of method reuse",
+    "general efficiency gain",
+    "pi badly-approximable theorem"
+  ],
+  "interventions": [
+    "explicit external mathematical review",
+    "method/memory saving instructions",
+    "designed follow-up target",
+    "bounded POST limits",
+    "host monitor maintenance and engineering repair",
+    "host status-conflict and external-opinion overlay"
+  ],
+  "limits": [
+    "Single bounded case; budget truncation limits negative interpretation.",
+    "No hidden reasoning is reproduced in this summary.",
+    "Offline native loop is corroborated from supplied process/files/database evidence; independent receipt regression was rerun without rerunning native binaries.",
+    "Latest small evidence package reports unchanged ledger/runtime fingerprints; no live user-machine observation was performed."
+  ],
+  "source_archives": [
+    {
+      "name": "Yohaku-Pi-Workflow-Experiment-v03-process-20261111.zip",
+      "sha256": "b2216eed1fea5d2317910b0f7b1562cc79230496ee609d60d639c4162142a69c"
+    },
+    {
+      "name": "Yohaku-Pi-Workflow-v03b-process-20261111.zip",
+      "sha256": "bce94aaacb7c03f7f6d7b4a9d8c9aa707a2131176fccd9c4dc418b04bed978ff"
+    },
+    {
+      "name": "Yohaku-Pi-Review-Reuse-v04-process-20261111.zip",
+      "sha256": "7e47e07fdb59bc26287643a250446e91836da3ef02792da7e1d0c8c79e265141"
+    },
+    {
+      "name": "Yohaku-v04-offline-fix-evidence-20261112.zip",
+      "sha256": "5b59e830cba185db38e00d7ac690f415bfbca303bd79fbf1021e1aecca00f5f3"
+    }
+  ]
+}
