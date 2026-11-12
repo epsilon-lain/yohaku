@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/2",
+  "format": "yohaku-pi-workflow-public-observations/3",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v04c research and v05 offline preparation/fixes. Scope-specific startup blockers resolved; ready for a bounded trial only after user authorization and launch revalidation. No v05 live study has run.",
+  "evidence_scope": "Archived v03–v05 research, offline engineering fixes, and final stopped-phase cleanup. v05 ran with user authorization and is closed. External review is separate from model actions; no further phase is authorized here.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -67,14 +67,30 @@
       "completed": null,
       "new_unknown": 0,
       "review_status": "targeted_preparation_review_passed_pending_user_authorization"
+    },
+    {
+      "stage": "v05-autonomous-research",
+      "actual_POSTs": 12,
+      "completed": 12,
+      "new_unknown": 0,
+      "max_POSTs": 16,
+      "max_helpers": 2,
+      "actual_helpers": 0,
+      "help_requests": 0,
+      "new_tool_calls": 32,
+      "status": "closed",
+      "stop_reason": "lead_terminal",
+      "retained_worst_liability_credits": "2.2806528",
+      "actual_debit_known": false
     }
   ],
   "aggregate": {
-    "actual_POSTs": 26,
+    "actual_POSTs": 38,
     "closed": true,
     "unknown_reservations": 79,
     "new_helpers": 0,
-    "help_requests": 0
+    "help_requests": 0,
+    "authorized_lineage_cap": 42
   },
   "observations": [
     {
@@ -323,6 +339,81 @@
         "Frozen evidence cannot replace current-machine price/state/authorization binding checks.",
         "No real model delivery, autonomous workflow result or parameter training established by these tests."
       ]
+    },
+    {
+      "id": "v05-existing-plan-executed-and-delivered",
+      "status": "observed",
+      "open_goal_preserved": true,
+      "historical_memory_contained_verification_plan": true,
+      "external_review_shaped_changes": true,
+      "prior_tool_exchanges_inserted_once_each_in_first_request": 4,
+      "historical_tools_reexecuted_for_delivery": false,
+      "later_requests_use_cumulative_input": true,
+      "network_lifetime_delivery_once_claimed": false,
+      "actual_model_requests": 12,
+      "actual_tool_calls": 32,
+      "new_project_executions": 1,
+      "verification_script_sha256": "067b5c199da13597885b031f65baf0e60ec5d348e20896a1dad47ee41671d033",
+      "script_source_sha256": "22330ed6fb307014992e060536ad12e255113e5635a344eaa2e792a9f68b496e",
+      "script_changed_from_v04c": false,
+      "execution_exit_code": 0,
+      "report_sha256": "51d8b8cf1d9bad153f8c9023503e1522f5d1ed3ab9f64bbde82c0270ebb494ff",
+      "report_read_by_model": true,
+      "standalone_note_saved": true,
+      "claim_scope": "History-guided continuation and actual reuse of a saved verification plan; not independently invented workflow, causal effect, or full mathematical validation.",
+      "evidence": [
+        "host/FIRST-MODEL-RECEIPT.json",
+        "host/VISIBLE-ACTIONS.json",
+        "provider/ actual request/response journals",
+        "project-tasks/ snapshots, execution receipts and output",
+        "world/ saved research documents"
+      ]
+    },
+    {
+      "id": "v05-local-recovery-and-review-state",
+      "status": "observed",
+      "failed_tool_calls": 3,
+      "review_respond_calls": 7,
+      "successful_review_respond_calls": 5,
+      "failed_ancestry_review_respond_calls": 2,
+      "successful_response_status": "pending_independent_review",
+      "mathematical_validity": "not_determined_by_host",
+      "document_name_failure_then_model_parameter_correction": true,
+      "remaining_math_error": "Response equates v_n with |q_n*x-p_n|, omitting q_n; also incorrectly equates this linear error with q_n*|x-p_n|.",
+      "whole_response_approved": false,
+      "model_self_report_discrepancies": [
+        "Historical manifest patch feedback described as a new v05 action and with wrong failure reason",
+        "Approximate responsibility 2.09 differs from ledger 2.2806528"
+      ],
+      "evidence": [
+        "host/MODEL-SELF-REPORT-CHECK.json",
+        "host/VISIBLE-ACTIONS.json",
+        "reviews/ review records",
+        "world/ REVIEW-RESPONSE-inf-liminf-01.md"
+      ]
+    },
+    {
+      "id": "v05-lead-terminal-and-cleanup-recovery",
+      "status": "closed_after_preserved_incomplete_attempt",
+      "stop_reason": "actual_complete_model_loop_without_function_calls",
+      "first_cleanup_status": "cleanup_incomplete",
+      "first_cleanup_elapsed_seconds": 123.027,
+      "original_group_watcher_elapsed_seconds": 170.321,
+      "same_supervisor_stopped_branch_reentered": true,
+      "new_context_or_dispatch_during_recovery": false,
+      "new_POSTs_during_recovery": 0,
+      "final_owned_process_cleanup_confirmed_in_archive": true,
+      "final_watcher_exit_observed_after_phase_closed": true,
+      "cleanup_delay_root_cause_established": false,
+      "old_ledger_rows_unchanged": 1032,
+      "old_unknown_rows_unchanged": 79,
+      "new_unknown_rows": 0,
+      "evidence": [
+        "host/CLEANUP-RECOVERY-EVIDENCE.json",
+        "host/FINAL-AUDIT.json",
+        "first-bounded-result/",
+        "cleanup-attempt-01/"
+      ]
     }
   ],
   "not_established": [
@@ -330,7 +421,9 @@
     "parameter training",
     "causal benefit of method reuse",
     "general efficiency gain",
-    "pi badly-approximable theorem"
+    "pi badly-approximable theorem",
+    "new workflow invention in v05",
+    "cross-participant differentiation in v05"
   ],
   "interventions": [
     "explicit external mathematical review",
@@ -339,15 +432,19 @@
     "bounded POST limits",
     "host monitor maintenance and engineering repair",
     "host status-conflict and external-opinion overlay",
-    "v04c host-only action-key normalization after all six model responses and budget denial; no model request or research-code execution added"
+    "v04c host-only action-key normalization after all six model responses and budget denial; no model request or research-code execution added",
+    "v05 explicit user authorization, price binding, normal fresh context, delivery of four historical exchanges, read-only viewer correction and same-stopped-phase cleanup recovery; no host-written research route or mathematical text"
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
     "No hidden reasoning is reproduced in this summary.",
     "Offline native loop is corroborated from supplied process/files/database evidence; independent receipt regression was rerun without rerunning native binaries.",
-    "Archived snapshots only, no live machine observation. Latest v04c includes full sent request/SSE and before/after ledger checks; 79 prior unknown rows unchanged.",
-    "One observed method application does not establish causal benefit. Configuration failure prevented verification-script execution and standalone note delivery; the entire saved memory remains unapproved.",
-    "v04c explicitly capped helpers at zero; absence of a helper does not measure autonomous delegation preference."
+    "Archived snapshots only, no live machine observation. Latest v05 includes full sent request/SSE and before/after ledger checks; 79 prior unknown rows unchanged.",
+    "Observed reuse does not establish causal benefit. Configuration failure blocked v04c execution/delivery; v05 later completed them. Remaining formula errors preclude whole-document approval.",
+    "v04c explicitly capped helpers at zero; absence of a helper does not measure autonomous delegation preference.",
+    "v05 begins with historical memory containing the unfinished verification plan and explicit external review cards; its open new goal does not imply an unprompted invention.",
+    "Five successful review registrations are pending independent review, not mathematical acceptance.",
+    "No helper was requested despite a nonzero optional helper cap; this single small task does not identify why or establish delegation ability."
   ],
   "source_archives": [
     {
@@ -382,30 +479,47 @@
     {
       "name": "Yohaku-v05-approval-failclosed-20261112.zip",
       "sha256": "cc663f20323ef252940996cef5542d7c5c15e7fa593cf5d9196b0625dbbecaec"
+    },
+    {
+      "name": "Yohaku-Pi-Autonomous-v05-process-20261112.zip",
+      "sha256": "6d141e61aef8956a98867627e050be5617867ffa4a830df0111538fd7d21e16b",
+      "manifest_files_verified": 3296,
+      "export_hashes_and_lengths_match": true
     }
   ],
   "current_assessment": {
     "method_delivery": "observed_in_v04c_completed_first_turn",
-    "method_application": "observed_in_saved_memory_and_structured_reads",
+    "method_application": "observed_in_v04c_saved_memory_and_v05_actual_execution",
     "saved_18_place_upper_display": "independently_verified_against_original_stored_fraction",
+    "finite_runA_witness": "independently_recomputed_by_external_integer_Machin_checker",
     "whole_memory_or_pi_certificate_approved": false,
-    "standalone_result_note_saved": false,
-    "verification_script_executed": false,
+    "standalone_result_note_saved": true,
+    "verification_script_executed": true,
+    "verification_script_report_read": true,
     "stable_differentiation_or_parameter_training_established": false,
-    "v05_trial_ready": true,
-    "v05_new_model_POSTs": 0,
-    "v05_required_fix": null,
-    "v05_original_shared_stop_gap_resolved": true,
+    "newly_invented_workflow_established": false,
+    "actual_division_of_work_observed": false,
+    "v05_status": "closed",
+    "v05_new_model_POSTs": 12,
+    "v05_unused_POSTs": 4,
+    "v05_user_authorization_bound": true,
     "v05_trial_execution_authorized_by_review": false,
-    "v05_launch_requires": [
-      "Explicit user approval of the existing bounded proposal",
-      "Current pricing/request-cap and exact candidate/policy/context binding revalidation"
+    "v05_original_shared_stop_gap_resolved": true,
+    "next_phase_authorized": false,
+    "additional_model_requests_by_this_audit": 0,
+    "remaining_items": [
+      "Mathematical formula error in revised response",
+      "Two unresolved review-ancestry registration attempts",
+      "Cleanup latency root cause unconfirmed"
     ]
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
     "Preserve last known-good configuration and a repair route independent of current invalid project manifest.",
     "Version methods with applicability conditions and success/failure/intervention history.",
-    "Test real transfer variations with delivery, application and correctness measured separately."
+    "Test real transfer variations with delivery, application and correctness measured separately.",
+    "Preserve historical event identity separately from its current delivery event.",
+    "Associate checked claims with exact versions and check scope, rather than treating saved files or review registration as proof.",
+    "Observe reuse or adaptation on a genuinely new research subproblem without requiring a helper or dictating research steps."
   ]
 }
