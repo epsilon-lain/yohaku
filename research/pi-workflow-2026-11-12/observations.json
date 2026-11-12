@@ -1,7 +1,7 @@
 {
   "format": "yohaku-pi-workflow-public-observations/2",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03, v03b, v04, offline-fix and v04c B continuation snapshots; original v04 cutoff history retained.",
+  "evidence_scope": "Archived v03–v04c research and v05 offline preparation; no v05 model trial has run. Independent review found a phase-wide stop gap before activation.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -46,6 +46,13 @@
       "completed": 6,
       "new_unknown": 0,
       "max_helpers": 0
+    },
+    {
+      "stage": "v05-offline-preparation",
+      "actual_POSTs": 0,
+      "completed": null,
+      "new_unknown": 0,
+      "review_status": "repair_required_before_trial"
     }
   ],
   "aggregate": {
@@ -175,6 +182,45 @@
         "v04c/host/ACCEPTANCE-SUMMARY.json",
         "v04c/provider/ script-create and failed-note receipts"
       ]
+    },
+    {
+      "id": "v05-autonomous-preparation",
+      "status": "partially_verified_with_start_blocker",
+      "source_archive_sha256": "a168d9503d0873bc1db90b02381064f6e93bfee0e185cf490ff8332d5b12fc36",
+      "manifest_files_verified": 194,
+      "changed_file_hashes_verified": 20,
+      "archived_check_counts": {
+        "configuration": 31,
+        "context": 13,
+        "gate": 11
+      },
+      "counts_are_not_independent_reruns": true,
+      "pending_v04c_outputs_preserved_once_in_order": 4,
+      "observation_contract_excluded_from_preview": true,
+      "model_POSTs": 0
+    },
+    {
+      "id": "v05-new-unknown-stop-gap",
+      "status": "independently_reproduced",
+      "gate_sha256": "90b13ce060544acdc700e16a8a885e2f96b54d1ddd623c88aaa77d7355b18505",
+      "expected": "After a new confirmed unknown, block all further phase-wide POST admissions and retain liability.",
+      "actual": "After Gate.note_outcome reports lead unknown, phase stays open and an already-started helper remains eligible for a new POST.",
+      "reproduction_scope": "Reviewed Gate methods with synthetic private state and sequential local adapters; no network, provider requests, production writes or concurrency claim.",
+      "historical_unknowns_in_fixture": 79,
+      "normal_inflight_admission_preserved": true,
+      "new_unknown_helper_admission": true,
+      "admitted_ordinal": 2,
+      "evidence": [
+        "candidate/agent/yohaku_workflow_gate.py:663–714",
+        "host-scripts/test_autonomous_gate.py:76–83",
+        "review/EXPERIMENT-PROPOSAL.md"
+      ],
+      "repair_requirements": [
+        "Persistent shared stop signal checked under authoritative POST admission lock",
+        "Distinguish historical unknowns, in-flight reservations and newly confirmed unknown outcomes",
+        "Preserve accounting and reconcile already-in-flight work",
+        "Verify host completion/cleanup/close wiring and actual new-context dispatch binding before activation"
+      ]
     }
   ],
   "not_established": [
@@ -222,6 +268,10 @@
       "name": "Yohaku-Pi-B-Continuation-v04c-process-20261112.zip",
       "sha256": "d7cdb3826be61136351dc6e44d5bb872e71591e9b4bbc6e44e194bf4495c7a13",
       "manifest_files_verified": 1751
+    },
+    {
+      "name": "Yohaku-v05-autonomous-preparation-20261112.zip",
+      "sha256": "a168d9503d0873bc1db90b02381064f6e93bfee0e185cf490ff8332d5b12fc36"
     }
   ],
   "current_assessment": {
@@ -231,7 +281,10 @@
     "whole_memory_or_pi_certificate_approved": false,
     "standalone_result_note_saved": false,
     "verification_script_executed": false,
-    "stable_differentiation_or_parameter_training_established": false
+    "stable_differentiation_or_parameter_training_established": false,
+    "v05_trial_ready": false,
+    "v05_new_model_POSTs": 0,
+    "v05_required_fix": "Phase-wide stopping on newly confirmed unknown; then verify activation binding and supervisor lifecycle."
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
