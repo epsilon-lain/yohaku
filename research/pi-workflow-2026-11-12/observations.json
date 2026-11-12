@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/1",
+  "format": "yohaku-pi-workflow-public-observations/2",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03, v03b, v04 and offline-fix snapshots; no subsequent continuation included.",
+  "evidence_scope": "Archived v03, v03b, v04, offline-fix and v04c B continuation snapshots; original v04 cutoff history retained.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -39,10 +39,17 @@
       "actual_POSTs": 0,
       "completed": null,
       "new_unknown": 0
+    },
+    {
+      "stage": "v04c-B-continuation",
+      "actual_POSTs": 6,
+      "completed": 6,
+      "new_unknown": 0,
+      "max_helpers": 0
     }
   ],
   "aggregate": {
-    "actual_POSTs": 20,
+    "actual_POSTs": 26,
     "closed": true,
     "unknown_reservations": 79,
     "new_helpers": 0,
@@ -76,12 +83,14 @@
       "evidence": [
         "v04/provider/ B denied round 3 journal",
         "offline-fix/checkpoint-B/public/CHECKPOINT.json"
-      ]
+      ],
+      "stage_scope": "v04 B only; historical cutoff, superseded only for later continuation state"
     },
     {
       "id": "method-application",
       "status": "not_established",
-      "claim": "No saved B target artifact or computation call in this bounded task; correctness alone would not establish causal method effect."
+      "claim": "No saved B target artifact or computation call in this bounded task; correctness alone would not establish causal method effect.",
+      "stage_scope": "v04 B only; historical cutoff, superseded only for later continuation state"
     },
     {
       "id": "review-response",
@@ -108,6 +117,64 @@
         "offline-fix/native/NATIVE-REVIEW-EVENTS.json",
         "offline-fix/host/ARCHIVED-RECEIPT-REGRESSION.json"
       ]
+    },
+    {
+      "id": "method-delivery-v04c",
+      "stage": "v04c",
+      "status": "observed",
+      "claim": "First actual completed continuation request preserved the original 18-item input prefix and both pending tool outputs once in their original order, plus one operational budget/checkpoint notice.",
+      "evidence": [
+        "v04c/original-B-checkpoint/public/original-denied-request.json",
+        "v04c/original-B-checkpoint/public/pending-tool-outputs.json",
+        "v04c/provider/ checkpoint-input-proof.json and round 0 journal"
+      ]
+    },
+    {
+      "id": "method-application-v04c",
+      "stage": "v04c",
+      "status": "observed_in_saved_work",
+      "claim": "Structured read of stored decimal, source-based floor convention, next-unit upper display and finite-witness limits were applied in saved memory, beyond method-name citation.",
+      "source_revision": "7ba7b6d1bfa8ef67bb8cd99663fc8a9e6e506a597eb81773d9e1097fb199d2d6",
+      "upper_display": "0.000048130561246290",
+      "decimal_check_scope": "Strict tight 18-place ceiling against original stored rational only; no approval of whole memory, pi certificate or all mathematical claims.",
+      "original_artifact_sha256": "324a5a829cd5b95bd972e80cf904a69ee1b7e3bed3ea44e5653c8a663200f4d4",
+      "evidence": [
+        "v04c/host/ACCEPTANCE-SUMMARY.json",
+        "v04c/provider/ task_result_read and memory_write receipts",
+        "v04c/world/files/pi-research-20261110-396076c9/lead-memory.md.tex"
+      ]
+    },
+    {
+      "id": "manifest-self-lock-v04c",
+      "stage": "v04c",
+      "status": "observed_engineering_failure_with_host_repair",
+      "claim": "A successful patch saved invalid mixed-case action key, after which project-scope planning, materialization, reads, writes and repair attempts failed validation. Host normalized only the key after all six model responses; model self-recovery was not observed.",
+      "invalid_action": "verify-runA-dec18",
+      "host_repaired_action": "verify-runa-dec18",
+      "before_source_sha256": "42c1e40d495d8d71e4e963de22c172af2ba4d5f6f056474300af3e074db7e452",
+      "after_source_sha256": "95ae10b72fd1d912e004fd45f8cd72710b23d7a3030e789bdaf99651b495222f",
+      "host_research_code_execution": false,
+      "evidence": [
+        "v04c/host/MANIFEST-POISON-DIAGNOSIS.json",
+        "v04c/host/HOST-CONFIG-REPAIR.json",
+        "v04c/host-config-repair/project.before.tex",
+        "v04c/host-config-repair/project.after.tex",
+        "v04c/provider/ patch success and invalid_manifest tool receipts"
+      ]
+    },
+    {
+      "id": "incomplete-deliverables-v04c",
+      "stage": "v04c",
+      "status": "partial_delivery",
+      "claim": "Verification script saved but not executed; standalone result note creation failed. Saved memory retains stale registration, index and other unverified or incorrect statements.",
+      "verification_script_source_sha256": "22330ed6fb307014992e060536ad12e255113e5635a344eaa2e792a9f68b496e",
+      "standalone_note_saved": false,
+      "verification_script_executed": false,
+      "whole_memory_approved": false,
+      "evidence": [
+        "v04c/host/ACCEPTANCE-SUMMARY.json",
+        "v04c/provider/ script-create and failed-note receipts"
+      ]
     }
   ],
   "not_established": [
@@ -123,13 +190,16 @@
     "designed follow-up target",
     "bounded POST limits",
     "host monitor maintenance and engineering repair",
-    "host status-conflict and external-opinion overlay"
+    "host status-conflict and external-opinion overlay",
+    "v04c host-only action-key normalization after all six model responses and budget denial; no model request or research-code execution added"
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
     "No hidden reasoning is reproduced in this summary.",
     "Offline native loop is corroborated from supplied process/files/database evidence; independent receipt regression was rerun without rerunning native binaries.",
-    "Latest small evidence package reports unchanged ledger/runtime fingerprints; no live user-machine observation was performed."
+    "Archived snapshots only, no live machine observation. Latest v04c includes full sent request/SSE and before/after ledger checks; 79 prior unknown rows unchanged.",
+    "One observed method application does not establish causal benefit. Configuration failure prevented verification-script execution and standalone note delivery; the entire saved memory remains unapproved.",
+    "v04c explicitly capped helpers at zero; absence of a helper does not measure autonomous delegation preference."
   ],
   "source_archives": [
     {
@@ -147,6 +217,26 @@
     {
       "name": "Yohaku-v04-offline-fix-evidence-20261112.zip",
       "sha256": "5b59e830cba185db38e00d7ac690f415bfbca303bd79fbf1021e1aecca00f5f3"
+    },
+    {
+      "name": "Yohaku-Pi-B-Continuation-v04c-process-20261112.zip",
+      "sha256": "d7cdb3826be61136351dc6e44d5bb872e71591e9b4bbc6e44e194bf4495c7a13",
+      "manifest_files_verified": 1751
     }
+  ],
+  "current_assessment": {
+    "method_delivery": "observed_in_v04c_completed_first_turn",
+    "method_application": "observed_in_saved_memory_and_structured_reads",
+    "saved_18_place_upper_display": "independently_verified_against_original_stored_fraction",
+    "whole_memory_or_pi_certificate_approved": false,
+    "standalone_result_note_saved": false,
+    "verification_script_executed": false,
+    "stable_differentiation_or_parameter_training_established": false
+  },
+  "design_followups": [
+    "Validate candidate configuration before atomic commit.",
+    "Preserve last known-good configuration and a repair route independent of current invalid project manifest.",
+    "Version methods with applicability conditions and success/failure/intervention history.",
+    "Test real transfer variations with delivery, application and correctness measured separately."
   ]
 }
