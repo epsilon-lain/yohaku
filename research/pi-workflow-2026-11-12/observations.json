@@ -521,5 +521,52 @@
     "Preserve historical event identity separately from its current delivery event.",
     "Associate checked claims with exact versions and check scope, rather than treating saved files or review registration as proof.",
     "Observe reuse or adaptation on a genuinely new research subproblem without requiring a helper or dictating research steps."
-  ]
+  ],
+  "next_stage_design": {
+    "id": "v06-mixed-model",
+    "status": "design_only_not_implemented_not_started",
+    "user_authorized_sol_trial": true,
+    "limits_origin": "assistant-selected conservative implementation boundary, not verbatim user numeric authorization",
+    "initial_sol_nodes": 1,
+    "initial_origin": "host_seeded_idle_until_lead_selects_work_and_dispatches",
+    "max_sol_nodes": 2,
+    "profile": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "high"
+    },
+    "lead_profile_preserved": true,
+    "new_adaption_POST_cap": 16,
+    "new_adaption_worst_liability_cap_credits": "3.0408704",
+    "actual_old_adaption_POST_baseline": 38,
+    "new_stage_adaption_lineage_cap": 54,
+    "old_v05_38_of_42_closed": true,
+    "old_unknowns_retained": 79,
+    "aggregate_codex_native_turn_cap": 4,
+    "native_turn_unit_is_provider_POST": false,
+    "native_per_turn_local_seconds": 300,
+    "native_per_turn_tools": 12,
+    "native_aggregate_tools": 48,
+    "phase_wall_seconds": 2700,
+    "automatic_new_billing_route_allowed": false,
+    "provider_internal_POST_or_debit_assumed_visible": false,
+    "minimum_remaining_lead_POSTs_before_helper_turn": 2,
+    "count_cap_behavior": "deny new admission of that resource, allow admitted work and already reserved lead integration within original totals/deadline",
+    "shared_stop_across_providers": true,
+    "required_minimal_changes": [
+      "Allowlisted exact mixed profile grants without broadening default inheritance",
+      "Native-turn budget and lifecycle accounting distinct from Adaption POST/Credits",
+      "Provider-specific supervisor observation and phase deadline",
+      "Bounded host await_helper to deliver existing result in same lead tool cycle"
+    ],
+    "observations_focus": [
+      "Negotiated actual research task",
+      "Original helper result actually delivered",
+      "Lead adoption, challenge, revision or non-use with artifact evidence"
+    ],
+    "initial_collaborator_is_spontaneous_differentiation": false,
+    "new_research_model_requests": 0,
+    "source_review_mode": "read-only frozen-source static analysis; no uploaded runtime execution",
+    "independent_math_followup": "external fixed-depth note, not model trial result or an improvement in existing numerical coverage"
+  }
 }
