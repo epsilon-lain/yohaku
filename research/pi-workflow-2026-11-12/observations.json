@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/5",
+  "format": "yohaku-pi-workflow-public-observations/6",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v06d actions. Mixed v06d has 10 completed model requests and one HTTP429 retained as unknown liability; Sol has not run. External mathematical certification and mechanism suggestions are separate from trial model actions; no future dispatch authority.",
+  "evidence_scope": "Archived v03–v07. Latest v07 failed in host ReviewHost construction before inference, with zero new POST/native turn/liability. Snapshot/status implementation has offline coverage; production collaboration remains absent. External audits and suggested patches are separate from model actions.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -124,6 +124,26 @@
       "peer_dispatch_attempts": 1,
       "actual_peer_dispatches": 0,
       "confirmed_peer_result_deliveries": 0
+    },
+    {
+      "stage": "v07-fixed-review",
+      "actual_POSTs": 0,
+      "completed": null,
+      "new_unknown": 0,
+      "native_turns": 0,
+      "native_tools": 0,
+      "new_helpers": 0,
+      "reused_helpers": 1,
+      "max_POSTs": 8,
+      "max_native_turns": 2,
+      "max_native_tools": 24,
+      "phase_worst_liability_cap_credits": "1.5204352",
+      "new_worst_liability_credits": "0",
+      "status": "closed_preinference_host_review_database_permissions_failure",
+      "failure": "Private review database permissions required",
+      "executed_candidate_manifest_sha256": "fd25b615c12f31de090289087e569c4bab8a04cd23726e9d37e292bf858ddd08",
+      "isolated_repair_manifest_sha256": "fe6ff80f1d70158246e494925a4c3237c4234fb4f8c3a26e313e7ce27c53d7ca",
+      "repair_activated": false
     }
   ],
   "aggregate": {
@@ -132,14 +152,18 @@
     "unknown_reservations": 80,
     "new_helpers": 1,
     "help_requests": 2,
-    "authorized_lineage_cap": 54,
+    "authorized_lineage_cap": 57,
     "host_seeded_helpers": 1,
     "model_started_helpers": 0,
     "old_v05_closed_lineage_cap": 42,
     "new_mixed_adaption_POSTs": 11,
     "new_mixed_native_turns": 0,
     "mixed_worst_liability_reserved_credits": "2.0905984",
-    "helper_count_note": "One idle host-created node exists in v06c; no helper model task has run."
+    "helper_count_note": "One idle host-created node exists in v06c; no helper model task has run.",
+    "v07_new_POSTs": 0,
+    "v07_new_native_turns": 0,
+    "v07_new_liability_credits": "0",
+    "old_v06_closed_lineage_cap": 54
   },
   "observations": [
     {
@@ -614,6 +638,100 @@
         "host/OFFLINE-COMPLETE-CONTEXT-PIPELINE.json",
         "host/OFFLINE-MIXED-NATIVE.json"
       ]
+    },
+    {
+      "id": "v07-host-review-database-permissions-preinference-failure",
+      "status": "observed_host_preparation_error",
+      "raw_error": "Private review database permissions required",
+      "database_reported_original_mode": "0644",
+      "required_private_database_mode": "0600",
+      "preflight_gap": "Fixture cleared YOHAKU_REVIEW_POLICY and never constructed enabled production ReviewHost; production preflight did not inspect this dependency.",
+      "model_POSTs": 0,
+      "native_turns": 0,
+      "confirmed_new_recovery_input_deliveries": 0,
+      "research_artifacts_or_memory_changed": false,
+      "offline_report_tests": {
+        "resource_gate": 12,
+        "snapshot": 2,
+        "receipt_status": 8,
+        "dual_worker_pipeline": 1
+      },
+      "offline_archived_suites_independently_rerun": false,
+      "positive_wait_pending_pipeline_covered": true,
+      "real_review_dependency_covered_in_original_pipeline": false,
+      "independent_AST_checks": 6,
+      "source_export_fingerprints_match": true,
+      "repair_manifest_sha256": "fe6ff80f1d70158246e494925a4c3237c4234fb4f8c3a26e313e7ce27c53d7ca",
+      "repair_changes": "Clone review database/versions, 0600/0700; review policy storage paths only; construct configured ReviewHost before initialize",
+      "repair_current_failed_task_events_reported": 92,
+      "repair_activated": false,
+      "SQLite_binary_independently_reopened": false,
+      "evidence": [
+        "host/HOST-REVIEW-DB-PERMISSIONS-FAILURE.json",
+        "host/OFFLINE-PRODUCTION-REVIEW-REPAIR.json",
+        "host/OFFLINE-REVIEW-PREINITIALIZE.json",
+        "host/OFFLINE-FULL-REVIEW-PIPELINE.json",
+        "engineering/agent/yohaku_review_store.py",
+        "engineering/unactivated-post-failure-repair/agent/yohaku_autonomous_supervisor.py"
+      ]
+    },
+    {
+      "id": "v07-zero-use-closed-epoch-and-unstarted-clock",
+      "status": "independently_compared_archived_data_and_source",
+      "old_reservation_rows_equal": 1055,
+      "old_unknown_rows_equal": 80,
+      "new_POSTs": 0,
+      "new_native_turns": 0,
+      "new_native_tools": 0,
+      "new_liability_credits": "0",
+      "old_authority_maps_equal": true,
+      "first_model_admitted_at": null,
+      "deadline": null,
+      "existing_Sol_tasks": 0,
+      "existing_Sol_generation": 0,
+      "closed": true,
+      "first_cleanup_incomplete_retained": true,
+      "final_owned_cleanup_and_lease_release_supported_by_later_archive": true,
+      "current_code_supports_manual_continuation": false,
+      "next_requirement": "Explicit append registration with combined 8 POST/1.5204352 Credits/2 native turns/24 tools and same unstarted window; preserve closed v07/stop/context, old rows and helper identity.",
+      "evidence": [
+        "workflow/SESSION-LEDGER.before.json",
+        "workflow/SESSION-LEDGER.after.json",
+        "host/FINAL-AUDIT.json",
+        "host/FUTURE-CONTINUATION-CHECKPOINT.json",
+        "engineering/agent/yohaku_fixed_epoch.py"
+      ]
+    },
+    {
+      "id": "v07-receipt-content-origin-and-lean-scope-counterexamples",
+      "status": "independent_synthetic_counterexamples_and_suggested_patch_not_production_events",
+      "original_receipt_source_sha256": "697fa10869fa7d86942dd66bcf30c12e78c75202eb37636163abce710c45586d",
+      "suggested_receipt_source_sha256": "43c15fcb629ea17c9ae92122fc76c7009c0f89298e222f5f2cd0591858ff66e5",
+      "lean_result_source_sha256": "95a45e886ee786c7fe24426a5377f1011fe75da5cdd2170e9a6c3b467d0420ce",
+      "patch_sha256": "f85390c04f7bfe83a7a70c37dbc97bd44b9121c0e52b43852b5bb70e737247c9",
+      "regression_script_sha256": "43a6ab7fdb6ff96801f95c596e8895bba59b8d6f47fbb5f6b91023e436b9d9d8",
+      "findings": [
+        "Post-read current copy B does not prove returned A was peer B",
+        "Post-write current copy B does not prove peer wrote B",
+        "15000-character raw result can be serialized as 10000-character prefix; raw full flag does not prove full model input"
+      ],
+      "regression_tests": 14,
+      "regression_passed": true,
+      "patch_application_matches_suggested_source": true,
+      "ordinary_partial_artifact_receipt_established_by_patch": false,
+      "awaiting_partial_visible_result_scope_supported": true,
+      "native_execution_and_response_confirmation_stipulated_in_counterexamples": true,
+      "full_runtime_integration_of_suggested_patch_done": false,
+      "files": [
+        "v07-receipt-content-proof.patch",
+        "check_v07_receipt_content.py",
+        "v07-receipt-regression.json"
+      ],
+      "sources": [
+        "engineering/agent/yohaku_review_receipts.py",
+        "engineering/agent/yohaku_workflow_gate.py:observe_tool",
+        "engineering/agent/yohaku_recovery.py:lean_result"
+      ]
     }
   ],
   "not_established": [
@@ -627,7 +745,9 @@
     "actual mixed-model collaboration in v06/v06c",
     "successful live activation of the v06c entry repair",
     "completed mixed-model collaboration in v06d",
-    "persisted or reusable v06d local workflow adjustment"
+    "persisted or reusable v06d local workflow adjustment",
+    "production fixed-version peer review in v07",
+    "new mathematical research or new method formation in v07"
   ],
   "interventions": [
     "explicit external mathematical review",
@@ -639,7 +759,8 @@
     "v04c host-only action-key normalization after all six model responses and budget denial; no model request or research-code execution added",
     "v05 explicit user authorization, price binding, normal fresh context, delivery of four historical exchanges, read-only viewer correction and same-stopped-phase cleanup recovery; no host-written research route or mathematical text",
     "v06/v06c mixed-profile integration, one explicit manual continuation, host-created idle Sol node, owner fresh-context entry, post-failure isolated repair and stopped-phase cleanup; no research inference occurred",
-    "v06d second explicit manual continuation, append-only shared envelope migration, existing idle Sol reuse, normal owner context; math feedback and post-trial external independent checker remain separate from model actions."
+    "v06d second explicit manual continuation, append-only shared envelope migration, existing idle Sol reuse, normal owner context; math feedback and post-trial external independent checker remain separate from model actions.",
+    "v07 host fixed-snapshot/status engineering, reused helper and normal context preparation; ReviewHost database mode caused pre-inference failure. Isolated permissions/preflight repair and external receipt counterexamples are not model research."
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
@@ -657,7 +778,11 @@
     "v06d supports local workflow adjustment but no completed peer work, persisted method or later reuse.",
     "Model receipt of the second approval/full runB report is unconfirmed; no inference of deliberate non-dispatch.",
     "HTTP429 is a known rate-limit response; retained unknown refers to unverified remote execution/liability.",
-    "Original 45-minute window expired; five unused POSTs cannot refresh its deadline."
+    "Original 45-minute window expired; five unused POSTs cannot refresh its deadline.",
+    "v07 SQLite binaries are not exported; original/clone modes and equality are archival reports corroborated by code/events rather than independently reopened databases.",
+    "An offline dual-worker pipeline without the enabled ReviewHost did not validate that production dependency.",
+    "v07 new review status has independently identified content/version and model-view scope gaps; do not treat its unpatched metadata as final evidence of artifact delivery.",
+    "The suggested receipt patch proves only the tested metadata/serialization boundaries; it has not been integrated into the original worker. Ordinary partial reads/body projections remain conservatively unestablished."
   ],
   "source_archives": [
     {
@@ -714,6 +839,14 @@
       "manifest_files_verified": 4252,
       "export_hashes_and_lengths_match": true,
       "executed_manifest_sha256": "e9db66289aa4a9f2cf3ab0a3143a3a06714b7aae334c714c71cebe9ce8a904dc"
+    },
+    {
+      "name": "Yohaku-Pi-Fixed-Review-v07-process-20261113.zip",
+      "sha256": "d4f5dbb382cf42c2c679b58f785df57cb348ecafea4af41dd6b02ce0d4b4135a",
+      "bytes": 46470496,
+      "manifest_files_verified": 4767,
+      "export_hashes_and_lengths_match": true,
+      "executed_manifest_sha256": "fd25b615c12f31de090289087e569c4bab8a04cd23726e9d37e292bf858ddd08"
     }
   ],
   "current_assessment": {
@@ -737,11 +870,11 @@
     "next_phase_authorized": false,
     "additional_model_requests_by_this_audit": 0,
     "remaining_items": [
-      "False attribution of completed Sol cross-check in saved manuscript",
-      "Readable immutable reviewer input and reviewed-version attribution",
-      "Actual peer execution, result delivery and owner use not yet observed",
-      "Local workflow adjustment not saved or reused",
-      "Expired mixed-phase deadline and new unknown liability; unused count is not dispatch authority",
+      "Apply the retained ReviewHost permission clone and preinitialization dependency check under a new valid binding",
+      "Verify actual returned content/version and model-visible lean_result scope in artifact receipt status",
+      "Implement one explicit aggregate-bounded continuation; the reviewed v07 epoch forbids direct manual_continuation",
+      "Real Sol execution, delivery and author correction of unsupported cross-check attribution remain unobserved",
+      "v06d local workflow adjustment is not persisted or reused",
       "Cleanup latency root cause unconfirmed"
     ],
     "mixed_status": "v06d_closed_after_http429",
@@ -756,7 +889,14 @@
     "local_adjustment_persisted_in_memory": false,
     "Sol_execution": 0,
     "unsupported_Sol_crosscheck_attribution_saved": true,
-    "original_mixed_deadline_expired": true
+    "original_mixed_deadline_expired": true,
+    "current_stage": "v07_closed_before_inference",
+    "v07_model_action_or_new_math": false,
+    "fixed_snapshot_implementation": "offline_path_implemented_not_exercised_by_real_models",
+    "review_dependency_preflight": "isolated_unactivated_repair",
+    "receipt_status_audit": "three_content_origin_or_view_scope_counterexamples_fixed_in_suggested_unactivated_patch",
+    "v07_first_model_admitted_at": null,
+    "v07_deadline": null
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",

@@ -1,0 +1,311 @@
+{
+  "format": "v07-receipt-content-metadata-regression/1",
+  "scope": "AST-extracted metadata function + actual pure lean_result only; native completion stipulated, exact owner wire delivery checked synthetically. No uploaded runtime imported or executed; no network/model/native process.",
+  "tests": 14,
+  "passed": true,
+  "original_source_sha256": "697fa10869fa7d86942dd66bcf30c12e78c75202eb37636163abce710c45586d",
+  "suggested_source_sha256": "43c15fcb629ea17c9ae92122fc76c7009c0f89298e222f5f2cd0591858ff66e5",
+  "lean_result_source_sha256": "95a45e886ee786c7fe24426a5377f1011fe75da5cdd2170e9a6c3b467d0420ce",
+  "cases": [
+    {
+      "name": "stale_A_read_after_peer_B_current",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "partial_or_unestablished"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "unrelated_returned_text",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "partial_or_unestablished"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "exact_visible_peer_artifact",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "ordinary_partial_read_unestablished",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "partial_or_unestablished"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "empty_ordinary_read_unestablished",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "partial_or_unestablished"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "short_await_full",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          14
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          14
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "short_await_partial",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "partial"
+        ],
+        "returned_chars": [
+          4
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "partial"
+        ],
+        "returned_chars": [
+          4
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "long_await_lean_truncation",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          15000
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "partial"
+        ],
+        "returned_chars": [
+          10000
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "unconfirmed_HTTP429_input",
+      "original": {
+        "confirmed_deliveries": 0,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          14
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          14
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "ordinary_full_raw_but_lean_truncated",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "read_range_with_sufficient_wire_limit",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "no_completed_peer",
+      "original": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 1
+      },
+      "passed": true
+    },
+    {
+      "name": "writer_A_observed_current_B_read_B",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 0
+      },
+      "passed": true
+    },
+    {
+      "name": "missing_writer_reported_revision",
+      "original": {
+        "confirmed_deliveries": 1,
+        "scopes": [
+          "full"
+        ],
+        "returned_chars": [
+          null
+        ],
+        "verified_saved_artifact_versions": 1
+      },
+      "suggested": {
+        "confirmed_deliveries": 0,
+        "scopes": [],
+        "returned_chars": [],
+        "verified_saved_artifact_versions": 0
+      },
+      "passed": true
+    }
+  ]
+}
