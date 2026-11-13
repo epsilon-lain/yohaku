@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/4",
+  "format": "yohaku-pi-workflow-public-observations/5",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v05 research and v06/v06c pre-inference startup failures. Both mixed stages are closed; the entry repair is isolated and unactivated. External audit is distinct from model action and confers no dispatch authority.",
+  "evidence_scope": "Archived v03–v06d actions. Mixed v06d has 10 completed model requests and one HTTP429 retained as unknown liability; Sol has not run. External mathematical certification and mechanism suggestions are separate from trial model actions; no future dispatch authority.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -106,21 +106,39 @@
       "failure": "Mixed lead tool contract omits bounded helper await",
       "repair_status": "isolated_unactivated",
       "second_manual_continuation_supported_by_current_gate": false
+    },
+    {
+      "stage": "v06d-second-manual-continuation-02",
+      "actual_POSTs": 11,
+      "completed": 10,
+      "new_unknown": 1,
+      "native_turns": 0,
+      "native_tools": 0,
+      "new_helpers": 0,
+      "reused_helpers": 1,
+      "status": "closed_shared_stop_http429_unknown",
+      "new_worst_liability_credits": "2.0905984",
+      "actual_debit_known": false,
+      "new_project_tasks": 1,
+      "project_task_exit_code": 0,
+      "peer_dispatch_attempts": 1,
+      "actual_peer_dispatches": 0,
+      "confirmed_peer_result_deliveries": 0
     }
   ],
   "aggregate": {
-    "actual_POSTs": 38,
+    "actual_POSTs": 49,
     "closed": true,
-    "unknown_reservations": 79,
+    "unknown_reservations": 80,
     "new_helpers": 1,
-    "help_requests": 0,
+    "help_requests": 2,
     "authorized_lineage_cap": 54,
     "host_seeded_helpers": 1,
     "model_started_helpers": 0,
     "old_v05_closed_lineage_cap": 42,
-    "new_mixed_adaption_POSTs": 0,
+    "new_mixed_adaption_POSTs": 11,
     "new_mixed_native_turns": 0,
-    "mixed_worst_liability_reserved_credits": "0",
+    "mixed_worst_liability_reserved_credits": "2.0905984",
     "helper_count_note": "One idle host-created node exists in v06c; no helper model task has run."
   },
   "observations": [
@@ -510,6 +528,92 @@
         "host/FINAL-AUDIT.json",
         "engineering/agent/yohaku_mixed_gate.py"
       ]
+    },
+    {
+      "id": "v06d-local-workflow-adjustment",
+      "status": "proposal_and_partial_action_observed",
+      "lead_selected_runB_and_division": true,
+      "first_peer_dispatch_rejected_due_live_artifact_version": true,
+      "request_calls": 3,
+      "valid_requests": 2,
+      "approved_requests": 2,
+      "actual_peer_dispatch_attempts": 1,
+      "actual_peer_dispatches": 0,
+      "adjustment": "Stable pinned inputs and self-contained task, compute separated from text revision",
+      "actions": [
+        "Submitted revised request with three stable pins excluding mutable manuscript",
+        "Submitted independent local runB computation"
+      ],
+      "residual_gap": "Task still references an unpinned current manuscript; stable review subject not established",
+      "memory_or_progress_updated": false,
+      "cross_task_reuse_established": false,
+      "evidence": [
+        "host/METHOD-PROPOSAL-OBSERVATION.json",
+        "host/OUTCOME-EVIDENCE.json",
+        "host/HELP-STATE-AT-STOP.private.json",
+        "engineering/agent/yohaku_workflow_gate.py"
+      ]
+    },
+    {
+      "id": "v06d-unsupported-peer-attribution-and-delivery-boundary",
+      "status": "saved_claim_contradicts_execution",
+      "actual_native_turns": 0,
+      "peer_result_deliveries": 0,
+      "manuscript_claimed_peer_crosscheck_and_memory_save": true,
+      "both_memory_files_unchanged": true,
+      "manuscript_source_sha256": "e136fc0b04b163addbc0aca696e2633a90be602b462e41cebf0668d44669b9a4",
+      "second_approval_confirmed_delivered_to_lead": false,
+      "full_runB_report_confirmed_read_by_lead": false,
+      "unconfirmed_returns": [
+        "task_output full report",
+        "workflow_status v2 approved",
+        "patch_document save acknowledgement"
+      ],
+      "reason": "Included only in round10 request returning HTTP429 without model terminal",
+      "evidence": [
+        "host/OWNER-CLAIM-VS-EXECUTION-DISCREPANCY.json",
+        "host/FUTURE-CONTINUATION-CHECKPOINT.json",
+        "host/OUTCOME-EVIDENCE.json"
+      ]
+    },
+    {
+      "id": "v06d-http429-and-expired-clock",
+      "status": "archived_requests_and_ledger_independently_compared",
+      "old_reservations_unchanged": 1044,
+      "old_unknowns_unchanged": 79,
+      "new_POSTs": 11,
+      "completed_SSE": 10,
+      "new_unknowns": 1,
+      "total_unknowns": 80,
+      "known_http_status": 429,
+      "response_ID_present": false,
+      "retry_after_seconds": 60,
+      "automatic_retries": 0,
+      "liability_classification": "Remote execution/fee not established; HTTP rate-limit refusal is known",
+      "new_worst_liability_credits": "2.0905984",
+      "platform_actual_debit_known": false,
+      "original_envelope_and_old_stops_preserved": true,
+      "deadline_Asia_Shanghai": "2026-11-12T23:50:41.153165+08:00",
+      "unused_POSTs_arithmetic_only": 5,
+      "current_gate_rejects_continuation_03": true,
+      "offline_report_tests": [
+        10,
+        2,
+        9
+      ],
+      "offline_suites_independently_rerun": false,
+      "offline_backend_fake": true,
+      "first_cleanup_incomplete_preserved": true,
+      "final_local_cleanup_supported_by_archive": true,
+      "evidence": [
+        "host/UNKNOWN-STOP-EVIDENCE.json",
+        "workflow/SESSION-LEDGER.before.json",
+        "workflow/SESSION-LEDGER.after.json",
+        "host/FINAL-CLEANUP-OBSERVATION.json",
+        "host/OFFLINE-SECOND-CONTINUATION-GATE.json",
+        "host/OFFLINE-COMPLETE-CONTEXT-PIPELINE.json",
+        "host/OFFLINE-MIXED-NATIVE.json"
+      ]
     }
   ],
   "not_established": [
@@ -521,7 +625,9 @@
     "new workflow invention in v05",
     "cross-participant differentiation in v05",
     "actual mixed-model collaboration in v06/v06c",
-    "successful live activation of the v06c entry repair"
+    "successful live activation of the v06c entry repair",
+    "completed mixed-model collaboration in v06d",
+    "persisted or reusable v06d local workflow adjustment"
   ],
   "interventions": [
     "explicit external mathematical review",
@@ -532,7 +638,8 @@
     "host status-conflict and external-opinion overlay",
     "v04c host-only action-key normalization after all six model responses and budget denial; no model request or research-code execution added",
     "v05 explicit user authorization, price binding, normal fresh context, delivery of four historical exchanges, read-only viewer correction and same-stopped-phase cleanup recovery; no host-written research route or mathematical text",
-    "v06/v06c mixed-profile integration, one explicit manual continuation, host-created idle Sol node, owner fresh-context entry, post-failure isolated repair and stopped-phase cleanup; no research inference occurred"
+    "v06/v06c mixed-profile integration, one explicit manual continuation, host-created idle Sol node, owner fresh-context entry, post-failure isolated repair and stopped-phase cleanup; no research inference occurred",
+    "v06d second explicit manual continuation, append-only shared envelope migration, existing idle Sol reuse, normal owner context; math feedback and post-trial external independent checker remain separate from model actions."
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
@@ -546,7 +653,11 @@
     "No helper was requested despite a nonzero optional helper cap; this single small task does not identify why or establish delegation ability.",
     "v06c full-entry regression uses fake inference HTTP and synthetic helper completion; it does not demonstrate real Sol work, pending waits or provider streaming.",
     "Zero new reservations are supported by archived ledgers and tasks, not an independent provider billing audit.",
-    "The second manual continuation migration is not present in the reviewed repair; unused allowance is not permission to reopen a closed phase."
+    "The second manual continuation migration is not present in the reviewed repair; unused allowance is not permission to reopen a closed phase.",
+    "v06d supports local workflow adjustment but no completed peer work, persisted method or later reuse.",
+    "Model receipt of the second approval/full runB report is unconfirmed; no inference of deliberate non-dispatch.",
+    "HTTP429 is a known rate-limit response; retained unknown refers to unverified remote execution/liability.",
+    "Original 45-minute window expired; five unused POSTs cannot refresh its deadline."
   ],
   "source_archives": [
     {
@@ -595,6 +706,14 @@
       "manifest_files_verified": 3414,
       "export_hashes_and_lengths_match": true,
       "repair_manifest_sha256": "dec4a379e5886af6397b4d7b029c2906d98af04dd950827c1c68241b6e9c6a86"
+    },
+    {
+      "name": "Yohaku-Pi-Mixed-v06d-process-20261112.zip",
+      "sha256": "95340e33c75bc48a0a7d3255b2f27371c3dfb31f2c127e519b73433291dc8cca",
+      "bytes": 42777495,
+      "manifest_files_verified": 4252,
+      "export_hashes_and_lengths_match": true,
+      "executed_manifest_sha256": "e9db66289aa4a9f2cf3ab0a3143a3a06714b7aae334c714c71cebe9ce8a904dc"
     }
   ],
   "current_assessment": {
@@ -618,18 +737,26 @@
     "next_phase_authorized": false,
     "additional_model_requests_by_this_audit": 0,
     "remaining_items": [
-      "Mathematical formula error in revised response",
-      "Two unresolved review-ancestry registration attempts",
-      "Cleanup latency root cause unconfirmed",
-      "Implement and verify append-only second manual continuation under the same mixed envelope before any further dispatch",
-      "Real owner/Sol delivery and adoption remain untested"
+      "False attribution of completed Sol cross-check in saved manuscript",
+      "Readable immutable reviewer input and reviewed-version attribution",
+      "Actual peer execution, result delivery and owner use not yet observed",
+      "Local workflow adjustment not saved or reused",
+      "Expired mixed-phase deadline and new unknown liability; unused count is not dispatch authority",
+      "Cleanup latency root cause unconfirmed"
     ],
-    "mixed_status": "both_stages_closed_before_inference",
-    "mixed_entry_repair": "isolated_unactivated",
+    "mixed_status": "v06d_closed_after_http429",
+    "mixed_entry_repair": "activated_in_v06d",
     "sol_join_authorization_exists": true,
     "one_manual_continuation_authorization_consumed": true,
     "next_manual_continuation_authorized_by_this_review": false,
-    "second_continuation_migration": "required_not_implemented_in_reviewed_candidate"
+    "second_continuation_migration": "implemented_and_used",
+    "division_proposal_and_attempt_observed": true,
+    "local_workflow_adjustment_observed": true,
+    "local_adjustment_fully_resolved": false,
+    "local_adjustment_persisted_in_memory": false,
+    "Sol_execution": 0,
+    "unsupported_Sol_crosscheck_attribution_saved": true,
+    "original_mixed_deadline_expired": true
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
@@ -642,7 +769,7 @@
   ],
   "next_stage_design": {
     "id": "v06-mixed-model",
-    "status": "implemented_preinference_failures_entry_repair_unactivated",
+    "status": "v06d_closed_after_10_completed_and_1_http429_no_Sol_execution",
     "user_authorized_sol_trial": true,
     "limits_origin": "assistant-selected conservative implementation boundary, not verbatim user numeric authorization",
     "initial_sol_nodes": 1,
@@ -683,13 +810,19 @@
       "Lead adoption, challenge, revision or non-use with artifact evidence"
     ],
     "initial_collaborator_is_spontaneous_differentiation": false,
-    "new_research_model_requests": 0,
+    "new_research_model_requests": 11,
     "source_review_mode": "read-only frozen-source static analysis; no uploaded runtime execution",
     "independent_math_followup": "external fixed-depth note, not model trial result or an improvement in existing numerical coverage",
     "initial_design_status": "design_only_not_implemented_not_started",
     "latest_review_source": "Yohaku-Pi-Mixed-v06c-process-20261112.zip",
     "actual_sol_nodes_created": 1,
     "actual_sol_native_turns": 0,
-    "current_candidate_supports_second_manual_continuation": false
-  }
+    "current_candidate_supports_second_manual_continuation": true,
+    "second_continuation_used": true,
+    "current_candidate_supports_third_manual_continuation": false,
+    "first_model_admitted_at": 1794495941.1531649,
+    "deadline": 1794498641.1531649,
+    "deadline_Asia_Shanghai": "2026-11-12T23:50:41.153165+08:00"
+  },
+  "updated": "2026-11-13 Asia/Shanghai"
 }
