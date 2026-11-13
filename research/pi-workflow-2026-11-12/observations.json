@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/6",
+  "format": "yohaku-pi-workflow-public-observations/7",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v07. Latest v07 failed in host ReviewHost construction before inference, with zero new POST/native turn/liability. Snapshot/status implementation has offline coverage; production collaboration remains absent. External audits and suggested patches are separate from model actions.",
+  "evidence_scope": "Archived v03–v07c. Latest stage has verified real Sol execution, complete delivery of its 281-character final summary and partial owner adoption with saved memory/progress. Detailed memory readback remains unconfirmed; loop ended on network-prevented ninth-request BudgetExceeded.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -144,26 +144,49 @@
       "executed_candidate_manifest_sha256": "fd25b615c12f31de090289087e569c4bab8a04cd23726e9d37e292bf858ddd08",
       "isolated_repair_manifest_sha256": "fe6ff80f1d70158246e494925a4c3237c4234fb4f8c3a26e313e7ce27c53d7ca",
       "repair_activated": false
+    },
+    {
+      "stage": "v07c-fixed-review-manual-continuation",
+      "actual_POSTs": 8,
+      "completed": 8,
+      "new_unknown": 0,
+      "native_turns": 1,
+      "native_tools": 5,
+      "new_helpers": 0,
+      "reused_helpers": 1,
+      "max_POSTs": 8,
+      "max_native_turns": 2,
+      "max_native_tools": 24,
+      "new_worst_liability_credits": "1.5204352",
+      "status": "closed_after_BudgetExceeded_not_normal_final",
+      "real_peer_execution_completed": true,
+      "summary_confirmed_delivered_chars": 281,
+      "partial_adoption_observed": true,
+      "detail_readback_confirmed": false,
+      "actual_snapshot_page_events": 0,
+      "last_tool_receipts_unconfirmed": 4
     }
   ],
   "aggregate": {
-    "actual_POSTs": 49,
+    "actual_POSTs": 57,
     "closed": true,
     "unknown_reservations": 80,
     "new_helpers": 1,
-    "help_requests": 2,
+    "help_requests": 3,
     "authorized_lineage_cap": 57,
     "host_seeded_helpers": 1,
-    "model_started_helpers": 0,
+    "model_started_helpers": 1,
     "old_v05_closed_lineage_cap": 42,
     "new_mixed_adaption_POSTs": 11,
     "new_mixed_native_turns": 0,
     "mixed_worst_liability_reserved_credits": "2.0905984",
-    "helper_count_note": "One idle host-created node exists in v06c; no helper model task has run.",
-    "v07_new_POSTs": 0,
-    "v07_new_native_turns": 0,
-    "v07_new_liability_credits": "0",
-    "old_v06_closed_lineage_cap": 54
+    "helper_count_note": "One host-seeded existing Sol node has now executed one real granted task; no additional helper was created.",
+    "v07_new_POSTs": 8,
+    "v07_new_native_turns": 1,
+    "v07_new_liability_credits": "1.5204352",
+    "old_v06_closed_lineage_cap": 54,
+    "v07_new_native_tools": 5,
+    "total_observed_native_turns": 1
   },
   "observations": [
     {
@@ -732,6 +755,85 @@
         "engineering/agent/yohaku_workflow_gate.py:observe_tool",
         "engineering/agent/yohaku_recovery.py:lean_result"
       ]
+    },
+    {
+      "id": "v07c-first-real-peer-delivery-and-partial-adoption",
+      "status": "independently_compared_native_records_visible_outputs_requests_and_versions",
+      "executed_candidate_manifest_sha256": "741d3f4bc8f37735b0abd4aab44f525b010bf0f0223b26c1badc59a9874642dd",
+      "receipt_module_sha256": "43c15fcb629ea17c9ae92122fc76c7009c0f89298e222f5f2cd0591858ff66e5",
+      "native_model_profile": "openai/gpt-6.1-sol/high",
+      "native_terminal_completed": true,
+      "native_tools": 5,
+      "peer_memory_producer_and_current_version_match": true,
+      "peer_memory_source_sha256": "3fe50989e7a12e928d63a75cb31f739cdb76043f89b8927763540a7629f39dc8",
+      "final_summary_chars": 281,
+      "final_summary_sha256": "e05569a59697fffedc08922d40a4e827d12314ee3a46e890e4819d3a81673628",
+      "first_confirmed_owner_POST_ordinal": 7,
+      "confirmed_owner_zero_based_request_rounds": [
+        6,
+        7
+      ],
+      "full_receipt_scope": "Entire short final summary, not full saved peer memory or mathematical argument",
+      "await_300_seconds_returned_pending_then_same_node_status_used": true,
+      "peer_redispatched": false,
+      "owner_free_text_partial_adoption": true,
+      "structured_actor_use_reports": 0,
+      "owner_saved_memory_sha256": "f4603fb9f7980f9bc476aa4b2c23716e255a44e26ab072486aed6b079f11ee36",
+      "owner_saved_progress_sha256": "5b36e680dc3a9ff7d962336c3f35f6dd29575f947c29d409097e7070c987cae4",
+      "actual_detailed_memory_receipt_confirmed": false,
+      "math_approved_by_host": false,
+      "peer_source_scope": "Read manuscript, compute source and review card. Did not read numerical artifact or verification scripts; no numerical execution.",
+      "evidence": [
+        "native/ original native-turn.json",
+        "tasks/ original private record and node tool-result events",
+        "adaption/ original round6/7 and node_status tool journal",
+        "host/NATIVE-COMPLETION-AND-OWNER-DELIVERY.json",
+        "host/OUTCOME-EVIDENCE.json"
+      ]
+    },
+    {
+      "id": "v07c-budget-end-recovery-history-and-unused-snapshot",
+      "status": "observed_limits_and_author_artifacts",
+      "original1055_reservation_rows_equal": true,
+      "old_unknown_rows_equal": 80,
+      "new_POSTs": 8,
+      "complete_SSE_responses": 8,
+      "new_unknowns": 0,
+      "next_request_journal": "not_sent_budget_denied",
+      "ninth_network_request": false,
+      "ninth_reservation": false,
+      "ending": "BudgetExceeded after tool-producing eighth response; not ordinary lead final",
+      "last_tool_calls_succeeded": 4,
+      "last_tool_receipts_confirmed_received": 0,
+      "last_tools": [
+        "review_respond pending_independent_review",
+        "owner memory write",
+        "progress write",
+        "read_document peer detailed memory"
+      ],
+      "previous_false_attribution_removed_in_manuscript_sha256": "8403233d808208a56ccbde69c30cb401efd38d517bcca0efec56153835dd7756",
+      "original_three_receipts_confirmed_redelivered": true,
+      "old_tool_calls_reexecuted": false,
+      "old_unknown_POST_replayed": false,
+      "author_claimed_old_patch_unsaved_and_replayed": true,
+      "claim_supported_by_actual_versions": false,
+      "actual_snapshot_page_events": 0,
+      "all_four_grant_inputs": "execution_current",
+      "new_computations": 0,
+      "first_cleanup_incomplete_retained": true,
+      "final_owned_cleanup_confirmed_by_archive": true,
+      "native_model_duration_seconds": 237.886,
+      "native_local_runner_seconds": 265.711182,
+      "total_local_task_seconds": 336.6287,
+      "native_absolute_deadline_persisted": false,
+      "overall_task_duration_is_not_native_model_duration": true,
+      "evidence": [
+        "host/BUDGET-BOUNDARY-AND-LAST-TOOLS.json",
+        "host/OWNER-RECOVERY-HISTORY-DISCREPANCY.json",
+        "host/RECOVERY-RETURNS-NEW-DELIVERY.json",
+        "host/NATIVE-TIMING-AND-BUDGET-OBSERVATION.json",
+        "host/FINAL-CLEANUP-OBSERVATION.json"
+      ]
     }
   ],
   "not_established": [
@@ -747,7 +849,9 @@
     "completed mixed-model collaboration in v06d",
     "persisted or reusable v06d local workflow adjustment",
     "production fixed-version peer review in v07",
-    "new mathematical research or new method formation in v07"
+    "new mathematical research or new method formation in v07",
+    "cross-task reuse of new v07c peer/owner memories",
+    "full detailed peer-review integration in v07c"
   ],
   "interventions": [
     "explicit external mathematical review",
@@ -760,7 +864,8 @@
     "v05 explicit user authorization, price binding, normal fresh context, delivery of four historical exchanges, read-only viewer correction and same-stopped-phase cleanup recovery; no host-written research route or mathematical text",
     "v06/v06c mixed-profile integration, one explicit manual continuation, host-created idle Sol node, owner fresh-context entry, post-failure isolated repair and stopped-phase cleanup; no research inference occurred",
     "v06d second explicit manual continuation, append-only shared envelope migration, existing idle Sol reuse, normal owner context; math feedback and post-trial external independent checker remain separate from model actions.",
-    "v07 host fixed-snapshot/status engineering, reused helper and normal context preparation; ReviewHost database mode caused pre-inference failure. Isolated permissions/preflight repair and external receipt counterexamples are not model research."
+    "v07 host fixed-snapshot/status engineering, reused helper and normal context preparation; ReviewHost database mode caused pre-inference failure. Isolated permissions/preflight repair and external receipt counterexamples are not model research.",
+    "v07c explicit same-envelope manual continuation, enabled ReviewHost/full-entry repair and exact receipt patch; external operational recovery facts plus prior returns delivered. Original owner selected runB, Sol reviewed and saved its own memory, owner wrote adoption/memory/progress; host did not author research text."
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
@@ -782,7 +887,11 @@
     "v07 SQLite binaries are not exported; original/clone modes and equality are archival reports corroborated by code/events rather than independently reopened databases.",
     "An offline dual-worker pipeline without the enabled ReviewHost did not validate that production dependency.",
     "v07 new review status has independently identified content/version and model-view scope gaps; do not treat its unpatched metadata as final evidence of artifact delivery.",
-    "The suggested receipt patch proves only the tested metadata/serialization boundaries; it has not been integrated into the original worker. Ordinary partial reads/body projections remain conservatively unestablished."
+    "The suggested receipt patch proves only the tested metadata/serialization boundaries; it has not been integrated into the original worker. Ordinary partial reads/body projections remain conservatively unestablished.",
+    "v07c observed real peer work and short-summary adoption, with explicit host-provided collaborator and collaboration goal; no spontaneous node creation or stable differentiation established.",
+    "A full 281-character summary is not the full detailed peer memory. Last four local tool results never entered another confirmed model input.",
+    "Snapshot paging was not used by real participants despite its availability and offline tests.",
+    "The final model loop ended with BudgetExceeded; successful tool side effects and local cleanup do not convert it into an ordinary final response."
   ],
   "source_archives": [
     {
@@ -847,6 +956,14 @@
       "manifest_files_verified": 4767,
       "export_hashes_and_lengths_match": true,
       "executed_manifest_sha256": "fd25b615c12f31de090289087e569c4bab8a04cd23726e9d37e292bf858ddd08"
+    },
+    {
+      "name": "Yohaku-Pi-Fixed-Review-v07c-process-20261113.zip",
+      "sha256": "5bcdf89b8ab6e3616e1355e4be767de4a1e5edb3c4ceef1e37e339573f54599f",
+      "bytes": 54857656,
+      "manifest_files_verified": 5201,
+      "export_hashes_and_lengths_match": true,
+      "executed_manifest_sha256": "741d3f4bc8f37735b0abd4aab44f525b010bf0f0223b26c1badc59a9874642dd"
     }
   ],
   "current_assessment": {
@@ -860,7 +977,7 @@
     "verification_script_report_read": true,
     "stable_differentiation_or_parameter_training_established": false,
     "newly_invented_workflow_established": false,
-    "actual_division_of_work_observed": false,
+    "actual_division_of_work_observed": true,
     "v05_status": "closed",
     "v05_new_model_POSTs": 12,
     "v05_unused_POSTs": 4,
@@ -870,14 +987,13 @@
     "next_phase_authorized": false,
     "additional_model_requests_by_this_audit": 0,
     "remaining_items": [
-      "Apply the retained ReviewHost permission clone and preinitialization dependency check under a new valid binding",
-      "Verify actual returned content/version and model-visible lean_result scope in artifact receipt status",
-      "Implement one explicit aggregate-bounded continuation; the reviewed v07 epoch forbids direct manual_continuation",
-      "Real Sol execution, delivery and author correction of unsupported cross-check attribution remain unobserved",
-      "v06d local workflow adjustment is not persisted or reused",
-      "Cleanup latency root cause unconfirmed"
+      "Detailed Sol memory readback, section10 explanation correction and final save/registration acknowledgement",
+      "Author recovery-history narrative confuses saved operation with receipt redelivery",
+      "No actual fixed-snapshot paging or stable specialization/method-transfer evidence",
+      "Reserve meaningful owner integration/closure opportunity within bounded request totals",
+      "Native absolute per-turn deadline persistence and cleanup latency remain limited by current evidence"
     ],
-    "mixed_status": "v06d_closed_after_http429",
+    "mixed_status": "actual_peer_summary_delivery_and_partial_adoption_observed",
     "mixed_entry_repair": "activated_in_v06d",
     "sol_join_authorization_exists": true,
     "one_manual_continuation_authorization_consumed": true,
@@ -887,16 +1003,24 @@
     "local_workflow_adjustment_observed": true,
     "local_adjustment_fully_resolved": false,
     "local_adjustment_persisted_in_memory": false,
-    "Sol_execution": 0,
-    "unsupported_Sol_crosscheck_attribution_saved": true,
+    "Sol_execution": 1,
+    "unsupported_Sol_crosscheck_attribution_saved": false,
     "original_mixed_deadline_expired": true,
-    "current_stage": "v07_closed_before_inference",
+    "current_stage": "v07c_closed_after_budget_denial",
     "v07_model_action_or_new_math": false,
-    "fixed_snapshot_implementation": "offline_path_implemented_not_exercised_by_real_models",
-    "review_dependency_preflight": "isolated_unactivated_repair",
-    "receipt_status_audit": "three_content_origin_or_view_scope_counterexamples_fixed_in_suggested_unactivated_patch",
+    "fixed_snapshot_implementation": "offline_validated_but_not_used_by_actual_models_this_stage",
+    "review_dependency_preflight": "activated_in_manual_continuation",
+    "receipt_status_audit": "suggested_patch_integrated_with_verified_hash_and_actual_short_summary_path",
     "v07_first_model_admitted_at": null,
-    "v07_deadline": null
+    "v07_deadline": null,
+    "previous_false_attribution_corrected_by_author": true,
+    "new_recovery_history_discrepancy_saved": true,
+    "confirmed_receiving_short_peer_summary": true,
+    "full_detailed_peer_memory_confirmed_received": false,
+    "peer_memory_saved": true,
+    "owner_memory_and_progress_saved": true,
+    "owner_confirmation_of_last_save_receipts": false,
+    "actual_snapshot_page_events": 0
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
@@ -962,7 +1086,8 @@
     "current_candidate_supports_third_manual_continuation": false,
     "first_model_admitted_at": 1794495941.1531649,
     "deadline": 1794498641.1531649,
-    "deadline_Asia_Shanghai": "2026-11-12T23:50:41.153165+08:00"
+    "deadline_Asia_Shanghai": "2026-11-12T23:50:41.153165+08:00",
+    "scope_note": "Historical v06 mixed design, not the current v07 authorization; latest execution is recorded separately in stages/current_assessment."
   },
   "updated": "2026-11-13 Asia/Shanghai"
 }
