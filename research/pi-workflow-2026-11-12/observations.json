@@ -1089,5 +1089,25 @@
     "deadline_Asia_Shanghai": "2026-11-12T23:50:41.153165+08:00",
     "scope_note": "Historical v06 mixed design, not the current v07 authorization; latest execution is recorded separately in stages/current_assessment."
   },
-  "updated": "2026-11-13 Asia/Shanghai"
+  "updated": "2026-11-13 Asia/Shanghai",
+  "next_experiment_principles": {
+    "status": "user_confirmed_design_not_executed",
+    "confirmed_date": "2026-11-13 Asia/Shanghai",
+    "research_goal": "研究 π 的有理逼近性质。结合已有结果，自行决定下一步值得做的工作，并留下可核查的成果与未解决的问题。",
+    "organizing_principle": "Task-driven organization chosen by the researchers; biological structures are post-hoc observer interpretations, not generation targets.",
+    "peer_models": "Discoverable optional resources; no mandatory Sol usage or prescribed researcher/reviewer split.",
+    "imposed_conditions": [
+      "available tools and models",
+      "explicit resource caps and permissions",
+      "recorded engineering constraints"
+    ],
+    "desired_organizational_form_prescribed": false,
+    "observer_metrics_sent_as_research_goals": false,
+    "prior_memory_and_interventions_preserved": true,
+    "continuation_is_unprimed_self_organization": false,
+    "solitary_or_unstable_organization_is_valid_observation": true,
+    "mathematical_validity_checked_separately": true,
+    "new_budget_activated": false,
+    "new_model_requests": 0
+  }
 }
