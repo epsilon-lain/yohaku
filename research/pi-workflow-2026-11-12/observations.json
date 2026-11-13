@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/8",
+  "format": "yohaku-pi-workflow-public-observations/9",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v08. Latest v08 has one admitted request attempt with SSLEOFError, no HTTP response or confirmed model output, and no new observable research action. Prior v07c collaboration evidence remains. Request-allowance counts include attempts and do not certify wire send or inference completion.",
+  "evidence_scope": "Archived v03–v08 recovery. Six confirmed recovery research responses delivered earlier detailed peer output and led to a locally corrected manuscript; no new peer execution or numerical computation. An unsupported save-failure accusation persisted in owner memory. Initial TLS cause remains unknown.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -184,10 +184,25 @@
       "HTTP_status_present": false,
       "response_ID_present": false,
       "confirmed_researcher_actions": 0
+    },
+    {
+      "stage": "v08-bounded-recovery",
+      "actual_POSTs": 6,
+      "completed": 6,
+      "new_unknown": 0,
+      "native_turns": 0,
+      "native_tools": 0,
+      "new_helpers": 0,
+      "max_POSTs": 7,
+      "new_worst_liability_credits": "1.1403264",
+      "status": "closed_after_text_final_and_archived_cleanup",
+      "current_tools": 9,
+      "detailed_prior_peer_memory_characters_received": 7547,
+      "author_response_status": "pending_independent_review"
     }
   ],
   "aggregate": {
-    "actual_POSTs": 58,
+    "actual_POSTs": 64,
     "closed": true,
     "unknown_reservations": 81,
     "new_helpers": 1,
@@ -206,11 +221,16 @@
     "old_v06_closed_lineage_cap": 54,
     "v07_new_native_tools": 5,
     "total_observed_native_turns": 1,
-    "POST_unit_note": "Quota admitted/attempt counts; v08 has no confirmed completed send or model receipt.",
+    "POST_unit_note": "Lineage quota admissions/attempts; initial v08 TLS failure is not a confirmed remote model execution. Recovery six POSTs have HTTP200 and complete SSE.",
     "v08_new_POST_admission_attempts": 1,
     "v08_confirmed_model_responses": 0,
     "v08_new_native_turns": 0,
-    "v08_new_liability_credits": "0.1900544"
+    "v08_new_liability_credits": "0.1900544",
+    "v08_recovery_POSTs": 6,
+    "v08_recovery_completed": 6,
+    "v08_recovery_liability_credits": "1.1403264",
+    "v08_combined_admission_attempts": 7,
+    "v08_combined_liability_credits": "1.3303808"
   },
   "observations": [
     {
@@ -905,6 +925,52 @@
         "host/FINAL-CLEANUP-OBSERVATION.json",
         "host-watch-observations/"
       ]
+    },
+    {
+      "id": "v08-recovery-detailed-peer-adoption-and-false-save-attribution",
+      "status": "archived_request_SSE_tool_content_versions_and_ledger_independently_compared",
+      "independent_checks": {
+        "audit_mode": "archived JSON/SSE/content/hash comparisons; no uploaded runtime or model calls",
+        "old_reservations_equal": 1064,
+        "old_unknowns_equal": 81,
+        "new_complete_POSTs": 6,
+        "new_unknowns": 0,
+        "new_worst_liability": "1.1403264",
+        "six_original_SSE_terminal_IDs_match": true,
+        "last_response_no_function_calls": true,
+        "four_original_receipts_carried_without_same_call_reexecution": true,
+        "Sol_body_characters_confirmed_received": 7547,
+        "old_memory_submitted_returned_saved_body_equal": true,
+        "old_write_requested_revision_differs_from_returned": true,
+        "false_success_accusation_supported": false,
+        "new_source_versions_verified": {
+          "research/REVIEW-RESPONSE-inf-liminf-01.md.tex": "d7f8e7291b5239c9c165ffe317218c3d960a170930ba96e78700dea407527b56",
+          "lead-memory.md.tex": "14c3162fe13daa4ea731be993ae9ad4939328506cf6651463fa0688d4ba8648a",
+          "research-progress.json.tex": "daa7a97081f8ae0358354ecafac6ff9887b528d087982723831327339df3c3f9"
+        },
+        "all_current_tool_returns_have_later_confirmed_request": true,
+        "current_tool_calls": 9,
+        "current_tool_counts": {
+          "yohaku_ai_review_respond": 1,
+          "yohaku_search_text": 2,
+          "yohaku_patch_document": 3,
+          "yohaku_ai_node_memory_write": 1,
+          "yohaku_read_range": 2
+        }
+      },
+      "new_native_turns": 0,
+      "new_computations": 0,
+      "manuscript_registered_exact_version": true,
+      "registration_status": "pending_independent_review",
+      "saved_false_success_accusation": true,
+      "accusation_supported": false,
+      "searched_marker_was_in_original_submission": false,
+      "parameter_training_or_stable_specialization_proved": false,
+      "host_resource_notices_present": true,
+      "current_UI_summaries": "暂无",
+      "cleanup_first_incomplete_preserved": true,
+      "executed_group_no_respawn_supported": true,
+      "strict_phase_idempotence_followup_activated": false
     }
   ],
   "not_established": [
@@ -923,7 +989,7 @@
     "new mathematical research or new method formation in v07",
     "cross-task reuse of new v07c peer/owner memories",
     "full detailed peer-review integration in v07c",
-    "natural organization choices or new research progress in v08",
+    "new natural organization or numerical discovery in initial failed v08 request; recovery continues history-guided revisions",
     "recovered inference transport reliability after v08"
   ],
   "interventions": [
@@ -939,7 +1005,8 @@
     "v06d second explicit manual continuation, append-only shared envelope migration, existing idle Sol reuse, normal owner context; math feedback and post-trial external independent checker remain separate from model actions.",
     "v07 host fixed-snapshot/status engineering, reused helper and normal context preparation; ReviewHost database mode caused pre-inference failure. Isolated permissions/preflight repair and external receipt counterexamples are not model research.",
     "v07c explicit same-envelope manual continuation, enabled ReviewHost/full-entry repair and exact receipt patch; external operational recovery facts plus prior returns delivered. Original owner selected runB, Sol reviewed and saved its own memory, owner wrote adoption/memory/progress; host did not author research text.",
-    "v08 host-only epoch registration, original autonomous goal, metadata index and recovery facts; remaining-resource notices and final-two/final-one resource controls configured. TLS failure prevented confirmed model receipt. Second watcher creation during stopped cleanup is a host lifecycle issue."
+    "v08 host-only epoch registration, original autonomous goal, metadata index and recovery facts; remaining-resource notices and final-two/final-one resource controls configured. TLS failure prevented confirmed model receipt. Second watcher creation during stopped cleanup is a host lifecycle issue.",
+    "v08 recovery: explicit bounded manual continuation and host remaining-resource/closure notices. Executed group-close no-respawn fix; stricter phase-close idempotence is offline/sealed only. Host did not rewrite owner mathematics or unsupported memory incident narrative."
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
@@ -969,7 +1036,8 @@
     "v08's one admitted request attempt is not confirmation that a POST body reached the server; transport flags and missing observations are preserved without declaring remote non-execution.",
     "No new natural-organization behavior is observable in v08. Optional peer availability without a confirmed response does not measure a choice not to collaborate.",
     "Terminal resource controls were not reached by real v08 inference; their configuration is not a learned model method.",
-    "v08's 45-minute clock has started. Unused request allowance cannot reset the deadline or bypass a closed phase."
+    "v08's 45-minute clock has started. Unused request allowance cannot reset the deadline or bypass a closed phase.",
+    "Historical v08/v07c limits above describe their original endpoints. Recovery confirms delivery of the four old returns and detailed 7547-character peer memory, without retroactively changing those endpoints. Incorrect saved incident attribution remains; full review and stable TLS reliability are unproved."
   ],
   "source_archives": [
     {
@@ -1050,6 +1118,19 @@
       "manifest_files_verified": 5869,
       "export_hashes_and_lengths_match": true,
       "executed_manifest_sha256": "163d694eddba4252da49fcb1408366c68cf80dc7ac9c0f191c359896dca75e93"
+    },
+    {
+      "name": "Yohaku-Pi-v08-recovery-process-20261113.zip",
+      "sha256": "686f3a5d49ac0f32ba961560d8490f7403a96c90487618c7da9380315e9e3fa7",
+      "bytes": 10874370,
+      "entries": 1378,
+      "expanded_bytes": 106014842,
+      "manifest_files_verified": 1377,
+      "mismatches": [],
+      "export_hashes_and_lengths_match": true,
+      "incremental_archive": true,
+      "executed_manifest_sha256": "a206628a5ca0e97f999872d55d2b7d11926869b3f79f69622dd0f8e2dabf392a",
+      "unactivated_followup_manifest_sha256": "95b166e5251601b3a8f168f70b88d9888ef82641183473e5aec52dfa0bd80010"
     }
   ],
   "current_assessment": {
@@ -1073,15 +1154,13 @@
     "next_phase_authorized": false,
     "additional_model_requests_by_this_audit": 0,
     "remaining_items": [
-      "Diagnose actual-environment transport failure without replaying unknown inference; preserve v08's already-started clock",
-      "Closed cleanup branch spawned a second host watcher; separate lifecycle repair from research observations",
-      "Detailed Sol memory readback, section10 explanation correction and final save/registration acknowledgement",
-      "Author recovery-history narrative confuses saved operation with receipt redelivery",
-      "No actual fixed-snapshot paging or stable specialization/method-transfer evidence",
-      "Reserve meaningful owner integration/closure opportunity within bounded request totals",
-      "Native absolute per-turn deadline persistence and cleanup latency remain limited by current evidence"
+      "Independent review of exact new author response d7f8e729; no whole-manuscript approval",
+      "Owner memory still falsely labels an evidenced old successful save as a tool false success; historical replay narrative also remains",
+      "Strict phase-close idempotence patch is offline/sealed, not the executed research candidate",
+      "Old TLS root cause and future reliability unproven",
+      "No new numerical search, stable specialization, novel-task method transfer or actual snapshot paging evidence"
     ],
-    "mixed_status": "actual_peer_summary_delivery_and_partial_adoption_observed",
+    "mixed_status": "prior_detailed_peer_output_delivered_adopted_and_locally_revised_in_recovery",
     "mixed_entry_repair": "activated_in_v06d",
     "sol_join_authorization_exists": true,
     "one_manual_continuation_authorization_consumed": true,
@@ -1094,7 +1173,7 @@
     "Sol_execution": 1,
     "unsupported_Sol_crosscheck_attribution_saved": false,
     "original_mixed_deadline_expired": true,
-    "current_stage": "v08_closed_after_first_request_transport_unknown",
+    "current_stage": "v08_recovery_closed_after_six_completed_research_requests",
     "v07_model_action_or_new_math": false,
     "fixed_snapshot_implementation": "offline_validated_but_not_used_by_actual_models_this_stage",
     "review_dependency_preflight": "activated_in_manual_continuation",
@@ -1104,16 +1183,16 @@
     "previous_false_attribution_corrected_by_author": true,
     "new_recovery_history_discrepancy_saved": true,
     "confirmed_receiving_short_peer_summary": true,
-    "full_detailed_peer_memory_confirmed_received": false,
+    "full_detailed_peer_memory_confirmed_received": true,
     "peer_memory_saved": true,
     "owner_memory_and_progress_saved": true,
-    "owner_confirmation_of_last_save_receipts": false,
+    "owner_confirmation_of_last_save_receipts": true,
     "actual_snapshot_page_events": 0,
-    "latest_confirmed_research_actions_stage": "v07c",
+    "latest_confirmed_research_actions_stage": "v08_recovery",
     "v08_goal_matches_user_original": true,
     "v08_collaboration_required": false,
     "v08_confirmed_research_action": false,
-    "v08_new_recovery_receipts_confirmed_delivered": 0,
+    "v08_new_recovery_receipts_confirmed_delivered": 4,
     "v08_first_admission_Asia_Shanghai": "2026-11-13T19:32:52.206846+08:00",
     "v08_deadline_Asia_Shanghai": "2026-11-13T20:17:52.206846+08:00",
     "v08_automatic_continuation_allowed": false
@@ -1187,7 +1266,7 @@
   },
   "updated": "2026-11-13 Asia/Shanghai",
   "next_experiment_principles": {
-    "status": "configured_in_v08_request_no_confirmed_model_response",
+    "status": "v08_goal_confirmed_in_recovery_with_preserved_history",
     "confirmed_date": "2026-11-13 Asia/Shanghai",
     "research_goal": "研究 π 的有理逼近性质。结合已有结果，自行决定下一步值得做的工作，并留下可核查的成果与未解决的问题。",
     "organizing_principle": "Task-driven organization chosen by the researchers; biological structures are post-hoc observer interpretations, not generation targets.",
@@ -1204,8 +1283,8 @@
     "solitary_or_unstable_organization_is_valid_observation": true,
     "mathematical_validity_checked_separately": true,
     "new_budget_activated": true,
-    "new_model_requests": 1,
-    "confirmed_model_exposure": false,
-    "execution_note": "User separately authorized v08; no forced collaboration. Its first request outcome is unknown, so no new natural-organization behavior is established."
+    "new_model_requests": 7,
+    "confirmed_model_exposure": true,
+    "execution_note": "Initial TLS failure plus six completed recovery requests. Task-driven finishing of prior work observed; no requirement to create biological loops or use Sol. No automatic next stage."
   }
 }
