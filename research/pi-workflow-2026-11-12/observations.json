@@ -1,7 +1,7 @@
 {
-  "format": "yohaku-pi-workflow-public-observations/7",
+  "format": "yohaku-pi-workflow-public-observations/8",
   "as_of": "2026-11-12",
-  "evidence_scope": "Archived v03–v07c. Latest stage has verified real Sol execution, complete delivery of its 281-character final summary and partial owner adoption with saved memory/progress. Detailed memory readback remains unconfirmed; loop ended on network-prevented ninth-request BudgetExceeded.",
+  "evidence_scope": "Archived v03–v08. Latest v08 has one admitted request attempt with SSLEOFError, no HTTP response or confirmed model output, and no new observable research action. Prior v07c collaboration evidence remains. Request-allowance counts include attempts and do not certify wire send or inference completion.",
   "same_research_owner": true,
   "A_and_B": "Two tasks of the same owner, with B initially receiving normal project/memory entry points rather than A conversation.",
   "model": {
@@ -165,15 +165,34 @@
       "detail_readback_confirmed": false,
       "actual_snapshot_page_events": 0,
       "last_tool_receipts_unconfirmed": 4
+    },
+    {
+      "stage": "v08-autonomous-natural-organization",
+      "actual_POSTs": 1,
+      "POST_count_scope": "One quota-admitted attempt; no confirmed completed network dispatch",
+      "completed": 0,
+      "new_unknown": 1,
+      "native_turns": 0,
+      "native_tools": 0,
+      "new_helpers": 0,
+      "reused_helpers": 1,
+      "max_POSTs": 8,
+      "new_worst_liability_credits": "0.1900544",
+      "status": "closed_after_first_request_SSLEOF_unknown",
+      "network_send_attempted": true,
+      "network_dispatched_recorded": false,
+      "HTTP_status_present": false,
+      "response_ID_present": false,
+      "confirmed_researcher_actions": 0
     }
   ],
   "aggregate": {
-    "actual_POSTs": 57,
+    "actual_POSTs": 58,
     "closed": true,
-    "unknown_reservations": 80,
+    "unknown_reservations": 81,
     "new_helpers": 1,
     "help_requests": 3,
-    "authorized_lineage_cap": 57,
+    "authorized_lineage_cap": 65,
     "host_seeded_helpers": 1,
     "model_started_helpers": 1,
     "old_v05_closed_lineage_cap": 42,
@@ -186,7 +205,12 @@
     "v07_new_liability_credits": "1.5204352",
     "old_v06_closed_lineage_cap": 54,
     "v07_new_native_tools": 5,
-    "total_observed_native_turns": 1
+    "total_observed_native_turns": 1,
+    "POST_unit_note": "Quota admitted/attempt counts; v08 has no confirmed completed send or model receipt.",
+    "v08_new_POST_admission_attempts": 1,
+    "v08_confirmed_model_responses": 0,
+    "v08_new_native_turns": 0,
+    "v08_new_liability_credits": "0.1900544"
   },
   "observations": [
     {
@@ -834,6 +858,53 @@
         "host/NATIVE-TIMING-AND-BUDGET-OBSERVATION.json",
         "host/FINAL-CLEANUP-OBSERVATION.json"
       ]
+    },
+    {
+      "id": "v08-natural-organization-unobserved-after-transport-failure",
+      "status": "original_journal_and_ledger_independently_compared_no_confirmed_research_response",
+      "goal_matches_user_original": true,
+      "collaboration_required": false,
+      "original_four_tool_outputs_exactly_in_input": true,
+      "old_tools_reexecuted": false,
+      "confirmed_new_recovery_deliveries": 0,
+      "exception": "SSLEOFError",
+      "observed_error": "UNEXPECTED_EOF_WHILE_READING",
+      "proven_root_cause": false,
+      "request_admission_attempts": 1,
+      "HTTP_status": null,
+      "response_ID": null,
+      "network_send_attempted": true,
+      "network_dispatched_recorded": false,
+      "request_send_completion_observed": false,
+      "first_decrypted_response_byte_observed": false,
+      "automatic_retries": 0,
+      "provider_GET_recovery_attempts": 0,
+      "client_transport": "direct stdlib HTTPSConnection",
+      "original1063_rows_equal": true,
+      "old_unknown_rows_equal": 80,
+      "new_unknown_rows": 1,
+      "total_unknowns": 81,
+      "new_liability_credits": "0.1900544",
+      "first_model_admitted_at": 1794569572.2068462,
+      "deadline": 1794572272.2068462,
+      "last_two_POST_closure_controls_configured": true,
+      "last_two_POST_controls_reached_in_real_trial": false,
+      "native_turns": 0,
+      "native_tools": 0,
+      "model_workflow_choice_observable": false,
+      "original_watcher_then_second_host_watcher_created_during_stopped_cleanup": true,
+      "both_watchers_finally_exited_in_archive": true,
+      "remote_unknown_cancellation_confirmed": false,
+      "evidence": [
+        "host/FIRST-REQUEST-FAILURE.json",
+        "host/RECOVERY-RETURNS-UNCONFIRMED.json",
+        "host/CONTEXT-PREVIEW-PROOF.json",
+        "workflow/SESSION-LEDGER.before.json",
+        "workflow/SESSION-LEDGER.after.json",
+        "host/HOST-RESOURCE-CONTROLS-APPLICATION.json",
+        "host/FINAL-CLEANUP-OBSERVATION.json",
+        "host-watch-observations/"
+      ]
     }
   ],
   "not_established": [
@@ -851,7 +922,9 @@
     "production fixed-version peer review in v07",
     "new mathematical research or new method formation in v07",
     "cross-task reuse of new v07c peer/owner memories",
-    "full detailed peer-review integration in v07c"
+    "full detailed peer-review integration in v07c",
+    "natural organization choices or new research progress in v08",
+    "recovered inference transport reliability after v08"
   ],
   "interventions": [
     "explicit external mathematical review",
@@ -865,7 +938,8 @@
     "v06/v06c mixed-profile integration, one explicit manual continuation, host-created idle Sol node, owner fresh-context entry, post-failure isolated repair and stopped-phase cleanup; no research inference occurred",
     "v06d second explicit manual continuation, append-only shared envelope migration, existing idle Sol reuse, normal owner context; math feedback and post-trial external independent checker remain separate from model actions.",
     "v07 host fixed-snapshot/status engineering, reused helper and normal context preparation; ReviewHost database mode caused pre-inference failure. Isolated permissions/preflight repair and external receipt counterexamples are not model research.",
-    "v07c explicit same-envelope manual continuation, enabled ReviewHost/full-entry repair and exact receipt patch; external operational recovery facts plus prior returns delivered. Original owner selected runB, Sol reviewed and saved its own memory, owner wrote adoption/memory/progress; host did not author research text."
+    "v07c explicit same-envelope manual continuation, enabled ReviewHost/full-entry repair and exact receipt patch; external operational recovery facts plus prior returns delivered. Original owner selected runB, Sol reviewed and saved its own memory, owner wrote adoption/memory/progress; host did not author research text.",
+    "v08 host-only epoch registration, original autonomous goal, metadata index and recovery facts; remaining-resource notices and final-two/final-one resource controls configured. TLS failure prevented confirmed model receipt. Second watcher creation during stopped cleanup is a host lifecycle issue."
   ],
   "limits": [
     "Single bounded case; budget truncation limits negative interpretation.",
@@ -891,7 +965,11 @@
     "v07c observed real peer work and short-summary adoption, with explicit host-provided collaborator and collaboration goal; no spontaneous node creation or stable differentiation established.",
     "A full 281-character summary is not the full detailed peer memory. Last four local tool results never entered another confirmed model input.",
     "Snapshot paging was not used by real participants despite its availability and offline tests.",
-    "The final model loop ended with BudgetExceeded; successful tool side effects and local cleanup do not convert it into an ordinary final response."
+    "The final model loop ended with BudgetExceeded; successful tool side effects and local cleanup do not convert it into an ordinary final response.",
+    "v08's one admitted request attempt is not confirmation that a POST body reached the server; transport flags and missing observations are preserved without declaring remote non-execution.",
+    "No new natural-organization behavior is observable in v08. Optional peer availability without a confirmed response does not measure a choice not to collaborate.",
+    "Terminal resource controls were not reached by real v08 inference; their configuration is not a learned model method.",
+    "v08's 45-minute clock has started. Unused request allowance cannot reset the deadline or bypass a closed phase."
   ],
   "source_archives": [
     {
@@ -964,6 +1042,14 @@
       "manifest_files_verified": 5201,
       "export_hashes_and_lengths_match": true,
       "executed_manifest_sha256": "741d3f4bc8f37735b0abd4aab44f525b010bf0f0223b26c1badc59a9874642dd"
+    },
+    {
+      "name": "Yohaku-Pi-Autonomous-v08-process-20261113.zip",
+      "sha256": "d1d0fb6bc8379df5fb8f1f19645b3d304d751429f83d6212a421ae8a697c1188",
+      "bytes": 61876628,
+      "manifest_files_verified": 5869,
+      "export_hashes_and_lengths_match": true,
+      "executed_manifest_sha256": "163d694eddba4252da49fcb1408366c68cf80dc7ac9c0f191c359896dca75e93"
     }
   ],
   "current_assessment": {
@@ -987,6 +1073,8 @@
     "next_phase_authorized": false,
     "additional_model_requests_by_this_audit": 0,
     "remaining_items": [
+      "Diagnose actual-environment transport failure without replaying unknown inference; preserve v08's already-started clock",
+      "Closed cleanup branch spawned a second host watcher; separate lifecycle repair from research observations",
       "Detailed Sol memory readback, section10 explanation correction and final save/registration acknowledgement",
       "Author recovery-history narrative confuses saved operation with receipt redelivery",
       "No actual fixed-snapshot paging or stable specialization/method-transfer evidence",
@@ -1006,7 +1094,7 @@
     "Sol_execution": 1,
     "unsupported_Sol_crosscheck_attribution_saved": false,
     "original_mixed_deadline_expired": true,
-    "current_stage": "v07c_closed_after_budget_denial",
+    "current_stage": "v08_closed_after_first_request_transport_unknown",
     "v07_model_action_or_new_math": false,
     "fixed_snapshot_implementation": "offline_validated_but_not_used_by_actual_models_this_stage",
     "review_dependency_preflight": "activated_in_manual_continuation",
@@ -1020,7 +1108,15 @@
     "peer_memory_saved": true,
     "owner_memory_and_progress_saved": true,
     "owner_confirmation_of_last_save_receipts": false,
-    "actual_snapshot_page_events": 0
+    "actual_snapshot_page_events": 0,
+    "latest_confirmed_research_actions_stage": "v07c",
+    "v08_goal_matches_user_original": true,
+    "v08_collaboration_required": false,
+    "v08_confirmed_research_action": false,
+    "v08_new_recovery_receipts_confirmed_delivered": 0,
+    "v08_first_admission_Asia_Shanghai": "2026-11-13T19:32:52.206846+08:00",
+    "v08_deadline_Asia_Shanghai": "2026-11-13T20:17:52.206846+08:00",
+    "v08_automatic_continuation_allowed": false
   },
   "design_followups": [
     "Validate candidate configuration before atomic commit.",
@@ -1091,7 +1187,7 @@
   },
   "updated": "2026-11-13 Asia/Shanghai",
   "next_experiment_principles": {
-    "status": "user_confirmed_design_not_executed",
+    "status": "configured_in_v08_request_no_confirmed_model_response",
     "confirmed_date": "2026-11-13 Asia/Shanghai",
     "research_goal": "研究 π 的有理逼近性质。结合已有结果，自行决定下一步值得做的工作，并留下可核查的成果与未解决的问题。",
     "organizing_principle": "Task-driven organization chosen by the researchers; biological structures are post-hoc observer interpretations, not generation targets.",
@@ -1107,7 +1203,9 @@
     "continuation_is_unprimed_self_organization": false,
     "solitary_or_unstable_organization_is_valid_observation": true,
     "mathematical_validity_checked_separately": true,
-    "new_budget_activated": false,
-    "new_model_requests": 0
+    "new_budget_activated": true,
+    "new_model_requests": 1,
+    "confirmed_model_exposure": false,
+    "execution_note": "User separately authorized v08; no forced collaboration. Its first request outcome is unknown, so no new natural-organization behavior is established."
   }
 }
