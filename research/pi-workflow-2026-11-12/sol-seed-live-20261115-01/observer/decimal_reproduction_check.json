@@ -1,0 +1,6 @@
+{
+  "exit_code": 0,
+  "certificate_matches_except_elapsed_seconds": true,
+  "elapsed_seconds": 3.22,
+  "limit": "Reproduction of researcher_2 code with output directory changed, not independent implementation"
+}

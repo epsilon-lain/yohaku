@@ -1,0 +1,26 @@
+{
+  "format": "pi-finite-denominator-minimum/1",
+  "status": "proved_given_standard_cf_identities_with_elementary_proof_in_RESULT.md",
+  "dependencies": "Supplied baseline Machin identity/enclosure helper; no independent pi formula claimed",
+  "certified_cf_terms": 28422,
+  "prefix_terms_sha256": "4ad2e4618f46e7357bdc32c6ac69cb88e96243dd21461c47a7b736b950252a30",
+  "target_n": 28420,
+  "next_partial_quotient": 78629,
+  "prior_partial_quotient_max": 20776,
+  "prior_max_indices": [
+    431
+  ],
+  "all_earlier_convergents_v_strict_lower": "1/20778",
+  "witness_strict_lower_40": "0.0000127178573727574566035844693935801274",
+  "witness_strict_upper_40": "0.0000127178573727574566035844693935801275",
+  "witness_upper_less_than_prior_lower": true,
+  "witness_p_is_nearest_integer": true,
+  "minimum_domain": "integers 1 <= q < q_28421",
+  "unique_argmin": "q_28420",
+  "q28420_digits": 14593,
+  "q28421_digits": 14598,
+  "q28420_sha256": "0dc26d6bf06b343709ebc2dc7989c7136cb876fe75a28417c6bb125e48d41c3f",
+  "q28421_sha256": "07cbbcaa86fe557b866ec1b59e6fd472d9374865fb1c46bdf962cfc1720b40e5",
+  "scope": "No conclusion for q >= q_28421; no asymptotic liminf or bad approximability conclusion",
+  "elapsed_seconds": 15.386
+}

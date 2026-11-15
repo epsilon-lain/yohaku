@@ -1,0 +1,37 @@
+{
+  "common_baseline_checks": [
+    {
+      "path": "common/PROJECT.md",
+      "expected": "8d1ab100d7246180b5c8b6ace3ad5d8d129d5d76d343036d40896945ac8a389c",
+      "actual": "8d1ab100d7246180b5c8b6ace3ad5d8d129d5d76d343036d40896945ac8a389c",
+      "unchanged": true
+    },
+    {
+      "path": "common/RUNB-INDEPENDENT.md",
+      "expected": "8d3c820c34163a21aad0d776ca0a9b67b48e9883b8552bee997828b1ba14c79d",
+      "actual": "8d3c820c34163a21aad0d776ca0a9b67b48e9883b8552bee997828b1ba14c79d",
+      "unchanged": true
+    },
+    {
+      "path": "common/check_runB_independent.py",
+      "expected": "43b1ba87d91970fcb1030d2cff7770e62d65ea7a321b36dc99495147cd10dd0a",
+      "actual": "43b1ba87d91970fcb1030d2cff7770e62d65ea7a321b36dc99495147cd10dd0a",
+      "unchanged": true
+    }
+  ],
+  "unintended_shared_bytecode_files": [
+    {
+      "path": "common/__pycache__/check_runB_independent.cpython-312.pyc",
+      "bytes": 11048,
+      "sha256": "0f703613293eb4555823a47f86b0202122116284d0ac9fc0a95e4b315519e9c3"
+    }
+  ],
+  "reported_by": [
+    "research_1 confirmed",
+    "research_2 possible write/reuse"
+  ],
+  "root_removed_cache_after_agents_finished": true,
+  "researchers_final_code_suppresses_bytecode": true,
+  "not_a_math_failure": true,
+  "limit": "No complete machine-level access audit; group shared files by design. New-context instruction boundaries are not capability sandboxes."
+}

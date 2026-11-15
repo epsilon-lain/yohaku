@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "performed_by": "host after group; not attributed to Sol or researchers",
+  "pi_identity": "pi=16atan(1/5)-4atan(1/239)",
+  "shared_baseline_pi_identity": "pi=48atan(1/18)+32atan(1/57)-20atan(1/239)",
+  "independence_limit": "Different identity and standalone implementation; both use outward fixed-scale alternating-series bounds, not formal proof-assistant certification.",
+  "scale_digits": 30000,
+  "cf_prefix_terms": 28422,
+  "prior_max": 20776,
+  "next_partial_quotient": 78629,
+  "p_q_boundaries_match": true,
+  "finite_minimum_gap_passed": true,
+  "decimal_power_range": [
+    0,
+    14999
+  ],
+  "decimal_prefix_29990_matches": true,
+  "enclosure_integer_width": 368628,
+  "arctan_terms": {
+    "5": 21460,
+    "239": 6307
+  },
+  "elapsed_seconds": 18.145656,
+  "original_runtime_calls": 0
+}

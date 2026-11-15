@@ -1,0 +1,14 @@
+{
+  "check": "observer shared-helper re-extraction",
+  "all_assertions_passed": true,
+  "prior_max": 20776,
+  "prior_max_indices": [
+    431
+  ],
+  "next_a": 78629,
+  "p_q_and_boundary_files_match": true,
+  "prefix_hash_matches": true,
+  "target_upper_less_than_1_over_20778": true,
+  "independence_limit": "Shares supplied baseline arctan helper; not an independent pi certification",
+  "elapsed_seconds": 2.101
+}

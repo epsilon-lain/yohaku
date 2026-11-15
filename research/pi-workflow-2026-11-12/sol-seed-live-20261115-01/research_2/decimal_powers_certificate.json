@@ -1,0 +1,33 @@
+{
+  "format": "pi-decimal-power-finite-certificate/1",
+  "source": "common/check_runB_independent.py inverse_atan_bounds; pi identity justified in common/RUNB-INDEPENDENT.md",
+  "independent_pi_implementation": false,
+  "pi_scale_digits": 30000,
+  "pi_interval_scaled_width": 973316,
+  "denominators": "q=10^k",
+  "k_min": 0,
+  "k_max": 14999,
+  "number_of_denominators": 15000,
+  "unique_minimum_at_k": 0,
+  "nearest_integer_at_minimum": 3,
+  "minimum_is": "pi-3",
+  "minimum_strict_decimal_lower": "0.1415926535897932384626433832795028841971",
+  "minimum_strict_decimal_upper": "0.1415926535897932384626433832795028841972",
+  "integer_crossings": 0,
+  "nearest_half_crossings": 0,
+  "all_k_positive_have_product_strictly_above_pi_minus_3": true,
+  "stable_fractional_digits_saved": 29990,
+  "prefix_file_sha256": "334f3b7556b25a90bd9e06b660433f3377e529dd34f07f1e5879d4f99ed228c5",
+  "zero_nine_run_summary": {
+    "0": {
+      "longest_run_in_saved_prefix": 5,
+      "first_start_decimal_position": 17534
+    },
+    "9": {
+      "longest_run_in_saved_prefix": 6,
+      "first_start_decimal_position": 762
+    }
+  },
+  "scope": "Only the specified finite set of powers of ten. No statement about all q or an infinite tail.",
+  "elapsed_seconds": 3.476193
+}

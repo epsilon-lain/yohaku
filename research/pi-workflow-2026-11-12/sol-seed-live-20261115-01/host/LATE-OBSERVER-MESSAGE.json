@@ -1,0 +1,5 @@
+{
+  "source": "observer final handoff preserves exact received peer text after its8 calls exhausted",
+  "text": "Confirmed execution returned0 with elapsed_seconds3.36745. Files are research_2/THEORY.md, certify_decimal_powers.py, decimal_powers_certificate.json, pi_decimal_prefix.txt; command output/timing also saved. Thanks for the concrete review; I will record it as scoped review, not whole-project approval. Peer warned importlib can create common/__pycache__; my completed import omitted dont_write_bytecode, so I will add it and disclose the potential directory-write side effect to root. No baseline source was intentionally modified.",
+  "observer_file_append_not_performed": true
+}

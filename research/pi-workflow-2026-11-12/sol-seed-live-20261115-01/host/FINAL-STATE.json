@@ -1,0 +1,41 @@
+{
+  "run": "sol-seed-live-20261115-01",
+  "status": "three_agents_completed_host_verified",
+  "source_mode": "fresh_context_shared_artifacts_not_original_runtime",
+  "research_goal": "研究 π 的有理逼近性质。结合已有结果，自行决定值得做的工作，并留下可核查的成果和未解决的问题。",
+  "original_Adaption_POSTs": 0,
+  "original_runtime_ledger_modified": false,
+  "observer_requested_model": "gpt-6.1-sol",
+  "observer_requested_reasoning": "high",
+  "researchers_model_selection": "inherited parent; no override; actual provider identity not independently exposed",
+  "max_agents": 3,
+  "max_local_compute_seconds_per_member": 120,
+  "max_orchestration_calls_per_member": 8,
+  "source_files": {
+    "common/PROJECT.md": "8d1ab100d7246180b5c8b6ace3ad5d8d129d5d76d343036d40896945ac8a389c",
+    "common/RUNB-INDEPENDENT.md": "8d3c820c34163a21aad0d776ca0a9b67b48e9883b8552bee997828b1ba14c79d",
+    "common/check_runB_independent.py": "43b1ba87d91970fcb1030d2cff7770e62d65ea7a321b36dc99495147cd10dd0a"
+  },
+  "host_boundary": "Root records lifecycle and independently checks final claims; no assigned research subproblems or expected critique.",
+  "agent_tasks": {
+    "research_1": "/root/seed_research_1",
+    "research_2": "/root/seed_research_2",
+    "observer": "/root/seed_observer"
+  },
+  "explicit_observer_dispatch": {
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "high",
+    "fork_turns": "none"
+  },
+  "host_independent_check_passed": true,
+  "observer_substantive_error_found": false,
+  "math_outputs": 2,
+  "original_runtime_calls": 0,
+  "limitations": [
+    "one_group_trajectory",
+    "no_counterfactual_control",
+    "no_delayed_transfer",
+    "model_tokens_and_platform_debit_not_observable",
+    "instruction_based_scope_with_one_reported_cache_write"
+  ]
+}
