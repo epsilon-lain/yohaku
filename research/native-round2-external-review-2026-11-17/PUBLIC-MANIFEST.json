@@ -1,0 +1,46 @@
+{
+  "schema": "round2-external-review-files/1",
+  "scope": "All other files in this directory; original native reports remain unchanged.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3740,
+      "sha256": "2420752110ae027440952b8e68a50eb2afa953e76e8f4f12ec86a9077679f28e"
+    },
+    {
+      "path": "REVIEW.json",
+      "bytes": 2625,
+      "sha256": "ddad4b4e728210d9939965c03846fd38936930bfc1c0cbf2534006cdee4ac941"
+    },
+    {
+      "path": "stable/README.zh.md",
+      "bytes": 3443,
+      "sha256": "9b719597822d4d2e582057ce6115cee90d305f3674b21a6afb8b479dc4197813"
+    },
+    {
+      "path": "stable/external-review-compact.json",
+      "bytes": 2942,
+      "sha256": "4b27eb0992e36189adc811214921c00b04e0fc2c4a0faca73ecca6c891b2ab26"
+    },
+    {
+      "path": "stable/independent_stable_verifier.py",
+      "bytes": 11964,
+      "sha256": "50199bce2cfab818ce43e26bd101b96ae4b3cc5892d6a06b7255aca0b7702722"
+    },
+    {
+      "path": "stable/official-source-lock.json",
+      "bytes": 6463,
+      "sha256": "7c0528c3f6a7838a762c2439497b980a405399e286ea90a10199e3d746dbfd76"
+    },
+    {
+      "path": "stable/review-provenance.json",
+      "bytes": 1457,
+      "sha256": "c60deef5b77f8cf1f17e4cc4e41b6c25b63a9a83f51908848b1a6c22693bd37b"
+    },
+    {
+      "path": "stable/source/source-locations.json",
+      "bytes": 1873,
+      "sha256": "26ea058e41197b778f63dbe33d14d87d30e64bc49e94b354bc75981606303c81"
+    }
+  ]
+}

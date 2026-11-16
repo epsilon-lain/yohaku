@@ -1,0 +1,21 @@
+{
+  "kind": "new external supplementary review",
+  "review_date": "2026-11-17",
+  "source_repository": "epsilon-lain/yohaku",
+  "source_commit": "4fd6c204f8263fae135abcfecb8bbb9a9012a55c",
+  "source_base": "research/native-round2-theory-application-2026-11-16",
+  "source_metadata": "source/source-locations.json",
+  "official_lock": "official-source-lock.json",
+  "original_zip_url": "https://raw.githubusercontent.com/epsilon-lain/yohaku/4fd6c204f8263fae135abcfecb8bbb9a9012a55c/research/native-round2-theory-application-2026-11-16/process-package.zip",
+  "original_zip_sha256": "b733632b96fdf8f591762b6d5f73310a791beee7c73a2a6d388a88b2ae1a2993",
+  "original_ball_archive_path": "native-round2-process/evidence/project-task-802847184ed0526eb3fa4966f91e216e/r2cap5-balls.json",
+  "original_ball_sha256": "bc18a78605cf2a979179c096f32616e580b2f2483b1035f99795816d2cd722fb",
+  "mathematics_mirror_url": "https://github.com/epsilon-lain/lain-s-note/blob/1e4ab09adade5e0c7a5a9eb7b521c72179c3dc3c/research/concept-reuse-cost-2026-11-16/application-author.zh.md",
+  "mirror_git_blob": "09f481a7f1853c93de89e33bddc3f3436c3a7050",
+  "mirror_matches_author": true,
+  "uploaded_research_code_executed": false,
+  "native_record_modified": false,
+  "published": true,
+  "publication_scope": "external review only; original native records unchanged",
+  "public_path_redaction": "Local scratch paths made relative; original repository URLs and source hashes retained."
+}

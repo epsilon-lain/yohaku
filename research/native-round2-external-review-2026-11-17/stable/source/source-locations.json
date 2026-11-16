@@ -1,0 +1,42 @@
+{
+  "repository": "epsilon-lain/yohaku",
+  "commit": "4fd6c204f8263fae135abcfecb8bbb9a9012a55c",
+  "files": [
+    {
+      "path": "research/native-round2-theory-application-2026-11-16/code/application/round2_cap5_certificate.py",
+      "git_blob": "788449544fa9ddd66de9ed572972ba26b7a54afa",
+      "bytes": 13110,
+      "sha256": "b817f72fdca471cee2577c32a86b858a228084aba0cd882f8a1e0293deab4dd6",
+      "git_blob_verified": true
+    },
+    {
+      "path": "research/native-round2-theory-application-2026-11-16/code/application/round2_cap5_protocol.json",
+      "git_blob": "7ed33cddd763c2086b177c00213736f6c2651e63",
+      "bytes": 4097,
+      "sha256": "e0ff452ea6dbe17c1876f6c3e4b95329857a3f9a664bab8af7193be23344d1df",
+      "git_blob_verified": true
+    },
+    {
+      "path": "research/native-round2-theory-application-2026-11-16/docs/application-author.zh.md",
+      "git_blob": "09f481a7f1853c93de89e33bddc3f3436c3a7050",
+      "bytes": 9425,
+      "sha256": "85ba43347472ae50b2d54cfca7cf8552f8a60b35c5a85dfc2f2c776b20a83c6d",
+      "git_blob_verified": true
+    },
+    {
+      "path": "research/native-round2-theory-application-2026-11-16/evidence/artifact-index.json",
+      "git_blob": "1323c3619bf359d1e9e55545799d8a11edfd0f2e",
+      "bytes": 9127,
+      "sha256": "a207988f6aab3f110cbdf27111da6d93fbb99e6d06b95f9b1e7cc90039ed25a4",
+      "git_blob_verified": true
+    },
+    {
+      "path": "research/native-round2-theory-application-2026-11-16/evidence/project-task-802847184ed0526eb3fa4966f91e216e/r2cap5-search-results.json",
+      "git_blob": "55ac594c781e6e238cd23d8c89d8c6d5a9e8802b",
+      "bytes": 23588,
+      "sha256": "81ef5efe968cef8e9a00b2eb0f4fa6188b060c1293613690f49abbf847dd12ad",
+      "git_blob_verified": true
+    }
+  ],
+  "public_path_redaction": "Local scratch paths made relative; original repository URLs and source hashes retained."
+}

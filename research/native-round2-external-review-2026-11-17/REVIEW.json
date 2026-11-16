@@ -1,0 +1,71 @@
+{
+  "schema": "yohaku-native-round2-external-review/1",
+  "review_date": "2026-11-17",
+  "review_timezone": "Asia/Shanghai",
+  "source": {
+    "yohaku_commit": "4fd6c204f8263fae135abcfecb8bbb9a9012a55c",
+    "mathematics_commit": "1e4ab09adade5e0c7a5a9eb7b521c72179c3dc3c",
+    "knowledge_prefix": 966,
+    "gate_prefix": 466
+  },
+  "archive": {
+    "bytes": 1838461,
+    "sha256": "b733632b96fdf8f591762b6d5f73310a791beee7c73a2a6d388a88b2ae1a2993",
+    "manifest_sha256": "24ab37783ecde4666b55f8ed2fc59a4723eb615f5ee344c8f8ece814963282aa",
+    "files_including_manifest": 111,
+    "listed_files": 110,
+    "all_listed_sizes_and_sha256_match": true,
+    "zip_crc_checked": true,
+    "safe_paths_checked": true
+  },
+  "native_status_at_source": {
+    "root": "error/interrupted",
+    "theory": "done",
+    "application": "done",
+    "root_stable_independent_compute_submitted": false,
+    "root_stable_independent_compute_completed": false,
+    "new_native_completion_claimed_by_this_review": false,
+    "project_tasks": 5,
+    "project_tasks_all_exit0_complete_cleanup": true,
+    "semantic_preparation_tasks": 1,
+    "science_compute_tasks": 4
+  },
+  "external_review": {
+    "stable08491": {
+      "complete_independent_rebuild": true,
+      "all_states_distances_and_original_paths_compared": true,
+      "forward_states": 28511,
+      "reverse_states": 6081,
+      "intersection": 0,
+      "global_distance": 10,
+      "record": "stable/external-review-compact.json"
+    },
+    "theory": {
+      "proof_review": "no_material_error_found_under_stated_model",
+      "independent_graphs": 75,
+      "independent_target_comparisons": 1023,
+      "independent_dictionary_optimizations": 1800,
+      "full_native_n5_rerun": false
+    }
+  },
+  "unchanged_boundaries": {
+    "sac07445_upper_bound": 15,
+    "sac07445_optimum_known_from_this_review": false,
+    "new_shorter_path_found": false,
+    "paired_macro_causal_gain_established": false,
+    "new_boolean_theory_adopted_by_application": false,
+    "stable_spontaneous_workflow_differentiation_established": false,
+    "full_legacy_preservation_independently_checked": false,
+    "supplier_actual_identity": "unknown",
+    "supplier_actual_debit": "unknown"
+  },
+  "host_actions": {
+    "native_model_tasks_started": 0,
+    "original_requests_replayed": false,
+    "shared_stop_cleared": false,
+    "host_liveness_queried": false,
+    "uploaded_native_research_code_executed": false,
+    "competition_platform_upload": false
+  },
+  "publication_scope": "New external supplementary review and reproduction code; all original native records retain their historical state."
+}
