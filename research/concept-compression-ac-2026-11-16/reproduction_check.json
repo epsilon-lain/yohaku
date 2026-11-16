@@ -1,0 +1,20 @@
+{
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "fresh_preparation": "all 18 pinned files downloaded into a new directory by prepare_official.py; no known training solution files in the lock",
+  "network_download_branch_exercised": true,
+  "official_source_hashes_checked": 18,
+  "pilot_replayed_from_clean_sources": true,
+  "results_equal_after_omitting": [
+    "cases[*].arms[*].wall_seconds"
+  ],
+  "all_other_results_fields_equal": true,
+  "byte_identical_files": {
+    "submission.txt": "0247fd26541c36ce84393d509f57d434780c494e5cd6ef28e31897c4a1a91922",
+    "official_verdict.json": "880a0a57c2d964b1c76ff2a6139d56b50452a08531b87df6626396caf1bb7769",
+    "training_submission.txt": "639a1ff826be31029e031ff9534b20cdb2d454d0456c20318d18f7ece30ae02a",
+    "training_verdict.json": "0ccac43520902747f7f85decba2939c60ffcfafc220b3de3d39c4963ca137889"
+  },
+  "case_count": 16,
+  "search_arms_per_case": 2,
+  "solved_arm_paths_verified_by_official_core": 20
+}

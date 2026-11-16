@@ -1,0 +1,114 @@
+{
+  "repository": "SAIRcompetition/Andrews-Curtis",
+  "commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "git_blob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "bytes": 11358
+    },
+    {
+      "path": "competition/examples/training_manifest.json",
+      "sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c",
+      "git_blob": "3f2fba9fc7ca1c6136b33d0941d18adab40aa94f",
+      "bytes": 557698
+    },
+    {
+      "path": "competition/rules/discovery.md",
+      "sha256": "e1d0e2346803be86f656a3c536dfdcb6716c1046a4a0f6a131dfeb07255f7dcf",
+      "git_blob": "fd7fb9b85d1484430a3ad9a7ddb25b13b1e456fa",
+      "bytes": 4959
+    },
+    {
+      "path": "competition/tools/verifier/README.md",
+      "sha256": "3c81542f208f9ad61aff397f4fe2f5fd3f19689bb32364807248b3ac026288fb",
+      "git_blob": "8f44f20ea3e3ae179d6ef65657b53b1cdbda173a",
+      "bytes": 13478
+    },
+    {
+      "path": "competition/tools/verifier/__init__.py",
+      "sha256": "54171b83dfb830bb939b3c9874a40eb0d7f5953202249167a031acea2639f9f4",
+      "git_blob": "082c916279b4a3fa68dea9abce87a7185760c334",
+      "bytes": 1302
+    },
+    {
+      "path": "competition/tools/verifier/__main__.py",
+      "sha256": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e",
+      "git_blob": "dd8a8c90e6b7af74ed3657ef5b74aaa5ebf0abd4",
+      "bytes": 52
+    },
+    {
+      "path": "competition/tools/verifier/canon.py",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297",
+      "git_blob": "93175152acd876566ff60bbfaf7cd90cd8cd2fa9",
+      "bytes": 3196
+    },
+    {
+      "path": "competition/tools/verifier/cli.py",
+      "sha256": "f9a677b7bfd0b5e43fd1889c52906d72dbaf74935ea20c4671e79c0314e279eb",
+      "git_blob": "95817c89371e4763bba23341c72bd27076905ce8",
+      "bytes": 4957
+    },
+    {
+      "path": "competition/tools/verifier/core.py",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5",
+      "git_blob": "0a5da5fe6e3e42c96877734dad46b155a69c02b2",
+      "bytes": 6740
+    },
+    {
+      "path": "competition/tools/verifier/data/README.md",
+      "sha256": "7f0a1208d8ea7f5a96130a74a56155c31f8b724722b1277861b43f38d29b1bee",
+      "git_blob": "84ec968ef06e094a31cb4984fe4f890534bf243e",
+      "bytes": 8318
+    },
+    {
+      "path": "competition/tools/verifier/data/golden_vectors.json",
+      "sha256": "6bf8979e71ff74530d97fc90d0fb3bee6497fadf61de43b5a62915fda469a781",
+      "git_blob": "d7f6a95db69dcc96d93d09b0e50633422df4a0ad",
+      "bytes": 67538
+    },
+    {
+      "path": "competition/tools/verifier/data/move_spec.json",
+      "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708",
+      "git_blob": "717c03edc89eade3b160a0647a728a3b07a322c6",
+      "bytes": 3829
+    },
+    {
+      "path": "competition/tools/verifier/data/stable_move_spec.json",
+      "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9",
+      "git_blob": "8dab61d21e5817467d64dede0217787f0ac05ec3",
+      "bytes": 42953
+    },
+    {
+      "path": "competition/tools/verifier/golden.py",
+      "sha256": "9e513713fee4f550e323910c29bb1e4a8f724fe94f33e2e89548b5ef2adeb79a",
+      "git_blob": "d3feb8c2e909b8b0c7527b4957b25c3811150770",
+      "bytes": 2759
+    },
+    {
+      "path": "competition/tools/verifier/specs.py",
+      "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0",
+      "git_blob": "1dd4ec6cf660013f46cfce2d58e5c3810dcc606d",
+      "bytes": 4656
+    },
+    {
+      "path": "competition/tools/verifier/stable_core.py",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d",
+      "git_blob": "af48e32f766dbcd0cad0becd8c1c4edb4358efac",
+      "bytes": 10765
+    },
+    {
+      "path": "competition/tools/verifier/submission.py",
+      "sha256": "665529bc6e47f249c8f1bfd7f8ed6c9e93fc86c5cb4454f4b7c613e8b3301cbb",
+      "git_blob": "8f3149ab8621423d7be8f9dc69e50223eeed72ea",
+      "bytes": 6828
+    },
+    {
+      "path": "competition/tools/verifier/data/manifest.json",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+      "git_blob": "accdb626ee08a06beea3f88dc7f351514c99eb27",
+      "bytes": 12378899
+    }
+  ]
+}

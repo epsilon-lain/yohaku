@@ -1,0 +1,50 @@
+{
+  "upstream_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "scope": "Local official reference verifier reproduction; no SAIR upload",
+  "checks": [
+    {
+      "name": "training_sample",
+      "exit_code": 0,
+      "accepted": true,
+      "results": [
+        {
+          "challenge_id": "ms-train-0160",
+          "length": 7,
+          "work": 46,
+          "ok": true,
+          "certificate_hash": "sha256:80dedf02b91d429b017fb0b3f48e950a9fc5e18363dbdf21c6e27297100c471f"
+        },
+        {
+          "challenge_id": "sac-train-0160",
+          "length": 9,
+          "work": 47,
+          "ok": true,
+          "certificate_hash": "sha256:e94492471688db5cb52971611a3617e75c165d89e3ed51cea9a3f5d96ccbb77e"
+        }
+      ]
+    },
+    {
+      "name": "training_manifest_hashes",
+      "exit_code": 0,
+      "challenges": 848,
+      "ac": 424,
+      "sac": 424,
+      "all_instance_hashes_verified": true
+    },
+    {
+      "name": "golden_vectors",
+      "exit_code": 0,
+      "passed": 63,
+      "total": 63
+    },
+    {
+      "name": "official_manifest_hashes",
+      "exit_code": 0,
+      "challenges": 20230,
+      "ac": 10115,
+      "sac": 10115,
+      "all_instance_hashes_verified": true,
+      "manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745"
+    }
+  ]
+}

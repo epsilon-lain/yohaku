@@ -1,0 +1,61 @@
+{
+  "accepted": true,
+  "results": [
+    {
+      "certificate_hash": "sha256:c25a647d019fc15cc87be17c032288d6e38bf75fd8961456516784aa454107a8",
+      "challenge_id": "ms-train-0001",
+      "length": 5,
+      "ok": true,
+      "work": 29
+    },
+    {
+      "certificate_hash": "sha256:62ed1e6b15a5938036fb7d2deed582e3d3048e59df288aff7475c89d79893039",
+      "challenge_id": "ms-train-0002",
+      "length": 6,
+      "ok": true,
+      "work": 42
+    },
+    {
+      "certificate_hash": "sha256:c680a6b03e49104ed2c797cbd1c8c3dbe301b127de9ba4b2f4187a98079ac234",
+      "challenge_id": "ms-train-0003",
+      "length": 7,
+      "ok": true,
+      "work": 55
+    },
+    {
+      "certificate_hash": "sha256:8d65028760dd78a842ce2f714bd363bf1ae45450e3f96ee4e2a7d5f3634bce2c",
+      "challenge_id": "ms-train-0004",
+      "length": 8,
+      "ok": true,
+      "work": 70
+    },
+    {
+      "certificate_hash": "sha256:a4c4779ba057c4d883dc2de3dea819a4278fc81c636fda03568fa88d249748ce",
+      "challenge_id": "ms-train-0005",
+      "length": 9,
+      "ok": true,
+      "work": 87
+    },
+    {
+      "certificate_hash": "sha256:570e622e2637e8b82211e6286572f16d14fcb8855d69f9dd73e71d13d18d355b",
+      "challenge_id": "ms-train-0006",
+      "length": 10,
+      "ok": true,
+      "work": 106
+    },
+    {
+      "certificate_hash": "sha256:be6b7eab9af7f45456428985a53dfd4967c5fc2d5750cc980423ae7c7fbf87eb",
+      "challenge_id": "ms-train-0007",
+      "length": 11,
+      "ok": true,
+      "work": 127
+    },
+    {
+      "certificate_hash": "sha256:be4346a383649a552a9ccaaa86fa1776e0f3a7c1a543c26c3a3e661b5aff423b",
+      "challenge_id": "ms-train-0008",
+      "length": 6,
+      "ok": true,
+      "work": 33
+    }
+  ]
+}

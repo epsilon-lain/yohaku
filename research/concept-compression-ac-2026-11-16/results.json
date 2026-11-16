@@ -1,0 +1,1289 @@
+{
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "official_manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "training_manifest_sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c",
+  "configuration": {
+    "per_case_per_arm_primitive_budget": 20000,
+    "search_total_length_cap": 32,
+    "case_selection": "training AC IDs first 8; scored AC sorted by initial total length then ID, first 8",
+    "priority": "(current reduced total length, expanded prefix length, insertion order)",
+    "known_training_solutions_read": false
+  },
+  "common_target_ball": {
+    "depth": 4,
+    "frontier_sizes": [
+      1,
+      10,
+      77,
+      574,
+      4453
+    ],
+    "states": 5115,
+    "primitive_evaluations": 9268,
+    "peak_total_length": 17,
+    "length_pruning": false,
+    "global_shortest_within_ball": true
+  },
+  "cases": [
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0001",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "initial_total_length": 7,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            11,
+            9,
+            5
+          ],
+          "expanded_move_length": 5,
+          "primitive_evaluations": 7,
+          "expanded_states": 1,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 0,
+          "seen_states": 7,
+          "wall_seconds": 7.313000241992995e-05,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 5,
+            "peak_total_relator_length": 7,
+            "work": 29,
+            "certificate_hash": "sha256:c25a647d019fc15cc87be17c032288d6e38bf75fd8961456516784aa454107a8"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            11,
+            9,
+            5
+          ],
+          "expanded_move_length": 5,
+          "primitive_evaluations": 19,
+          "expanded_states": 1,
+          "length_pruned": 0,
+          "macro_attempts": 4,
+          "macro_steps": 12,
+          "duplicate_or_nonimproving": 0,
+          "seen_states": 11,
+          "wall_seconds": 5.600399890681729e-05,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 5,
+            "peak_total_relator_length": 7,
+            "work": 29,
+            "certificate_hash": "sha256:c25a647d019fc15cc87be17c032288d6e38bf75fd8961456516784aa454107a8"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0002",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "initial_total_length": 9,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 6,
+          "primitive_evaluations": 45,
+          "expanded_states": 4,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 8,
+          "seen_states": 37,
+          "wall_seconds": 0.0001149140007328242,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 6,
+            "peak_total_relator_length": 9,
+            "work": 42,
+            "certificate_hash": "sha256:62ed1e6b15a5938036fb7d2deed582e3d3048e59df288aff7475c89d79893039"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 6,
+          "primitive_evaluations": 93,
+          "expanded_states": 4,
+          "length_pruned": 0,
+          "macro_attempts": 16,
+          "macro_steps": 48,
+          "duplicate_or_nonimproving": 8,
+          "seen_states": 53,
+          "wall_seconds": 0.00014115299563854933,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 6,
+            "peak_total_relator_length": 9,
+            "work": 42,
+            "certificate_hash": "sha256:62ed1e6b15a5938036fb7d2deed582e3d3048e59df288aff7475c89d79893039"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0003",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "initial_total_length": 11,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 7,
+          "primitive_evaluations": 66,
+          "expanded_states": 5,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 11,
+          "seen_states": 55,
+          "wall_seconds": 0.00012983500346308574,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 7,
+            "peak_total_relator_length": 11,
+            "work": 55,
+            "certificate_hash": "sha256:c680a6b03e49104ed2c797cbd1c8c3dbe301b127de9ba4b2f4187a98079ac234"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 7,
+          "primitive_evaluations": 105,
+          "expanded_states": 5,
+          "length_pruned": 0,
+          "macro_attempts": 17,
+          "macro_steps": 49,
+          "duplicate_or_nonimproving": 10,
+          "seen_states": 63,
+          "wall_seconds": 0.00016760300059104338,
+          "suffix_length": 4,
+          "finishing_action": "cyclic-trim-r0",
+          "official_verification": {
+            "ok": true,
+            "length": 7,
+            "peak_total_relator_length": 11,
+            "work": 55,
+            "certificate_hash": "sha256:c680a6b03e49104ed2c797cbd1c8c3dbe301b127de9ba4b2f4187a98079ac234"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0004",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "initial_total_length": 13,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 8,
+          "primitive_evaluations": 80,
+          "expanded_states": 6,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 13,
+          "seen_states": 67,
+          "wall_seconds": 0.00014337599714053795,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 8,
+            "peak_total_relator_length": 13,
+            "work": 70,
+            "certificate_hash": "sha256:8d65028760dd78a842ce2f714bd363bf1ae45450e3f96ee4e2a7d5f3634bce2c"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 8,
+          "primitive_evaluations": 106,
+          "expanded_states": 5,
+          "length_pruned": 0,
+          "macro_attempts": 17,
+          "macro_steps": 50,
+          "duplicate_or_nonimproving": 10,
+          "seen_states": 63,
+          "wall_seconds": 0.00018764300330076367,
+          "suffix_length": 4,
+          "finishing_action": "cyclic-trim-r0",
+          "official_verification": {
+            "ok": true,
+            "length": 8,
+            "peak_total_relator_length": 13,
+            "work": 70,
+            "certificate_hash": "sha256:8d65028760dd78a842ce2f714bd363bf1ae45450e3f96ee4e2a7d5f3634bce2c"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0005",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "initial_total_length": 15,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 9,
+          "primitive_evaluations": 94,
+          "expanded_states": 7,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 15,
+          "seen_states": 79,
+          "wall_seconds": 0.00015117799921426922,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 9,
+            "peak_total_relator_length": 15,
+            "work": 87,
+            "certificate_hash": "sha256:a4c4779ba057c4d883dc2de3dea819a4278fc81c636fda03568fa88d249748ce"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 9,
+          "primitive_evaluations": 107,
+          "expanded_states": 5,
+          "length_pruned": 0,
+          "macro_attempts": 17,
+          "macro_steps": 51,
+          "duplicate_or_nonimproving": 10,
+          "seen_states": 63,
+          "wall_seconds": 0.00018211499991593882,
+          "suffix_length": 4,
+          "finishing_action": "cyclic-trim-r0",
+          "official_verification": {
+            "ok": true,
+            "length": 9,
+            "peak_total_relator_length": 15,
+            "work": 87,
+            "certificate_hash": "sha256:a4c4779ba057c4d883dc2de3dea819a4278fc81c636fda03568fa88d249748ce"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0006",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "initial_total_length": 17,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 10,
+          "primitive_evaluations": 108,
+          "expanded_states": 8,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 17,
+          "seen_states": 91,
+          "wall_seconds": 0.00019126899860566482,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 10,
+            "peak_total_relator_length": 17,
+            "work": 106,
+            "certificate_hash": "sha256:570e622e2637e8b82211e6286572f16d14fcb8855d69f9dd73e71d13d18d355b"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 10,
+          "primitive_evaluations": 108,
+          "expanded_states": 5,
+          "length_pruned": 0,
+          "macro_attempts": 17,
+          "macro_steps": 52,
+          "duplicate_or_nonimproving": 10,
+          "seen_states": 63,
+          "wall_seconds": 0.00019778799469349906,
+          "suffix_length": 4,
+          "finishing_action": "cyclic-trim-r0",
+          "official_verification": {
+            "ok": true,
+            "length": 10,
+            "peak_total_relator_length": 17,
+            "work": 106,
+            "certificate_hash": "sha256:570e622e2637e8b82211e6286572f16d14fcb8855d69f9dd73e71d13d18d355b"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0007",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "initial_total_length": 19,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 11,
+          "primitive_evaluations": 122,
+          "expanded_states": 9,
+          "length_pruned": 8,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 19,
+          "seen_states": 95,
+          "wall_seconds": 0.00020520899852272123,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 11,
+            "peak_total_relator_length": 19,
+            "work": 127,
+            "certificate_hash": "sha256:be6b7eab9af7f45456428985a53dfd4967c5fc2d5750cc980423ae7c7fbf87eb"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            9,
+            11,
+            9,
+            9,
+            5
+          ],
+          "expanded_move_length": 11,
+          "primitive_evaluations": 102,
+          "expanded_states": 5,
+          "length_pruned": 15,
+          "macro_attempts": 17,
+          "macro_steps": 46,
+          "duplicate_or_nonimproving": 10,
+          "seen_states": 48,
+          "wall_seconds": 0.00016641100228298455,
+          "suffix_length": 4,
+          "finishing_action": "cyclic-trim-r0",
+          "official_verification": {
+            "ok": true,
+            "length": 11,
+            "peak_total_relator_length": 19,
+            "work": 127,
+            "certificate_hash": "sha256:be6b7eab9af7f45456428985a53dfd4967c5fc2d5750cc980423ae7c7fbf87eb"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "training",
+      "challenge_id": "ms-train-0008",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      "initial_total_length": 7,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            1,
+            9,
+            2,
+            8,
+            5,
+            0
+          ],
+          "expanded_move_length": 6,
+          "primitive_evaluations": 38,
+          "expanded_states": 3,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 5,
+          "seen_states": 33,
+          "wall_seconds": 5.384100222727284e-05,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 6,
+            "peak_total_relator_length": 7,
+            "work": 33,
+            "certificate_hash": "sha256:be4346a383649a552a9ccaaa86fa1776e0f3a7c1a543c26c3a3e661b5aff423b"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            1,
+            9,
+            2,
+            8,
+            5,
+            0
+          ],
+          "expanded_move_length": 6,
+          "primitive_evaluations": 74,
+          "expanded_states": 3,
+          "length_pruned": 0,
+          "macro_attempts": 12,
+          "macro_steps": 36,
+          "duplicate_or_nonimproving": 5,
+          "seen_states": 45,
+          "wall_seconds": 9.80080003500916e-05,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 6,
+            "peak_total_relator_length": 7,
+            "work": 33,
+            "certificate_hash": "sha256:be4346a383649a552a9ccaaa86fa1776e0f3a7c1a543c26c3a3e661b5aff423b"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-08491",
+      "initial_relators": [
+        [
+          -2,
+          -1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          -1,
+          2,
+          2,
+          1
+        ]
+      ],
+      "initial_total_length": 9,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            7,
+            4,
+            12,
+            1,
+            12,
+            2,
+            5,
+            5
+          ],
+          "expanded_move_length": 8,
+          "primitive_evaluations": 72,
+          "expanded_states": 6,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 12,
+          "seen_states": 60,
+          "wall_seconds": 0.00010563899559201673,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 8,
+            "peak_total_relator_length": 9,
+            "work": 49,
+            "certificate_hash": "sha256:33b48c0c493aee87616d07731abb7a5b1cd25e392eb93f89f1fd5ee1e1e38526"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            7,
+            4,
+            12,
+            1,
+            12,
+            2,
+            5,
+            5
+          ],
+          "expanded_move_length": 8,
+          "primitive_evaluations": 137,
+          "expanded_states": 6,
+          "length_pruned": 0,
+          "macro_attempts": 23,
+          "macro_steps": 67,
+          "duplicate_or_nonimproving": 12,
+          "seen_states": 81,
+          "wall_seconds": 0.00019567499839467928,
+          "suffix_length": 4,
+          "finishing_action": "left-r1-by-r0",
+          "official_verification": {
+            "ok": true,
+            "length": 8,
+            "peak_total_relator_length": 9,
+            "work": 49,
+            "certificate_hash": "sha256:33b48c0c493aee87616d07731abb7a5b1cd25e392eb93f89f1fd5ee1e1e38526"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-04359",
+      "initial_relators": [
+        [
+          -2,
+          -2,
+          1,
+          1,
+          1
+        ],
+        [
+          -2,
+          -1,
+          -2,
+          1,
+          2,
+          1
+        ]
+      ],
+      "initial_total_length": 11,
+      "arms": {
+        "primitive": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 1429,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 7310,
+          "seen_states": 11937,
+          "wall_seconds": 0.04816640799981542
+        },
+        "macro": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 770,
+          "length_pruned": 0,
+          "macro_attempts": 3079,
+          "macro_steps": 9234,
+          "duplicate_or_nonimproving": 3935,
+          "seen_states": 8504,
+          "wall_seconds": 0.05473175500083016
+        }
+      }
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-08327",
+      "initial_relators": [
+        [
+          -2,
+          -2,
+          -2,
+          -1,
+          -1
+        ],
+        [
+          -2,
+          -1,
+          2,
+          -1,
+          -2,
+          1
+        ]
+      ],
+      "initial_total_length": 11,
+      "arms": {
+        "primitive": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 1429,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 7312,
+          "seen_states": 11937,
+          "wall_seconds": 0.03795294200244825
+        },
+        "macro": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 770,
+          "length_pruned": 0,
+          "macro_attempts": 3079,
+          "macro_steps": 9234,
+          "duplicate_or_nonimproving": 3929,
+          "seen_states": 7592,
+          "wall_seconds": 0.031729659996926785
+        }
+      }
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-09594",
+      "initial_relators": [
+        [
+          -2,
+          -2,
+          -2,
+          1,
+          1
+        ],
+        [
+          -2,
+          -1,
+          -2,
+          1,
+          2,
+          1
+        ]
+      ],
+      "initial_total_length": 11,
+      "arms": {
+        "primitive": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 1429,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 7327,
+          "seen_states": 12097,
+          "wall_seconds": 0.03549836199817946
+        },
+        "macro": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 770,
+          "length_pruned": 0,
+          "macro_attempts": 3079,
+          "macro_steps": 9234,
+          "duplicate_or_nonimproving": 3943,
+          "seen_states": 7923,
+          "wall_seconds": 0.03180644699750701
+        }
+      }
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-00104",
+      "initial_relators": [
+        [
+          -2,
+          -1,
+          -1,
+          -2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -2,
+          -1,
+          2,
+          2,
+          1
+        ]
+      ],
+      "initial_total_length": 12,
+      "arms": {
+        "primitive": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 1429,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 7245,
+          "seen_states": 11959,
+          "wall_seconds": 0.03918238900223514
+        },
+        "macro": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 770,
+          "length_pruned": 0,
+          "macro_attempts": 3079,
+          "macro_steps": 9234,
+          "duplicate_or_nonimproving": 3843,
+          "seen_states": 9688,
+          "wall_seconds": 0.033318736001092475
+        }
+      }
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-07445",
+      "initial_relators": [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ]
+      ],
+      "initial_total_length": 12,
+      "arms": {
+        "primitive": {
+          "status": "solved",
+          "moves": [
+            1,
+            6,
+            12,
+            5,
+            1,
+            13,
+            11,
+            5,
+            11,
+            3,
+            10,
+            4,
+            10,
+            3,
+            5,
+            5,
+            1
+          ],
+          "expanded_move_length": 17,
+          "primitive_evaluations": 4491,
+          "expanded_states": 321,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 1488,
+          "seen_states": 3000,
+          "wall_seconds": 0.007406101998640224,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 17,
+            "peak_total_relator_length": 12,
+            "work": 157,
+            "certificate_hash": "sha256:64af739869d225bff4065959feab273b2c7e4f3c5546d7c3e77611d9231a3e14"
+          }
+        },
+        "macro": {
+          "status": "solved",
+          "moves": [
+            6,
+            12,
+            1,
+            5,
+            1,
+            13,
+            11,
+            5,
+            11,
+            3,
+            10,
+            4,
+            10,
+            3,
+            5,
+            5,
+            1
+          ],
+          "expanded_move_length": 17,
+          "primitive_evaluations": 4677,
+          "expanded_states": 180,
+          "length_pruned": 0,
+          "macro_attempts": 720,
+          "macro_steps": 2160,
+          "duplicate_or_nonimproving": 804,
+          "seen_states": 2428,
+          "wall_seconds": 0.006859786000859458,
+          "suffix_length": 4,
+          "finishing_action": "primitive",
+          "official_verification": {
+            "ok": true,
+            "length": 17,
+            "peak_total_relator_length": 12,
+            "work": 157,
+            "certificate_hash": "sha256:5e193b7824c779212e555b039a2c2463ec977882667d93163f0525d99532fc9c"
+          }
+        }
+      },
+      "selected_arm": "macro"
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-00399",
+      "initial_relators": [
+        [
+          -2,
+          -1,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -2,
+          -2,
+          1,
+          1,
+          1
+        ]
+      ],
+      "initial_total_length": 13,
+      "arms": {
+        "primitive": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 1429,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 7634,
+          "seen_states": 12367,
+          "wall_seconds": 0.03800000000046566
+        },
+        "macro": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 770,
+          "length_pruned": 0,
+          "macro_attempts": 3079,
+          "macro_steps": 9234,
+          "duplicate_or_nonimproving": 4319,
+          "seen_states": 9513,
+          "wall_seconds": 0.03278173699800391
+        }
+      }
+    },
+    {
+      "cohort": "scored",
+      "challenge_id": "ac-00974",
+      "initial_relators": [
+        [
+          -2,
+          -1,
+          -2,
+          1,
+          -2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -2,
+          -1,
+          2,
+          2,
+          1
+        ]
+      ],
+      "initial_total_length": 13,
+      "arms": {
+        "primitive": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 1429,
+          "length_pruned": 0,
+          "macro_attempts": 0,
+          "macro_steps": 0,
+          "duplicate_or_nonimproving": 7556,
+          "seen_states": 12445,
+          "wall_seconds": 0.03644509599689627
+        },
+        "macro": {
+          "status": "budget_exhausted",
+          "moves": null,
+          "expanded_move_length": null,
+          "primitive_evaluations": 20000,
+          "expanded_states": 770,
+          "length_pruned": 0,
+          "macro_attempts": 3079,
+          "macro_steps": 9234,
+          "duplicate_or_nonimproving": 4191,
+          "seen_states": 9631,
+          "wall_seconds": 0.03296073700039415
+        }
+      }
+    }
+  ],
+  "training_selected_verified": 8,
+  "scored_selected_verified": 4,
+  "limitations": [
+    "heuristic bounded search, not a global shortest-path certificate",
+    "easy-biased fixed scored sample, not representative benchmark",
+    "no leaderboard comparison or platform upload",
+    "macro steps count at their full primitive expansion cost"
+  ],
+  "summary": {
+    "training": {
+      "primitive": {
+        "solved": 8,
+        "cases": 8,
+        "primitive_evaluations": 560,
+        "expanded_solution_lengths": {
+          "ms-train-0001": 5,
+          "ms-train-0002": 6,
+          "ms-train-0003": 7,
+          "ms-train-0004": 8,
+          "ms-train-0005": 9,
+          "ms-train-0006": 10,
+          "ms-train-0007": 11,
+          "ms-train-0008": 6
+        }
+      },
+      "macro": {
+        "solved": 8,
+        "cases": 8,
+        "primitive_evaluations": 714,
+        "expanded_solution_lengths": {
+          "ms-train-0001": 5,
+          "ms-train-0002": 6,
+          "ms-train-0003": 7,
+          "ms-train-0004": 8,
+          "ms-train-0005": 9,
+          "ms-train-0006": 10,
+          "ms-train-0007": 11,
+          "ms-train-0008": 6
+        }
+      }
+    },
+    "scored": {
+      "primitive": {
+        "solved": 2,
+        "cases": 8,
+        "primitive_evaluations": 124563,
+        "expanded_solution_lengths": {
+          "ac-08491": 8,
+          "ac-07445": 17
+        }
+      },
+      "macro": {
+        "solved": 2,
+        "cases": 8,
+        "primitive_evaluations": 124814,
+        "expanded_solution_lengths": {
+          "ac-08491": 8,
+          "ac-07445": 17
+        }
+      }
+    }
+  }
+}
