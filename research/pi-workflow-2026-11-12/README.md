@@ -436,3 +436,18 @@ v08 恢复段的六个研究请求均有 HTTP 200、completed 和对应 SSE 终�
 [完整报告、证明、代码、通信和工作记忆](sol-seed-live-20261115-01/REPORT.md)包括：已知q28420在所有整数1≤q<q28421上的唯一最小性；q=10^k且0≤k≤14999时的唯一最小值π−3；精确零/九数字块准则及“任意长零串仍不足”的显式反例。宿主使用另一π恒等式的standalone整数复核通过，未归功给小组或Sol。有限结论不推出π坏逼近性，也没有新搜索纪录。
 
 一项实际边界偏差是研究者import产生共享字节码缓存，随后主动报告并禁用；宿主记录后清理，基线源文件未改。底层token、费用与完整访问审计不可见，只有一条群体轨迹；没有确立可靠学习、监督的净收益或同算力组织优势。原v09与81笔未知均保持，不以本次新组结果补写其启动成功。
+
+
+## 本机Sol观察种子尝试：最终客户端配置分叉，模型尚未发送（2026-11-16）
+
+审阅包为 Yohaku-Sol-Observation-Seed-Review-20261116.zip。CRC正常，2723项清单文件的哈希及长度相符。归档支持三节点已创建，但第一研究者在本地Codex启动检查失败；第二研究者于共享停止后、start_enter之前取消，观察者未派发。新增数学执行、成员消息、观察交付与新数学产物均为0。这是本机原项目接续尝试，与此前当前会话新上下文小组的实际运行分开，不能相互补写成功。
+
+具体根因是两条配置路径没有汇合。runtime/CODEX-DEVELOPMENT.json指向候选内新安装的原生Linux客户端，预检及目录检查依据它；实际worker先读config/ai.json，其中已有非空codex_entry，仍指向旧VSCode扩展目录内的linux-x86_64/codex。仅在该字段为空时才取环境变量，随后实际地址未通过is_linux_codex检查。yohaku_codex.launch在Linux检查失败且存在节点模型选择参数时立即抛出“AI node backend requires native Linux Codex”。诊断的failure_stage=connect是本地阶段标签；没有thread/turn ID、没有send_admitted、send_attempted=false，不能据此归为已发生的网络或供应方推理故障。
+
+后续补丁在resolve_turn_config之后，将worker最终config绑定到经过哈希、可执行位、x86_64 ELF及Sol/high配置检查的原生入口，位置在native预留之前。归档13项入口测试使用FakeTasks.start直接调用绑定帮助函数，支持其逻辑与普通Control入口，不构成真实完整worker或推理验证。本次外部审阅只从源码提取两个函数定义到临时环境，完成10项独立定向检查：旧入口覆盖、配置保持、变更二进制/执行位/架构/符号链接拒绝和profile拒绝，以及实际worker调用位置检查。没有导入原模块、运行归档管理脚本、启动原生客户端或模型；这些结果不提升为真实推理通过。
+
+还有一个接续缺口：STATE.json已closed且保留shared_stop，manage.launch由RUN-STARTED.json拒绝重复执行。NEXT-POLICY-DATA-ONLY.json虽记录剩余7次及真实root_task_id，但repaired SeedGate不读取remaining_limits，也未实现已关闭阶段的追加人工接续登记；简单改ID或新建空turns会重新得到硬编码8次上限。需要先在同一原授权下追加可追溯登记，汇总旧1次保留预留与最多7次新增预留，不删除停止、覆盖旧策略或重放原任务。原策略占位root_task_id保留为历史错误，新接续绑定真实根任务model-task-d0d5c3f53d3cb06eb618eb8b95260c74。
+
+当前确认未发送的1次原生预留仍保守保留，模型开始0、工具0，余量最多7 turn/48工具；first_model_admitted_at及deadline均为空，45分钟窗口尚未开始。实际重复收尾的阶段和组记录字节不变，事件保持15，无新派发或watcher。历史Adaption64次与81笔未知及其累计账本SHA-256保持；本次仍按“保持停止、先审阅”的决定不激活原机。
+
+下一步可在停止状态下合入并封存最终入口修复，补追加接续登记及真实root绑定，验证最终worker配置、接续总量、时钟只起算一次和重启不重派。后续首个正常研究请求才是实际推理验收，不额外发送模型探针。此前被拒的v09训练捕获脚本与此Sol原生入口无关，不应为修此故障重新执行它。
