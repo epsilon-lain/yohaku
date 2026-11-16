@@ -1,0 +1,19 @@
+{
+  "task_id": "project-task-ff723364534a087e5a4c80200f053268",
+  "source_set": "980e0082045219936bd5c7ca082607844fc8ba26fd2d53b9e216b38412a12274",
+  "exit_code": 0,
+  "started_at": 1794843631.6924095,
+  "finished_at": 1794843632.4681869,
+  "artifacts": [
+    {
+      "path": "round2-pair-results.json",
+      "exists": true,
+      "sha256": "1779f16a724e8a707da40ad916b7ca224dd8d225508d40d7093ade7466ed29d9",
+      "bytes": 694778
+    }
+  ],
+  "label": "external_same-code_reproduction; not a native model task or independent algorithm",
+  "network_disabled": true,
+  "model_requests": 0,
+  "platform_upload": false
+}

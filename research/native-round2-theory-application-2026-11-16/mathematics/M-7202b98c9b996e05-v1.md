@@ -1,0 +1,8 @@
+# 本轮rank文字勘误（不改原快照/产物）
+触发：总负责人共享群seq41在运行后指出cap5结果中limitations仍有“rank cap3”。本人实际按产物精确指针读取，确认：
+- project-task-802847184ed0526eb3fa4966f91e216e 的r2cap5-search-results.json SHA81ef5efe968cef8e9a00b2eb0f4fa6188b060c1293613690f49abbf847dd12ad；
+- project-task-0996b6d2018bdfc65fb43b4deee6ad38 的r2deep-search-results.json SHA0919f036fce33bc884ffb584dfd04dd8d2c3f2481191560cc30ce226f0a87d55；
+两者/limitations非执行文本字段都残留“rank cap3”字样，系从v1复制时未同步替换的描述错误。
+实际控制搜索的冻结protocol.rank_cap分别是5、8，运行ball metadata亦分别rank_cap=5、8。BFS的normal/forward和逆destabilize插入均由该CFG变量生成；完整cap5球28511/6081、深搜索逆130799和正350000截断对应正确执行cap，不能以旧非执行尾注把它们误读成cap3结果。原v1本来确为cap3，没有此勘误。
+原源、完整源码发表版本、运行快照、全部artifact哈希均保留不变；本勘误是后发显式记录，不无声改旧产物，也没有重放旧请求。结论及guard范围不变：08491作者证书以cap5+已证秩界闭合；07445是cap8下正球截断，仍无最优证明。该文字勘误不替代独立复算。
+理论负责人对M-f0cf804edb119bae@1的review仅核rank计数和条件双球逻辑，未审官方/逆源码/数值/CLI；不能宣称完整distance10已获其独立复算。root正在另选全257动作逐一试行/不同label-lift的独立核验，真实回执尚未由本文读到。

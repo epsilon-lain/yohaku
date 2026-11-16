@@ -1,0 +1,130 @@
+{
+  "format": "native-round2-s07445-prefix3-deeper-bridge-preregistration/1",
+  "user_goal_event": 482,
+  "user_round": "native-compression-next-20261116-02",
+  "autonomous_method": "after v1 negative and Stable08491 exact10 closure, test a deeper completion after the ORIGINAL sac07445 first3 moves",
+  "user_goal_is_not_method": true,
+  "targets": [
+    "sac-08491",
+    "sac-07445"
+  ],
+  "frozen_lengths": {
+    "sac-08491": 10,
+    "sac-07445": 15
+  },
+  "rank_cap": 8,
+  "reverse": {
+    "radius": 6,
+    "max_states": 250000,
+    "max_calls": 6000000,
+    "seconds": 120
+  },
+  "primary": {
+    "challenge": "sac-07445",
+    "prefix_index": 3,
+    "forward_radius": 5,
+    "max_states": 350000,
+    "max_calls": 6000000,
+    "seconds": 120
+  },
+  "secondary": {
+    "challenge": "sac-07445",
+    "prefix_indices": [],
+    "forward_radius": 3,
+    "max_states_per_ball": 50000,
+    "max_calls_per_ball": 750000,
+    "seconds_per_ball": 20,
+    "total_seconds": 240
+  },
+  "global": {
+    "seconds": 300,
+    "max_official_apply_calls": 12000000
+  },
+  "state_equality": "exact ordered freely reduced relators, no quotient",
+  "resource_pruning": "none besides rank<=3; guards explicitly render balls incomplete; full candidates official replay",
+  "old_prefix_dictionary": "all prefixes of both locked Stable routes; bound source/target determined by official replay",
+  "dictionary_stored_primitive_ids": 175,
+  "exposure": "same development routes; this deeper scope is a new explicitly frozen follow-up chosen after prior complete negative, not a hidden retune",
+  "comparison": "fixed old15, seek prefix3 + new completion<=11, so total<=14; no global07445 optimality unless future full-source bound",
+  "stop": "execute frozen budgets even if no improvement; retain negative and guard outcomes; no platform upload",
+  "baselines": {
+    "ac-07445": {
+      "moves": [
+        6,
+        4,
+        12,
+        1,
+        3,
+        6,
+        12,
+        2,
+        5,
+        6,
+        4,
+        2,
+        4
+      ],
+      "proved_minimum": 13,
+      "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+    },
+    "ac-08491": {
+      "moves": [
+        7,
+        4,
+        12,
+        12,
+        3,
+        1,
+        5,
+        5
+      ],
+      "proved_minimum": 8,
+      "source_commit": "332c001bde009465a1420e4cf6b683ed2ff88cd9",
+      "source_sha256": "0114c5aa4bdddd2fd9465c04a677fec7fa24bc60c06992d06a8df1a0318fc215",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/332c001bde009465a1420e4cf6b683ed2ff88cd9/research/native-theory-application-2026-11-16/data/ac-submission.txt"
+    },
+    "sac-07445": {
+      "moves": [
+        6,
+        4,
+        12,
+        1,
+        3,
+        6,
+        12,
+        2,
+        5,
+        6,
+        4,
+        2,
+        4,
+        16,
+        15
+      ],
+      "proved_minimum": null,
+      "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+    },
+    "sac-08491": {
+      "moves": [
+        7,
+        4,
+        12,
+        1,
+        12,
+        2,
+        5,
+        5,
+        16,
+        15
+      ],
+      "proved_minimum": null,
+      "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "format": "native-pair-concept-theory-freeze/1",
+  "round_id": "native-compression-next-20261116-02",
+  "user_goal": {
+    "source": "files/theory/round2-external/USER-GOAL.txt.tex",
+    "revision": "c9cb3f5fd9bf230d36bd48a0152c1024dc67f0c7ca96c11799ec9f3ee948cdbd",
+    "kind": "user_instruction",
+    "event": 482
+  },
+  "self_selected_question": "Definition-paid pair conjunctions: exact shortest-description cost, information preservation, non-submodularity and greedy boundary",
+  "semantics": {
+    "objects": "all Boolean valuations on n independent atoms",
+    "operation": "binary conjunction, associative/commutative/idempotent semantics",
+    "target": "nonempty support T",
+    "dictionary": "flat macros q_ij=p_i AND p_j for simple eligible graph H",
+    "kept_original_atoms": true
+  },
+  "costs": {
+    "atom_leaf": 1,
+    "macro_reference_leaf": 1,
+    "binary_and_node": 1,
+    "definition_body": 3,
+    "binding_header": 0,
+    "definition_paid_once_per_selected_dictionary": true,
+    "definition_not_primitive_evidence_cost": true
+  },
+  "experiments": {
+    "all_dictionary_graphs_n": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "all_nonempty_targets": true,
+    "all_eligible_graphs_n": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "submodularity_check": "all discrete second differences until first failure per eligible graph",
+    "definition_cost_sweep": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "repeat_counts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "greedy_case": {
+      "n": 4,
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "repeat_count": 2,
+      "definition_cost": 3,
+      "all_edge_orders": true
+    },
+    "heterogeneous_boundary": {
+      "n": 3,
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "targets": [
+        {
+          "mask": 3,
+          "repeats": 2
+        },
+        {
+          "mask": 6,
+          "repeats": 2
+        }
+      ]
+    }
+  },
+  "budget": {
+    "project_timeout_seconds": 300,
+    "all_finite_bounds_frozen_before_submit": true,
+    "no_model_or_network_in_computation": true
+  },
+  "external_dependencies": [
+    {
+      "id": "external/concept-tree-cost-9-3-9",
+      "revision": 1,
+      "used": "explicit tree-node pricing, separate definition and reference pricing; fixed README actually read; arithmetic-vector seed is NOT the Boolean model"
+    }
+  ],
+  "unused_help": [
+    {
+      "id": "external/native-compression-next-20261116-02-resources",
+      "revision": 1,
+      "reason": "resource metadata read; official AC archive/verifier not needed or used for this independent Boolean theory calculation"
+    }
+  ],
+  "no_competition_or_universal_complexity_claim": true
+}

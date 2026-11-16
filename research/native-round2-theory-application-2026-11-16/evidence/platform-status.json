@@ -1,0 +1,13 @@
+{
+  "local_validation": {
+    "accepted": true,
+    "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "submission_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+    "full_receipt_sha256": "793d179a5bff524505b44f081abeec197d2b49820d0a60f0e9c635d43db79399"
+  },
+  "improvement_over_frozen_old_routes": false,
+  "leaderboard_queried": false,
+  "platform_upload_performed": false,
+  "platform_submission_id": null,
+  "competition_results_claimed": false
+}

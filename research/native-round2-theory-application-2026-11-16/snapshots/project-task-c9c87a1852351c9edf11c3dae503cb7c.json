@@ -1,0 +1,90 @@
+{
+  "task_id": "project-task-c9c87a1852351c9edf11c3dae503cb7c",
+  "native_submit": {
+    "request_id": "app-r2-stable-prefix-bridge-search-v1",
+    "model_task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98",
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+  },
+  "project_id": "native-application",
+  "action": "round2-search",
+  "source_set": "4b082b84b2d4c97ec2e990c936ae337d40787bd17ef4e83ae46135f8c3625678",
+  "snapshot_id": "4b082b84b2d4c97ec2e990c936ae337d40787bd17ef4e83ae46135f8c3625678",
+  "manifest_revision": "c794e1eb841a7c8b9674097374d07d3181172cbb31717f0eec4e59531b2cd196",
+  "task": {
+    "args": [],
+    "artifacts": [
+      "r2-search-results.json",
+      "r2-prefix-dictionary.json",
+      "r2-submission.txt",
+      "r2-official-cli.json"
+    ],
+    "entry": "round2_search.py",
+    "kind": "python",
+    "timeout_seconds": 720
+  },
+  "files": [
+    {
+      "path": "project.json",
+      "sha256": "6cda7de6f42de8ed135be0d67bdf9058132bbcda479228f7961f4bf16a81bd64",
+      "bytes": 1428,
+      "source": "files/application/project.json.tex",
+      "source_revision": "c794e1eb841a7c8b9674097374d07d3181172cbb31717f0eec4e59531b2cd196"
+    },
+    {
+      "path": "research.py",
+      "sha256": "56a7bec46821137de761be80c4a709b3d842a5daaf1469ab9db80c91f53985ea",
+      "bytes": 18404,
+      "source": "files/application/research.py.tex",
+      "source_revision": "3eb410b09bb0f3d5ef62ab5c68422b2203c3f770084953d75fb300d495783462"
+    },
+    {
+      "path": "round2-external/RESOURCE-LOCK.json",
+      "sha256": "1c571a949456c56b7edad096fe0536657011c2649f1bb104bdd45e764745a35a",
+      "bytes": 6688,
+      "source": "files/application/round2-external/RESOURCE-LOCK.json.tex",
+      "source_revision": "3a866f0fce65858ebae0fb7c1f2b5eca7eb706a32048860528b422ea866bde13"
+    },
+    {
+      "path": "round2-external/resources.b64",
+      "sha256": "ce8eadd1a714b24c065cf07996c8c7cc73c75b981ee7b9944e29039c3da899c1",
+      "bytes": 1782517,
+      "source": "files/application/round2-external/resources.b64.tex",
+      "source_revision": "9256b9cfcc12922f6b0773c2ddc96bf257182234e13004e3af46b5e8aa77e76b"
+    },
+    {
+      "path": "round2-external/restore_resources.py",
+      "sha256": "f69071e5d79b8e6c88bb8fae374b0005cefb1ce8c9028c9cb0ebbe3f9d059764",
+      "bytes": 1461,
+      "source": "files/application/round2-external/restore_resources.py.tex",
+      "source_revision": "7117fa17b4d8760d289d961896cd4707dfb91aaf8e504a945c9a723f0dd7e334"
+    },
+    {
+      "path": "round2_inspect.py",
+      "sha256": "a8b163609e8ce0ae2eb98b910b7d98e4baa1d7122260685b438b3242b87f8d8c",
+      "bytes": 1219,
+      "source": "files/application/round2_inspect.py.tex",
+      "source_revision": "aa45e8b755dd6c232cd0198575fb775def6d30521ac99f075c03b20c325c0929"
+    },
+    {
+      "path": "round2_protocol.json",
+      "sha256": "6fd57e4c6f8d412389f9f2791c17e5925c1de585332928cb88363f746ffb00d3",
+      "bytes": 4069,
+      "source": "files/application/round2_protocol.json.tex",
+      "source_revision": "061d858aeace058d9560acf6f6072b950d4d934b2e9dba5b9c88a712fece7519"
+    },
+    {
+      "path": "round2_search.py",
+      "sha256": "0e9eefa8a6a0ce56ad7bd8d6aa72ab9f47911c3f655a7307d3f986753dadc561",
+      "bytes": 12588,
+      "source": "files/application/round2_search.py.tex",
+      "source_revision": "88c32bbf8427f4b80635f2c385332e92067b1b6ad808b24ff976a15adf36d5da"
+    },
+    {
+      "path": "umbrella_verify.py",
+      "sha256": "aff30510285004f968f08575fb0d81ec81a4b4d51511f39b7eae7803e41ebf2c",
+      "bytes": 5396,
+      "source": "files/application/umbrella_verify.py.tex",
+      "source_revision": "9352e1862513ddc75c3663de2b078808adba15de1c7dabed58460c9e71719318"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "native_submit": {
+    "request_id": "app-r2-official-semantics-inspect-v1",
+    "model_task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98",
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+  },
+  "task_id": "project-task-3628c3c7ed6347e97c261d4b4cca3528",
+  "status": "done",
+  "source_set": "4b2e4c4c8ecd599620caa21e6536259cd4eac3f61188a5bcd8e2f7ab156d95d5",
+  "snapshot_id": "4b2e4c4c8ecd599620caa21e6536259cd4eac3f61188a5bcd8e2f7ab156d95d5",
+  "native_receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794842128.8717995,
+    "output_complete": true,
+    "output_truncated": false
+  },
+  "artifacts": [
+    {
+      "id": "project-task-3628c3c7ed6347e97c261d4b4cca3528:r2-inspect.json",
+      "path": "r2-inspect.json",
+      "sha256": "974f2d986e88d5057fc68a3d24a21c4106c97c7dd0d43e4d4c64478439405760",
+      "bytes": 89403,
+      "source_set": "4b2e4c4c8ecd599620caa21e6536259cd4eac3f61188a5bcd8e2f7ab156d95d5",
+      "snapshot_id": "4b2e4c4c8ecd599620caa21e6536259cd4eac3f61188a5bcd8e2f7ab156d95d5",
+      "public_path": "evidence/project-task-3628c3c7ed6347e97c261d4b4cca3528/r2-inspect.json"
+    }
+  ],
+  "stdout_original_sha256": "efde7eb44e13374382e3f6ca95661a162559783c6fcd040d8752fbfdc6367f51",
+  "stderr_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,76 @@
+[
+  {
+    "consumer": "theory",
+    "version": "external/concept-tree-cost-9-3-9@1",
+    "index_and_body": "math index and body event663; fixed upstream README actually seed_read",
+    "adoption_event": 698,
+    "observed_dependencies": [
+      "code/theory/round2_pair_dictionary.py: seed_dependency",
+      "code/theory/round2-pair-freeze.json",
+      "evidence/project-task-ff723364534a087e5a4c80200f053268/round2-pair-results.json"
+    ],
+    "scope": "cost split only; new Boolean pair-AND semantics is separately proved"
+  },
+  {
+    "consumer": "theory finite computation",
+    "version": "M-98718cbca95c0dc3@1",
+    "adoption_event": 740,
+    "observed_dependencies": [
+      "immutable source header",
+      "results proof_dependency",
+      "snapshot 980e0082045219936bd5c7ca082607844fc8ba26fd2d53b9e216b38412a12274"
+    ],
+    "scope": "finite cover-DP vs matching formula; two implementations by the same author"
+  },
+  {
+    "consumer": "application",
+    "version": "external/native-compression-next-20261116-02-resources@1",
+    "body_read_event": 630,
+    "adoption_event": 753,
+    "observed_dependencies": [
+      "41 byte-locked resource files recovered inside actual computation",
+      "snapshot resource archive and official-source verification",
+      "official CLI artifacts"
+    ],
+    "scope": "external seed and official implementation; not native discovery"
+  },
+  {
+    "consumer": "application",
+    "version": "M-5606eba96406db45@1",
+    "body_read_scope": "read in preserved previous native task; this round explicitly reused",
+    "adoption_event": 755,
+    "observed_dependencies": [
+      "full-path official replay in round2_search.py and derivatives",
+      "r2-search-results.json baseline_replays and full trajectories"
+    ],
+    "scope": "endpoint/work composition contract; no competition improvement inferred"
+  },
+  {
+    "consumer": "theory peer review of Stable",
+    "version": "M-f0cf804edb119bae@1",
+    "body_read_event": 880,
+    "review_event": 890,
+    "observed_dependencies": [
+      "rank count and conditional MITM argument only"
+    ],
+    "not_adopted_in": "Boolean dictionary theorem or computation",
+    "scope": "not official implementation, balls, numerical certificate or CLI verification"
+  },
+  {
+    "consumer": "root peer review",
+    "version": "M-98718cbca95c0dc3@1",
+    "body_read_event": 831,
+    "review_event": 921,
+    "observed_dependencies": [
+      "general proof review recorded in math_review"
+    ],
+    "scope": "general proofs only; no independent rerun of finite data"
+  },
+  {
+    "consumer": "application",
+    "version": "M-98718cbca95c0dc3@1",
+    "body_read": false,
+    "adopted": false,
+    "scope": "application received a summary but no new Boolean theorem dependency is claimed"
+  }
+]

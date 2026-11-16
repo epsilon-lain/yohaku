@@ -1,0 +1,6 @@
+{"n": 1, "dictionaries": 1, "nonempty_target_comparisons": 1, "submodular_eligible_graphs": 1, "second_difference_tests_until_first_failure": 0, "definition_price_reuse_optimizer_checks": 24}
+{"n": 2, "dictionaries": 2, "nonempty_target_comparisons": 6, "submodular_eligible_graphs": 2, "second_difference_tests_until_first_failure": 0, "definition_price_reuse_optimizer_checks": 48}
+{"n": 3, "dictionaries": 8, "nonempty_target_comparisons": 56, "submodular_eligible_graphs": 8, "second_difference_tests_until_first_failure": 9, "definition_price_reuse_optimizer_checks": 192}
+{"n": 4, "dictionaries": 64, "nonempty_target_comparisons": 960, "submodular_eligible_graphs": 30, "second_difference_tests_until_first_failure": 263, "definition_price_reuse_optimizer_checks": 1536}
+{"n": 5, "dictionaries": 1024, "nonempty_target_comparisons": 31744, "submodular_eligible_graphs": 131, "second_difference_tests_until_first_failure": 63951, "definition_price_reuse_optimizer_checks": 24576}
+{"status": "passed", "totals": {"dictionaries": 1099, "nonempty_target_comparisons": 32767, "optimizer_checks": 26376, "optimizer_candidates": 1435416}, "P4_profit_histogram": {"2": 4, "1": 2}, "seconds": 0.7481213080027374}

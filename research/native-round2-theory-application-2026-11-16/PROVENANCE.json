@@ -1,0 +1,214 @@
+{
+  "round_id": "native-compression-next-20261116-02",
+  "original_nodes_preserved": true,
+  "latest_user_goal_overrides_older_compression_only_goal": true,
+  "theory_independent_of_competition_improvement": true,
+  "native_user_request_id": "user-round-20261116-02-v1",
+  "user_instruction_event": 482,
+  "old_policy_sha256": "0d5e07fe509bed61b45248c6ff917dc509eae214041e95a955ec7f6beb8f1fd0",
+  "old_policy_unchanged": true,
+  "old_budget_reset": false,
+  "package_commit": "73b25d0afe3a2cf91ec4b608f9a9f0c85967e954",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "knowledge_event_window": [
+    481,
+    966
+  ],
+  "gate_event_prefix": 466,
+  "raw_private_runtime_archive": "retained on the user host, not published",
+  "external_resources": {
+    "format": "yohaku-external-round-resource-lock/1",
+    "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "package_commit": "73b25d0afe3a2cf91ec4b608f9a9f0c85967e954",
+    "archive_sha256": "c8ed06893cf895f1221cae149de5b1c4af1657f713aeaf225618723ced9960d6",
+    "files": [
+      {
+        "path": "official/LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "official/README.md",
+        "sha256": "875f88b8bd3b94d995117dac969650eca0895f5593b03c91f65ae72c72c5c8a6"
+      },
+      {
+        "path": "official/competition/README.md",
+        "sha256": "da07218860fb2084f7112008e5114283a53e0c84cc41f01a233155e13c0e114f"
+      },
+      {
+        "path": "official/competition/examples/README.md",
+        "sha256": "b4f3593727415cca3f84854322ab9421b84c152ee2b8653db622d323124e572b"
+      },
+      {
+        "path": "official/competition/examples/ac.jsonl",
+        "sha256": "f9cbc91ecdcfbab7237a1225def6eaa55c37c8cf0a0b5db8347fa7a1cbc98620"
+      },
+      {
+        "path": "official/competition/examples/sample_submission.txt",
+        "sha256": "c0573bf89a05c92ceafcfd3c217f8e97e7e769daa81018fc1ab75e6b207eda51"
+      },
+      {
+        "path": "official/competition/examples/sample_verdict.json",
+        "sha256": "a3c89c9e850c4931ff87f1952f6cbe36381b5f94c42b7e04c10ee42074706639"
+      },
+      {
+        "path": "official/competition/examples/stable_ac.jsonl",
+        "sha256": "045c6f27d34e44d148126a4950cea6e92c1162c9f8820aabcda9ab398f3648cc"
+      },
+      {
+        "path": "official/competition/examples/stable_training_424.json",
+        "sha256": "6fb92c5a8224d0f227fb4fb78bacea6a2d5716272bd5d1ea40ee5eacf037f6c0"
+      },
+      {
+        "path": "official/competition/examples/training_424.json",
+        "sha256": "4a607b16b30390de3d5cb04d84254d80a7fc518ff087d690f32717802a9c8545"
+      },
+      {
+        "path": "official/competition/examples/training_manifest.json",
+        "sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c"
+      },
+      {
+        "path": "official/competition/problems/README.md",
+        "sha256": "a27d04094cb75af7401f2bb0ceeffd2859109b73e3dcc2f20de3f111c656eac1"
+      },
+      {
+        "path": "official/competition/rules/discovery.md",
+        "sha256": "e1d0e2346803be86f656a3c536dfdcb6716c1046a4a0f6a131dfeb07255f7dcf"
+      },
+      {
+        "path": "official/competition/rules/overview.md",
+        "sha256": "e3d78eea7dfcd52a82c1152ea015b1335e066e4ae0466f1512fdbf9389cc7cf4"
+      },
+      {
+        "path": "official/competition/rules/proof.md",
+        "sha256": "7cbd61299640ff34e9f16fc321abcca3eeae4ab9f4b61984dab4ac0291cd0ffa"
+      },
+      {
+        "path": "official/competition/tools/verifier/README.md",
+        "sha256": "3c81542f208f9ad61aff397f4fe2f5fd3f19689bb32364807248b3ac026288fb"
+      },
+      {
+        "path": "official/competition/tools/verifier/__init__.py",
+        "sha256": "54171b83dfb830bb939b3c9874a40eb0d7f5953202249167a031acea2639f9f4"
+      },
+      {
+        "path": "official/competition/tools/verifier/__main__.py",
+        "sha256": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e"
+      },
+      {
+        "path": "official/competition/tools/verifier/canon.py",
+        "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+      },
+      {
+        "path": "official/competition/tools/verifier/cli.py",
+        "sha256": "f9a677b7bfd0b5e43fd1889c52906d72dbaf74935ea20c4671e79c0314e279eb"
+      },
+      {
+        "path": "official/competition/tools/verifier/core.py",
+        "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+      },
+      {
+        "path": "official/competition/tools/verifier/data/README.md",
+        "sha256": "7f0a1208d8ea7f5a96130a74a56155c31f8b724722b1277861b43f38d29b1bee"
+      },
+      {
+        "path": "official/competition/tools/verifier/data/golden_vectors.json",
+        "sha256": "6bf8979e71ff74530d97fc90d0fb3bee6497fadf61de43b5a62915fda469a781"
+      },
+      {
+        "path": "official/competition/tools/verifier/data/move_spec.json",
+        "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708"
+      },
+      {
+        "path": "official/competition/tools/verifier/data/stable_move_spec.json",
+        "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9"
+      },
+      {
+        "path": "official/competition/tools/verifier/golden.py",
+        "sha256": "9e513713fee4f550e323910c29bb1e4a8f724fe94f33e2e89548b5ef2adeb79a"
+      },
+      {
+        "path": "official/competition/tools/verifier/specs.py",
+        "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0"
+      },
+      {
+        "path": "official/competition/tools/verifier/stable_core.py",
+        "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+      },
+      {
+        "path": "official/competition/tools/verifier/submission.py",
+        "sha256": "665529bc6e47f249c8f1bfd7f8ed6c9e93fc86c5cb4454f4b7c613e8b3301cbb"
+      },
+      {
+        "path": "official/competition/tools/verifier/data/manifest.json",
+        "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+      },
+      {
+        "path": "acceptance/PUBLIC-MANIFEST.json",
+        "sha256": "b458e5d7dcbacc02bbef9421374b262c926b06c4b7e759a48adfa8cd8e4190b5"
+      },
+      {
+        "path": "acceptance/PREFLIGHT.json",
+        "sha256": "6ff0686a1460597fb214ccb1ef2b8622e23d2188cb02f504546212bd4bee0bb8"
+      },
+      {
+        "path": "acceptance/test_validate_candidate.py",
+        "sha256": "25f4be2ff641ea3410cdf3dae9ebcc36a80d2d45e11a77d34b5d5faaa02fe2c7"
+      },
+      {
+        "path": "acceptance/PROTOCOL.md",
+        "sha256": "33e97b3a5bf43de74e1f4c113983f334bfea3c1a5f428ec65e9e4379b448e24d"
+      },
+      {
+        "path": "acceptance/README.md",
+        "sha256": "bb3b4ba43399b7066de2e5f726a1ca8c5689e1e8f5ab1fde7098f8c470dd1bbf"
+      },
+      {
+        "path": "acceptance/validate_candidate.py",
+        "sha256": "1c4fe3eb7ba2ced0ed051eab124e0e2f670c6afad0ec1d2e2c63442aed6f333f"
+      },
+      {
+        "path": "acceptance/VALIDATION.json",
+        "sha256": "b26adc5be0a35aa28f7fc3488c18fc529fdf07f031bd0e1a0a9701a25c604b5b"
+      },
+      {
+        "path": "acceptance/official-source-provenance.json",
+        "sha256": "dc37ce9508cba5adfceb41cd9e8c8989d92073adbf1287530acbdcc4ace81145"
+      },
+      {
+        "path": "acceptance/CODEX_TASK.md",
+        "sha256": "db83661760c55ea4d980adeafd3902eb258d6744e26e83aa56c3fb8030ee0d99"
+      },
+      {
+        "path": "acceptance/baselines.json",
+        "sha256": "2b1d3ec4829e6e283afff0172c5af32ab47bcccb64a60d2c95001ca7585e2865"
+      },
+      {
+        "path": "acceptance/examples/same-path-one-macro.json",
+        "sha256": "32870a5cada0647b0f5e3f47240177517a657fc376ece98fe67a1da32020907e"
+      }
+    ],
+    "origin": "external_engineering_seed",
+    "native_research": false
+  },
+  "contributors": [
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "role": "原生研究总负责人",
+      "model": "gpt-6.1-sol",
+      "effort": "max"
+    },
+    {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "role": "理论方向负责人",
+      "model": "gpt-6.1-sol",
+      "effort": "max"
+    },
+    {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "role": "应用方向负责人",
+      "model": "gpt-6.1-sol",
+      "effort": "max"
+    }
+  ],
+  "host_work": "Source import, bounded task handoff, receipt observation, publication curation and optional same-code reproduction; not attributed to native AI mathematical discoveries"
+}

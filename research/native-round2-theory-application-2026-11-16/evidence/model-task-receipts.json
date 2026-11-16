@@ -1,0 +1,233 @@
+{
+  "round_id": "native-compression-next-20261116-02",
+  "observed_at": 1794844444.668901,
+  "knowledge_event_prefix": 966,
+  "gate_event_prefix": 466,
+  "receipts": [
+    {
+      "original_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "native_node_role": "原生研究总负责人",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1",
+      "node_request_id": "user-round-20261116-02-v1",
+      "dispatch_origin": "user_directed",
+      "status": "error",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": false,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 1800,
+          "max_tool_calls": 128
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 6565797,
+            "inputTokens": 6482081,
+            "cachedInputTokens": 6244992,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 83716,
+            "reasoningOutputTokens": 41304
+          },
+          "last": {
+            "totalTokens": 273458,
+            "inputTokens": 272174,
+            "cachedInputTokens": 269312,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 1284,
+            "reasoningOutputTokens": 1034
+          },
+          "modelContextWindow": 475000
+        },
+        "turn_id": "01a1e4e9-2ebf-7540-bf5e-40802c0b854d",
+        "baseline": {
+          "totalTokens": 3621702,
+          "inputTokens": 3566611,
+          "cachedInputTokens": 3433472,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 55091,
+          "reasoningOutputTokens": 23386
+        },
+        "input_tokens": 2915470,
+        "output_tokens": 28625,
+        "total_tokens": 2944095,
+        "cached_input_tokens": 2811520,
+        "reasoning_output_tokens": 17918
+      },
+      "final_text_sha256": null,
+      "thread_id": "01a1e473-3946-7d80-a0cd-27a572f3935f",
+      "turn_id": "01a1e4e9-2ebf-7540-bf5e-40802c0b854d",
+      "native_state": "unknown",
+      "wire_write_completed": true,
+      "model_phase": "finished",
+      "error": "Codex turn exceeded 1800 seconds; completed file changes remain; diagnostic: $ORIGINAL_RUN/run/home/.local/state/yohaku/codex-diagnostics/529a88a3b4b743029ff85ce9b52f9a7b.json"
+    },
+    {
+      "original_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "native_node_role": "理论方向负责人",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6",
+      "node_request_id": "round2-theory-user-handoff-v1",
+      "dispatch_origin": "ai_native_dispatch",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": true,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 1800,
+          "max_tool_calls": 128
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 4469558,
+            "inputTokens": 4397335,
+            "cachedInputTokens": 4194176,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 72223,
+            "reasoningOutputTokens": 34021
+          },
+          "last": {
+            "totalTokens": 206672,
+            "inputTokens": 206446,
+            "cachedInputTokens": 206208,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 226,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 475000
+        },
+        "turn_id": "01a1e4eb-d7b1-76a3-be28-88ef329ba73c",
+        "baseline": {
+          "totalTokens": 1357715,
+          "inputTokens": 1327631,
+          "cachedInputTokens": 1227264,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 30084,
+          "reasoningOutputTokens": 12730
+        },
+        "input_tokens": 3069704,
+        "output_tokens": 42139,
+        "total_tokens": 3111843,
+        "cached_input_tokens": 2966912,
+        "reasoning_output_tokens": 21291
+      },
+      "final_text_sha256": "c16f7510b88b4b46eb109ee03be8021da63c15da6eec2a387857516409ed3f08",
+      "thread_id": "01a1e475-9e78-7e82-b806-e6843a7ff4f9",
+      "turn_id": "01a1e4eb-d7b1-76a3-be28-88ef329ba73c",
+      "native_state": "completed",
+      "wire_write_completed": true,
+      "model_phase": "finished",
+      "error": null
+    },
+    {
+      "original_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "native_node_role": "应用方向负责人",
+      "task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98",
+      "node_request_id": "round2-application-user-handoff-v1",
+      "dispatch_origin": "ai_native_dispatch",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": true,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 1800,
+          "max_tool_calls": 128
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 5945328,
+            "inputTokens": 5867986,
+            "cachedInputTokens": 5701504,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 77342,
+            "reasoningOutputTokens": 29477
+          },
+          "last": {
+            "totalTokens": 240901,
+            "inputTokens": 240154,
+            "cachedInputTokens": 239104,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 747,
+            "reasoningOutputTokens": 516
+          },
+          "modelContextWindow": 475000
+        },
+        "turn_id": "01a1e4eb-dcf4-79c3-9b56-ddd1ae6ded19",
+        "baseline": {
+          "totalTokens": 1920754,
+          "inputTokens": 1888087,
+          "cachedInputTokens": 1795328,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 32667,
+          "reasoningOutputTokens": 12371
+        },
+        "input_tokens": 3979899,
+        "output_tokens": 44675,
+        "total_tokens": 4024574,
+        "cached_input_tokens": 3906176,
+        "reasoning_output_tokens": 17106
+      },
+      "final_text_sha256": "abd7c2aed61d863c8ec69c9fc5a13239508781f6425565b05e4cb293f51adb65",
+      "thread_id": "01a1e475-a5fd-75c2-9163-66b3f1b347a9",
+      "turn_id": "01a1e4eb-dcf4-79c3-9b56-ddd1ae6ded19",
+      "native_state": "completed",
+      "wire_write_completed": true,
+      "model_phase": "finished",
+      "error": null
+    }
+  ],
+  "supplier_actual_identity": "unknown",
+  "supplier_actual_debit": "unknown",
+  "raw_chats_and_private_runtime_not_published": true
+}

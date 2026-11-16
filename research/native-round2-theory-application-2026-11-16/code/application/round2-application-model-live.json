@@ -1,0 +1,37 @@
+{
+  "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+  "task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98",
+  "node_request_id": "round2-application-user-handoff-v1",
+  "status": "running",
+  "requested_profile": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "max",
+    "budget": {
+      "timeout_seconds": 1800,
+      "max_tool_calls": 128
+    }
+  },
+  "model_settings": {
+    "event": "model_settings",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "selection_source": "host private codex-provider.json",
+    "scope": "codex-local only; ordinary AI unchanged",
+    "reasoning_effort": "max"
+  },
+  "turn_settings": {
+    "event": "turn_settings",
+    "version": "codex-unlimited-20261024-v1",
+    "worker_path": "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/candidate/agent/yohaku_codex.py",
+    "source_sha256": "7a02ae47d0038a85552df43e5c52e66fe7ef23524f1c73c4cc7f4f96b4e05a59",
+    "mode": "limited",
+    "seconds": 1800,
+    "source": "wire.initial.config.turn_timeout",
+    "configuration_reads": [
+      "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/candidate/config/ai.json"
+    ]
+  },
+  "elapsed_seconds": 1261.804541,
+  "note": "Live running snapshot; final status/cleanup must be queried by exact original ID after this turn. Not supplier entitlement or fee proof."
+}

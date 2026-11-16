@@ -1,0 +1,17 @@
+{
+  "original_task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1",
+  "thread_id": "01a1e473-3946-7d80-a0cd-27a572f3935f",
+  "turn_id": "01a1e4e9-2ebf-7540-bf5e-40802c0b854d",
+  "query_at": 1794844413.8880541,
+  "model_requests": 0,
+  "replay": false,
+  "stage_state_modified": false,
+  "query_ok": true,
+  "original_turn_found": true,
+  "turn_status": "interrupted",
+  "turn_error": null,
+  "thread_status": {
+    "type": "notLoaded"
+  },
+  "item_count": 113
+}

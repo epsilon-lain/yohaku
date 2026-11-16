@@ -1,0 +1,34 @@
+{
+  "round_id": "native-compression-next-20261116-02",
+  "old_policy_unchanged": true,
+  "policy_sha256": "0d5e07fe509bed61b45248c6ff917dc509eae214041e95a955ec7f6beb8f1fd0",
+  "resource_status_at_observation": {
+    "experiment_id": "native-theory-application-sol-20261116-01",
+    "phase": "open",
+    "shared_stop": {
+      "reason": "Original native task failed; inspect before new admission",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1",
+      "at": 1794843650.2365472,
+      "new_dispatch_allowed": false
+    },
+    "leaders": {
+      "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "application": "ai-node-0299a356d74db83b9ab4ebc7"
+    },
+    "members": [
+      "ai-node-60ce43c0fdb954913d5cf32f",
+      "ai-node-b912b62d9e95d94ddb26bfd6",
+      "ai-node-0299a356d74db83b9ab4ebc7"
+    ],
+    "native_turns_reserved": 7,
+    "native_turns_remaining": 57,
+    "remaining_seconds": 11275.125395536423,
+    "provider_identity": "unknown; requested/native thread configuration separately recorded",
+    "provider_cost": "unknown",
+    "adaption_authority_used": false
+  },
+  "stage_reset": false,
+  "automatic_retry": false,
+  "remaining_authority_does_not_override_shared_stop": true,
+  "block": "Original root task exceeded its 1800-second task limit. Original turn was queried read-only and is interrupted. No independent native Stable certificate verification task was submitted."
+}

@@ -1,0 +1,66 @@
+{
+  "task_id": "project-task-ff723364534a087e5a4c80200f053268",
+  "native_submit": {
+    "request_id": "round2-theory-pair-exact-v1-20261116",
+    "model_task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6",
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6"
+  },
+  "project_id": "native-theory",
+  "action": "round2-pair-theory",
+  "source_set": "980e0082045219936bd5c7ca082607844fc8ba26fd2d53b9e216b38412a12274",
+  "snapshot_id": "980e0082045219936bd5c7ca082607844fc8ba26fd2d53b9e216b38412a12274",
+  "manifest_revision": "827f416e7cb3967c84c42b5c071f1205e154ee4b45884abd1feedda50baa05e0",
+  "task": {
+    "args": [],
+    "artifacts": [
+      "round2-pair-results.json"
+    ],
+    "entry": "round2_pair_dictionary.py",
+    "kind": "python",
+    "timeout_seconds": 300
+  },
+  "files": [
+    {
+      "path": "project.json",
+      "sha256": "13734dbafdf46bb6834d71c2d9b407d2a2b690b160097ca52cf87f3251925b9e",
+      "bytes": 1162,
+      "source": "files/theory/project.json.tex",
+      "source_revision": "827f416e7cb3967c84c42b5c071f1205e154ee4b45884abd1feedda50baa05e0"
+    },
+    {
+      "path": "research.py",
+      "sha256": "261db5a9f89c1945cd83c6d3fbaf5c589245642afd1e2ad8dd1f023c659ca762",
+      "bytes": 10286,
+      "source": "files/theory/research.py.tex",
+      "source_revision": "f0b68c31dc20c59694dc96c2e45faa7b7019ae9237b0b443c90e01f924b8f7a0"
+    },
+    {
+      "path": "root_audit.py",
+      "sha256": "fb9afb2fd2fdd907fd4de338b051865d547bafa268dae075eacde31ff84811a9",
+      "bytes": 4011,
+      "source": "files/theory/root_audit.py.tex",
+      "source_revision": "95fa2c070a9e4a02f3dcdd11e8679693e2fd2928ed04b02e1fab351aeeb173ee"
+    },
+    {
+      "path": "root_certificate_verify.py",
+      "sha256": "ba06d1d1a849c470d3c814e1fb706dc99ddbe1ddcb5dc6315e487f339dd1924e",
+      "bytes": 5124,
+      "source": "files/theory/root_certificate_verify.py.tex",
+      "source_revision": "1e9652dc90bffdff4e8082ca051ceae55cf718145b0afed996cf4407de070cee"
+    },
+    {
+      "path": "round2-pair-freeze.json",
+      "sha256": "53070c4b0b26a1e094bbfabedd0a4a5f6f46829f61bc519af367d9d815b1624f",
+      "bytes": 2908,
+      "source": "files/theory/round2-pair-freeze.json.tex",
+      "source_revision": "ed259f669c3747a5498c56edbeec23aa240e2d006639183d79b137139e6712b5"
+    },
+    {
+      "path": "round2_pair_dictionary.py",
+      "sha256": "457ab72c0069a3fdd2e26b8380cb41c0901d41bb6da0b90e578007d12e37a470",
+      "bytes": 12293,
+      "source": "files/theory/round2_pair_dictionary.py.tex",
+      "source_revision": "b8a5653c403a09fa8967c214677ac06320f49d9a074deff14ffcfd1c3a378058"
+    }
+  ]
+}

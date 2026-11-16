@@ -1,0 +1,385 @@
+[
+  {
+    "seq": 544,
+    "at": 1794841920.7742965,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "external/native-compression-next-20261116-02-resources",
+      "revision": 1,
+      "body_sha256": "e37cb2cfccaed44b0e7a50ca994a7fed9dd3e90a16f2e641f3bef1193dced83e"
+    }
+  },
+  {
+    "seq": 630,
+    "at": 1794842062.2826936,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "external/native-compression-next-20261116-02-resources",
+      "revision": 1,
+      "body_sha256": "e37cb2cfccaed44b0e7a50ca994a7fed9dd3e90a16f2e641f3bef1193dced83e"
+    }
+  },
+  {
+    "seq": 661,
+    "at": 1794842202.5552218,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "external/native-compression-next-20261116-02-resources",
+      "revision": 1,
+      "body_sha256": "e37cb2cfccaed44b0e7a50ca994a7fed9dd3e90a16f2e641f3bef1193dced83e"
+    }
+  },
+  {
+    "seq": 663,
+    "at": 1794842202.7990298,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "external/concept-tree-cost-9-3-9",
+      "revision": 1,
+      "body_sha256": "d856634c7b53482dfd70caa3f3b6829368186006f4f225143bd15f811ffafdf9"
+    }
+  },
+  {
+    "seq": 671,
+    "at": 1794842214.363762,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "M-eea68ed0edda0837",
+      "revision": 1,
+      "body_sha256": "39bac6d86025d3ab0b13f8416879604969a92c83bb58673f76b58a2241a5a4af"
+    }
+  },
+  {
+    "seq": 698,
+    "at": 1794842345.8137863,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_adopt",
+    "data": {
+      "id": "external/concept-tree-cost-9-3-9",
+      "revision": 1,
+      "artifact": "files/theory/round2-pair-freeze.json.tex and future round2_pair_dictionary.py.tex",
+      "explanation": "实际采用外部种子的原子/运算各1、定义正文单独付费、名字引用1的成本拆分，并已完整seed_read固定README。新模型改为独立布尔原子的正合取语义和受限二原子字典，不把旧向量例或其9/3/9结果计为本机新发现；当前采用声明与后续真实task依赖分开。"
+    }
+  },
+  {
+    "seq": 710,
+    "at": 1794842568.9652185,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "external/ac-08491-distance-8",
+      "revision": 1,
+      "body_sha256": "8738f6adebf6c13e4b493d59ea465c9f4007debe7b55917429570681c330f4d4"
+    }
+  },
+  {
+    "seq": 714,
+    "at": 1794842569.2886806,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "external/ac-07445-distance-13",
+      "revision": 1,
+      "body_sha256": "be69cf448b462c9cfc24263712917656c2f7d02b1b664dae426d4db567729b95"
+    }
+  },
+  {
+    "seq": 720,
+    "at": 1794842570.4474037,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_adopt",
+    "data": {
+      "id": "external/native-compression-next-20261116-02-resources",
+      "revision": 1,
+      "artifact": "files/application/round2-stable-no-stabilization-lemma.md.tex; M-95d49b3f9570d1f2@1",
+      "explanation": "实际读取该工程资源条目及其恢复产物中固定official stable_core全文，采用其中257动作、rank2可用子表和destabilize guard作为无stabilization终点归约的精确模型；不把工程准备或官方原作者代码改称本机发现。"
+    }
+  },
+  {
+    "seq": 740,
+    "at": 1794842691.198151,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_adopt",
+    "data": {
+      "id": "M-98718cbca95c0dc3",
+      "revision": 1,
+      "artifact": "files/theory/round2_pair_dictionary.py.tex@b8a5653c403a09fa8967c214677ac06320f49d9a074deff14ffcfd1c3a378058; task project-task-ff723364534a087e5a4c80200f053268; round2-pair-results.json SHA77d2486ccd800af19758fcc96c1947b7e572facd7cdacdba966c680801c886fb",
+      "explanation": "Pre-submit source header and immutable result proof_dependency both actually name this exact theorem version. The matching formula/classification are separately cross-checked against the cover DP/direct second differences. This adoption statement is separate from real input/artifact provenance and from peer review."
+    }
+  },
+  {
+    "seq": 753,
+    "at": 1794842705.6115584,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98"
+    },
+    "kind": "math_adopt",
+    "data": {
+      "id": "external/native-compression-next-20261116-02-resources",
+      "revision": 1,
+      "artifact": "files/application/round2_search.py.tex + round2-inspect task project-task-3628c3c7ed6347e97c261d4b4cca3528",
+      "explanation": "实际通过恢复helper恢复并核对41源；读官方Stable正文并使用锁定acceptance+official完整验证。此入口为工程external_seed，不作为研究结果。"
+    }
+  },
+  {
+    "seq": 755,
+    "at": 1794842705.8542516,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98"
+    },
+    "kind": "math_adopt",
+    "data": {
+      "id": "M-5606eba96406db45",
+      "revision": 1,
+      "artifact": "files/application/round2_search.py.tex",
+      "explanation": "本轮候选以冻结前缀、桥接、终结段组合并最终官方重放整条路径，采纳端点绑定与含初态work只加一次的资源契约；不凭段短忽略全路径资源。已读精确一般正文；root群seq28提醒强化了实验输出的完整资源检查，未改变冻结搜索预算。"
+    }
+  },
+  {
+    "seq": 804,
+    "at": 1794842927.156497,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "M-98718cbca95c0dc3",
+      "revision": 1,
+      "body_sha256": "2d01b79715fed2fbd3ed764993e27e1e115d95d20eb0df7d76699d875d432ecd"
+    }
+  },
+  {
+    "seq": 831,
+    "at": 1794843034.1486132,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "M-98718cbca95c0dc3",
+      "revision": 1,
+      "body_sha256": "2d01b79715fed2fbd3ed764993e27e1e115d95d20eb0df7d76699d875d432ecd"
+    }
+  },
+  {
+    "seq": 833,
+    "at": 1794843034.4369307,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "M-74a3dba7e33b566b",
+      "revision": 1,
+      "body_sha256": "abb087751cb928ce14c2d7b5a919a4b4a281ac9cca09aacd0035488a8a9f87f9"
+    }
+  },
+  {
+    "seq": 835,
+    "at": 1794843034.7469783,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "M-dbf5d18ecc73c3f2",
+      "revision": 1,
+      "body_sha256": "7e95a8a9e9302a0d89c22294db76296c112039f9ce249365912bfbdf473647b5"
+    }
+  },
+  {
+    "seq": 843,
+    "at": 1794843095.507422,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_adopt",
+    "data": {
+      "id": "M-98718cbca95c0dc3",
+      "revision": 1,
+      "artifact": "files/theory/round2-pair-concepts.zh.md.tex@dc176e1d227332de17d68142c711bc5138f851588ab51ed7ad8f212c21424f93",
+      "explanation": "此后建可公开中文稿实际使用完整一般证明、精确条件和P4/异质语料反例，额外明示节点而非字节计价，以及同一目标先限制H[T]。不是首次计算前的倒填依赖声明。"
+    }
+  },
+  {
+    "seq": 845,
+    "at": 1794843095.799049,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_adopt",
+    "data": {
+      "id": "M-ac1b0616f39d5493",
+      "revision": 1,
+      "artifact": "files/theory/round2-pair-concepts.zh.md.tex@dc176e1d227332de17d68142c711bc5138f851588ab51ed7ad8f212c21424f93",
+      "explanation": "中文稿实际引用该精确代码/成功有限结果版本，包含1099/32767/26376计数、成功task及产物SHA，并区分有限结果与一般证明。同伴review状态仍独立记录。"
+    }
+  },
+  {
+    "seq": 880,
+    "at": 1794843275.5052152,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "M-f0cf804edb119bae",
+      "revision": 1,
+      "body_sha256": "04774475d708acfab0abf5244206e5ac6942bb7d7477b59f176b016aa362b1bb"
+    }
+  },
+  {
+    "seq": 890,
+    "at": 1794843317.405,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2424b2bfab9d4e99aeb86756f42afdd6"
+    },
+    "kind": "math_review",
+    "data": {
+      "id": "M-f0cf804edb119bae",
+      "revision": 1,
+      "decision": "verified_rank_bound_and_conditional_MITM_logic_only_not_full_certificate",
+      "evidence": "Read exact M-f0cf804edb119bae@1 after index event878. This is a deliberately limited independent analytic review: assuming the stated rule that only stabilize/destabilize change rank by +1/-1, rank2 to0 gives d=z+2 and length>=2z+2; length<=9 gives z<=3, hence every prefix rank<=2+z<=5. This counting argument is correct. Conditional on exhaustive cumulative forward B4 and reverse B5 of that exact directed induced graph, empty intersection excludes every <=9 path: split after min(4,length), yielding prefix<=4 and suffix<=5. A lower bound proved without resource budgets also applies after imposing those budgets. I have NOT independently read the official stable_core body in this task, checked the reverse-predecessor implementation/guard coverage, reproduced either ball or its counts/hashes, verified its full artifact, or rerun the official CLI. Thus this record does NOT independently certify the complete distance10 claim or its computational premises; it verifies only the counting lemma and logical implication under explicitly stated graph-completeness premises. No numerical reproduction or official-source review is implied."
+    }
+  },
+  {
+    "seq": 921,
+    "at": 1794843500.7075012,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-1830106e0e7e0223ad973dacd58c3da1"
+    },
+    "kind": "math_review",
+    "data": {
+      "id": "M-98718cbca95c0dc3",
+      "revision": 1,
+      "decision": "verified_general_proofs_only",
+      "evidence": "Root independently read exact published body. Checked free Boolean support semantics, injective definitional extension and single-true-atom counterexample after deleting any original coordinate. Overlapping leaf covers are explicitly allowed; for pair-edge set B, v-e is bounded by its tree-component count and hence matching number, proving C_D=2(|T|-nu)-1 without read-once assumptions. Positive definition fees force same-target optimal dictionary to a maximum matching or empty according to2q-delta; equality case and heterogeneous3-atom exception check. Matching-rank submodularity iff stars/triangles follows from P4 marginal witness and full no-P4 connected-graph classification. Strict-positive-add greedy stays a matching, so maximal matching half-net-benefit bound and P4 cost13 vs12 are correct; not a half-cost approximation. No independent rerun of author's1099/32767/26376 finite checks; actual compute/artifact review will be separately scoped."
+    }
+  },
+  {
+    "seq": 946,
+    "at": 1794843642.550109,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98"
+    },
+    "kind": "math_body_read",
+    "data": {
+      "id": "M-f0cf804edb119bae",
+      "revision": 1,
+      "body_sha256": "04774475d708acfab0abf5244206e5ac6942bb7d7477b59f176b016aa362b1bb"
+    }
+  }
+]

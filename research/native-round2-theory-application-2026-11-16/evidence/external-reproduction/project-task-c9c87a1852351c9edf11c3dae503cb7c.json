@@ -1,0 +1,37 @@
+{
+  "task_id": "project-task-c9c87a1852351c9edf11c3dae503cb7c",
+  "source_set": "4b082b84b2d4c97ec2e990c936ae337d40787bd17ef4e83ae46135f8c3625678",
+  "exit_code": 0,
+  "started_at": 1794843635.5043523,
+  "finished_at": 1794843637.011178,
+  "artifacts": [
+    {
+      "path": "r2-search-results.json",
+      "exists": true,
+      "sha256": "51b2f4727bd203ee423a8f3b71cf761125814515afb5524a159341783b1bf2b3",
+      "bytes": 34140
+    },
+    {
+      "path": "r2-prefix-dictionary.json",
+      "exists": true,
+      "sha256": "0d63c6b137863ab80f10da720d0e57f3c597346d6caa7a51cf87c79e2a0adbfe",
+      "bytes": 11393
+    },
+    {
+      "path": "r2-submission.txt",
+      "exists": true,
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "bytes": 196
+    },
+    {
+      "path": "r2-official-cli.json",
+      "exists": true,
+      "sha256": "793d179a5bff524505b44f081abeec197d2b49820d0a60f0e9c635d43db79399",
+      "bytes": 1946
+    }
+  ],
+  "label": "external_same-code_reproduction; not a native model task or independent algorithm",
+  "network_disabled": true,
+  "model_requests": 0,
+  "platform_upload": false
+}

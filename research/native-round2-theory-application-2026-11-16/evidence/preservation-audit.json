@@ -1,0 +1,68 @@
+{
+  "at": 1794844444.2147615,
+  "baseline_at": "2026-11-16T12:39:38.419842+00:00",
+  "archive": "$ORIGINAL_RUN/preservation/20261116T123901Z",
+  "archive_manifest_sha256": "8610ee44ffec3399f73cb5f77b37143503d790ae45eafb5c8d95571b23928020",
+  "archived_files": 23792,
+  "baseline_reservations": 1147,
+  "current_reservations": 1148,
+  "baseline_liability": "180.53012168704",
+  "current_liability": "180.56687304704",
+  "missing_original_reservations": [],
+  "changed_original_liabilities": [],
+  "changed_original_request_identities": [],
+  "new_reservations_since_readonly_capture": [
+    {
+      "global_identity": "immune-autonomous-20261116-01::model-task-b8713e009f479794abc0b67c5f1cf540:round:5",
+      "identity": "model-task-b8713e009f479794abc0b67c5f1cf540:round:5",
+      "worst_liability": "0.03675136",
+      "state": "received",
+      "workflow": {
+        "experiment_id": "immune-autonomous-20261116-01",
+        "group_id": "immune-autonomous-20261116-A",
+        "actor_node_id": "ai-node-a8a64cc129f65eef36a4a0b9",
+        "task_id": "model-task-b8713e009f479794abc0b67c5f1cf540",
+        "version": "immune-autonomous-runtime/1",
+        "payload_sha256": "86f6a5b2c07fb5939348bc44889f7fa51e1fcf806287971a7b20c8e14a16d8a8",
+        "immutable_identity": "model-task-b8713e009f479794abc0b67c5f1cf540:round:5",
+        "isolated_output_continuation": {
+          "policy_sha256": "95f68b1385e6f3af040f0c89d08d0ef8f54c799ccfc0772f03175ca6842effaa",
+          "original_unknown_outcomes_still_unresolved": true,
+          "old_liabilities_retained": true,
+          "original_requests_not_replayed": true
+        }
+      },
+      "created": null,
+      "reserved_at": 1794832815.2920876
+    }
+  ],
+  "sealed_zero_inference_sources": {
+    "/root/projects/yohaku/diagnostics/pi-sol-observation-seed-20261116-01/candidate/agent/yohaku_codex.py": {
+      "expected": "1441321c9f9a121014085d0ed23ffcc05e672c188aa7fa551cd5a4e0112ad83f",
+      "actual": "1441321c9f9a121014085d0ed23ffcc05e672c188aa7fa551cd5a4e0112ad83f",
+      "unchanged": true
+    },
+    "/root/projects/yohaku/diagnostics/pi-sol-observation-seed-20261116-01/candidate-next/agent/yohaku_codex.py": {
+      "expected": "1441321c9f9a121014085d0ed23ffcc05e672c188aa7fa551cd5a4e0112ad83f",
+      "actual": "1441321c9f9a121014085d0ed23ffcc05e672c188aa7fa551cd5a4e0112ad83f",
+      "unchanged": true
+    },
+    "/root/projects/yohaku/diagnostics/pi-sol-observation-seed-20261116-01/continuation-01/candidate/agent/yohaku_codex.py": {
+      "expected": "1441321c9f9a121014085d0ed23ffcc05e672c188aa7fa551cd5a4e0112ad83f",
+      "actual": "1441321c9f9a121014085d0ed23ffcc05e672c188aa7fa551cd5a4e0112ad83f",
+      "unchanged": true
+    }
+  },
+  "legacy_drain_installed_at": 1794832875.1114285,
+  "supervisor_lock_free_pause_confirmed": true,
+  "legacy_task_status_counts": {
+    "cancelled": 2,
+    "done": 13,
+    "error": 5
+  },
+  "legacy_original_task_query_count": 20,
+  "unknown_results_retained": true,
+  "no_refunds_or_resets": true,
+  "no_native_credit_conversion": true,
+  "passed": true
+}

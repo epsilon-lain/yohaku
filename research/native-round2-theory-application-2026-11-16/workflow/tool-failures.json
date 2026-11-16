@@ -1,0 +1,15 @@
+[
+  {
+    "seq": 707,
+    "actor": {
+      "experiment_id": "native-theory-application-sol-20261116-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98"
+    },
+    "tool": "task_result_read",
+    "error": "Offset exceeds this exact field length",
+    "original_request_not_replayed": true
+  }
+]

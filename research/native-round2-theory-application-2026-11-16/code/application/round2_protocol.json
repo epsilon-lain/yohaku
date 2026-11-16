@@ -1,0 +1,145 @@
+{
+  "format": "native-round2-stable-prefix-bridge-preregistration/1",
+  "user_goal_event": 482,
+  "user_round": "native-compression-next-20261116-02",
+  "autonomous_method": "frozen old-prefix interfaces plus new directed Stable bridge and shared reverse completion dictionary",
+  "user_goal_is_not_method": true,
+  "targets": [
+    "sac-08491",
+    "sac-07445"
+  ],
+  "frozen_lengths": {
+    "sac-08491": 10,
+    "sac-07445": 15
+  },
+  "rank_cap": 3,
+  "reverse": {
+    "radius": 5,
+    "max_states": 300000,
+    "max_calls": 4000000,
+    "seconds": 120
+  },
+  "primary": {
+    "challenge": "sac-08491",
+    "forward_radius": 4,
+    "max_states": 300000,
+    "max_calls": 5000000,
+    "seconds": 180
+  },
+  "secondary": {
+    "challenge": "sac-07445",
+    "prefix_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "forward_radius": 3,
+    "max_states_per_ball": 50000,
+    "max_calls_per_ball": 750000,
+    "seconds_per_ball": 20,
+    "total_seconds": 240
+  },
+  "global": {
+    "seconds": 600,
+    "max_official_apply_calls": 20000000
+  },
+  "state_equality": "exact ordered freely reduced relators, no quotient",
+  "resource_pruning": "none besides rank<=3; guards explicitly render balls incomplete; full candidates official replay",
+  "old_prefix_dictionary": "all prefixes of both locked Stable routes; bound source/target determined by official replay",
+  "dictionary_stored_primitive_ids": 175,
+  "exposure": "two already-seen development instances and their old paths; no train/test or held-out performance claim",
+  "comparison": "raw path length vs fixed old path only; not a two-arm macro search-gain experiment and no relative search-speed claim",
+  "stop": "execute frozen budgets even if no improvement; retain negative and guard outcomes; no platform upload",
+  "baselines": {
+    "ac-07445": {
+      "moves": [
+        6,
+        4,
+        12,
+        1,
+        3,
+        6,
+        12,
+        2,
+        5,
+        6,
+        4,
+        2,
+        4
+      ],
+      "proved_minimum": 13,
+      "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+    },
+    "ac-08491": {
+      "moves": [
+        7,
+        4,
+        12,
+        12,
+        3,
+        1,
+        5,
+        5
+      ],
+      "proved_minimum": 8,
+      "source_commit": "332c001bde009465a1420e4cf6b683ed2ff88cd9",
+      "source_sha256": "0114c5aa4bdddd2fd9465c04a677fec7fa24bc60c06992d06a8df1a0318fc215",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/332c001bde009465a1420e4cf6b683ed2ff88cd9/research/native-theory-application-2026-11-16/data/ac-submission.txt"
+    },
+    "sac-07445": {
+      "moves": [
+        6,
+        4,
+        12,
+        1,
+        3,
+        6,
+        12,
+        2,
+        5,
+        6,
+        4,
+        2,
+        4,
+        16,
+        15
+      ],
+      "proved_minimum": null,
+      "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+    },
+    "sac-08491": {
+      "moves": [
+        7,
+        4,
+        12,
+        1,
+        12,
+        2,
+        5,
+        5,
+        16,
+        15
+      ],
+      "proved_minimum": null,
+      "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+    }
+  }
+}

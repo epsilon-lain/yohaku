@@ -1,0 +1,70 @@
+{
+  "native_submit": {
+    "request_id": "app-r2-s08491-rank5-complete-certificate-v1",
+    "model_task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98",
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+  },
+  "task_id": "project-task-802847184ed0526eb3fa4966f91e216e",
+  "status": "done",
+  "source_set": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+  "snapshot_id": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+  "native_receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794842903.0787816,
+    "output_complete": true,
+    "output_truncated": false
+  },
+  "artifacts": [
+    {
+      "id": "project-task-802847184ed0526eb3fa4966f91e216e:r2cap5-search-results.json",
+      "path": "r2cap5-search-results.json",
+      "sha256": "81ef5efe968cef8e9a00b2eb0f4fa6188b060c1293613690f49abbf847dd12ad",
+      "bytes": 23588,
+      "source_set": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "snapshot_id": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "public_path": "evidence/project-task-802847184ed0526eb3fa4966f91e216e/r2cap5-search-results.json"
+    },
+    {
+      "id": "project-task-802847184ed0526eb3fa4966f91e216e:r2cap5-prefix-dictionary.json",
+      "path": "r2cap5-prefix-dictionary.json",
+      "sha256": "0d63c6b137863ab80f10da720d0e57f3c597346d6caa7a51cf87c79e2a0adbfe",
+      "bytes": 11393,
+      "source_set": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "snapshot_id": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "public_path": "evidence/project-task-802847184ed0526eb3fa4966f91e216e/r2cap5-prefix-dictionary.json"
+    },
+    {
+      "id": "project-task-802847184ed0526eb3fa4966f91e216e:r2cap5-submission.txt",
+      "path": "r2cap5-submission.txt",
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "bytes": 196,
+      "source_set": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "snapshot_id": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "public_path": "evidence/project-task-802847184ed0526eb3fa4966f91e216e/r2cap5-submission.txt"
+    },
+    {
+      "id": "project-task-802847184ed0526eb3fa4966f91e216e:r2cap5-official-cli.json",
+      "path": "r2cap5-official-cli.json",
+      "sha256": "793d179a5bff524505b44f081abeec197d2b49820d0a60f0e9c635d43db79399",
+      "bytes": 1946,
+      "source_set": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "snapshot_id": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "public_path": "evidence/project-task-802847184ed0526eb3fa4966f91e216e/r2cap5-official-cli.json"
+    },
+    {
+      "id": "project-task-802847184ed0526eb3fa4966f91e216e:r2cap5-balls.json",
+      "path": "r2cap5-balls.json",
+      "sha256": "bc18a78605cf2a979179c096f32616e580b2f2483b1035f99795816d2cd722fb",
+      "bytes": 2772293,
+      "source_set": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "snapshot_id": "d4fb5d2f82f1ceb38f812e507f5492c723add55977249fec4d36f85adc4d9adb",
+      "public_path": "evidence/project-task-802847184ed0526eb3fa4966f91e216e/r2cap5-balls.json"
+    }
+  ],
+  "stdout_original_sha256": "6eee11732a3c7df9b37e561caf40d73cbcddfbac30b494988965f622e30bcd12",
+  "stderr_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

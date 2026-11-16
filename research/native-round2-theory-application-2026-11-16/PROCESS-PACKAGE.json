@@ -1,0 +1,12 @@
+{
+  "archive": "process-package.zip",
+  "bytes": 1838461,
+  "sha256": "b733632b96fdf8f591762b6d5f73310a791beee7c73a2a6d388a88b2ae1a2993",
+  "files_inside": 111,
+  "manifest_sha256": "24ab37783ecde4666b55f8ed2fc59a4723eb615f5ee344c8f8ece814963282aa",
+  "zip_crc_and_all_file_hashes_checked": true,
+  "scope": "complete public scientific process package; private native chats/memories/accounts kept locally",
+  "root_native_task": "error",
+  "directions": "both done",
+  "independent_stable_certificate_check": "not completed"
+}

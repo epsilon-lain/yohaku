@@ -1,0 +1,894 @@
+{
+  "format": "native-round2-stable-prefix-bridge-results/1",
+  "status": "completed_frozen_experiment",
+  "protocol": {
+    "format": "native-round2-stable-rank5-certificate-preregistration/1",
+    "user_goal_event": 482,
+    "user_round": "native-compression-next-20261116-02",
+    "autonomous_method": "follow-up chosen after complete negative v1: close rank gap via exact rank-change lemma, no adaptive path optimization",
+    "user_goal_is_not_method": true,
+    "targets": [
+      "sac-08491",
+      "sac-07445"
+    ],
+    "frozen_lengths": {
+      "sac-08491": 10,
+      "sac-07445": 15
+    },
+    "rank_cap": 5,
+    "reverse": {
+      "radius": 5,
+      "max_states": 300000,
+      "max_calls": 4000000,
+      "seconds": 120
+    },
+    "primary": {
+      "challenge": "sac-08491",
+      "forward_radius": 4,
+      "max_states": 300000,
+      "max_calls": 5000000,
+      "seconds": 180
+    },
+    "secondary": {
+      "challenge": "sac-07445",
+      "prefix_indices": [],
+      "forward_radius": 3,
+      "max_states_per_ball": 50000,
+      "max_calls_per_ball": 750000,
+      "seconds_per_ball": 20,
+      "total_seconds": 240
+    },
+    "global": {
+      "seconds": 300,
+      "max_official_apply_calls": 20000000
+    },
+    "state_equality": "exact ordered freely reduced relators, no quotient",
+    "resource_pruning": "none besides rank<=3; guards explicitly render balls incomplete; full candidates official replay",
+    "old_prefix_dictionary": "all prefixes of both locked Stable routes; bound source/target determined by official replay",
+    "dictionary_stored_primitive_ids": 175,
+    "exposure": "two already-seen development instances and their old paths; no train/test or held-out performance claim",
+    "comparison": "New exhaustive Stable08491 lower-bound attempt following negative actual improvement search; never redoes ordinary AC shortestness balls",
+    "stop": "execute frozen budgets even if no improvement; retain negative and guard outcomes; no platform upload",
+    "baselines": {
+      "ac-07445": {
+        "moves": [
+          6,
+          4,
+          12,
+          1,
+          3,
+          6,
+          12,
+          2,
+          5,
+          6,
+          4,
+          2,
+          4
+        ],
+        "proved_minimum": 13,
+        "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+        "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+        "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+      },
+      "ac-08491": {
+        "moves": [
+          7,
+          4,
+          12,
+          12,
+          3,
+          1,
+          5,
+          5
+        ],
+        "proved_minimum": 8,
+        "source_commit": "332c001bde009465a1420e4cf6b683ed2ff88cd9",
+        "source_sha256": "0114c5aa4bdddd2fd9465c04a677fec7fa24bc60c06992d06a8df1a0318fc215",
+        "source_url": "https://github.com/epsilon-lain/yohaku/blob/332c001bde009465a1420e4cf6b683ed2ff88cd9/research/native-theory-application-2026-11-16/data/ac-submission.txt"
+      },
+      "sac-07445": {
+        "moves": [
+          6,
+          4,
+          12,
+          1,
+          3,
+          6,
+          12,
+          2,
+          5,
+          6,
+          4,
+          2,
+          4,
+          16,
+          15
+        ],
+        "proved_minimum": null,
+        "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+        "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+        "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+      },
+      "sac-08491": {
+        "moves": [
+          7,
+          4,
+          12,
+          1,
+          12,
+          2,
+          5,
+          5,
+          16,
+          15
+        ],
+        "proved_minimum": null,
+        "source_commit": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+        "source_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+        "source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt"
+      }
+    },
+    "rank_lemma": "From rank2 to0, z stabilizations entail z+2 destabilizations, hence any <=9-step path has z<=3 and peak rank<=5."
+  },
+  "restore_receipt": {
+    "official": "/output/fixed/official",
+    "acceptance": "/output/fixed/acceptance",
+    "archive_sha256": "c8ed06893cf895f1221cae149de5b1c4af1657f713aeaf225618723ced9960d6",
+    "files_verified": 41
+  },
+  "source_fingerprints": [
+    {
+      "path": "competition/tools/verifier/canon.py",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+    },
+    {
+      "path": "competition/tools/verifier/core.py",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+    },
+    {
+      "path": "competition/tools/verifier/stable_core.py",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+    },
+    {
+      "path": "competition/tools/verifier/specs.py",
+      "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0"
+    },
+    {
+      "path": "competition/tools/verifier/data/move_spec.json",
+      "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708"
+    },
+    {
+      "path": "competition/tools/verifier/data/stable_move_spec.json",
+      "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9"
+    },
+    {
+      "path": "competition/tools/verifier/data/manifest.json",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+    }
+  ],
+  "baseline_official_verdicts": {
+    "ac-07445": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 13,
+      "work": 127,
+      "certificate_hash": "sha256:e13f345f7c99dd9813e1e59c6eda976d2a8918b6c79feb3027dc73cfe3483e2a"
+    },
+    "ac-08491": {
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 48,
+      "certificate_hash": "sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1"
+    },
+    "sac-07445": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+    },
+    "sac-08491": {
+      "ok": true,
+      "length": 10,
+      "peak_total_relator_length": 9,
+      "work": 50,
+      "certificate_hash": "sha256:3432ef3c28cf1da26ebb85f8c9afd094014420570e06e706721a5bbb9cbeed58"
+    }
+  },
+  "reverse_ball": {
+    "label": "shared-empty-completion",
+    "radius": 5,
+    "reverse": true,
+    "states": 6081,
+    "completed_layers": 5,
+    "completed_layer_sizes": [
+      1,
+      1,
+      3,
+      26,
+      340,
+      5710
+    ],
+    "complete_radius": true,
+    "guard_reason": null,
+    "official_apply_calls": 23820,
+    "seconds": 0.10579586800304241,
+    "maximum_generated_total_length": 11,
+    "rank_cap": 5,
+    "quotient": false,
+    "resource_length_pruning": false,
+    "states_sha256": "a00fe597b1afe1a6ec3df7083fad09e30873d1ba7827b012c99988f13ffe60d3"
+  },
+  "primary_forward": {
+    "label": "sac08491-whole-prefix",
+    "radius": 4,
+    "reverse": false,
+    "states": 28511,
+    "completed_layers": 4,
+    "completed_layer_sizes": [
+      1,
+      14,
+      160,
+      1910,
+      26426
+    ],
+    "complete_radius": true,
+    "guard_reason": null,
+    "official_apply_calls": 52196,
+    "seconds": 0.2884531509989756,
+    "maximum_generated_total_length": 66,
+    "rank_cap": 5,
+    "quotient": false,
+    "resource_length_pruning": false,
+    "states_sha256": "5036eb3bd6769068e0fa0f73ec2252fe6b932b85942c87ab474bf5dd7df73cd5"
+  },
+  "primary_join": {
+    "label": "primary4plus5",
+    "intersections": 0,
+    "strict_legal_hits": 0
+  },
+  "no_path_le9_in_rank_cap5_if_complete": true,
+  "conditional_negative_scope": "Any <=9-step path has rank<=5 by the proved rank-change lemma; both balls must complete for a global bound",
+  "secondary": [],
+  "strict_proposals": [],
+  "candidates": {
+    "sac-08491": {
+      "candidate": {
+        "challenge_id": "sac-08491",
+        "tokens": [
+          7,
+          4,
+          12,
+          1,
+          12,
+          2,
+          5,
+          5,
+          16,
+          15
+        ],
+        "macros": {}
+      },
+      "acceptance": {
+        "kind": "external_preflight",
+        "native_receipt": false,
+        "platform_upload": false,
+        "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+        "candidate_input_sha256": "c0781620f5b935f0c8ac7ced2c245ad7301d91c98ff05555c858eac494abd80c",
+        "baseline_registry_sha256": "2b1d3ec4829e6e283afff0172c5af32ab47bcccb64a60d2c95001ca7585e2865",
+        "candidate_input_bytes": 75,
+        "macro_dictionary_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "expanded_moves": [
+          7,
+          4,
+          12,
+          1,
+          12,
+          2,
+          5,
+          5,
+          16,
+          15
+        ],
+        "official_verdict": {
+          "ok": true,
+          "length": 10,
+          "peak_total_relator_length": 9,
+          "work": 50,
+          "certificate_hash": "sha256:3432ef3c28cf1da26ebb85f8c9afd094014420570e06e706721a5bbb9cbeed58"
+        },
+        "lengths": {
+          "input_token_length": 10,
+          "dictionary_token_length": 10,
+          "expanded_primitive_length": 10
+        },
+        "official_source_fingerprints": [
+          {
+            "path": "competition/tools/verifier/canon.py",
+            "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+          },
+          {
+            "path": "competition/tools/verifier/core.py",
+            "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+          },
+          {
+            "path": "competition/tools/verifier/stable_core.py",
+            "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+          },
+          {
+            "path": "competition/tools/verifier/specs.py",
+            "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0"
+          },
+          {
+            "path": "competition/tools/verifier/data/move_spec.json",
+            "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708"
+          },
+          {
+            "path": "competition/tools/verifier/data/stable_move_spec.json",
+            "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9"
+          },
+          {
+            "path": "competition/tools/verifier/data/manifest.json",
+            "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+          }
+        ],
+        "challenge_id": "sac-08491",
+        "fixture_only": false,
+        "competition_record_claim": false,
+        "comparison_scope": "our_fixed_archived_paths_not_live_leaderboard",
+        "baseline_entry_sha256": "80080e67dbb2932bd4591451ba53cc238dcae57696f90567b5e8b219823be3c4",
+        "baseline_moves_sha256": "15dd08d8ec3cb685847d4e2e223e41bef901fee89b66aad8c2f89622ade0698a",
+        "baseline_expanded_primitive_length": 10,
+        "baseline_official_verdict": {
+          "ok": true,
+          "length": 10,
+          "peak_total_relator_length": 9,
+          "work": 50,
+          "certificate_hash": "sha256:3432ef3c28cf1da26ebb85f8c9afd094014420570e06e706721a5bbb9cbeed58"
+        },
+        "official_manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+        "official_instance_hash": "sha256:757bc38cade1df7592589a7d7b45edbf4f793cbe05b09e538651aa28c9b8498c",
+        "official_move_spec": {
+          "move_spec_version": "sac-r8-v1",
+          "move_spec_hash": "sha256:27ecd0ebd4af39871cbfb23ecbd8be73710e85e04d8be788c1d81117d9f4b2b0",
+          "file": "stable_move_spec.json",
+          "target_relators": [],
+          "max_rank": 8,
+          "id_prefix": "sac-"
+        },
+        "proved_minimum": null,
+        "status": "no_strict_improvement",
+        "accepted_as_strict_improvement": false,
+        "macro_count": 0,
+        "strict_primitive_length_decrease": false,
+        "fixed_archived_baseline_improvement": false
+      },
+      "recipe": {
+        "kind": "unchanged_locked_baseline"
+      },
+      "trajectory": {
+        "states": [
+          [
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2,
+              2,
+              1
+            ]
+          ],
+          [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2,
+              2,
+              1
+            ]
+          ],
+          [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2
+            ]
+          ],
+          [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -1,
+              -1
+            ]
+          ],
+          [
+            [
+              -1,
+              -2
+            ],
+            [
+              1,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              -1,
+              -2
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          [
+            [
+              1
+            ]
+          ],
+          []
+        ],
+        "lengths": [
+          9,
+          9,
+          7,
+          5,
+          5,
+          5,
+          4,
+          3,
+          2,
+          1,
+          0
+        ],
+        "peak": 9,
+        "work": 50
+      }
+    },
+    "sac-07445": {
+      "candidate": {
+        "challenge_id": "sac-07445",
+        "tokens": [
+          6,
+          4,
+          12,
+          1,
+          3,
+          6,
+          12,
+          2,
+          5,
+          6,
+          4,
+          2,
+          4,
+          16,
+          15
+        ],
+        "macros": {}
+      },
+      "acceptance": {
+        "kind": "external_preflight",
+        "native_receipt": false,
+        "platform_upload": false,
+        "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+        "candidate_input_sha256": "91242d88f2df687b7666caefa6d6e2e382ab4173d01ef7b77658883029bfa480",
+        "baseline_registry_sha256": "2b1d3ec4829e6e283afff0172c5af32ab47bcccb64a60d2c95001ca7585e2865",
+        "candidate_input_bytes": 85,
+        "macro_dictionary_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "expanded_moves": [
+          6,
+          4,
+          12,
+          1,
+          3,
+          6,
+          12,
+          2,
+          5,
+          6,
+          4,
+          2,
+          4,
+          16,
+          15
+        ],
+        "official_verdict": {
+          "ok": true,
+          "length": 15,
+          "peak_total_relator_length": 13,
+          "work": 128,
+          "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+        },
+        "lengths": {
+          "input_token_length": 15,
+          "dictionary_token_length": 15,
+          "expanded_primitive_length": 15
+        },
+        "official_source_fingerprints": [
+          {
+            "path": "competition/tools/verifier/canon.py",
+            "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+          },
+          {
+            "path": "competition/tools/verifier/core.py",
+            "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+          },
+          {
+            "path": "competition/tools/verifier/stable_core.py",
+            "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+          },
+          {
+            "path": "competition/tools/verifier/specs.py",
+            "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0"
+          },
+          {
+            "path": "competition/tools/verifier/data/move_spec.json",
+            "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708"
+          },
+          {
+            "path": "competition/tools/verifier/data/stable_move_spec.json",
+            "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9"
+          },
+          {
+            "path": "competition/tools/verifier/data/manifest.json",
+            "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+          }
+        ],
+        "challenge_id": "sac-07445",
+        "fixture_only": false,
+        "competition_record_claim": false,
+        "comparison_scope": "our_fixed_archived_paths_not_live_leaderboard",
+        "baseline_entry_sha256": "f0bfa0aa6d2f7b2daec011057041677b701f651974ab1f4de626db1ed934cd1d",
+        "baseline_moves_sha256": "e2f5b4397ececf2676655a06c6e20ff2cd585bb2bce4217eadf6567b5da9e74d",
+        "baseline_expanded_primitive_length": 15,
+        "baseline_official_verdict": {
+          "ok": true,
+          "length": 15,
+          "peak_total_relator_length": 13,
+          "work": 128,
+          "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+        },
+        "official_manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+        "official_instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+        "official_move_spec": {
+          "move_spec_version": "sac-r8-v1",
+          "move_spec_hash": "sha256:27ecd0ebd4af39871cbfb23ecbd8be73710e85e04d8be788c1d81117d9f4b2b0",
+          "file": "stable_move_spec.json",
+          "target_relators": [],
+          "max_rank": 8,
+          "id_prefix": "sac-"
+        },
+        "proved_minimum": null,
+        "status": "no_strict_improvement",
+        "accepted_as_strict_improvement": false,
+        "macro_count": 0,
+        "strict_primitive_length_decrease": false,
+        "fixed_archived_baseline_improvement": false
+      },
+      "recipe": {
+        "kind": "unchanged_locked_baseline"
+      },
+      "trajectory": {
+        "states": [
+          [
+            [
+              -2,
+              -2,
+              1,
+              2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              1,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          [
+            [
+              1
+            ]
+          ],
+          []
+        ],
+        "lengths": [
+          12,
+          12,
+          13,
+          11,
+          11,
+          11,
+          11,
+          11,
+          9,
+          8,
+          8,
+          5,
+          3,
+          2,
+          1,
+          0
+        ],
+        "peak": 13,
+        "work": 128
+      }
+    }
+  },
+  "strict_improvements": {},
+  "best_lengths": {
+    "sac-07445": 15,
+    "sac-08491": 10
+  },
+  "official_apply_calls_search": 76016,
+  "elapsed_seconds": 1.4308066520025022,
+  "dictionary_build_cost": {
+    "stored_primitive_ids": 175,
+    "reverse_build_calls": 23820
+  },
+  "causal_macro_gain_comparison": false,
+  "held_out_evaluation": false,
+  "platform_upload": false,
+  "actual_adopted_math": [
+    {
+      "id": "external/native-compression-next-20261116-02-resources",
+      "revision": 1
+    },
+    {
+      "id": "M-5606eba96406db45",
+      "revision": 1
+    }
+  ],
+  "limitations": "Fixed development instances, rank cap3, explicit ball/time/call/state guards, no leaderboard query. Token/work gains are not step gains.",
+  "rank_change_lemma": "From rank2 to0, z stabilizations entail z+2 destabilizations, hence any <=9-step path has z<=3 and peak rank<=5.",
+  "exact_Stable_distance_sac08491": 10
+}

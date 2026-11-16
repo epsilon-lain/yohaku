@@ -1,0 +1,61 @@
+{
+  "native_submit": {
+    "request_id": "app-r2-s07445-prefix3-deeper-v1",
+    "model_task_id": "model-task-8651f3dda6a052c0a635b977b4c2fb98",
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+  },
+  "task_id": "project-task-0996b6d2018bdfc65fb43b4deee6ad38",
+  "status": "done",
+  "source_set": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+  "snapshot_id": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+  "native_receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794843180.042673,
+    "output_complete": true,
+    "output_truncated": false
+  },
+  "artifacts": [
+    {
+      "id": "project-task-0996b6d2018bdfc65fb43b4deee6ad38:r2deep-search-results.json",
+      "path": "r2deep-search-results.json",
+      "sha256": "0919f036fce33bc884ffb584dfd04dd8d2c3f2481191560cc30ce226f0a87d55",
+      "bytes": 23479,
+      "source_set": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "snapshot_id": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "public_path": "evidence/project-task-0996b6d2018bdfc65fb43b4deee6ad38/r2deep-search-results.json"
+    },
+    {
+      "id": "project-task-0996b6d2018bdfc65fb43b4deee6ad38:r2deep-prefix-dictionary.json",
+      "path": "r2deep-prefix-dictionary.json",
+      "sha256": "0d63c6b137863ab80f10da720d0e57f3c597346d6caa7a51cf87c79e2a0adbfe",
+      "bytes": 11393,
+      "source_set": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "snapshot_id": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "public_path": "evidence/project-task-0996b6d2018bdfc65fb43b4deee6ad38/r2deep-prefix-dictionary.json"
+    },
+    {
+      "id": "project-task-0996b6d2018bdfc65fb43b4deee6ad38:r2deep-submission.txt",
+      "path": "r2deep-submission.txt",
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "bytes": 196,
+      "source_set": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "snapshot_id": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "public_path": "evidence/project-task-0996b6d2018bdfc65fb43b4deee6ad38/r2deep-submission.txt"
+    },
+    {
+      "id": "project-task-0996b6d2018bdfc65fb43b4deee6ad38:r2deep-official-cli.json",
+      "path": "r2deep-official-cli.json",
+      "sha256": "793d179a5bff524505b44f081abeec197d2b49820d0a60f0e9c635d43db79399",
+      "bytes": 1946,
+      "source_set": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "snapshot_id": "40d1c1c91755d170ce6ff2aaabd5187d3c28caba6aeea2bb9ea9db03d74d5600",
+      "public_path": "evidence/project-task-0996b6d2018bdfc65fb43b4deee6ad38/r2deep-official-cli.json"
+    }
+  ],
+  "stdout_original_sha256": "a457a0de09bf15b9ec9f0e685f354945409118d6f9cd621d799be1d113549c10",
+  "stderr_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

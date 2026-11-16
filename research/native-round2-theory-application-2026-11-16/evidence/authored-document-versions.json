@@ -1,0 +1,37 @@
+[
+  {
+    "source": "files/theory/round2-pair-concepts.zh.md.tex",
+    "source_revision": "dc176e1d227332de17d68142c711bc5138f851588ab51ed7ad8f212c21424f93",
+    "generated_sha256": "bc03322b6589abc90223154f61bb342ab57ab968843ff24226fc080f2fb1e7ee",
+    "public_path": "docs/theory-author.zh.md",
+    "author_node_id": "ai-node-b912b62d9e95d94ddb26bfd6"
+  },
+  {
+    "source": "files/theory/round2-theory-process-index.zh.md.tex",
+    "source_revision": "d5cb5b55713a6c2038636fce7e60c3614bd268dcce1b42774ab2c2ddcc813198",
+    "generated_sha256": "392b9805c2f8926fe1f908a51b0139faeb55178e8a54cd9c6736fa2fd625a28b",
+    "public_path": "docs/theory-process-author.zh.md",
+    "author_node_id": "ai-node-b912b62d9e95d94ddb26bfd6"
+  },
+  {
+    "source": "files/application/round2-application-science.zh.md.tex",
+    "source_revision": "fd46ecd7bcd370e7b19b664ebfa9776cdb93308ab5cd4fd90fe298701d5c8e96",
+    "generated_sha256": "85ba43347472ae50b2d54cfca7cf8552f8a60b35c5a85dfc2f2c776b20a83c6d",
+    "public_path": "docs/application-author.zh.md",
+    "author_node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+  },
+  {
+    "source": "files/application/round2-application-process-index.zh.md.tex",
+    "source_revision": "5aa9726745765028b6fbf4ce96513f9f648b04eb8711e9f081da4d97916703b3",
+    "generated_sha256": "213fc4194ffe6b858fa5a32750a5ccd7c824658a2a11202683ff35f7b42ff57e",
+    "public_path": "docs/application-process-author.zh.md",
+    "author_node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+  },
+  {
+    "source": "files/application/round2-rank-text-erratum.zh.md.tex",
+    "source_revision": "eb8bdb9402aded15de344d8cbe485df27e9fb05088852d6fa2b4ce83ed387387",
+    "generated_sha256": "44a9b76b5d32ebbf1817505256769a33fd995b5432ffb4bc061a91799d09450c",
+    "public_path": "docs/rank-text-erratum.zh.md",
+    "author_node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+  }
+]
