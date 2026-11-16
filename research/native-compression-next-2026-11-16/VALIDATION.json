@@ -1,0 +1,15 @@
+{
+  "kind": "external_engineering_preflight",
+  "native_receipt": false,
+  "search_experiment_started": false,
+  "native_model_tasks_started": 0,
+  "new_shorter_competition_path_found": false,
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "test_command_template": "YOHAKU_OFFICIAL_CHECKOUT=/path/to/Andrews-Curtis python3 -B -m unittest discover -s . -p test_validate_candidate.py -v",
+  "tests_run": 22,
+  "exit_code": 0,
+  "all_passed": true,
+  "fixture_positive_case_is_not_a_competition_result": true,
+  "platform_upload": false,
+  "scope": "Protocol and acceptance-tool preparation; no new native research, current host liveness not observed."
+}

@@ -1,0 +1,56 @@
+{
+  "format": "yohaku-native-compression-next-package/1",
+  "scope": "All other files in this directory. Engineering preparation only; no native experiment start or new shorter witness.",
+  "files": [
+    {
+      "path": "CODEX_TASK.md",
+      "bytes": 5455,
+      "sha256": "db83661760c55ea4d980adeafd3902eb258d6744e26e83aa56c3fb8030ee0d99"
+    },
+    {
+      "path": "PREFLIGHT.json",
+      "bytes": 3380,
+      "sha256": "6ff0686a1460597fb214ccb1ef2b8622e23d2188cb02f504546212bd4bee0bb8"
+    },
+    {
+      "path": "PROTOCOL.md",
+      "bytes": 19864,
+      "sha256": "33e97b3a5bf43de74e1f4c113983f334bfea3c1a5f428ec65e9e4379b448e24d"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3867,
+      "sha256": "bb3b4ba43399b7066de2e5f726a1ca8c5689e1e8f5ab1fde7098f8c470dd1bbf"
+    },
+    {
+      "path": "VALIDATION.json",
+      "bytes": 672,
+      "sha256": "b26adc5be0a35aa28f7fc3488c18fc529fdf07f031bd0e1a0a9701a25c604b5b"
+    },
+    {
+      "path": "baselines.json",
+      "bytes": 2424,
+      "sha256": "2b1d3ec4829e6e283afff0172c5af32ab47bcccb64a60d2c95001ca7585e2865"
+    },
+    {
+      "path": "examples/same-path-one-macro.json",
+      "bytes": 189,
+      "sha256": "32870a5cada0647b0f5e3f47240177517a657fc376ece98fe67a1da32020907e"
+    },
+    {
+      "path": "official-source-provenance.json",
+      "bytes": 9715,
+      "sha256": "dc37ce9508cba5adfceb41cd9e8c8989d92073adbf1287530acbdcc4ace81145"
+    },
+    {
+      "path": "test_validate_candidate.py",
+      "bytes": 10901,
+      "sha256": "25f4be2ff641ea3410cdf3dae9ebcc36a80d2d45e11a77d34b5d5faaa02fe2c7"
+    },
+    {
+      "path": "validate_candidate.py",
+      "bytes": 16582,
+      "sha256": "1c4fe3eb7ba2ced0ed051eab124e0e2f670c6afad0ec1d2e2c63442aed6f333f"
+    }
+  ]
+}

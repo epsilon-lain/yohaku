@@ -1,0 +1,99 @@
+{
+  "kind": "external_preflight",
+  "native_receipt": false,
+  "platform_upload": false,
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "candidate_input_sha256": "32870a5cada0647b0f5e3f47240177517a657fc376ece98fe67a1da32020907e",
+  "baseline_registry_sha256": "2b1d3ec4829e6e283afff0172c5af32ab47bcccb64a60d2c95001ca7585e2865",
+  "candidate_input_bytes": 189,
+  "macro_dictionary_sha256": "907e3a6ec71bbdf7b7ea266ef4edca1c3d591443b0fea53c14040c4599704a9f",
+  "expanded_moves": [
+    7,
+    4,
+    12,
+    12,
+    3,
+    1,
+    5,
+    5
+  ],
+  "official_verdict": {
+    "ok": true,
+    "length": 8,
+    "peak_total_relator_length": 9,
+    "work": 48,
+    "certificate_hash": "sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1"
+  },
+  "lengths": {
+    "input_token_length": 1,
+    "dictionary_token_length": 9,
+    "expanded_primitive_length": 8
+  },
+  "official_source_fingerprints": [
+    {
+      "path": "competition/tools/verifier/canon.py",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+    },
+    {
+      "path": "competition/tools/verifier/core.py",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+    },
+    {
+      "path": "competition/tools/verifier/stable_core.py",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+    },
+    {
+      "path": "competition/tools/verifier/specs.py",
+      "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0"
+    },
+    {
+      "path": "competition/tools/verifier/data/move_spec.json",
+      "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708"
+    },
+    {
+      "path": "competition/tools/verifier/data/stable_move_spec.json",
+      "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9"
+    },
+    {
+      "path": "competition/tools/verifier/data/manifest.json",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+    }
+  ],
+  "challenge_id": "ac-08491",
+  "fixture_only": false,
+  "competition_record_claim": false,
+  "comparison_scope": "our_fixed_archived_paths_not_live_leaderboard",
+  "baseline_entry_sha256": "64e71621eb4f4e1ac3cc00678dc6831b42f4f5d45aaf1174a2eacd8f290c2a7d",
+  "baseline_moves_sha256": "aa06d5bf5493730fb34d249f4ffbb15d2c1a3a8f2b9a4c6429161c184d95df0a",
+  "baseline_expanded_primitive_length": 8,
+  "baseline_official_verdict": {
+    "ok": true,
+    "length": 8,
+    "peak_total_relator_length": 9,
+    "work": 48,
+    "certificate_hash": "sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1"
+  },
+  "official_manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+  "official_instance_hash": "sha256:2938e3e2872ea496fe609883c1e0e58c0be982a39e7b0469e61c2fe3fb36b25e",
+  "official_move_spec": {
+    "move_spec_version": "ac-r2-v1",
+    "move_spec_hash": "sha256:e13f57d82b5db1a79c1bd9d5ee1f6665ac4d96a634a3656ea20c0ada82e07643",
+    "file": "move_spec.json",
+    "target_relators": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "max_rank": 2,
+    "id_prefix": "ac-"
+  },
+  "proved_minimum": 8,
+  "status": "no_strict_improvement",
+  "accepted_as_strict_improvement": false,
+  "macro_count": 1,
+  "strict_primitive_length_decrease": false,
+  "fixed_archived_baseline_improvement": false
+}

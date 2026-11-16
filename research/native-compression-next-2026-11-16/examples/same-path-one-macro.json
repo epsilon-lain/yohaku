@@ -1,0 +1,18 @@
+{
+  "challenge_id": "ac-08491",
+  "tokens": [
+    "entire_path"
+  ],
+  "macros": {
+    "entire_path": [
+      7,
+      4,
+      12,
+      12,
+      3,
+      1,
+      5,
+      5
+    ]
+  }
+}
