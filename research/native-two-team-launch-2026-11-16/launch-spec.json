@@ -1,0 +1,45 @@
+{
+  "schema": "yohaku-native-research-launch-preparation/1",
+  "stage_id_proposed": "native-theory-application-sol-20261116",
+  "status": "prepared_not_launched",
+  "execution_target": "actual user Yohaku native host; not ChatGPT collaboration tools",
+  "preserve_all_prior_research": true,
+  "prior_work_surface": "external ChatGPT Work; retain provenance",
+  "formation": "one native persistent research lead uses actual native tools to form theory/application directions",
+  "model_policy": {
+    "model": "gpt-6.1-sol",
+    "minimum_effort": "high",
+    "leader_effort": "max",
+    "upper_user_permission": [
+      "max",
+      "product_supported_ultra"
+    ],
+    "fallback": "pause_and_report",
+    "forbidden": [
+      "gpt-6-astra",
+      "glm",
+      "gemma",
+      "deepseek"
+    ]
+  },
+  "resource_limits": "determine bounded initial envelope from existing authorized host capacity; do not inherit external sprint role limits or convert Adaption Credits to Codex allowance",
+  "sealed_zero_inference_guard": "preserve_unconditionally",
+  "native_requests_sent_by_this_prep": 0,
+  "automatic_sair_upload": false,
+  "native_scope": [
+    "node_create",
+    "node_dispatch",
+    "wake",
+    "continuation",
+    "turn_start_pre_write_admission"
+  ],
+  "shared_math": "immediate versioned publication; indexed on-demand reads; actual adoption separately evidenced",
+  "startup_evidence": [
+    "native root node and actual tasks",
+    "actual turn/start and completed content",
+    "native created/dispatched theory/application tasks",
+    "persisted source revisions and original request IDs",
+    "model configuration vs provider model receipt distinction"
+  ],
+  "environment_blocker": "original host filesystem not mounted; browser connection requires originating context; no relevant SSH plugin found"
+}

@@ -1,0 +1,20 @@
+{
+  "scope": "preparation-only checks; not native runtime integration or model validation",
+  "seed_items": 12,
+  "native_requests_sent": 0,
+  "prior_original_archives_modified": false,
+  "independent_review": "Sol/high reviewer inspected task, audit and package and found no blocking issue",
+  "checks": [
+    {
+      "check": "seed_corruption",
+      "mutated_temporary_copy_only": true,
+      "rejected": true
+    },
+    {
+      "check": "model_configuration_change",
+      "mutated_temporary_copy_only": true,
+      "rejected": true
+    }
+  ],
+  "remote_preservation_check": "45 fixed-ref GitHub blobs matched local bytes; prior stage manifest122 entries checked by seed preparation"
+}

@@ -1,0 +1,502 @@
+{
+  "schema": "yohaku-external-common-seed/1",
+  "seed_id": "prior-results-2026-11-16",
+  "revision": "1",
+  "origin": "external_chatgpt_work",
+  "native_runtime_import_status": "prepared_not_imported",
+  "preserve_all_prior_work": true,
+  "published_baselines": {
+    "epsilon-lain/yohaku": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+    "epsilon-lain/lain-s-note": "51f6c2a413b829568efed24d1167e049d2756220"
+  },
+  "verification_this_prep": "Read key published statements and certificate fields, direct fixed-ref Git blob comparison of 45 scientific/provenance files, and all 122 run-manifest hashes. No model research call, no search, no expensive scientific rerun.",
+  "items": [
+    {
+      "id": "framework-candidates-closure",
+      "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+      "statement": "固定对象库U、性质语言P和已知S，以C(S)与Cl(S)区分冗余、新约束、矛盾；未知性质不等于假。",
+      "scope": "标准候选集合/闭包形式化；确定对象、同构与指定观察不可区分必须分开。",
+      "evidence_status": "既有标准结构；固定发布正文已读，字节匹配；本次未作首创性判断。",
+      "sources": [
+        {
+          "local_path": "github_publish/math/research/properties-and-structures-2026-11-16/README.md",
+          "sha256": "0a184196605e9173a00942f4b18111a3deb3b4110ee1cdda3be63a0d787910c7",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/properties-and-structures-2026-11-16/README.md",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "graph-local-global-finite",
+      "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+      "statement": "八点简单2正则标号图3507个；无三角形2835个，只含C8与2C4两同构类；半径1诱导邻域相同，hom(C4,G)分别48、64。",
+      "scope": "仅该有限对象库；hom计数不是四边形子图数；带标签计数不是先验概率。",
+      "evidence_status": "归档精确枚举及初等论证；本次正文与JSON核对并匹配固定GitHub版本，未重跑枚举。",
+      "sources": [
+        {
+          "local_path": "github_publish/math/research/properties-and-structures-2026-11-16/README.md",
+          "sha256": "0a184196605e9173a00942f4b18111a3deb3b4110ee1cdda3be63a0d787910c7",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/properties-and-structures-2026-11-16/README.md",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "github_publish/math/research/properties-and-structures-2026-11-16/exact_results.json",
+          "sha256": "ca1f900ebd666a29515a96ed792780b275cab24231b80b106d370c36974b9d46",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/properties-and-structures-2026-11-16/exact_results.json",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "github_publish/math/research/properties-and-structures-2026-11-16/verify_graph_example.py",
+          "sha256": "664707e566da26b51c96409c519424164dffcb8c6b91534cf3df0152c9e906dc",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/properties-and-structures-2026-11-16/verify_graph_example.py",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "concept-tree-cost-9-3-9",
+      "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+      "statement": "目标(1,1,1,1,1)在基向量+二元非负加法树中成本9；预存分块b=e1+e2、c=e3+e4+e5且引用各1时为3；b/c按展开成本3/5收费时为9。新定义分块后单用总费11。",
+      "scope": "树按每次基元出现和加法各1；有限31状态/90无序分拆。8+3r和9r仅是具体复用方案比较，不是一般字典最优。",
+      "evidence_status": "归档完整有限DP与初等证明；本次README/JSON/程序字节匹配，未重跑。",
+      "sources": [
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/README.md",
+          "sha256": "874b660f4a1c9f6846a7f437e9a7f86e7ee11ff463a663feb2922223690a6d7d",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/README.md",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/exact_results.json",
+          "sha256": "33055522be1734dece588aa25d395237bc02ca7a8ab1a606872c358b61e2e872",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/exact_results.json",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/verify_compression.py",
+          "sha256": "b3b809108c1dba26afcc30f3317999e0467dc1f6c5d325b226904e1bfd4f16ae",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/verify_compression.py",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "concept-shared-dag-7-4",
+      "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+      "statement": "二维目标(2,2)的加法表达树最优7；共享DAG最优4：两个输入节点和两次加法，z=e1+e2后z+z。",
+      "scope": "树计重复出现；DAG仅计不同输入/门节点，边与复用免费；换计费需重算。",
+      "evidence_status": "归档DP、DAG BFS与下界证明；本次固定源码/结果字节匹配。",
+      "sources": [
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/README.md",
+          "sha256": "874b660f4a1c9f6846a7f437e9a7f86e7ee11ff463a663feb2922223690a6d7d",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/README.md",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/exact_results.json",
+          "sha256": "33055522be1734dece588aa25d395237bc02ca7a8ab1a606872c358b61e2e872",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/exact_results.json",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "macro-expansion-interface",
+      "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+      "statement": "宏须绑定适用起点、逐步合法展开和真实展开步数权重；宏路径给原路径上界，若保留所有原始边则完整加权最优值相等。",
+      "scope": "描述长度不等于合法变换距离；中间资源与累计work须逐步核验；有限启发式搜索不因此最优。",
+      "evidence_status": "发布的初等命题与三状态反例；本次正文核对和字节匹配。",
+      "sources": [
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/README.md",
+          "sha256": "874b660f4a1c9f6846a7f437e9a7f86e7ee11ff463a663feb2922223690a6d7d",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/README.md",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/exact_results.json",
+          "sha256": "33055522be1734dece588aa25d395237bc02ca7a8ab1a606872c358b61e2e872",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/exact_results.json",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "positive-edge-general-m",
+      "revision": {
+        "yohaku": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+        "lain-s-note": "51f6c2a413b829568efed24d1167e049d2756220"
+      },
+      "statement": "对m>=3、2m个固定标签、每环长>=m的简单2正则对象库，识别C_(2m)或2C_m同构型各最少m条正边。单环全部最小证书为m条连续边，奇数m另有两个完美匹配；双环为完整观察其中一环。精确标号：单环2m-2；双环m>=4为2m-2，m=3为3。",
+      "scope": "背景对象库免费给定；每条已确立标签正边成本1；未知不等于非边。不是任意图、性质库或AC的一般定理。",
+      "evidence_status": "保留一般m证明；原阶段全文独立审查、m=3/4全候选/观察穷举与更大有限模式检查。有限检查不替代一般证明；本次只核对档案、哈希和发布副本。",
+      "sources": [
+        {
+          "local_path": "two_teams_sol_20261116/theory/README.md",
+          "sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/theory/README.md",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/theory/RESULTS.json",
+          "sha256": "50edca4b75aeb86f415f800fb5d4c24381fbb670895bd24b075b6c91be861734",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/theory/RESULTS.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/theory/REVIEW_RECEIPT.json",
+          "sha256": "c82e7584a434ad2baf3731bd8db2a5c839ea6625262ec6581b351c8f7d748176",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/theory/REVIEW_RECEIPT.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/theory/verify_white_points.py",
+          "sha256": "1e206f68abde9ab92199275d693b7dace72897856f3c0cc034256efc370eac61",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/theory/verify_white_points.py",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_publish/math/research/positive-properties-2026-11-16/SOURCE.json",
+          "sha256": "adfddf15967dbbff4aa858bb62d87c7d3dc067953b431ad861b2933fca11c707",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/positive-properties-2026-11-16/SOURCE.json",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_publish/math/research/positive-properties-2026-11-16/THEORY.md",
+          "sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/positive-properties-2026-11-16/THEORY.md",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "closure-nonmatroid-counterexample",
+      "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "statement": "八点C8/2C4库中S={01,12,23,34},a=45,b=67，b属于Cl(S+a)而不属于Cl(S)，a不属于Cl(S+b)，违反拟阵闭包交换律；四候选数6/2/4/2，均非空。同一目标存在4条和5条不可删证书。",
+      "scope": "仅该一致候选库的反例；不可删不等于最少，闭包公理不自动给拟阵结论。",
+      "evidence_status": "归档显式反例、全候选独立枚举及审查；本次正文/独立JSON/固定发布字节核对。",
+      "sources": [
+        {
+          "local_path": "two_teams_sol_20261116/theory/README.md",
+          "sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/theory/README.md",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/observation/independent_graph_result.json",
+          "sha256": "804e7909cd2942189fb49ea1fcbb3ccd56a25d5bb7c65742161bfc816f9857e1",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/observation/independent_graph_result.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/theory/REVIEW_RECEIPT.json",
+          "sha256": "c82e7584a434ad2baf3731bd8db2a5c839ea6625262ec6581b351c8f7d748176",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/theory/REVIEW_RECEIPT.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "ac-08491-distance-8",
+      "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "statement": "冻结官方ac-r2-v1的14原始动作、精确有序终点((1,),(2,))，ac-08491最短距离恰8。完整无剪枝起点B3=1329、终点B4=5115，交集空；官方合法8步见证补上界。",
+      "scope": "仅一个固定普通AC实例；官方上游a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e；无状态等价商；不能外推Stable。",
+      "evidence_status": "保留早阶段完整证书、程序、官方本地回执及已发表证明；本次只核对证书字段、见证及固定发布哈希，不重新构球。",
+      "sources": [
+        {
+          "local_path": "next_research/yohaku/research/concept-compression-ac-2026-11-16/shortest_certificate.json",
+          "sha256": "6946fda0afee248115f7555cde7bc77ed30cc5f71692f20142057a88a42d1f30",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/concept-compression-ac-2026-11-16/shortest_certificate.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/yohaku/research/concept-compression-ac-2026-11-16/certify_shortest.py",
+          "sha256": "8b5f1334072dbfb3cd1f364797fe79d1d5c705df59b2cd4280369852217fd9bf",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/concept-compression-ac-2026-11-16/certify_shortest.py",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/yohaku/research/concept-compression-ac-2026-11-16/official_verdict.json",
+          "sha256": "880a0a57c2d964b1c76ff2a6139d56b50452a08531b87df6626396caf1bb7769",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/concept-compression-ac-2026-11-16/official_verdict.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/math/research/concept-compression-2026-11-16/AC_SHORTEST_EXAMPLE.md",
+          "sha256": "ad2dbc3cfe4c17f6e52efeee45b912a1e54242ea7481b07e0cfd02fc68457b34",
+          "fixed_source_url": "https://github.com/epsilon-lain/lain-s-note/blob/51f6c2a413b829568efed24d1167e049d2756220/research/concept-compression-2026-11-16/AC_SHORTEST_EXAMPLE.md",
+          "revision": "51f6c2a413b829568efed24d1167e049d2756220",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "ac-07445-distance-13",
+      "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "statement": "ac-07445普通AC精确距离13；完整无剪枝B6/B6为1200765和336477状态，交集0排除0至12步；官方13步见证peak13、work127。旧17步见证继续作为历史保留。",
+      "scope": "冻结同一14动作与精确有序终点；只覆盖已见开发例，不能据此推断新样本性能或Stable最短。",
+      "evidence_status": "归档首次完整证书、guard完整重放及外部独立枚举；最终portable参数版本未再次完整百万状态重跑，本次也未重跑。",
+      "sources": [
+        {
+          "local_path": "two_teams_sol_20261116/application/DISTANCE_V1.md",
+          "sha256": "25a42dc3f5434d3d3c123d20dd1aba9783e4ea5fdd6a35cd01b376fb6f26c819",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/application/DISTANCE_V1.md",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/application/distance_certificate.json",
+          "sha256": "c6c662c40e8e1ae82ebefb5af48146d189bd2d12cd2234e2f604051b08a3e772",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/application/distance_certificate.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/application/distance_certificate_guarded.json",
+          "sha256": "2d07b7a5adcb7b7ede131016a83cf5e243b8bb66dab30efd1ac6175e8c5d69e1",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/application/distance_certificate_guarded.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/application/certify.py",
+          "sha256": "d7235090980d9db6429fb78ba0e50a34c50ecf37dcb0dedb8a026eb4487efb7f",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/application/certify.py",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/observation/independent_ac_result.json",
+          "sha256": "33a3b6cbd0534931f85fe9404eefbba4269f46056ad8a07c7ca72686422af5da",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/observation/independent_ac_result.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/observation/REPORT.md",
+          "sha256": "84026bbc3d5b2de43b6a79e28f462616696f84cb129ca26f3494fe29edc41719",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/observation/REPORT.md",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "latest-four-lines",
+      "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "statement": "最新四行：ac-07445=13、ac-08491=8、sac-07445=15、sac-08491=10；固定官方本地CLI全部ok。Stable两项仅合法上界，未平台上传。",
+      "scope": "普通AC两项最短性分别来自独立证书；四行回执只证明相应路径本地合法，不证明Stable最优或排行榜成绩。",
+      "evidence_status": "最新提交、官方本地回执、来源和观察员汇总回执逐字节绑定固定发布；小附件原样复制。",
+      "sources": [
+        {
+          "local_path": "two_teams_sol_20261116/submission-latest.txt",
+          "sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest.txt",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/submission-latest-verdict.json",
+          "sha256": "37cd38e4b30c339f737640b30f96f2a06706ec6139032722fc6b6fec3336c71a",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest-verdict.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/submission-latest-provenance.json",
+          "sha256": "1f2c73ac8721aac572da13ad5dda3e0db38df6b64a0a1c685ec7dc8319d2440d",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/submission-latest-provenance.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/observation/combined_submission_cli_receipt.json",
+          "sha256": "d1847faa6bccac44145a7bfe6164dc618345ba659fa66a4c5ec8d6faca5b37da",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/observation/combined_submission_cli_receipt.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "pilot-negative-result",
+      "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "statement": "旧8训练+8正式例宏对照：两臂训练8/8、正式2/8，解出案例展开长度相同；宏臂总原始move计算多405次，未支持总体改进。",
+      "scope": "固定宏库、固定预算与选例；无自动学习宏；失败不证明无解，不能与后续单例开发作公平算法优劣比较。",
+      "evidence_status": "保留负/中性结果、results、重放检查及官方工具链检查；本次固定发布字节匹配。",
+      "sources": [
+        {
+          "local_path": "next_research/yohaku/research/concept-compression-ac-2026-11-16/README.md",
+          "sha256": "e42a0ad08a8af48684a698bed5d09aca9cfc0f55ed6f2528df3c3f243ccbd727",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/concept-compression-ac-2026-11-16/README.md",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/yohaku/research/concept-compression-ac-2026-11-16/results.json",
+          "sha256": "c4173779c1f2561d0119379942e8adbc47feaf1f80766de9f652c3bb23bb726a",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/concept-compression-ac-2026-11-16/results.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/yohaku/research/concept-compression-ac-2026-11-16/reproduction_check.json",
+          "sha256": "aad93c31f88739d8e02b0aa4eac16834fc6ea8ff601a5249534d7b540c3de10f",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/concept-compression-ac-2026-11-16/reproduction_check.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "next_research/yohaku/research/concept-compression-ac-2026-11-16/official_toolchain_checks.json",
+          "sha256": "c9afae4a5b750049eb187f28ae7843c1fa837b9f735ebc4dd91670518ada7821",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/concept-compression-ac-2026-11-16/official_toolchain_checks.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    },
+    {
+      "id": "external-work-process-evidence",
+      "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "statement": "此前两队研究发生在外部ChatGPT Work协作面；双方发表并读取精确版本，未显示本轮互相采用新定理；没有稳定自发组织分化证据。原Yohaku宿主未在该阶段访问/迁移。",
+      "scope": "旧阶段作为external_seed来源；配置请求不是供应商模型/费用回执；历史事件不可倒填为Yohaku原生生产。",
+      "evidence_status": "归档登记、观察、共享台账和冻结检查点；本次固定版本直接字节匹配及122条manifest哈希核验。",
+      "sources": [
+        {
+          "local_path": "two_teams_sol_20261116/README.md",
+          "sha256": "eb1f6f678d3f06945c1fc8487762695b714d1b5a39e6342835870326b7f15015",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/README.md",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/REGISTRATION.json",
+          "sha256": "31fa8ca16d123443db8fc96b256a5c29d2364512e799ea7dba8437f522d6da78",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/REGISTRATION.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/observation/REPORT.md",
+          "sha256": "84026bbc3d5b2de43b6a79e28f462616696f84cb129ca26f3494fe29edc41719",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/observation/REPORT.md",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/shared/MATH_LEDGER.jsonl",
+          "sha256": "6592c2bafb0e30df265567ebe628211e0150801731faeb61f96b0030abf74b5f",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/shared/MATH_LEDGER.jsonl",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/theory/CHECKPOINT.json",
+          "sha256": "f563fde229fbba49628c5a46e20eef4e4e02baf35f07f2490bc46d4084997879",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/theory/CHECKPOINT.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/application/CHECKPOINT.json",
+          "sha256": "79b4d52a06e6cc1f52b9c32debed3821faa42274d320d2a8804f53b74746b315",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/application/CHECKPOINT.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        },
+        {
+          "local_path": "two_teams_sol_20261116/observation/CHECKPOINT.json",
+          "sha256": "fb0a008169a5a980a846b0aebebdf51badbb578a765425359a76cd2f3dd321e2",
+          "fixed_source_url": "https://github.com/epsilon-lain/yohaku/blob/9afa13603ab26d435d7b5729d057e9b7de9bf8bb/research/theory-application-sol-2026-11-16/observation/CHECKPOINT.json",
+          "revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+          "remote_verification": "direct_git_blob_match"
+        }
+      ]
+    }
+  ],
+  "attachments": [
+    {
+      "path": "attachments/submission-latest.txt",
+      "source": "two_teams_sol_20261116/submission-latest.txt",
+      "sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "byte_exact_copy": true
+    },
+    {
+      "path": "attachments/submission-latest-verdict.json",
+      "source": "two_teams_sol_20261116/submission-latest-verdict.json",
+      "sha256": "37cd38e4b30c339f737640b30f96f2a06706ec6139032722fc6b6fec3336c71a",
+      "byte_exact_copy": true
+    },
+    {
+      "path": "attachments/submission-latest-provenance.json",
+      "source": "two_teams_sol_20261116/submission-latest-provenance.json",
+      "sha256": "1f2c73ac8721aac572da13ad5dda3e0db38df6b64a0a1c685ec7dc8319d2440d",
+      "byte_exact_copy": true
+    },
+    {
+      "path": "attachments/observer-combined-cli-receipt.json",
+      "source": "two_teams_sol_20261116/observation/combined_submission_cli_receipt.json",
+      "sha256": "d1847faa6bccac44145a7bfe6164dc618345ba659fa66a4c5ec8d6faca5b37da",
+      "byte_exact_copy": true
+    },
+    {
+      "path": "attachments/ac-08491-shortest-certificate.json",
+      "source": "next_research/yohaku/research/concept-compression-ac-2026-11-16/shortest_certificate.json",
+      "sha256": "6946fda0afee248115f7555cde7bc77ed30cc5f71692f20142057a88a42d1f30",
+      "byte_exact_copy": true
+    },
+    {
+      "path": "attachments/ac-07445-distance-certificate-guarded.json",
+      "source": "two_teams_sol_20261116/application/distance_certificate_guarded.json",
+      "sha256": "2d07b7a5adcb7b7ede131016a83cf5e243b8bb66dab30efd1ac6175e8c5d69e1",
+      "byte_exact_copy": true
+    }
+  ],
+  "source_inventory": "SOURCE_INVENTORY.json",
+  "remote_checks": "REMOTE_CHECKS.json",
+  "import_contract": {
+    "event_type": "external_seed",
+    "required_import_record": [
+      "seed_id",
+      "seed_revision",
+      "index_sha256",
+      "fixed_source_revisions",
+      "actual_import_time",
+      "native_run_id"
+    ],
+    "after_real_read": "actual_read must cite exact item/source hash, native actor, time and run; do not prefill",
+    "after_real_adoption": "adopt must cite actual_read/source hash and concrete downstream artifact or proof dependency; available or read does not mean adopted",
+    "status": "No actual_read or adopt event emitted by preparation; future Yohaku runtime records real events."
+  },
+  "limitations": [
+    "No claim of literature priority",
+    "No SAIR platform upload or leaderboard receipt",
+    "Stable solutions are only legal upper bounds",
+    "Old archives remain unmodified; no native process history fabricated",
+    "Provider model identity, tokens, and historical costs not independently audited"
+  ]
+}

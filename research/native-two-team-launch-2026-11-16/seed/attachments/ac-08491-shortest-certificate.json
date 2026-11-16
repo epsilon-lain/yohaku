@@ -1,0 +1,88 @@
+{
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "official_manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "challenge_id": "ac-08491",
+  "move_spec_version": "ac-r2-v1",
+  "instance_hash": "sha256:2938e3e2872ea496fe609883c1e0e58c0be982a39e7b0469e61c2fe3fb36b25e",
+  "initial_relators": [
+    [
+      -2,
+      -1
+    ],
+    [
+      -2,
+      -2,
+      -1,
+      -1,
+      2,
+      2,
+      1
+    ]
+  ],
+  "target_relators": [
+    [
+      1
+    ],
+    [
+      2
+    ]
+  ],
+  "witness": [
+    7,
+    4,
+    12,
+    1,
+    12,
+    2,
+    5,
+    5
+  ],
+  "official_witness_verification": {
+    "ok": true,
+    "length": 8,
+    "peak_total_relator_length": 9,
+    "work": 49,
+    "certificate_hash": "sha256:33b48c0c493aee87616d07731abb7a5b1cd25e392eb93f89f1fd5ee1e1e38526"
+  },
+  "forward_ball": {
+    "depth": 3,
+    "frontier_sizes": [
+      1,
+      13,
+      129,
+      1186
+    ],
+    "states": 1329,
+    "primitive_evaluations": 2002,
+    "official_crosscheck_evaluations": 2002,
+    "peak_total_length": 41,
+    "length_pruning": false,
+    "states_sha256": "e1f6dd0863a66abdb4bae8809fa1e39c6e66ee274d95549822f75c0a906bedae"
+  },
+  "target_ball": {
+    "depth": 4,
+    "frontier_sizes": [
+      1,
+      10,
+      77,
+      574,
+      4453
+    ],
+    "states": 5115,
+    "primitive_evaluations": 9268,
+    "peak_total_length": 17,
+    "length_pruning": false,
+    "global_shortest_within_ball": true,
+    "official_crosscheck_evaluations": 9268,
+    "states_sha256": "3737904cb75b8f52f58027c33bd8f5c22a8f5a3379ac844961cf6d6db3158bfc"
+  },
+  "intersection_count": 0,
+  "excluded_move_lengths": {
+    "minimum": 0,
+    "maximum": 7
+  },
+  "global_shortest_AC_length": 8,
+  "proof": "All moves have inverses. A path of length <=7 would meet the complete forward radius-3 ball and target radius-4 ball. Their intersection is empty; the verified witness has length 8.",
+  "scope": "One fixed AC presentation with the exact ordered target and frozen 14-move table; no optimality claim for Stable AC or other challenges.",
+  "separate_from_pilot_arm_budgets": true
+}

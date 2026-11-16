@@ -1,0 +1,102 @@
+{
+  "schema": "yohaku-native-launch-preservation/1",
+  "prepared_on": "2026-11-16",
+  "status": "seed_prepared_not_native_runtime_imported",
+  "prior_results_preserved": true,
+  "original_archives_modified": false,
+  "origin": "external_chatgpt_work",
+  "published_baselines": {
+    "epsilon-lain/yohaku": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+    "epsilon-lain/lain-s-note": "51f6c2a413b829568efed24d1167e049d2756220"
+  },
+  "coverage_item_ids": [
+    "framework-candidates-closure",
+    "graph-local-global-finite",
+    "concept-tree-cost-9-3-9",
+    "concept-shared-dag-7-4",
+    "macro-expansion-interface",
+    "positive-edge-general-m",
+    "closure-nonmatroid-counterexample",
+    "ac-08491-distance-8",
+    "ac-07445-distance-13",
+    "latest-four-lines",
+    "pilot-negative-result",
+    "external-work-process-evidence"
+  ],
+  "verification": {
+    "direct_fixed_commit_blob_matches": 45,
+    "published_run_manifest_files_checked": 122,
+    "mismatches": [],
+    "missing_required_items": [],
+    "method": "Read key published statements and certificate fields, direct fixed-ref Git blob comparison of 45 scientific/provenance files, and all 122 run-manifest hashes. No model research call, no search, no expensive scientific rerun."
+  },
+  "files": [
+    {
+      "path": "seed/COMMON.md",
+      "sha256": "b4a94abc54bbca6d9bd1be68469edbf6e2bad005b18d3ffa06a2b548c69834c7",
+      "bytes": 5389
+    },
+    {
+      "path": "seed/INDEX.json",
+      "sha256": "28c508191bf3a4d94628f380eec6389695dafbdc166c51f27be06213e07a1ce8",
+      "bytes": 33917
+    },
+    {
+      "path": "seed/REMOTE_CHECKS.json",
+      "sha256": "0dcccf10fdccd2814d53566622f98696e6c58a0821aa429c03a30eeb1d083ea5",
+      "bytes": 33163
+    },
+    {
+      "path": "seed/SOURCE_INVENTORY.json",
+      "sha256": "8f214ed1cbcb476f4954d2f37f1cf7f88dd026b182698709e140f3c4902d08f9",
+      "bytes": 38109
+    },
+    {
+      "path": "seed/attachments/ac-07445-distance-certificate-guarded.json",
+      "sha256": "2d07b7a5adcb7b7ede131016a83cf5e243b8bb66dab30efd1ac6175e8c5d69e1",
+      "bytes": 7067
+    },
+    {
+      "path": "seed/attachments/ac-08491-shortest-certificate.json",
+      "sha256": "6946fda0afee248115f7555cde7bc77ed30cc5f71692f20142057a88a42d1f30",
+      "bytes": 2123
+    },
+    {
+      "path": "seed/attachments/observer-combined-cli-receipt.json",
+      "sha256": "d1847faa6bccac44145a7bfe6164dc618345ba659fa66a4c5ec8d6faca5b37da",
+      "bytes": 857
+    },
+    {
+      "path": "seed/attachments/submission-latest-provenance.json",
+      "sha256": "1f2c73ac8721aac572da13ad5dda3e0db38df6b64a0a1c685ec7dc8319d2440d",
+      "bytes": 689
+    },
+    {
+      "path": "seed/attachments/submission-latest-verdict.json",
+      "sha256": "37cd38e4b30c339f737640b30f96f2a06706ec6139032722fc6b6fec3336c71a",
+      "bytes": 857
+    },
+    {
+      "path": "seed/attachments/submission-latest.txt",
+      "sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "bytes": 196
+    }
+  ],
+  "inventory": {
+    "path": "seed/SOURCE_INVENTORY.json",
+    "source_files": 152
+  },
+  "future_import_events": [
+    "external_seed",
+    "actual_read",
+    "adopt"
+  ],
+  "not_performed": [
+    "Yohaku native runtime launch or import",
+    "External model call",
+    "Million-state enumeration or expensive rerun",
+    "SAIR platform upload",
+    "History backfill"
+  ],
+  "external_prior_work_remains_valid_with_its_original_scope": true
+}

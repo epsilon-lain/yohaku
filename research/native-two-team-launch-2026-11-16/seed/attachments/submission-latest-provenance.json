@@ -1,0 +1,21 @@
+{
+  "selection": "shortest verified candidate per challenge; deterministic path-order tie break; four unique IDs",
+  "sources": [
+    {
+      "file": "previous pinned four-line submission",
+      "sha256": "0247fd26541c36ce84393d509f57d434780c494e5cd6ef28e31897c4a1a91922"
+    },
+    {
+      "file": "application/submission.txt",
+      "sha256": "4e41fe294029cfb0dba706e7fc8a0f0c90e23c8bfa4e37603b096b0a65943e09"
+    }
+  ],
+  "source_versions": "prior pilot commit 2221ee978c8593ef7f62fd63c03e8e1e05afb368; current application evidence in this run",
+  "lengths": {
+    "ac-08491": 8,
+    "sac-08491": 10,
+    "ac-07445": 13,
+    "sac-07445": 15
+  },
+  "platform_upload_performed": false
+}
