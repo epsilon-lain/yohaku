@@ -1,0 +1,228 @@
+{
+  "version": "application-checkpoint-v1",
+  "status": "finite_first_stage_complete_and_frozen",
+  "at_utc": "2026-11-16T12:02:01.770661+00:00",
+  "execution_surface": "ChatGPT Work collaboration tools; original Yohaku host was not inspected or changed",
+  "model_declaration": {
+    "lead": "gpt-6.1-sol",
+    "reasoning_effort": "max",
+    "provider_receipt_available": false,
+    "additional_external_paid_model_calls": 0
+  },
+  "goal_selected": "A reusable proven distance/property query plus bounded improvement of the already-seen ac-07445 witness; exact certification after success.",
+  "concrete_results": [
+    {
+      "id": "ac-07445",
+      "before_legal_upper_bound": 17,
+      "current_legal_upper_bound": 13,
+      "exact_unrestricted_ordinary_AC_distance": 13,
+      "witness": [
+        6,
+        4,
+        12,
+        1,
+        3,
+        6,
+        12,
+        2,
+        5,
+        6,
+        4,
+        2,
+        4
+      ],
+      "peak_total_length": 13,
+      "work": 127,
+      "certificate": "application/distance_certificate.json",
+      "guarded_rerun": "application/distance_certificate_guarded.json",
+      "official_verification": "application/witness_verification.json"
+    },
+    {
+      "id": "sac-07445",
+      "before_legal_upper_bound": 19,
+      "current_legal_upper_bound": 15,
+      "exact_distance": null,
+      "construction": "ordinary witness plus [16,15]",
+      "peak_total_length": 13,
+      "work": 128,
+      "official_verification": "application/witness_verification.json"
+    }
+  ],
+  "precise_result_versions": [
+    {
+      "version": "application-upper-v1",
+      "shared_seq": 1,
+      "event_sha256": "852929b2761a628d47dfe213aeb2fbfe5a17fcc8846c3c16d62b1fba0f9c6337",
+      "status": "historical upper bound before lower check"
+    },
+    {
+      "version": "application-distance-v1",
+      "shared_seq": 2,
+      "event_sha256": "b8c95f031829c05d7dfb9fe08d7fc4cde270d4a5d11a5f95c9a02119bfbbfbf6",
+      "status": "exact ordinary AC distance"
+    },
+    {
+      "version": "application-release-v2",
+      "shared_seq": 4,
+      "event_sha256": "d35033eda1213e7041cf143d401d0d77d49ce4b5503526fd3fae31b545115501",
+      "readme_sha256": "bcce0693b04acf1f039f01973243579b010475a7508e7900eb9259191010cd9a",
+      "status": "frozen current package"
+    }
+  ],
+  "shared_math_read_and_adoption": [
+    {
+      "source": "shared/SEED.md",
+      "status": "read and used as initial interface/cost constraints; no new shared-theorem causal claim"
+    },
+    {
+      "version": "theory-white-points-v1",
+      "shared_seq": 3,
+      "event_sha256": "1c985e933c9a381c78ba587d340b246fd2f856a46b87909acd8fb0dd0323414f",
+      "artifact_sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+      "read_event_sha256": "f4352ec16cb517217f37a9cf00a517c051a9fbe4bc66a8e8fc756ab9188daff7",
+      "adopted": false,
+      "reason": "Graph completion/subset-sum and positive-edge certificate theorems do not directly apply to the AC state graph. The positive-conjunction naming theorem explicitly excludes general algorithm queries and shared computation such as our compiled ball. Not used to prove AC lower bounds, cost conservation, or performance."
+    }
+  ],
+  "actual_organization": {
+    "initial_external_assignment": "one application lead; two-team split and observer were externally assigned",
+    "optional_collaborators_created": 0,
+    "actual_lead_role": "selected task, implemented search and independent move crosscheck, published results, read and compared external review",
+    "external_observer_role": "independent replay and complete ball enumeration; final two-line CLI and guard-failure check",
+    "self_emergent_team_structure_change": false,
+    "no_internal_Yohaku_role_or_model_migration_claim": true
+  },
+  "method_revision": {
+    "initial_plan_only": "Exponent-sum matrix abstraction; not implemented and no result claimed.",
+    "self_chosen_sequence": [
+      "Old 17-move path all-pairs radius3+3 replacement check found no shorter replacement of length<=6.",
+      "Larger radius6 target dictionary with original greedy stopping still returned17.",
+      "Changed stopping to retain incumbent and continue improvements; used h_B=min(distance,7) to prune prefixes unable to beat it. Four weights each200000 calls found13.",
+      "After obtaining13, constructed complete unpruned B6+B6 to certify exact distance."
+    ],
+    "external_interventions": [
+      "Root required explicit time/state caps while certificate computation was already running; that initial enumeration completed, then added guard and performed one complete guarded rerun with equal hashes.",
+      "Root requested portable --official-root and --baseline-root before public packaging; final code has those parameters and validates 18 pinned files before official imports.",
+      "Observer independently reproduced complete B6/B6 and official13; application read actual artifacts and compared exact fields; final Stable15 and guard failure also independently checked."
+    ],
+    "evidence": "application/development_log.json; events/application.jsonl; actual messages recorded by coordinator; self-reports are not complete tool traces"
+  },
+  "validation": {
+    "initial_complete_certificate": true,
+    "guarded_complete_rerun": true,
+    "same_ball_hashes": true,
+    "independent_observer_agreement": "application/independent_comparison.json",
+    "final_portable_refactor_checks": [
+      "100-evaluation/depth2 no-improvement search with official old17 replay",
+      "1000-state guard returns incomplete/null proof",
+      "both final witness trajectories and official CLI accept",
+      "Python compile succeeds"
+    ],
+    "million_state_rerun_after_final_portable_refactor": false,
+    "reason_no_rerun": "Refactor changes paths/source validation; complete results already independently reproduced. Explicitly documented."
+  },
+  "resource_and_costs": {
+    "complete_ball_total_states": 1537242,
+    "guarded_max_seconds": 30,
+    "guarded_max_states": 1600000,
+    "guarded_observed_seconds": 18.095477435002977,
+    "detailed_separate_costs": "application/costs.json",
+    "no_claim_of_end_to_end_speedup": true
+  },
+  "limits": [
+    "Only one already-seen development case; none of old16 examples is an unseen holdout.",
+    "No smallest description/file-compression claim; query construction/storage and primitive expansion costs explicitly separated.",
+    "Ordinary AC optimality does not imply Stable AC optimality.",
+    "No platform upload, score/ranking evidence, conjecture resolution, parameter training, or literature-novelty claim.",
+    "Final guarded enumerator may return incomplete under machine load; incomplete output carries no lower bound."
+  ],
+  "unresolved_items": [
+    "Whether any reusable query has beneficial amortized cost on a prespecified fresh cohort.",
+    "Whether a cheaper non-exhaustive abstraction gives useful lower bounds on longer instances.",
+    "Stable AC distance for sac-07445 remains uncertified."
+  ],
+  "next_task_not_started": "Preregister a fixed new manifest cohort excluding the old16 seen cases, freeze one reusable query and search budget, then compare aggregate compilation+search cost and fully expanded verified paths; preserve failures. Do not adapt on that cohort and label it unseen afterward.",
+  "local_background_computations_running": false,
+  "artifact_hashes": {
+    "application/DISTANCE_V1.md": {
+      "sha256": "25a42dc3f5434d3d3c123d20dd1aba9783e4ea5fdd6a35cd01b376fb6f26c819",
+      "bytes": 1546
+    },
+    "application/README.md": {
+      "sha256": "bcce0693b04acf1f039f01973243579b010475a7508e7900eb9259191010cd9a",
+      "bytes": 8396
+    },
+    "application/UPPER_V1.md": {
+      "sha256": "5961d819a276008aa93adf32018316e5d0f09914d62ef42124804f274e9448d3",
+      "bytes": 736
+    },
+    "application/certify.py": {
+      "sha256": "d7235090980d9db6429fb78ba0e50a34c50ecf37dcb0dedb8a026eb4487efb7f",
+      "bytes": 6773
+    },
+    "application/costs.json": {
+      "sha256": "a16176d32e934eab2b3ad2928fd2cda00b348b7e3061d898d49f610c7d8f6304",
+      "bytes": 1190
+    },
+    "application/development_log.json": {
+      "sha256": "19eaf9e54e720141e824432861fe14310d81d12272bdd97392cb0b5f70c35a98",
+      "bytes": 3366
+    },
+    "application/distance_certificate.json": {
+      "sha256": "c6c662c40e8e1ae82ebefb5af48146d189bd2d12cd2234e2f604051b08a3e772",
+      "bytes": 6877
+    },
+    "application/distance_certificate_guarded.json": {
+      "sha256": "2d07b7a5adcb7b7ede131016a83cf5e243b8bb66dab30efd1ac6175e8c5d69e1",
+      "bytes": 7067
+    },
+    "application/independent_comparison.json": {
+      "sha256": "6953e4e08edf2847db221de02dbee1354578b11c04b7f149046da6ce62dd83a2",
+      "bytes": 483
+    },
+    "application/local_check.json": {
+      "sha256": "ada9b0b1c4c766aa6b6dbf2d90820761a58945891df428aa29e9ca217dd245c3",
+      "bytes": 460
+    },
+    "application/official_cli_receipt.json": {
+      "sha256": "280a7b5360c2b99b3cc29c929dde5457dda9617abbd22c1d7bc0fb068e82e274",
+      "bytes": 451
+    },
+    "application/portable_local_check.json": {
+      "sha256": "ada9b0b1c4c766aa6b6dbf2d90820761a58945891df428aa29e9ca217dd245c3",
+      "bytes": 460
+    },
+    "application/portable_smoke.json": {
+      "sha256": "755b03c1f6baa043b9827474a6894389d89b2c8b6f12ef5c25a5977686385180",
+      "bytes": 7297
+    },
+    "application/refine.py": {
+      "sha256": "d8ae330228a19b7f299ed46df7bf0a93dbd5e7beaf8e155baf9e51887c6c8c99",
+      "bytes": 7621
+    },
+    "application/refinement_results.json": {
+      "sha256": "fee98b252c31e0712a52d79b877f170299b9494925c431d89b3d415c97fd1cef",
+      "bytes": 20973
+    },
+    "application/resource_limit_check.json": {
+      "sha256": "9828999c2c52ab51e4856ad876e6a8a860fd76c15c28a5f9f8a87e6c22586605",
+      "bytes": 393
+    },
+    "application/resource_limit_check_portable.json": {
+      "sha256": "43be1056063e64f69809372abb9c2677f670d55467118ab0c7c17f6ef9d27d90",
+      "bytes": 393
+    },
+    "application/submission.txt": {
+      "sha256": "4e41fe294029cfb0dba706e7fc8a0f0c90e23c8bfa4e37603b096b0a65943e09",
+      "bytes": 87
+    },
+    "application/verify_witnesses.py": {
+      "sha256": "b5f081d99b345bda145f78c8781b5aa9075fb0ae575fdfd6e3e83f34d5b58c13",
+      "bytes": 2948
+    },
+    "application/witness_verification.json": {
+      "sha256": "1cf87ef0d079f06672129e1b7e4198de4b691bd9449f3af96189a96d98b5c233",
+      "bytes": 8686
+    }
+  }
+}

@@ -1,0 +1,589 @@
+{
+  "version": "two-teams-observation-v1",
+  "run_id": "theory-application-sol-20261116-01",
+  "recorded_at_utc": "2026-11-16T12:05:25.730405+00:00",
+  "status": "frozen_at_both_first_checkpoints",
+  "execution_surface": "ChatGPT Work shared workspace; original Yohaku host not inspected or migrated",
+  "design": "descriptive bounded observation of different goals with shared mathematics; not independent causal A/B",
+  "evidence_levels": {
+    "proposal": "intended action only",
+    "self_report": "actor-authored message/journal/retrospective note",
+    "artifact_verified": "specified bytes inspected within stated scope",
+    "independently_reproduced": "observer executed check; independence scope stated",
+    "unknown": "missing evidence or out of scope"
+  },
+  "model_evidence": {
+    "requested": {
+      "theory": "gpt-6.1-sol/max",
+      "application": "gpt-6.1-sol/max",
+      "observer": "gpt-6.1-sol/high"
+    },
+    "support": "HOST_DISPATCHES accepted requests and parent task messages",
+    "provider_model_receipt": null,
+    "token_usage": null,
+    "cost": null,
+    "silent_fallback_observed": false,
+    "no_fallback_observed_does_not_prove_provider_identity": true
+  },
+  "organization": {
+    "initial_team_split_externally_given": true,
+    "theory_additional_collaborators_observed": 0,
+    "application_additional_collaborators_observed": 0,
+    "internal_delegation_edges_observed": [],
+    "theory_lead_function": "task selection, proof, code, self-check, publish, receive external review",
+    "application_lead_function": "task selection, heuristic search, certificate, self-check, publish, compare external review",
+    "observer_function": "externally assigned independent reviewer",
+    "stable_structural_evolution_supported": false,
+    "reason": "one bounded task per team; leaders retained single-node organization; externally provided reviewer and root publication/resource feedback; no recurring delegation graph"
+  },
+  "external_interventions": [
+    {
+      "actor": "root",
+      "action": "initial goals, leaders, model policy, collaborator limit, finite checkpoint, observer",
+      "level": "artifact_verified"
+    },
+    {
+      "actor": "observer",
+      "action": "request precise evidence and read/adoption distinctions; independent mathematical/official checks and feedback",
+      "level": "artifact_verified"
+    },
+    {
+      "actor": "root",
+      "action": "require explicit resource guards and portable source CLI before publication",
+      "level": "artifact_verified",
+      "actual_code_change_verified": true
+    },
+    {
+      "actor": "root",
+      "action": "combine shortest retained submissions across old baseline and current application",
+      "level": "artifact_verified",
+      "independently_checked": true
+    }
+  ],
+  "task_edges": [
+    {
+      "from": "root",
+      "to": "theory/application/observer",
+      "kind": "external_assignment",
+      "support": "HOST_DISPATCHES.json",
+      "level": "artifact_verified"
+    },
+    {
+      "from": "theory",
+      "to": "shared_math",
+      "kind": "publication",
+      "ledger_sequences": [
+        3,
+        5
+      ],
+      "level": "artifact_verified"
+    },
+    {
+      "from": "application",
+      "to": "shared_math",
+      "kind": "publication",
+      "ledger_sequences": [
+        1,
+        2,
+        4
+      ],
+      "level": "artifact_verified"
+    },
+    {
+      "from": "observer",
+      "to": "theory",
+      "kind": "external_general_proof_and_finite_review",
+      "response": "REVIEW_RECEIPT.json and unchanged frozen math hashes",
+      "level": "artifact_verified"
+    },
+    {
+      "from": "observer",
+      "to": "application",
+      "kind": "external_B6_reproduction_and_official_replay",
+      "response": "independent_comparison.json and final README",
+      "level": "artifact_verified"
+    },
+    {
+      "from": "root",
+      "to": "application",
+      "kind": "resource_and_portability_request",
+      "response": "changed source versions and incomplete low-state check",
+      "level": "artifact_verified"
+    }
+  ],
+  "method_changes": [
+    {
+      "team": "theory",
+      "initial": "construct an m-edge path certificate",
+      "trigger_reported": "m=5 all-two partition/C10 perfect matching disproves path-only classification",
+      "final": "complete critical certificate classification with general prefix-residue proof; inclusion-minimal and exchange counterexamples",
+      "final_artifact_verified": true,
+      "trigger_and_sequence_level": "self_report",
+      "prior_version_retained": false
+    },
+    {
+      "team": "application",
+      "initial": "exponent-sum matrix abstraction",
+      "initial_level": "proposal",
+      "implemented_matrix": false,
+      "reported_trigger": "old-path B3/B3 no replacement; larger old-greedy target ball still17",
+      "final": "incumbent refinement with exact target-ball lower-bound query; complete B6/B6 certification after13 witness",
+      "final_artifact_verified": true,
+      "retrospective_sequence_level": "self_report",
+      "negative_window_artifact_exists": true
+    },
+    {
+      "team": "application",
+      "trigger": "external root requirements",
+      "before_sources": [
+        "5ba838893cae5f6fd9432fda5c66c18e7fc5d67cadaa654b0ac26fbe887db9e0",
+        "d434f9b720562140eaef0fc33f926572bd2e8e7b8a8501fe93b3f39ef870b13d"
+      ],
+      "after_sources": [
+        "d8ae330228a19b7f299ed46df7bf0a93dbd5e7beaf8e155baf9e51887c6c8c99",
+        "d7235090980d9db6429fb78ba0e50a34c50ecf37dcb0dedb8a026eb4487efb7f"
+      ],
+      "change": "portable official/baseline arguments, pinned manifest consistency, state/time guards",
+      "level": "artifact_verified",
+      "low_state_check": "independently_reproduced",
+      "full_final_source_B6_rerun_by_observer": false
+    }
+  ],
+  "claims": [
+    {
+      "id": "theory-general-m",
+      "claim": "Declared U_m minimum positive-edge type certificates are m; classification, label-cost boundary, and positive-conjunction cost proposition",
+      "level": "artifact_verified",
+      "verification": "Full general proof review, not only finite evidence",
+      "artifact": "observation/THEORY_REVIEW.md",
+      "formal_proof": false,
+      "literature_priority": null
+    },
+    {
+      "id": "theory-C8-complete-observations",
+      "claim": "2520 C8 +315 doubleC4; type minima4 and label minima6",
+      "level": "independently_reproduced",
+      "independence": "separate observer implementation; no theory code imported",
+      "artifact": "observation/independent_graph_result.json"
+    },
+    {
+      "id": "theory-exchange",
+      "claim": "nonvacuous exchange failure; candidate counts6,2,4,2 for S,S+a,S+b,S+a+b",
+      "level": "independently_reproduced",
+      "artifact": "observation/independent_graph_result.json"
+    },
+    {
+      "id": "ac07445-distance",
+      "claim": "ordinary frozen AC exact distance13",
+      "level": "independently_reproduced",
+      "start_B6_states": 1200765,
+      "target_B6_states": 336477,
+      "intersection": 0,
+      "witness_length": 13,
+      "peak_length": 13,
+      "work": 127,
+      "independence": "separate BFS and set construction; shares pinned official apply_move; no application code imported",
+      "artifact": "observation/independent_ac_result.json"
+    },
+    {
+      "id": "sac07445-upper",
+      "claim": "Stable AC upper bound15; shortest unknown",
+      "level": "independently_reproduced",
+      "work": 128,
+      "artifact": "observation/final_submission_cli_receipt.json"
+    },
+    {
+      "id": "combined-submission",
+      "claim": "four unique IDs, shortest among actual two source candidate files, all official local ok",
+      "level": "independently_reproduced",
+      "lengths": {
+        "ac-07445": 13,
+        "ac-08491": 8,
+        "sac-07445": 15,
+        "sac-08491": 10
+      },
+      "artifact": "observation/combined_submission_audit.json",
+      "new_global_optimality_for_old_case_claimed": false,
+      "platform_upload": false
+    },
+    {
+      "id": "resource-failure",
+      "claim": "1000-state truncated run emits incomplete with null exact distance and null proof",
+      "level": "independently_reproduced",
+      "artifact": "observation/application_guard_independent_check.json"
+    }
+  ],
+  "shared_reads": [
+    {
+      "reader": "theory",
+      "source": "application-upper-v1",
+      "ledger_seq": 1,
+      "event_sha256": "852929b2761a628d47dfe213aeb2fbfe5a17fcc8846c3c16d62b1fba0f9c6337",
+      "read_level": "self_report",
+      "adopted": false
+    },
+    {
+      "reader": "theory",
+      "source": "application-distance-v1",
+      "ledger_seq": 2,
+      "event_sha256": "b8c95f031829c05d7dfb9fe08d7fc4cde270d4a5d11a5f95c9a02119bfbbfbf6",
+      "artifact_sha256": "25a42dc3f5434d3d3c123d20dd1aba9783e4ea5fdd6a35cd01b376fb6f26c819",
+      "read_level": "self_report",
+      "adopted": false
+    },
+    {
+      "reader": "application",
+      "source": "theory-white-points-v1",
+      "ledger_seq": 3,
+      "event_sha256": "1c985e933c9a381c78ba587d340b246fd2f856a46b87909acd8fb0dd0323414f",
+      "artifact_sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+      "read_level": "self_report",
+      "adopted": false,
+      "reason": "different object/property languages; conjunction leaf-cost theorem excludes general algorithm queries/shared table construction"
+    },
+    {
+      "reader": "theory",
+      "source": "application-release-v2",
+      "ledger_seq": 4,
+      "event_sha256": "d35033eda1213e7041cf143d401d0d77d49ce4b5503526fd3fae31b545115501",
+      "artifact_sha256": "bcce0693b04acf1f039f01973243579b010475a7508e7900eb9259191010cd9a",
+      "read_level": "self_report",
+      "adopted": false
+    },
+    {
+      "reader": "both teams",
+      "source": "observer result artifacts",
+      "read_level": "self_report supported by exact comparison/receipt artifacts",
+      "adopted_as": "external verification evidence",
+      "cross_team_mathematical_adoption": false
+    }
+  ],
+  "cross_team_new_mathematics_adoption_edges_supported": [],
+  "unknown_edges": [
+    "unrecorded attempts/tool calls/message timing",
+    "provider actual model and token/cost receipts",
+    "causal effect of method revision or organization",
+    "future stable role/task structure",
+    "cross-case query amortization and end-to-end speedup",
+    "literature novelty or external optimality records",
+    "original Yohaku runtime process state"
+  ],
+  "journal_integrity": {
+    "pre_final_review_verified_events": 21,
+    "scope": "all present event/ledger seq and hash links plus every retained artifact snapshot; no full-runtime completeness guarantee"
+  },
+  "versions_read": [
+    {
+      "path": "REGISTRATION.json",
+      "sha256": "010e64d4ed834ee92c53d47d95f9b57cebfffed4cfc0de89469cd0c3e9d229eb",
+      "scope": "Full read; design, model policy and initial external interventions.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "shared/SEED.md",
+      "sha256": "b5bb1efe7400b3405631719a4a8971ab6d25876d56564660c56f61aaceb30a22",
+      "scope": "Full read; initial mathematical boundaries and sources; older research not re-certified here.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "journal.py",
+      "sha256": "51fa23a1a693f3a9bb78986df59b3c056e25a5eda52c0a2acde1938653c4e3db",
+      "scope": "Full read; author-report hash chain and snapshot semantics.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "HOST_DISPATCHES.json",
+      "sha256": "7ffb28bbf713063c4f0d8a135b4859392d4896a10349ab08931381cae4149bf7",
+      "scope": "Full read; accepted requested configurations, not provider receipts.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "HOST_HANDOFF.md",
+      "sha256": "c40fca6365145fa6f6114afd05f4e4b74aa2453dbf5c434e5e293a2eee6d87e7",
+      "scope": "Full read; original-host continuation is proposed, not performed.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/UPPER_V1.md",
+      "sha256": "5961d819a276008aa93adf32018316e5d0f09914d62ef42124804f274e9448d3",
+      "scope": "Full read historical upper-bound statement.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/refinement_results.json",
+      "sha256": "fee98b252c31e0712a52d79b877f170299b9494925c431d89b3d415c97fd1cef",
+      "scope": "Read all four stored runs/trajectories; extracted witness and independently replayed it; did not repeat all heuristic runs.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/local_check.json",
+      "sha256": "ada9b0b1c4c766aa6b6dbf2d90820761a58945891df428aa29e9ca217dd245c3",
+      "scope": "Full read negative window-check output; did not independently repeat all old-path window balls.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/DISTANCE_V1.md",
+      "sha256": "25a42dc3f5434d3d3c123d20dd1aba9783e4ea5fdd6a35cd01b376fb6f26c819",
+      "scope": "Full read metric proof and scope.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/distance_certificate.json",
+      "sha256": "c6c662c40e8e1ae82ebefb5af48146d189bd2d12cd2234e2f604051b08a3e772",
+      "scope": "Full read and compared every ball layer and verdict with independent reconstruction; independently produced state sets not full digest comparison.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/refine.py",
+      "sha256": "d8ae330228a19b7f299ed46df7bf0a93dbd5e7beaf8e155baf9e51887c6c8c99",
+      "scope": "Full read current portable source; original source separately retained below.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/certify.py",
+      "sha256": "d7235090980d9db6429fb78ba0e50a34c50ecf37dcb0dedb8a026eb4487efb7f",
+      "scope": "Full read current guarded portable source; low-state independent invocation; no final-source full B6 rerun.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/verify_witnesses.py",
+      "sha256": "b5f081d99b345bda145f78c8781b5aa9075fb0ae575fdfd6e3e83f34d5b58c13",
+      "scope": "Full read final witness replay and CLI wrapper.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/README.md",
+      "sha256": "bcce0693b04acf1f039f01973243579b010475a7508e7900eb9259191010cd9a",
+      "scope": "Full read final claims, h=min(d,7) query, cost and limits.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/development_log.json",
+      "sha256": "19eaf9e54e720141e824432861fe14310d81d12272bdd97392cb0b5f70c35a98",
+      "scope": "Full read retrospective self-report; no complete tool trace.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/independent_comparison.json",
+      "sha256": "6953e4e08edf2847db221de02dbee1354578b11c04b7f149046da6ce62dd83a2",
+      "scope": "Full read author comparison; corroborated against actual observer and certificate JSON.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/costs.json",
+      "sha256": "a16176d32e934eab2b3ad2928fd2cda00b348b7e3061d898d49f610c7d8f6304",
+      "scope": "Full read separate primitive evaluation counts; not total-runtime/accounting receipts.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/distance_certificate_guarded.json",
+      "sha256": "2d07b7a5adcb7b7ede131016a83cf5e243b8bb66dab30efd1ac6175e8c5d69e1",
+      "scope": "Parsed all-state/layer hashes, witness and verdict; matched original certificate; author rerun, not observer full rerun.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/CHECKPOINT.json",
+      "sha256": "79b4d52a06e6cc1f52b9c32debed3821faa42274d320d2a8804f53b74746b315",
+      "scope": "Full read frozen checkpoint; verified listed current artifact hashes.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/submission.txt",
+      "sha256": "4e41fe294029cfb0dba706e7fc8a0f0c90e23c8bfa4e37603b096b0a65943e09",
+      "scope": "Full read two lines; independently official CLI replayed.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "application/official_cli_receipt.json",
+      "sha256": "280a7b5360c2b99b3cc29c929dde5457dda9617abbd22c1d7bc0fb068e82e274",
+      "scope": "Parsed and compared exactly against independently generated two-line CLI receipt.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "theory/README.md",
+      "sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+      "scope": "Full general-m proof review; details in THEORY_REVIEW.md.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "theory/verify_white_points.py",
+      "sha256": "1e206f68abde9ab92199275d693b7dace72897856f3c0cc034256efc370eac61",
+      "scope": "Full source read; author program --check independently executed.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "theory/RESULTS.json",
+      "sha256": "50edca4b75aeb86f415f800fb5d4c24381fbb670895bd24b075b6c91be861734",
+      "scope": "Parsed by full author-program recomputation and exact JSON equality; selected closure and minima fields manually inspected.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "theory/CHECKPOINT.json",
+      "sha256": "f563fde229fbba49628c5a46e20eef4e4e02baf35f07f2490bc46d4084997879",
+      "scope": "Full read final checkpoint; mathematical hashes verified; revision history remains self-report.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "theory/REVIEW_RECEIPT.json",
+      "sha256": "c82e7584a434ad2baf3731bd8db2a5c839ea6625262ec6581b351c8f7d748176",
+      "scope": "Full read author receipt of external review and actual observer-artifact hashes.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "shared/MATH_LEDGER.jsonl",
+      "sha256": "6592c2bafb0e30df265567ebe628211e0150801731faeb61f96b0030abf74b5f",
+      "scope": "Full read final five math publications; chain and all snapshot hashes verified.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "events/theory.jsonl",
+      "sha256": "bcef14be63347bf142e0584c406039b91bdf7c8df6bf8da683f4239417b3753f",
+      "scope": "Full read team self-reports; chain and snapshots verified.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "events/application.jsonl",
+      "sha256": "90af1f601f03caf778f86e4a0f666bfcfd7486d6d419f093accfe2052f8dd2a6",
+      "scope": "Full read team self-reports; chain and snapshots verified.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "events/host.jsonl",
+      "sha256": "1cbcde5b9ba2eb962fffe06e7da64a8c35ff03a0d7d09b4affce354b15e00f6a",
+      "scope": "Full read external dispatch/review declarations; chain and snapshots verified.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "events/observer.jsonl",
+      "sha256": "b5344258873fe171265e05663e285c32bf61e38a72647dfce5d3d0742a0b5dd3",
+      "scope": "Observer review records; chain and snapshots verified.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "submission-latest.txt",
+      "sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+      "scope": "Full read; independently official CLI replayed all four unique IDs; candidate selection audited.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "submission-latest-provenance.json",
+      "sha256": "1f2c73ac8721aac572da13ad5dda3e0db38df6b64a0a1c685ec7dc8319d2440d",
+      "scope": "Full read; both actual source file hashes and shortest-candidate tie break checked.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "submission-latest-verdict.json",
+      "sha256": "37cd38e4b30c339f737640b30f96f2a06706ec6139032722fc6b6fec3336c71a",
+      "scope": "Full read; exact JSON equality with observer official CLI output.",
+      "level": "artifact_verified"
+    },
+    {
+      "path_at_read": "application/refine.py",
+      "sha256": "5ba838893cae5f6fd9432fda5c66c18e7fc5d67cadaa654b0ac26fbe887db9e0",
+      "retained_snapshot": "snapshots/5ba838893cae5f6fd9432fda5c66c18e7fc5d67cadaa654b0ac26fbe887db9e0",
+      "scope": "Full read original hardcoded search source at upper-v1; current file differs.",
+      "level": "artifact_verified"
+    },
+    {
+      "path_at_read": "application/certify.py",
+      "sha256": "d434f9b720562140eaef0fc33f926572bd2e8e7b8a8501fe93b3f39ef870b13d",
+      "retained_snapshot": "snapshots/d434f9b720562140eaef0fc33f926572bd2e8e7b8a8501fe93b3f39ef870b13d",
+      "scope": "Full read original unguarded certificate source; current file differs.",
+      "level": "artifact_verified"
+    },
+    {
+      "path_at_read": "observation/independent_ac_check.py",
+      "sha256": "4f369b6c78023bce5d79473da8e049cda5e39e847c976e9e0f8b9de729c72e54",
+      "retained_snapshot": "snapshots/4f369b6c78023bce5d79473da8e049cda5e39e847c976e9e0f8b9de729c72e54",
+      "scope": "Exact observer source that performed full independent B6/B6 science run; current source adds portable CLI/input-only mode.",
+      "level": "artifact_verified"
+    },
+    {
+      "path_at_read": "observation/independent_graph_check.py",
+      "sha256": "83fd68056bece046f28d7c2c5b53ccdb19065a9b6146c4cab1f9a8f5c954f87e",
+      "retained_snapshot": "snapshots/83fd68056bece046f28d7c2c5b53ccdb19065a9b6146c4cab1f9a8f5c954f87e",
+      "scope": "First independent all-observation graph run; current source additionally independently audits closure counterexample.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "observation/independent_ac_check.py",
+      "sha256": "0ff7e5de9f112470355d8abe56126c4e0f7a119458e7067fdb2497e4a4b984d3",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "observation/independent_ac_result.json",
+      "sha256": "33a3b6cbd0534931f85fe9404eefbba4269f46056ad8a07c7ca72686422af5da",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/independent_graph_check.py",
+      "sha256": "4505b44925d346cac178896cd1c3d6aa52fb88e2f92182a93e7c55da46f301b2",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "observation/independent_graph_result.json",
+      "sha256": "804e7909cd2942189fb49ea1fcbb3ccd56a25d5bb7c65742161bfc816f9857e1",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/THEORY_REVIEW.md",
+      "sha256": "425eee8fd5bac1e78a96c9f45582a13ba54394951e89ebd0c2dbdec889488824",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "artifact_verified"
+    },
+    {
+      "path": "observation/official_lock_check.json",
+      "sha256": "e4c079f5157c8a312f8a52bc734b8c2ec786006a14468aad777e9f7164f59361",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/theory_recompute_receipt.json",
+      "sha256": "1447d9199dd01328df742583c6a5cdb8b0ce11842f7064b5b64f9dafa09e06d0",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/portable_ac_inputs_check.json",
+      "sha256": "036084b3f572cd9ab1afd77181b52ce3472627df89f510f0b148a3e99445e3a6",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/application_guard_independent_check.json",
+      "sha256": "d3e3549770c6d675adcd1f289a1ebcf7a521bba27b71c48f9acd1f1e99979809",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/final_submission_cli_receipt.json",
+      "sha256": "280a7b5360c2b99b3cc29c929dde5457dda9617abbd22c1d7bc0fb068e82e274",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/combined_submission_cli_receipt.json",
+      "sha256": "d1847faa6bccac44145a7bfe6164dc618345ba659fa66a4c5ec8d6faca5b37da",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    },
+    {
+      "path": "observation/combined_submission_audit.json",
+      "sha256": "d7dc30b3b1b7bd0f6799c593c756f5d1cbc0c527bda3da84795b962432cde3e2",
+      "scope": "Observer-authored or directly generated independent check artifact; see named proof/result scope.",
+      "level": "independently_reproduced"
+    }
+  ],
+  "observer_own_failures": [
+    {
+      "action": "first local upstream-lock/CLI preparation",
+      "error": "relative Path(.) parent mistaken; preparation failed before submission file existed, subsequent CLI failed for missing file",
+      "correction": "resolved root to absolute and repeated checks successfully",
+      "scientific_conclusion_affected": false
+    }
+  ]
+}

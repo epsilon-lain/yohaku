@@ -1,0 +1,180 @@
+{
+  "scope": "all realizable positive edge subsets in labelled C8 or 2C4",
+  "graph_counts_C8_2C4": [
+    2520,
+    315
+  ],
+  "observation_patterns_by_edge_count": [
+    1,
+    28,
+    378,
+    2940,
+    13755,
+    36540,
+    48510,
+    22680,
+    2835
+  ],
+  "type_identifying_by_edge_count_C8_2C4": [
+    [
+      0,
+      0,
+      0,
+      0,
+      3360,
+      22680,
+      40320,
+      20160,
+      2520
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      210,
+      1260,
+      3150,
+      2520,
+      315
+    ]
+  ],
+  "exact_identifying_by_edge_count_C8_2C4": [
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      20160,
+      20160,
+      2520
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      2520,
+      2520,
+      315
+    ]
+  ],
+  "minimum_type_identifying_C8_2C4": [
+    4,
+    4
+  ],
+  "minimum_exact_identifying_C8_2C4": [
+    6,
+    6
+  ],
+  "exchange_counterexample": {
+    "S": {
+      "candidate_count": 6,
+      "closure_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    "S_plus_a": {
+      "candidate_count": 2,
+      "closure_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ]
+    },
+    "S_plus_b": {
+      "candidate_count": 4,
+      "closure_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          6,
+          7
+        ]
+      ]
+    },
+    "S_plus_a_plus_b": {
+      "candidate_count": 2,
+      "closure_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "recorded_at_utc": "2026-11-16T11:48:04.938174+00:00",
+  "timestamp_scope": "coordinator recording time, not exact dispatch instant",
+  "source": "accepted collaboration.spawn_agent requests in this thread",
+  "provider_model_receipts_available": false,
+  "token_usage_available": false,
+  "dispatches": [
+    {
+      "agent": "/root/sol_theory",
+      "team": "theory",
+      "model_requested": "gpt-6.1-sol",
+      "reasoning_effort_requested": "max",
+      "fork_turns": "none",
+      "tool_outcome": "accepted; canonical task returned",
+      "checkpoint": "theory/CHECKPOINT.json",
+      "checkpoint_sha256": "f563fde229fbba49628c5a46e20eef4e4e02baf35f07f2490bc46d4084997879",
+      "completion_evidence": "final completion message and frozen checkpoint, observed by coordinator",
+      "first_sprint_status": "completed"
+    },
+    {
+      "agent": "/root/sol_application",
+      "team": "application",
+      "model_requested": "gpt-6.1-sol",
+      "reasoning_effort_requested": "max",
+      "fork_turns": "none",
+      "tool_outcome": "accepted; canonical task returned",
+      "checkpoint": "application/CHECKPOINT.json",
+      "checkpoint_sha256": "79b4d52a06e6cc1f52b9c32debed3821faa42274d320d2a8804f53b74746b315",
+      "completion_evidence": "final completion message and frozen checkpoint, observed by coordinator",
+      "first_sprint_status": "completed"
+    },
+    {
+      "agent": "/root/sol_observer",
+      "team": "observer",
+      "model_requested": "gpt-6.1-sol",
+      "reasoning_effort_requested": "high",
+      "fork_turns": "none",
+      "tool_outcome": "accepted; canonical task returned",
+      "checkpoint": "observation/CHECKPOINT.json",
+      "checkpoint_sha256": "fb0a008169a5a980a846b0aebebdf51badbb578a765425359a76cd2f3dd321e2",
+      "completion_evidence": "final completion message and frozen checkpoint, observed by coordinator",
+      "first_sprint_status": "completed"
+    }
+  ],
+  "completion_recorded_at_utc": "2026-11-16T12:07:20.891434+00:00",
+  "team_created_collaborators": []
+}

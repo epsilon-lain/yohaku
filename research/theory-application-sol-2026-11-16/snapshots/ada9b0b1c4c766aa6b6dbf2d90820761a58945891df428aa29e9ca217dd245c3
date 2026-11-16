@@ -1,0 +1,28 @@
+{
+  "radius_each_side": 3,
+  "ball_sizes": [
+    1548,
+    1548,
+    1548,
+    1548,
+    1547,
+    1547,
+    1547,
+    1547,
+    1546,
+    1544,
+    1531,
+    1531,
+    1519,
+    1383,
+    991,
+    822,
+    662,
+    662
+  ],
+  "primitive_evaluations": 36792,
+  "shorter_replacements_at_most_2r": [],
+  "statement": "No shorter path of length <=2r joins any tested pair of incumbent vertices.",
+  "word_length_pruning": false,
+  "equivalence_quotient": false
+}

@@ -1,0 +1,33 @@
+{
+  "recorded_at_utc": "2026-11-16T11:48:04.938174+00:00",
+  "timestamp_scope": "coordinator recording time, not exact dispatch instant",
+  "source": "accepted collaboration.spawn_agent requests in this thread",
+  "provider_model_receipts_available": false,
+  "token_usage_available": false,
+  "dispatches": [
+    {
+      "agent": "/root/sol_theory",
+      "team": "theory",
+      "model_requested": "gpt-6.1-sol",
+      "reasoning_effort_requested": "max",
+      "fork_turns": "none",
+      "tool_outcome": "accepted; canonical task returned"
+    },
+    {
+      "agent": "/root/sol_application",
+      "team": "application",
+      "model_requested": "gpt-6.1-sol",
+      "reasoning_effort_requested": "max",
+      "fork_turns": "none",
+      "tool_outcome": "accepted; canonical task returned"
+    },
+    {
+      "agent": "/root/sol_observer",
+      "team": "observer",
+      "model_requested": "gpt-6.1-sol",
+      "reasoning_effort_requested": "high",
+      "fork_turns": "none",
+      "tool_outcome": "accepted; canonical task returned"
+    }
+  ]
+}

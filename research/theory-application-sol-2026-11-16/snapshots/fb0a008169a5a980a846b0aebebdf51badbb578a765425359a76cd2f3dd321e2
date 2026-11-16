@@ -1,0 +1,34 @@
+{
+  "version": "observer-checkpoint-v1",
+  "status": "complete_and_frozen",
+  "at_utc": "2026-11-16T12:05:56.682377+00:00",
+  "no_background_computations_running": true,
+  "review_scope": "both first checkpoints plus root final combined submission; no new large searches after scientific reproduction",
+  "key_conclusions": [
+    "No stable organizational differentiation supported; both research teams remained single lead.",
+    "General-m theory proofs reviewed without finding errors; independent C8 and nonvacuous exchange counterexample reproduced.",
+    "ac-07445 ordinary AC distance exactly13 independently reproduced; Stable15 only verified upper bound.",
+    "Combined four unique-ID submission independently official-verified and source-candidate selection audited.",
+    "Both peer-result reads reported, no current cross-team theorem adoption supported.",
+    "Initial grouping/review and subsequent root resource/portable requirements are external interventions.",
+    "No original Yohaku host/process/model migration claimed."
+  ],
+  "journal_verification": {
+    "verified_events": 22
+  },
+  "artifact_hashes": {
+    "observation/REPORT.md": "84026bbc3d5b2de43b6a79e28f462616696f84cb129ca26f3494fe29edc41719",
+    "observation/OBSERVATIONS.json": "cd0bd08c9dc36750196c1abc0502257975eee95e4a121a2d2271672dbe8fcb82",
+    "observation/THEORY_REVIEW.md": "425eee8fd5bac1e78a96c9f45582a13ba54394951e89ebd0c2dbdec889488824",
+    "observation/independent_ac_check.py": "0ff7e5de9f112470355d8abe56126c4e0f7a119458e7067fdb2497e4a4b984d3",
+    "observation/independent_ac_result.json": "33a3b6cbd0534931f85fe9404eefbba4269f46056ad8a07c7ca72686422af5da",
+    "observation/independent_graph_check.py": "4505b44925d346cac178896cd1c3d6aa52fb88e2f92182a93e7c55da46f301b2",
+    "observation/independent_graph_result.json": "804e7909cd2942189fb49ea1fcbb3ccd56a25d5bb7c65742161bfc816f9857e1",
+    "observation/combined_submission_audit.json": "d7dc30b3b1b7bd0f6799c593c756f5d1cbc0c527bda3da84795b962432cde3e2",
+    "observation/combined_submission_cli_receipt.json": "d1847faa6bccac44145a7bfe6164dc618345ba659fa66a4c5ec8d6faca5b37da",
+    "observation/journal_integrity_final.json": "046a6908fc0e9a00a0b5adfdd9652bd2c543d583f16316f2bf5b7f13aafbea01"
+  },
+  "full_B6_observer_source_snapshot": "snapshots/4f369b6c78023bce5d79473da8e049cda5e39e847c976e9e0f8b9de729c72e54",
+  "current_observer_AC_source_note": "Portable --official-root and --check-inputs-only added after full science run; input hashes/official replay checked, no unnecessary million-state rerun.",
+  "unknowns": "Provider actual model receipts, tokens/fees, full trace completeness, literature priority, stable workflow evolution and original-host state."
+}

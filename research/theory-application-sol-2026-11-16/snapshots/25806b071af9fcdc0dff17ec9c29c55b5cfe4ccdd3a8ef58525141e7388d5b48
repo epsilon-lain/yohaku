@@ -1,0 +1,22 @@
+[
+  {
+    "path": "REGISTRATION.json",
+    "sha256": "010e64d4ed834ee92c53d47d95f9b57cebfffed4cfc0de89469cd0c3e9d229eb",
+    "scope": "read in full; initial observation protocol inputs"
+  },
+  {
+    "path": "shared/SEED.md",
+    "sha256": "b5bb1efe7400b3405631719a4a8971ab6d25876d56564660c56f61aaceb30a22",
+    "scope": "read in full; initial observation protocol inputs"
+  },
+  {
+    "path": "journal.py",
+    "sha256": "51fa23a1a693f3a9bb78986df59b3c056e25a5eda52c0a2acde1938653c4e3db",
+    "scope": "read in full; initial observation protocol inputs"
+  },
+  {
+    "path": "observation/PLAN.md",
+    "sha256": "33be5b6f44ab4b01abb11ce13777364319113d2bd0da7829c7b4dbb965ef681a",
+    "scope": "observer-authored protocol"
+  }
+]

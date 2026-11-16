@@ -1,0 +1,15 @@
+{
+  "four_unique_ids": true,
+  "selected_shortest_among_actual_two_source_files": true,
+  "deterministic_path_order_tie_break": true,
+  "source_hashes_match_provenance": true,
+  "independent_official_cli_matches_host_verdict": true,
+  "lengths": {
+    "ac-07445": 13,
+    "ac-08491": 8,
+    "sac-07445": 15,
+    "sac-08491": 10
+  },
+  "combined_submission_sha256": "7544baaa6a188824b9e7538c8a9b6cc2710ccb576d74a8c0809f507bf3771a56",
+  "scope": "Shortest among retained source candidates only; no new global optimality claim or platform upload."
+}

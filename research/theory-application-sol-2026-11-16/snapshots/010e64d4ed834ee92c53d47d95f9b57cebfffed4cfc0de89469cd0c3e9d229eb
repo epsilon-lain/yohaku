@@ -1,0 +1,67 @@
+{
+  "run_id": "theory-application-sol-20261116-01",
+  "registered_at_utc": "2026-11-16T11:45:58.010077+00:00",
+  "execution_surface": "ChatGPT Work collaboration tools; shared workspace",
+  "yohaku_original_host_access": "not mounted; original host processes not inspected, stopped, or migrated",
+  "design": "Two different research goals with shared mathematics; descriptive longitudinal workflow observation, not an independent causal A/B trial",
+  "model_policy": {
+    "allowed_models": [
+      "gpt-6.1-sol"
+    ],
+    "minimum_reasoning_effort": "high",
+    "leaders_reasoning_effort": "max",
+    "collaborators_and_observer_reasoning_effort": "high or max",
+    "fallback": "pause and report; no silent downgrade",
+    "excluded_models": [
+      "gpt-6-astra",
+      "glm",
+      "gemma",
+      "deepseek"
+    ],
+    "ultra": "permitted by user, not selected in this run"
+  },
+  "teams": {
+    "theory": {
+      "goal": "mathematical properties, valid propositions, counterexamples and consistency of property/concept framework",
+      "initial_roles": [
+        "lead"
+      ],
+      "optional_additional_collaborators": 1
+    },
+    "application": {
+      "goal": "apply mathematical framework to Andrews-Curtis legal paths, reusable concepts and compression",
+      "initial_roles": [
+        "lead"
+      ],
+      "optional_additional_collaborators": 1
+    }
+  },
+  "shared_math": "publish versioned mathematical claims, code, counterexamples and failures immediately; read and cite exact versions on demand",
+  "organization": "teams choose their tasks and working methods; log actual role/task/review/method changes; no forced immune loop",
+  "initial_root_interventions": [
+    "chosen two research goals",
+    "model and reasoning floor/ceiling",
+    "initial single lead per team",
+    "at most one optional collaborator per team",
+    "one bounded first sprint and a handoff checkpoint"
+  ],
+  "first_sprint_limits": {
+    "additional_external_paid_API_calls": 0,
+    "per_team_optional_collaborators": 1,
+    "no_unbounded_background_claim": true,
+    "competition_platform_uploads": 0
+  },
+  "observation_limits": [
+    "Agent-authored journals are self-reports, not complete tool traces",
+    "Coordinator records accepted spawn requests and observed messages; provider model receipts/tokens are not exposed by collaboration tools",
+    "Shared filesystem is not a confidentiality boundary",
+    "New role labels alone do not prove structural differentiation",
+    "No model parameter training is claimed"
+  ],
+  "status": "initial agents dispatched; first sprint in progress",
+  "configured_agents": [
+    "/root/sol_theory",
+    "/root/sol_application",
+    "/root/sol_observer"
+  ]
+}

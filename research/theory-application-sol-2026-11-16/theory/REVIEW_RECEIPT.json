@@ -1,0 +1,23 @@
+{
+  "version": "theory-white-points-v1-review-receipt",
+  "received_from": "/root/sol_observer",
+  "recorded_at_utc": "2026-11-16T12:01:26.376855+00:00",
+  "reviewed_readme_sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+  "observed_message_summary": "Observer reported full reading of README: no error seen in general-m integer lemmas A/B, path-component completion criterion, exact-label lower bounds, and m=3 exception. Independently enumerated all realizable C8/2C4 positive observations and closure counterexample; candidate counts S=6, S+a=2, S+b=4, S+a+b=2.",
+  "source_artifacts_actually_read": [
+    {
+      "path": "observation/theory_recompute_receipt.json",
+      "sha256": "1447d9199dd01328df742583c6a5cdb8b0ce11842f7064b5b64f9dafa09e06d0"
+    },
+    {
+      "path": "observation/independent_graph_result.json",
+      "sha256": "804e7909cd2942189fb49ea1fcbb3ccd56a25d5bb7c65742161bfc816f9857e1"
+    },
+    {
+      "path": "observation/independent_graph_run.json",
+      "sha256": "37c6d4d351fc9648c1aaa398640ca6d47fd216eb4521bf40ae0d4cf90420707c"
+    }
+  ],
+  "adoption": "Used as external verification evidence for v1, not as a new mathematical premise or claimed internal self-organization.",
+  "limitations": "This receipt is our record of an actually received collaboration message and files we read; it is not a provider-level tool trace or model receipt."
+}

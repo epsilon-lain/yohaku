@@ -1,0 +1,128 @@
+"""Bounded incumbent refinement with exact target-ball membership query.
+
+No macro edges: every generated edge is one official primitive move. The search
+may prune at a word-length cap and a primitive-evaluation budget. Only the
+incumbent lower-bound prune is exact; heuristic failures are not certificates.
+"""
+from __future__ import annotations
+import argparse, hashlib, heapq, itertools, json, sys, time
+from pathlib import Path
+
+HERE=Path(__file__).resolve().parent
+ROOT=HERE.parent
+TARGET=((1,),(2,))
+COMMIT='a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e'
+
+def dump(path,value):
+    path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n')
+
+def lock(official_root,baseline_root):
+    entries=json.loads((baseline_root/'upstream-lock.json').read_text())
+    assert entries['commit']==COMMIT,'Unexpected official commit'
+    for e in entries['files']:
+        assert hashlib.sha256((official_root/e['path']).read_bytes()).hexdigest()==e['sha256'],e['path']
+    return {'commit':entries['commit'],'manifest_sha256':hashlib.sha256((official_root/'competition/tools/verifier/data/manifest.json').read_bytes()).hexdigest(),'checked_files':len(entries['files']),'baseline_results_sha256':hashlib.sha256((baseline_root/'results.json').read_bytes()).hexdigest()}
+
+def configure(official_root,baseline_root):
+    """Check pinned sources before importing any official implementation."""
+    global OFFICIAL,PRIOR,apply_move,verify,INVERSE_MOVE
+    OFFICIAL=official_root.resolve();PRIOR=baseline_root.resolve()
+    provenance=lock(OFFICIAL,PRIOR)
+    sys.path.insert(0,str(OFFICIAL/'competition/tools'))
+    from verifier.core import apply_move,verify,INVERSE_MOVE
+    return provenance
+
+def source_arguments(parser):
+    parser.add_argument('--official-root',type=Path,required=True)
+    parser.add_argument('--baseline-root',type=Path,required=True)
+
+def length(s):return sum(map(len,s))
+
+def target_ball(depth):
+    seen={TARGET:()};frontier=[TARGET];sizes=[1];evals=0;peak=2
+    started=time.perf_counter()
+    for _ in range(depth):
+        nxt=[]
+        for s in frontier:
+            for m in range(14):
+                t=apply_move(s,m);evals+=1;peak=max(peak,length(t))
+                if t not in seen:
+                    seen[t]=(INVERSE_MOVE[m],)+seen[s];nxt.append(t)
+        frontier=nxt;sizes.append(len(frontier))
+    return seen,{'radius':depth,'frontier_sizes':sizes,'states':len(seen),'primitive_evaluations':evals,'peak_total_length':peak,'pruning':False,'wall_seconds':time.perf_counter()-started}
+
+def search(start,ball,depth,prior,weight,budget,cap):
+    serial=itertools.count();q=[(length(start),0,next(serial),start,())]
+    seen={start:0};incumbent=list(prior);updates=[]
+    counts={'primitive_evaluations':0,'expanded_states':0,'bound_pruned':0,'length_pruned':0,'nonimproving':0}
+    began=time.perf_counter()
+    while q and counts['primitive_evaluations']<budget:
+        _,g,_,s,path=heapq.heappop(q)
+        if seen.get(s)!=g:continue
+        lb=len(ball[s]) if s in ball else depth+1
+        if g+lb>=len(incumbent):counts['bound_pruned']+=1;continue
+        counts['expanded_states']+=1
+        for m in range(14):
+            if counts['primitive_evaluations']>=budget:break
+            t=apply_move(s,m);counts['primitive_evaluations']+=1
+            gg=g+1;pp=path+(m,)
+            if t in ball:
+                candidate=pp+ball[t]
+                if len(candidate)<len(incumbent):
+                    incumbent=list(candidate);updates.append({'length':len(candidate),'at_evaluation':counts['primitive_evaluations']})
+            lb=len(ball[t]) if t in ball else depth+1
+            if gg+lb>=len(incumbent):counts['bound_pruned']+=1;continue
+            if length(t)>cap:counts['length_pruned']+=1;continue
+            if gg>=seen.get(t,10**9):counts['nonimproving']+=1;continue
+            seen[t]=gg
+            heapq.heappush(q,(length(t)+weight*gg,gg,next(serial),t,pp))
+    return {'status':'budget_exhausted' if q else 'frontier_exhausted_under_cap','weight':weight,'budget':budget,'length_cap':cap,'moves':incumbent,'expanded_move_length':len(incumbent),'improved':len(incumbent)<len(prior),'updates':updates,**counts,'seen_states':len(seen),'remaining_queue':len(q),'wall_seconds':time.perf_counter()-began}
+
+def trajectory(start,moves):
+    states=[start]
+    for move in moves:states.append(apply_move(states[-1],move))
+    return {'states':states,'total_lengths':[length(s) for s in states],'cumulative_work':[sum(length(t) for t in states[:i+1]) for i in range(len(states))]}
+
+def local_check(start,moves,depth=3):
+    states=trajectory(start,moves)['states'];balls=[];evals=0;improvements=[]
+    for source in states:
+        seen={source:()};frontier=[source]
+        for _ in range(depth):
+            nxt=[]
+            for s in frontier:
+                for m in range(14):
+                    t=apply_move(s,m);evals+=1
+                    if t not in seen:seen[t]=seen[s]+(m,);nxt.append(t)
+            frontier=nxt
+        balls.append(seen)
+    for i in range(len(states)):
+        for j in range(i+1,len(states)):
+            for s in balls[i].keys()&balls[j].keys():
+                candidate=balls[i][s]+tuple(INVERSE_MOVE[m] for m in reversed(balls[j][s]))
+                if len(candidate)<j-i:improvements.append({'i':i,'j':j,'replacement':candidate})
+    return {'radius_each_side':depth,'ball_sizes':[len(b) for b in balls],'primitive_evaluations':evals,'shorter_replacements_at_most_2r':improvements,'statement':'No shorter path of length <=2r joins any tested pair of incumbent vertices.' if not improvements else 'Found shorter replacement(s).','word_length_pruning':False,'equivalence_quotient':False}
+
+def main():
+    p=argparse.ArgumentParser();source_arguments(p)
+    p.add_argument('--budget',type=int,default=200000);p.add_argument('--depth',type=int,default=6);p.add_argument('--weights',default='0,0.5,1,2')
+    p.add_argument('--output',type=Path,default=HERE/'refinement_results.json')
+    p.add_argument('--local-output',type=Path,default=HERE/'local_check.json')
+    args=p.parse_args()
+    provenance=configure(args.official_root,args.baseline_root)
+    manifest=json.loads((OFFICIAL/'competition/tools/verifier/data/manifest.json').read_text())
+    case=next(c for c in manifest['challenges'] if c['challenge_id']=='ac-07445')
+    old=next(c for c in json.loads((PRIOR/'results.json').read_text())['cases'] if c['challenge_id']==case['challenge_id'])['arms']['primitive']['moves']
+    start=tuple(map(tuple,case['initial_relators']))
+    local=local_check(start,old)
+    dump(args.local_output,local)
+    ball,report=target_ball(args.depth)
+    results=[]
+    for weight in map(float,args.weights.split(',')):
+        result=search(start,ball,args.depth,old,weight,args.budget,32)
+        result['official_verification']=verify(case,result['moves'],case['move_spec_version'],manifest['limits'])
+        result['trajectory']=trajectory(start,result['moves'])
+        assert result['official_verification']['ok']
+        results.append(result)
+        dump(args.output,{'version':'application-refinement-portable-v2','provenance':provenance,'case_selection':'Existing seen case ac-07445, selected for its prior 17-move incumbent. No holdout/generalization claim.','challenge':case,'initial_incumbent':old,'target_ball':report,'runs':results,'limits':'Bounded heuristic search with cap32; finite failure does not certify global optimum.'})
+        print(json.dumps({k:result[k] for k in ['weight','expanded_move_length','improved','primitive_evaluations','expanded_states','wall_seconds']}),flush=True)
+if __name__=='__main__':main()

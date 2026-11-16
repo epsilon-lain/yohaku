@@ -1,0 +1,31 @@
+{
+  "version": "application-costs-v1",
+  "target_ball_compilation": {
+    "radius": 6,
+    "frontier_sizes": [
+      1,
+      10,
+      77,
+      574,
+      4453,
+      35664,
+      295698
+    ],
+    "states": 336477,
+    "primitive_evaluations": 570906,
+    "peak_total_length": 37,
+    "pruning": false,
+    "wall_seconds": 1.0841322490014136
+  },
+  "table_entries": 336477,
+  "total_stored_suffix_move_symbols_if_materialized": 1972206,
+  "refinement_search_primitive_evaluations": 800000,
+  "refinement_search_runs": 4,
+  "old_path_local_audit_primitive_evaluations": 36792,
+  "distance_certificate_primitive_evaluations": 2423680,
+  "distance_certificate_official_crosscheck_evaluations": 2423680,
+  "guarded_rerun_primitive_evaluations": 2423680,
+  "guarded_rerun_official_crosscheck_evaluations": 2423680,
+  "observer_independent_primitive_evaluations": 2423680,
+  "counting_limitations": "Primitive apply calls omit state hashing, sorting, queue operations, Python object memory and source validation. No whole-runtime speedup or amortization is claimed. Development explorations and smoke/resource-limit checks are separately retained and not folded into a fair arm comparison."
+}

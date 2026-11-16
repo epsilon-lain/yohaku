@@ -1,0 +1,383 @@
+{
+  "version": "application-distance-v1",
+  "provenance": {
+    "commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+    "checked_files": 18
+  },
+  "challenge": {
+    "challenge_id": "ac-07445",
+    "generators": [
+      "x",
+      "y"
+    ],
+    "initial_relators": [
+      [
+        -2,
+        -2,
+        1,
+        2,
+        1
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    "target_relators": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "move_spec_version": "ac-r2-v1",
+    "scored": true,
+    "base_score": 1,
+    "instance_hash": "sha256:25d9dc7570c0403aca323a3e7d53706c025dde87acb4deab63cac3e6176404d6",
+    "freeze_date": null
+  },
+  "forward_ball": {
+    "radius": 6,
+    "layer_sizes": [
+      1,
+      14,
+      145,
+      1388,
+      12895,
+      117898,
+      1068424
+    ],
+    "states": 1200765,
+    "primitive_evaluations": 1852774,
+    "official_crosscheck_evaluations": 1852774,
+    "peak_total_length": 212,
+    "pruning": false,
+    "quotient": false,
+    "layer_state_sha256": [
+      "e9f16f9cf948e1cee264d454cd78610093a9ef4a1e5ea87e1d02dc1febaf9eb4",
+      "90bb83223c3189179629d1694b1c1c57211ce0b59d21704e0f5ec04bbd16456e",
+      "778d229c1407a5f033a6ce3dd51155ba1bbecb9ea4a5822a097366d7cb896c5c",
+      "a8a2873b5a80d85847a825812764b77b7d6e78f02303434b7e15911a719f60ed",
+      "d88f4e8bc54d99cc52e75ab366e8db90117524cd7a646a0dbc3561cb6fdba72d",
+      "ae162fb74df8ca900ba7c3b47c61d5649e839b9b544451566c62e69460ac5461",
+      "9961c87d5ac29bbfdb5936cdb3f4c03f8cf0d4657510eed9a0e903b6f17ed827"
+    ],
+    "all_state_sha256": "28ef7a06d02af24a98634ceac603a24bf870ba0299c1bd31d93cd327f2910b44",
+    "digest_encoding": "state=[letter code for r0]+[0]+[letter code for r1], code(-2,-1,1,2)=(1,2,3,4); lexicographic sort states, each prefixed by 4-byte big-endian byte length",
+    "wall_seconds": 14.839346727996599
+  },
+  "target_ball": {
+    "radius": 6,
+    "layer_sizes": [
+      1,
+      10,
+      77,
+      574,
+      4453,
+      35664,
+      295698
+    ],
+    "states": 336477,
+    "primitive_evaluations": 570906,
+    "official_crosscheck_evaluations": 570906,
+    "peak_total_length": 37,
+    "pruning": false,
+    "quotient": false,
+    "layer_state_sha256": [
+      "f7ff95016741efa50fee62c012137722f128dd222782517c969e1936c974761e",
+      "f876cbcee50e94203f4149a315e4c2a084f6b151e7e25cc73a8b1d5fb3d1e1fb",
+      "b7db29292c51736ba6ce32e4bda983c940766141b522eda0a0774f1f90936652",
+      "c00fc5338117eb29bb3235a4f22bb2f528df27c62220b512993be617886b4809",
+      "e75e70580211efd55ae2c59b2df7ce1ee8cf6dd9045f474c3103fedd57b590ac",
+      "1528e9d46e7d9aaf8d5a7a449020add9e90b659257aeeb19e66e1d8eee4e27fc",
+      "e2f99fc4e3eae1576deae5bea051c278394e3286be1e28e29a676be12509b30f"
+    ],
+    "all_state_sha256": "63f3708a8750ec265e93db4a6232ea5642e3e23bd7007609429410e6f833b837",
+    "digest_encoding": "state=[letter code for r0]+[0]+[letter code for r1], code(-2,-1,1,2)=(1,2,3,4); lexicographic sort states, each prefixed by 4-byte big-endian byte length",
+    "wall_seconds": 2.513307872999576
+  },
+  "intersection_count": 0,
+  "excluded_move_lengths": {
+    "minimum": 0,
+    "maximum": 12
+  },
+  "exact_AC_distance": 13,
+  "witness": [
+    6,
+    4,
+    12,
+    1,
+    3,
+    6,
+    12,
+    2,
+    5,
+    6,
+    4,
+    2,
+    4
+  ],
+  "official_verification": {
+    "ok": true,
+    "length": 13,
+    "peak_total_relator_length": 13,
+    "work": 127,
+    "certificate_hash": "sha256:e13f345f7c99dd9813e1e59c6eda976d2a8918b6c79feb3027dc73cfe3483e2a"
+  },
+  "trajectory": {
+    "states": [
+      [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -2,
+          -1,
+          2,
+          1,
+          -2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -1,
+          2,
+          -1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          1,
+          -2,
+          1
+        ],
+        [
+          -1,
+          2,
+          -1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2,
+          1,
+          -2
+        ],
+        [
+          -1,
+          2,
+          -1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2,
+          1,
+          -2
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          1
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          1
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2
+        ],
+        [
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ]
+    ],
+    "total_lengths": [
+      12,
+      12,
+      13,
+      11,
+      11,
+      11,
+      11,
+      11,
+      9,
+      8,
+      8,
+      5,
+      3,
+      2
+    ],
+    "cumulative_work": [
+      12,
+      24,
+      37,
+      48,
+      59,
+      70,
+      81,
+      92,
+      101,
+      109,
+      117,
+      122,
+      125,
+      127
+    ]
+  },
+  "proof": "Every path of length <=12 meets both complete radius-six balls. Their empty intersection excludes all such paths; the official verified length-13 witness proves distance exactly 13.",
+  "scope": "One fixed ordinary AC instance; exact ordered target; no quotient or truncation; not Stable AC or a conjecture result."
+}

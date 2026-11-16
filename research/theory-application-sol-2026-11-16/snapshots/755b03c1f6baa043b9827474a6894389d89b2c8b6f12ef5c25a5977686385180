@@ -1,0 +1,435 @@
+{
+  "version": "application-refinement-portable-v2",
+  "provenance": {
+    "commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+    "checked_files": 18,
+    "baseline_results_sha256": "c4173779c1f2561d0119379942e8adbc47feaf1f80766de9f652c3bb23bb726a"
+  },
+  "case_selection": "Existing seen case ac-07445, selected for its prior 17-move incumbent. No holdout/generalization claim.",
+  "challenge": {
+    "challenge_id": "ac-07445",
+    "generators": [
+      "x",
+      "y"
+    ],
+    "initial_relators": [
+      [
+        -2,
+        -2,
+        1,
+        2,
+        1
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    "target_relators": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "move_spec_version": "ac-r2-v1",
+    "scored": true,
+    "base_score": 1,
+    "instance_hash": "sha256:25d9dc7570c0403aca323a3e7d53706c025dde87acb4deab63cac3e6176404d6",
+    "freeze_date": null
+  },
+  "initial_incumbent": [
+    1,
+    6,
+    12,
+    5,
+    1,
+    13,
+    11,
+    5,
+    11,
+    3,
+    10,
+    4,
+    10,
+    3,
+    5,
+    5,
+    1
+  ],
+  "target_ball": {
+    "radius": 2,
+    "frontier_sizes": [
+      1,
+      10,
+      77
+    ],
+    "states": 88,
+    "primitive_evaluations": 154,
+    "peak_total_length": 7,
+    "pruning": false,
+    "wall_seconds": 0.00014536899834638461
+  },
+  "runs": [
+    {
+      "status": "budget_exhausted",
+      "weight": 0.5,
+      "budget": 100,
+      "length_cap": 32,
+      "moves": [
+        1,
+        6,
+        12,
+        5,
+        1,
+        13,
+        11,
+        5,
+        11,
+        3,
+        10,
+        4,
+        10,
+        3,
+        5,
+        5,
+        1
+      ],
+      "expanded_move_length": 17,
+      "improved": false,
+      "updates": [],
+      "primitive_evaluations": 100,
+      "expanded_states": 8,
+      "bound_pruned": 0,
+      "length_pruned": 0,
+      "nonimproving": 21,
+      "seen_states": 80,
+      "remaining_queue": 72,
+      "wall_seconds": 0.00024403800489380956,
+      "official_verification": {
+        "ok": true,
+        "length": 17,
+        "peak_total_relator_length": 12,
+        "work": 157,
+        "certificate_hash": "sha256:64af739869d225bff4065959feab273b2c7e4f3c5546d7c3e77611d9231a3e14"
+      },
+      "trajectory": {
+        "states": [
+          [
+            [
+              -2,
+              -2,
+              1,
+              2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              -2,
+              -2,
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              -2,
+              -1,
+              -2,
+              1,
+              2,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              1,
+              -2,
+              -1,
+              -2,
+              1,
+              2,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              2,
+              1,
+              -2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              2,
+              1,
+              -2,
+              -1,
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              1,
+              -2,
+              1,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              1,
+              -2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1,
+              -2,
+              1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1,
+              -2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              1,
+              1
+            ],
+            [
+              -1,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              1,
+              1
+            ],
+            [
+              -1,
+              -2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              1,
+              1
+            ],
+            [
+              -1,
+              -2,
+              1,
+              1,
+              1
+            ]
+          ],
+          [
+            [
+              1,
+              -2,
+              1,
+              1
+            ],
+            [
+              -2,
+              1,
+              1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              -2,
+              1,
+              1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              -2,
+              1
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              -2
+            ]
+          ],
+          [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ]
+        ],
+        "total_lengths": [
+          12,
+          12,
+          12,
+          12,
+          11,
+          11,
+          11,
+          11,
+          10,
+          10,
+          9,
+          9,
+          9,
+          7,
+          4,
+          3,
+          2,
+          2
+        ],
+        "cumulative_work": [
+          12,
+          24,
+          36,
+          48,
+          59,
+          70,
+          81,
+          92,
+          102,
+          112,
+          121,
+          130,
+          139,
+          146,
+          150,
+          153,
+          155,
+          157
+        ]
+      }
+    }
+  ],
+  "limits": "Bounded heuristic search with cap32; finite failure does not certify global optimum."
+}

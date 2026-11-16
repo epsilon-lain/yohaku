@@ -1,0 +1,97 @@
+{
+  "lock_sha256": "9430e7dd55b04a1a2fd5ad7ba343f0198a371442a0354f66697265aeb1a0b115",
+  "commit_claimed": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "scope": "18 local file hashes checked against pre-existing lock, no new network provenance retrieval",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "matches": true
+    },
+    {
+      "path": "competition/examples/training_manifest.json",
+      "sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c",
+      "matches": true
+    },
+    {
+      "path": "competition/rules/discovery.md",
+      "sha256": "e1d0e2346803be86f656a3c536dfdcb6716c1046a4a0f6a131dfeb07255f7dcf",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/README.md",
+      "sha256": "3c81542f208f9ad61aff397f4fe2f5fd3f19689bb32364807248b3ac026288fb",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/__init__.py",
+      "sha256": "54171b83dfb830bb939b3c9874a40eb0d7f5953202249167a031acea2639f9f4",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/__main__.py",
+      "sha256": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/canon.py",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/cli.py",
+      "sha256": "f9a677b7bfd0b5e43fd1889c52906d72dbaf74935ea20c4671e79c0314e279eb",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/core.py",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/data/README.md",
+      "sha256": "7f0a1208d8ea7f5a96130a74a56155c31f8b724722b1277861b43f38d29b1bee",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/data/golden_vectors.json",
+      "sha256": "6bf8979e71ff74530d97fc90d0fb3bee6497fadf61de43b5a62915fda469a781",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/data/move_spec.json",
+      "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/data/stable_move_spec.json",
+      "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/golden.py",
+      "sha256": "9e513713fee4f550e323910c29bb1e4a8f724fe94f33e2e89548b5ef2adeb79a",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/specs.py",
+      "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/stable_core.py",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/submission.py",
+      "sha256": "665529bc6e47f249c8f1bfd7f8ed6c9e93fc86c5cb4454f4b7c613e8b3301cbb",
+      "matches": true
+    },
+    {
+      "path": "competition/tools/verifier/data/manifest.json",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+      "matches": true
+    }
+  ]
+}

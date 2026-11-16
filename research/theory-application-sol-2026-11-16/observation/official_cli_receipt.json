@@ -1,0 +1,12 @@
+{
+  "accepted": true,
+  "results": [
+    {
+      "certificate_hash": "sha256:e13f345f7c99dd9813e1e59c6eda976d2a8918b6c79feb3027dc73cfe3483e2a",
+      "challenge_id": "ac-07445",
+      "length": 13,
+      "ok": true,
+      "work": 127
+    }
+  ]
+}

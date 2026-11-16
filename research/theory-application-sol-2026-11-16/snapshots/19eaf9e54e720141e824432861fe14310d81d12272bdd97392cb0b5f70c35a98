@@ -1,0 +1,108 @@
+{
+  "version": "application-development-log-v1",
+  "status": "Retrospective bounded notes from actual tool outputs; not full runtime trace.",
+  "case": "ac-07445; already seen",
+  "steps": [
+    {
+      "order": 1,
+      "type": "planned_not_implemented",
+      "method": "Exponent-sum matrix abstraction",
+      "reason_deferred": "An exact target-ball membership query was already available from prior work and immediately usable for a bounded distance lower bound. No matrix prototype or matrix result is claimed."
+    },
+    {
+      "order": 2,
+      "method": "All pairs of vertices of old 17-move path; complete radius3 balls each side",
+      "result": "No replacement of length <=6 shorter than its old segment",
+      "artifact": "local_check.json",
+      "primitive_evaluations": 36792
+    },
+    {
+      "order": 3,
+      "method": "Exploratory complete start4+target5 balls",
+      "layers_start": [
+        1,
+        14,
+        145,
+        1388,
+        12895
+      ],
+      "layers_target": [
+        1,
+        10,
+        77,
+        574,
+        4453,
+        35664
+      ],
+      "intersection_count": 0,
+      "status": "Counts observed in terminal; superseded by snapshotted larger certificate"
+    },
+    {
+      "order": 4,
+      "method": "Exploratory complete start5+target6 balls",
+      "layers_start": [
+        1,
+        14,
+        145,
+        1388,
+        12895,
+        117898
+      ],
+      "layers_target": [
+        1,
+        10,
+        77,
+        574,
+        4453,
+        35664,
+        295698
+      ],
+      "intersection_count": 0,
+      "status": "Counts observed in terminal; superseded by snapshotted larger certificate"
+    },
+    {
+      "order": 5,
+      "method": "Original pilot primitive greedy algorithm with target radius6 and budget100000, cap32",
+      "result_length": 17,
+      "primitive_evaluations": 4085,
+      "expanded_states": 292,
+      "reason_for_revision": "Increasing suffix radius alone returned the same17; changed stopping rule to retain/seek improvements and added exact h_B incumbent prune."
+    },
+    {
+      "order": 6,
+      "method": "Bounded incumbent refinement; weights0,0.5,1,2; each200000 primitive evaluations; cap32",
+      "result_length_each": [
+        13,
+        13,
+        13,
+        13
+      ],
+      "artifact": "refinement_results.json"
+    },
+    {
+      "order": 7,
+      "method": "Full radius6+6 certification, independent moves plus official crosscheck every edge",
+      "result": "Exact AC distance13",
+      "artifact": "distance_certificate.json"
+    },
+    {
+      "order": 8,
+      "method": "Externally requested explicit resource guard; full rerun completed with same state hashes",
+      "artifact": "distance_certificate_guarded.json"
+    },
+    {
+      "order": 9,
+      "method": "Externally requested portable source CLI; low-budget100/depth2/weight0.5 run",
+      "result_length": 17,
+      "status": "No improvement expected/claimed; smoke path is officially replayed",
+      "artifact": "portable_smoke.json"
+    }
+  ],
+  "technical_error": [
+    {
+      "stage": "First exploratory target6 attempt",
+      "error": "ModuleNotFoundError: verifier after an unnecessary import without adding official tools path",
+      "resolution": "Removed unused import; subsequent scripts validate source lock before importing official tools."
+    }
+  ]
+}

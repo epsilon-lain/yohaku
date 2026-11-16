@@ -1,0 +1,14 @@
+{
+  "version": "application-distance-guarded-v1",
+  "status": "incomplete",
+  "reason": "total_state_cap",
+  "resource_guard": {
+    "max_seconds": 30,
+    "max_total_states": 1000,
+    "observed_states": 1001,
+    "observed_seconds": 0.04706213900499279
+  },
+  "exact_AC_distance": null,
+  "proof": null,
+  "warning": "No lower bound follows from a partially generated empty intersection."
+}

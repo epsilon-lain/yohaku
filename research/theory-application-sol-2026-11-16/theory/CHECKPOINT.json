@@ -1,0 +1,131 @@
+{
+  "checkpoint_version": "theory-checkpoint-v1",
+  "at_utc": "2026-11-16T12:01:26.376855+00:00",
+  "status": "first sprint complete; mathematical files frozen; no background work running",
+  "execution_surface": "ChatGPT Work collaboration/shared filesystem; not original Yohaku internal runtime",
+  "actor": "/root/sol_theory",
+  "declared_model": "gpt-6.1-sol",
+  "declared_reasoning_effort": "max",
+  "provider_model_receipt_available": false,
+  "actual_organization": {
+    "externally_assigned_initial_role": "one theory lead; root selected theory/application team goals and observer",
+    "collaborators_spawned": 0,
+    "delegation_reason": "The finite proof and subsecond enumeration fit one lead; no independent role added solely to create an organization trace.",
+    "external_review": "/root/sol_observer reviewed code/results and all general-m proofs; received feedback is retained in REVIEW_RECEIPT.json.",
+    "self_chosen_target": "Exact positive-edge certificate size and structure, failure of matroid closure exchange, and explicit cost interface to positive conjunction concepts."
+  },
+  "mathematical_version": {
+    "name": "theory-white-points-v1",
+    "primary_ledger_seq": 3,
+    "primary_ledger_sha256": "1c985e933c9a381c78ba587d340b246fd2f856a46b87909acd8fb0dd0323414f",
+    "status": "self-contained proofs; exact finite checks passed; external observer reviewed and found no error",
+    "artifacts": [
+      {
+        "path": "theory/README.md",
+        "sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5"
+      },
+      {
+        "path": "theory/verify_white_points.py",
+        "sha256": "1e206f68abde9ab92199275d693b7dace72897856f3c0cc034256efc370eac61"
+      },
+      {
+        "path": "theory/RESULTS.json",
+        "sha256": "50edca4b75aeb86f415f800fb5d4c24381fbb670895bd24b075b6c91be861734"
+      }
+    ],
+    "status_update_note": "A later math_publish event snapshots this checkpoint and review receipt without changing the v1 proofs/code/results."
+  },
+  "results": [
+    "For m>=3, U_m is all labeled simple 2-regular graphs on 2m vertices with girth>=m. Both isomorphism types require exactly m positive edge observations.",
+    "All m-edge certificates for C_(2m) are m consecutive edges, plus either perfect matching when m is odd; counts 2m or 2m+2.",
+    "C_(2m) exact-label minimum is 2m-2; two C_m exact-label minimum is 2m-2 for m>=4, but 3 when m=3.",
+    "C8 has inclusion-minimal certificates of both 4 and 5 edges, eight of each; inclusion-minimal does not imply cardinality minimum.",
+    "C8/2C4 positive edge closure violates the matroid exchange axiom in a consistent candidate set.",
+    "Positive conjunction dictionaries preserving primitive properties and charging real expanded leaf cost preserve optimal certificate cost; free unit-cost names may collapse property counts."
+  ],
+  "verification": {
+    "full_graph_enumeration": "m=3:70 graphs and every subset of each target; m=4:2835 graphs and all 256 subsets for each target. Candidate enumeration does not use subset-sum theorem.",
+    "general_lemma_finite_checks": "all m- and (m+1)-part positive integer partitions of 2m for 3<=m<=24",
+    "critical_pattern_checks": "all m-edge subsets of C_(2m) for 3<=m<=8",
+    "self_check_command": "python theory/verify_white_points.py --check",
+    "observed_process_durations_seconds": [
+      0.296867909,
+      0.281828412
+    ],
+    "external_review_receipt": {
+      "path": "theory/REVIEW_RECEIPT.json",
+      "sha256": "c82e7584a434ad2baf3731bd8db2a5c839ea6625262ec6581b351c8f7d748176"
+    }
+  },
+  "method_revision": {
+    "trigger": "For m=5, the integer partition (2,2,2,2,2) has no subset sum 5. It is realized by the five-edge perfect matching of C10, so a long-path-only explanation omits a minimum certificate.",
+    "actual_change": "Moved from constructing one path attaining the lower bound to classifying all critical m-edge certificates; finite integer-partition inspection suggested the cases, then the adjacent-permutation prefix-residue argument proved the general classification. Also added explicit inclusion-minimal and matroid-exchange counterexamples.",
+    "where_reproduced": "verify_white_points.py: check_integer_lemma and check_cycle_subsets; RESULTS.json contains m=5 all-two partition and matching patterns; README sections 3.2,5,6.",
+    "code_before_revision_retained": false,
+    "evidence_limit": "Initial exploratory partition calculation was an actual shell tool call but no separate pre-revision code snapshot was saved; journal is a self-report rather than a full trace.",
+    "event_sha256": "a0c924033a770fe135ba3db20611c354e461f4cb94cc8a891d604b1d5eebf512"
+  },
+  "shared_math_reads": [
+    {
+      "version": "application-upper-v1",
+      "ledger_seq": 1,
+      "event_sha256": "852929b2761a628d47dfe213aeb2fbfe5a17fcc8846c3c16d62b1fba0f9c6337",
+      "read_scope": "ledger publication; message; not all implementation files",
+      "adopted": false,
+      "reason": "No dependence of the graph theorem on AC search."
+    },
+    {
+      "version": "application-distance-v1",
+      "ledger_seq": 2,
+      "event_sha256": "b8c95f031829c05d7dfb9fe08d7fc4cde270d4a5d11a5f95c9a02119bfbbfbf6",
+      "artifact_path": "application/DISTANCE_V1.md",
+      "artifact_sha256": "25a42dc3f5434d3d3c123d20dd1aba9783e4ea5fdd6a35cd01b376fb6f26c819",
+      "read_scope": "ledger and full mathematical statement/proof sketch",
+      "adopted": false,
+      "reason": "The AC exact-distance statement is outside this graph object library; not used as mathematical premise, implementation component, or claimed independent replay."
+    },
+    {
+      "version": "application-release-v2",
+      "ledger_seq": 4,
+      "event_sha256": "d35033eda1213e7041cf143d401d0d77d49ce4b5503526fd3fae31b545115501",
+      "artifact_path": "application/README.md",
+      "artifact_sha256": "bcce0693b04acf1f039f01973243579b010475a7508e7900eb9259191010cd9a",
+      "read_scope": "ledger publication and complete final README",
+      "adopted": false,
+      "reason": "Read final h=min(d,7) query/cost boundary and AC13/Stable15 claims. Graph completion/certificate theorem does not use this algorithmic distance query; no independent AC replay by theory team."
+    }
+  ],
+  "shared_math_adoptions": [],
+  "known_tools_versus_contribution": {
+    "standard_tools": "Candidate/attribute closure, hitting-set formulation, linear-forest completion, nonnegative cost expansion.",
+    "this_bounded_result": "Self-contained derivation and exact checks for the declared graph family, complete minimum-pattern classification, concrete closure/certificate counterexamples, positive-conjunction cost proposition.",
+    "novelty_search_done": false,
+    "unproved_universal_conjectures_claimed": false
+  },
+  "next_specific_problem": "On resumption only: fix n=9,g=4, all labeled simple 2-regular graphs of girth>=4, target C9, positive edge language. Compute and then classify cardinality-minimum type certificates; do not assume the equal-half m formula survives for C9 versus C4+C5.",
+  "unresolved_items": [
+    "No classification claimed for unequal cycle-size partitions or n>2g.",
+    "No general optimal dictionary-selection algorithm.",
+    "No literature-priority claim.",
+    "No AC performance claim derived from this graph model."
+  ],
+  "constraints_observed": {
+    "external_paid_api_calls": 0,
+    "competition_uploads": 0,
+    "original_host_modified": false,
+    "old_ab_experiment_modified": false,
+    "github_modified_directly": false,
+    "long_running_processes": 0
+  },
+  "resume_instructions": [
+    "Read this checkpoint and immutable ledger seq3 snapshots.",
+    "Run python theory/verify_white_points.py --check only if verifying restoration, then use the stated n=9,g=4 next problem.",
+    "Do not reinterpret external team assignment/review or merely added headings as emergent role differentiation."
+  ],
+  "other_team_read_of_theory": {
+    "version": "theory-white-points-v1",
+    "application_reported_math_read_event": "f4352ec16cb517217f37a9cf00a517c051a9fbe4bc66a8e8fc756ab9188daff7",
+    "adopted_by_application": false,
+    "reason": "Application explicitly states graph/subset-sum and expanded-leaf conjunction theorem do not cover its algorithmic query/shared suffix-table cost. Their final README actually records this boundary."
+  }
+}

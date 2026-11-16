@@ -1,0 +1,12 @@
+{
+  "version": "application-independent-comparison-v1",
+  "observer_result_sha256": "33a3b6cbd0534931f85fe9404eefbba4269f46056ad8a07c7ca72686422af5da",
+  "application_certificate_sha256": "c6c662c40e8e1ae82ebefb5af48146d189bd2d12cd2234e2f604051b08a3e772",
+  "equal_witness": true,
+  "equal_start_layers": true,
+  "equal_target_layers": true,
+  "equal_empty_intersection": true,
+  "equal_official_verdict": true,
+  "guarded_rerun_status": "complete",
+  "guarded_hashes_equal": true
+}
