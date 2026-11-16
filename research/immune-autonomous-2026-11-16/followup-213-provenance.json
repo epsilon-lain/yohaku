@@ -1,0 +1,19 @@
+{
+  "capture_at_china": "2026-11-16 21:07:48",
+  "event_prefix": 213,
+  "source_archive_sha256": "e17d768b58ee7b1fe61b15dcc65016d57984bc26822f0f289d4f89c887c794fa",
+  "archive_bytes": 12989039,
+  "manifest_entries_verified": 814,
+  "source_files_sha256": {
+    "MANIFEST.json": "92a1bb9b9cca4d47b73a1e46abd2fa4f079f95c1313a2ab1fbb60c40fe2fc5db",
+    "CAPTURE-NOTE.txt": "8ab66264cfdb775de2b90dfc4d73deb4c6928875a81d995433a7576bedf656f5",
+    "CURRENT.json": "25f389f938a4d04d2ae7906bfb83c83416438bbe60b28379467e6d0b43c43323",
+    "数学进展.txt": "9be73569d148027c818151db402ada52845db7326fe341c82f80ea87b47d41ea",
+    "host-evidence/READ-CONTRACT-V3-VALIDATION.json": "cf64d31c12c66e975292c8aa8b268c673b892fc6594278e589e4e5aa9e9e01c2",
+    "host-evidence/CONDITION-BOUNDARY-RECEIPTS.json": "300f84fdea10286dbc76d59060775c8550dd4259eb7c16b56fec5e16acd69558",
+    "host-evidence/SOL-TAKEOVER-LEGACY-DRAIN.json": "a5fb8d77189430610e999fbdf7bad26c4a54f181546af5752b397a063dc129b9",
+    "host-evidence/SOL-TAKEOVER-SOURCES.json": "5148f50a8b4c8d6d2e4d6acd1e84441d478fee50330fc5d5681f3e1ddaa01fc2",
+    "shared-mathematics/events.jsonl": "2c193b0ed3c97ec6c79cfb9eee74be9046ef4cf1ed175ff82de41663fe329da5"
+  },
+  "scope": "Public audit summary of private uploaded archive; not raw complete logs, live host status, new native Sol execution or independent approval of mathematical drafts"
+}
