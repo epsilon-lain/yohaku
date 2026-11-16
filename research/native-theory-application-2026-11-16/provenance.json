@@ -1,0 +1,335 @@
+{
+  "schema": "yohaku-public-runtime-snapshot-review/1",
+  "review_scope": "Uploaded archive snapshot only; read-only attachment review; no new native activity; current host liveness unknown.",
+  "archive": {
+    "filename": "prefix-00000465-1794835870696.zip",
+    "bytes": 2522336,
+    "sha256": "e4f0d195344034ce8fdef88216a31d95036eaf13cc0297548649786c25d600be",
+    "file_count_excluding_directories": 167
+  },
+  "time_boundaries": {
+    "timezone": "UTC",
+    "observed_at": "2026-11-16T13:31:10.696746Z",
+    "later_supporting_capture_at": "2026-11-16T13:31:11.125167Z",
+    "knowledge": {
+      "prefix": 465,
+      "last_event_at": "2026-11-16T13:30:50.014953Z"
+    },
+    "gate": {
+      "prefix": 220,
+      "last_event_at": "2026-11-16T13:30:49.864533Z"
+    },
+    "atomic_snapshot": false
+  },
+  "prefix_manifest": {
+    "entries": 109,
+    "checked": 109,
+    "matching": 109,
+    "outside_manifest": 58,
+    "scope": "Only listed archive paths; not a complete ZIP manifest. Noncoverage alone is not evidence of tampering."
+  },
+  "candidate_seal": {
+    "module_count": 10,
+    "embedded_source_and_generated_files_checked": 20,
+    "matching": 20,
+    "checks": [
+      {
+        "path": "implementation/candidate/agent/yohaku_native_research_gate.py",
+        "expected_sha256": "e502569ee01ed9c04d406707d4af0a6c36177415f828fc4b769d1e5d06d88f64",
+        "actual_sha256": "e502569ee01ed9c04d406707d4af0a6c36177415f828fc4b769d1e5d06d88f64",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_native_research_gate.py.tex",
+        "expected_sha256": "6468edeff403642c77994e48c2d643c5986d6f38be2017e9d6065f50fbccf592",
+        "actual_sha256": "6468edeff403642c77994e48c2d643c5986d6f38be2017e9d6065f50fbccf592",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_native_research_lease.py",
+        "expected_sha256": "7dd5837895597314b0cb83b494ce86c9530918972f93eb3ddc41130c5241a16d",
+        "actual_sha256": "7dd5837895597314b0cb83b494ce86c9530918972f93eb3ddc41130c5241a16d",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_native_research_lease.py.tex",
+        "expected_sha256": "0ff50c8a77b2e18ebc325f36d13272d7e836f4f6a6fdab6443a273c67e8537e3",
+        "actual_sha256": "0ff50c8a77b2e18ebc325f36d13272d7e836f4f6a6fdab6443a273c67e8537e3",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_native_research_runtime.py",
+        "expected_sha256": "31f131e2bbab3157c0caadc1047b8fd560ff8d9121ac2cc5dfa6124ace68a427",
+        "actual_sha256": "31f131e2bbab3157c0caadc1047b8fd560ff8d9121ac2cc5dfa6124ace68a427",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_native_research_runtime.py.tex",
+        "expected_sha256": "2727f3d72f72b474a5ae07c3d6fe94ce23f9cf3fa1670a25905aecc948f19499",
+        "actual_sha256": "2727f3d72f72b474a5ae07c3d6fe94ce23f9cf3fa1670a25905aecc948f19499",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_shared_math.py",
+        "expected_sha256": "9a8710b1c5aa6a80a8260e6d287383692608334a2553962ee6942c5269dcd60c",
+        "actual_sha256": "9a8710b1c5aa6a80a8260e6d287383692608334a2553962ee6942c5269dcd60c",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_shared_math.py.tex",
+        "expected_sha256": "79c7af2edd3d8309d8dba006662d91f8b9a3a73e0c1542f9e1cc2409251d6228",
+        "actual_sha256": "79c7af2edd3d8309d8dba006662d91f8b9a3a73e0c1542f9e1cc2409251d6228",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_workflow_gate.py",
+        "expected_sha256": "79d2cb295505fcb098e41693be67a3a98f67deaa4ddad2c4cb5f7efaa6d8f6b5",
+        "actual_sha256": "79d2cb295505fcb098e41693be67a3a98f67deaa4ddad2c4cb5f7efaa6d8f6b5",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_workflow_gate.py.tex",
+        "expected_sha256": "7094573aa860ecba2094c29f973e9ea01e2eb9a7d4048ad4ba895095d02b268f",
+        "actual_sha256": "7094573aa860ecba2094c29f973e9ea01e2eb9a7d4048ad4ba895095d02b268f",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_ai_nodes.py",
+        "expected_sha256": "7851fee4cad6d2e1fa0739a0cd86b61871e3a464ca47f677122018c16d5e5191",
+        "actual_sha256": "7851fee4cad6d2e1fa0739a0cd86b61871e3a464ca47f677122018c16d5e5191",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_ai_nodes.py.tex",
+        "expected_sha256": "d73f3b90571eb4aca33fd9f7917949e4249393eff29ff84dd7e9f1dd074b02ff",
+        "actual_sha256": "d73f3b90571eb4aca33fd9f7917949e4249393eff29ff84dd7e9f1dd074b02ff",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_codex_tasks.py",
+        "expected_sha256": "7b52c1d1c5e136ed802d7ea1e8a34baa5bd2a0f0c04b61971b341baecf6a68b9",
+        "actual_sha256": "7b52c1d1c5e136ed802d7ea1e8a34baa5bd2a0f0c04b61971b341baecf6a68b9",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_codex_tasks.py.tex",
+        "expected_sha256": "1ce6be5ab70c55d07cfd9b7c3dfa48c6165ef8834b23a3de14d2850c1d21bb1b",
+        "actual_sha256": "1ce6be5ab70c55d07cfd9b7c3dfa48c6165ef8834b23a3de14d2850c1d21bb1b",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_mixed_native.py",
+        "expected_sha256": "ecde023cb07be8a91fc2d65ee6d3c87b8ef90c6c994ad25e316e52f4bebf0b7f",
+        "actual_sha256": "ecde023cb07be8a91fc2d65ee6d3c87b8ef90c6c994ad25e316e52f4bebf0b7f",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_mixed_native.py.tex",
+        "expected_sha256": "1bfdb32e2a7ac9abe63d732472bf1a0d2e2f9997fe4eaeda99f6ac660afce457",
+        "actual_sha256": "1bfdb32e2a7ac9abe63d732472bf1a0d2e2f9997fe4eaeda99f6ac660afce457",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_codex.py",
+        "expected_sha256": "7a02ae47d0038a85552df43e5c52e66fe7ef23524f1c73c4cc7f4f96b4e05a59",
+        "actual_sha256": "7a02ae47d0038a85552df43e5c52e66fe7ef23524f1c73c4cc7f4f96b4e05a59",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/yohaku_codex.py.tex",
+        "expected_sha256": "38d985f61d957541183227dc672c6e354b08f3588779a17031ab04c7496147b7",
+        "actual_sha256": "38d985f61d957541183227dc672c6e354b08f3588779a17031ab04c7496147b7",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/BATCH-PROFILE.json",
+        "expected_sha256": "825beb1935484c9405fdc39daeb7d5f7bf058d04fb0d604388f1334fa4f7352b",
+        "actual_sha256": "825beb1935484c9405fdc39daeb7d5f7bf058d04fb0d604388f1334fa4f7352b",
+        "matches": true
+      },
+      {
+        "path": "implementation/candidate/agent/BATCH-PROFILE.json.tex",
+        "expected_sha256": "c6396bcb5d5d1e12f1562f252e87d771eecdde116ba5d01d00b52a3f390682f7",
+        "actual_sha256": "c6396bcb5d5d1e12f1562f252e87d771eecdde116ba5d01d00b52a3f390682f7",
+        "matches": true
+      }
+    ],
+    "binary_hashes_listed": 3,
+    "binaries_embedded": 0
+  },
+  "offline_validation": {
+    "reported_tests": 14,
+    "reported_passed": true,
+    "reported_real_model_requests": 0,
+    "rerun_by_this_review": false,
+    "candidate_seal_sha256_matches": true,
+    "runtime_hash_entries": 147,
+    "embedded_files_checked": 9,
+    "matching": 9,
+    "unavailable_files": 138
+  },
+  "task_receipts": {
+    "root_initial": {
+      "source_sha256": "ca572a462907ae648fe243590bf8587752f0f518e2a8f12cdbe0ef6b420af260",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "raw_native_turn_completed": true
+    },
+    "root_continuation": {
+      "source_sha256": "9ccb600eca1cfce7cfe2c4e54de7cf394d0b2a1cb22761b027ca54602e2c4620",
+      "status": "running",
+      "output_complete": false,
+      "commit_confirmed": null,
+      "native_cleanup_complete": null,
+      "raw_native_turn_completed": false
+    },
+    "theory_initial": {
+      "source_sha256": "259973bdae6a3e41979b6e6221b164aa6503fe8b3e4efedc1fc97d3d6ad05f0a",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "raw_native_turn_completed": true
+    },
+    "application_initial": {
+      "source_sha256": "d5468a2a7e0702e9738de5425f2787eb5f3d928522a879b1b7e0e1f2c2572961",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "raw_native_turn_completed": true
+    }
+  },
+  "continuation": {
+    "same_native_thread_as_root_initial": true,
+    "distinct_native_turn": true,
+    "trace_method": "thread/resume",
+    "trace_reason": "catalog_matches",
+    "knowledge_request_seq": 396,
+    "gate_dispatch_seq": 193,
+    "queue_state": "dispatched",
+    "completed": false
+  },
+  "formation_evidence": {
+    "actor": "root original native task",
+    "knowledge": {
+      "create": [
+        35,
+        37
+      ],
+      "bind": [
+        41,
+        42
+      ],
+      "dispatch": [
+        52,
+        53
+      ]
+    },
+    "gate": {
+      "register": [
+        16,
+        19
+      ],
+      "bind": [
+        23,
+        24
+      ],
+      "dispatch_reserved": [
+        30,
+        33
+      ]
+    },
+    "directions_user_defined": true,
+    "spontaneous_direction_emergence_claimed": false
+  },
+  "model_configuration": {
+    "requested": "gpt-6.1-sol/max",
+    "native_thread_readback": "gpt-6.1-sol/max",
+    "four_records_match": true,
+    "supplier_actual_identity": "unknown",
+    "actual_cost": "unknown",
+    "configuration_is_supplier_attestation": false
+  },
+  "native_limits": {
+    "turns": 64,
+    "nodes": 32,
+    "concurrent": 4,
+    "stage_seconds": 21600,
+    "per_task_seconds": 1800,
+    "per_task_tools": 128,
+    "observed_turns": 4,
+    "observed_nodes": 3,
+    "observed_tool_counts": [
+      104,
+      64,
+      89,
+      21
+    ],
+    "observed_breach": false,
+    "gate_phase": "open"
+  },
+  "preservation": {
+    "evidence_class": "host-reported verification; not independently reproduced from this attachment",
+    "reported_legacy_file_count": 23792,
+    "legacy_archive_and_full_manifest_embedded": false,
+    "full_legacy_preservation_verified_by_this_review": false,
+    "no_change_after_capture_claimed": false
+  },
+  "source_files": [
+    {
+      "name": "PREFIX.json",
+      "sha256": "471723e1822015fe2942d41b6250f1a33131a17d179e123a9d47705e885e09d4"
+    },
+    {
+      "name": "CURRENT.json",
+      "sha256": "e57842569eb5d86745e05e2ec19f6382eda7cbcaf81fb1b43a9f701f40b95d42"
+    },
+    {
+      "name": "COMPLETE-RECEIPTS.json",
+      "sha256": "7e43a0711e8bddc0d383bdefac9d673aa13a5a20a928da9116a7c662b071dc9c"
+    },
+    {
+      "name": "FORMATION-OBSERVATION.json",
+      "sha256": "e31927017acb1445b61d519dba408536c75d807b08b65f8cbb48c0a923f15759"
+    },
+    {
+      "name": "GATE-STATE.json",
+      "sha256": "80239938e0169d23f5959d2821c007a6d70061f4c36212eb32ec13d824136b08"
+    },
+    {
+      "name": "events.jsonl",
+      "sha256": "8d44287d14c0e23f2fe91cae112d9de3c91c8f8892c37c484a0036f1095b2d73"
+    },
+    {
+      "name": "CANDIDATE-SEAL.json",
+      "sha256": "106648453cbe821306670eafb920034e5ad3f072c4de5a6b92e340fcf70acecb"
+    },
+    {
+      "name": "OFFLINE-VALIDATION.json",
+      "sha256": "0948827da5d7e7b00dc8b3f535268640ca39d8182823ec9c783ef764dc4a323c"
+    },
+    {
+      "name": "PRESERVATION-BASELINE.json",
+      "sha256": "25feeca0401a381a4d28d265e8e3d747bff64cd11bdce50efc87ff8d50211457"
+    },
+    {
+      "name": "PRESERVATION-VERIFICATION.json",
+      "sha256": "e03b788d1fcb42f010ed6cdd2866353a6dd67a1eed9e7bab2c328c1f45f5c017"
+    },
+    {
+      "name": "POLICY.json",
+      "sha256": "0d5e07fe509bed61b45248c6ff917dc509eae214041e95a955ec7f6beb8f1fd0"
+    },
+    {
+      "name": "DELIVERY.json",
+      "sha256": "79f4e958c4b54b72b1b9b5a865ea038601d20a754a839125c600b8e2a40264b1"
+    }
+  ],
+  "public_report": {
+    "name": "RUNTIME.md",
+    "sha256": "45f5e088e7e8c6e53a7572e65dff7ffa97c58830146d5d1dcd33c603672f6bb2"
+  }
+}

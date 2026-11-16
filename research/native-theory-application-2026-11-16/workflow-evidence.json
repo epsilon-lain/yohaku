@@ -1,0 +1,606 @@
+{
+  "format": "yohaku-public-workflow-review/1",
+  "language": "zh-CN",
+  "scope": {
+    "knowledge_event_prefix": 465,
+    "gate_event_prefix": 220,
+    "observed_at_utc": "2026-11-16T13:31:10.696746Z",
+    "later_supporting_capture_at_utc": "2026-11-16T13:31:11.125167Z",
+    "atomic_snapshot": false,
+    "native_run_and_external_review_are_separate": true,
+    "external_review_added_native_events": false,
+    "original_package_modified": false,
+    "review_component": "workflow_trace_audit_only",
+    "mathematics_rerun_by_this_workflow_review": false
+  },
+  "review_inputs": [
+    {
+      "name": "events.jsonl",
+      "sha256": "8d44287d14c0e23f2fe91cae112d9de3c91c8f8892c37c484a0036f1095b2d73"
+    },
+    {
+      "name": "FORMATION-OBSERVATION.json",
+      "sha256": "e31927017acb1445b61d519dba408536c75d807b08b65f8cbb48c0a923f15759"
+    },
+    {
+      "name": "SEED-OBSERVATION.json",
+      "sha256": "85ea9ec0184e0e82c1358dd645b89c5779eb20bb6c1683c1513ada198461b491"
+    },
+    {
+      "name": "PREFIX.json",
+      "sha256": "471723e1822015fe2942d41b6250f1a33131a17d179e123a9d47705e885e09d4"
+    },
+    {
+      "name": "GATE-STATE.json",
+      "sha256": "80239938e0169d23f5959d2821c007a6d70061f4c36212eb32ec13d824136b08"
+    },
+    {
+      "name": "COMPLETE-RECEIPTS.json",
+      "sha256": "7e43a0711e8bddc0d383bdefac9d673aa13a5a20a928da9116a7c662b071dc9c"
+    }
+  ],
+  "formation": {
+    "directions_externally_specified": [
+      "theory",
+      "application"
+    ],
+    "persistent_node_roles": [
+      "root",
+      "theory_lead",
+      "application_lead"
+    ],
+    "persistent_node_count": 3,
+    "additional_collaborators_created": 0,
+    "native_creation_tool_seqs": [
+      35,
+      37
+    ],
+    "native_binding_tool_seqs": [
+      41,
+      42
+    ],
+    "native_dispatch_tool_seqs": [
+      52,
+      53
+    ],
+    "gate_formation_seqs": [
+      15,
+      16,
+      18,
+      19,
+      23,
+      24,
+      30,
+      33
+    ],
+    "sequence_namespaces_distinct": true,
+    "concrete_question_choice_message_seqs": {
+      "root": 84,
+      "application": 85,
+      "theory": 152
+    },
+    "no_additional_collaborator_choice_seqs": [
+      85,
+      152
+    ],
+    "stable_spontaneous_differentiation_demonstrated": false
+  },
+  "model_task_observations": [
+    {
+      "role_task": "root_initial",
+      "task_short": "model-task-7d0284742",
+      "state_at_capture": "completed",
+      "tool_calls": 104,
+      "usage_delta": {
+        "input_tokens": 2026690,
+        "cached_input_tokens": 1936256,
+        "output_tokens": 39496,
+        "total_tokens": 2066186,
+        "reasoning_output_tokens": 15824
+      },
+      "baseline_total_tokens": 0,
+      "raw_cumulative_total_tokens": 2066186,
+      "final_usage": true
+    },
+    {
+      "role_task": "theory_initial",
+      "task_short": "model-task-060d9ca19",
+      "state_at_capture": "completed",
+      "tool_calls": 64,
+      "usage_delta": {
+        "input_tokens": 1327631,
+        "cached_input_tokens": 1227264,
+        "output_tokens": 30084,
+        "total_tokens": 1357715,
+        "reasoning_output_tokens": 12730
+      },
+      "baseline_total_tokens": 0,
+      "raw_cumulative_total_tokens": 1357715,
+      "final_usage": true
+    },
+    {
+      "role_task": "application_initial",
+      "task_short": "model-task-597bdda09",
+      "state_at_capture": "completed",
+      "tool_calls": 89,
+      "usage_delta": {
+        "input_tokens": 1888087,
+        "cached_input_tokens": 1795328,
+        "output_tokens": 32667,
+        "total_tokens": 1920754,
+        "reasoning_output_tokens": 12371
+      },
+      "baseline_total_tokens": 0,
+      "raw_cumulative_total_tokens": 1920754,
+      "final_usage": true
+    },
+    {
+      "role_task": "root_closeout",
+      "task_short": "model-task-e036bc504",
+      "state_at_capture": "started",
+      "tool_calls": 21,
+      "usage_delta": {
+        "input_tokens": 879515,
+        "cached_input_tokens": 840320,
+        "output_tokens": 7485,
+        "total_tokens": 887000,
+        "reasoning_output_tokens": 4687
+      },
+      "baseline_total_tokens": 2066186,
+      "raw_cumulative_total_tokens": 2953186,
+      "final_usage": false
+    }
+  ],
+  "project_task_receipts": [
+    {
+      "task_short": "project-task-0709386d",
+      "project_role": "theory",
+      "action": "root-audit",
+      "exit_code": 0,
+      "cleanup_confirmed": true,
+      "output_complete": true,
+      "output_truncated": false,
+      "snapshot_sha256": "f4d004cef8178e24cce648c8b94edcd4eaeec1502f078c67b533ce2203e05cd5",
+      "artifacts": [
+        {
+          "name": "root-audit.json",
+          "bytes": 1130,
+          "sha256": "79ca01b770f372b006398f0a03512bb2034428acc4235fd30531e390b4502ffd",
+          "external_review_hash_match": true
+        }
+      ]
+    },
+    {
+      "task_short": "project-task-159d4a8d",
+      "project_role": "application",
+      "action": "compute",
+      "exit_code": 0,
+      "cleanup_confirmed": true,
+      "output_complete": true,
+      "output_truncated": false,
+      "snapshot_sha256": "f1a9dd667b4762cdd5c2215d53e536037d79ea688586e5f5d56f2a609e00eece",
+      "artifacts": [
+        {
+          "name": "results.json",
+          "bytes": 25992,
+          "sha256": "4ead26801b48307654c112dc17ea75742504e5024726c8363220f22b49e7697a",
+          "external_review_hash_match": true
+        },
+        {
+          "name": "paths.json",
+          "bytes": 17872,
+          "sha256": "f063df6c0c385460463500f3821c72339f789d161af6420133353245bc1c8ce9",
+          "external_review_hash_match": true
+        },
+        {
+          "name": "balls.json",
+          "bytes": 5608483,
+          "sha256": "41082082db7654ba8ed1e468004e9f800ba89a2f1b0aae6e9705395d979d546e",
+          "external_review_hash_match": true
+        },
+        {
+          "name": "submission-internal.txt",
+          "bytes": 37,
+          "sha256": "0114c5aa4bdddd2fd9465c04a677fec7fa24bc60c06992d06a8df1a0318fc215",
+          "external_review_hash_match": true
+        }
+      ]
+    },
+    {
+      "task_short": "project-task-21b15234",
+      "project_role": "theory",
+      "action": "compute",
+      "exit_code": 0,
+      "cleanup_confirmed": true,
+      "output_complete": true,
+      "output_truncated": false,
+      "snapshot_sha256": "459446cec0040537f8fc163e63eda60d7f0357984a8c1cf85b46e48476e47cce",
+      "artifacts": [
+        {
+          "name": "certificate-results.json",
+          "bytes": 151117,
+          "sha256": "ba105ea75fcdf330dd86d557b72a4dc909ac3e52dbc6396b2aae57f3ce292308",
+          "external_review_hash_match": true
+        }
+      ]
+    },
+    {
+      "task_short": "project-task-a8e6f1d6",
+      "project_role": "application",
+      "action": "umbrella-verify",
+      "exit_code": 0,
+      "cleanup_confirmed": true,
+      "output_complete": true,
+      "output_truncated": false,
+      "snapshot_sha256": "409054350d4bf429673fe960d61a216dbb71e10ead9f6eb6e2d2378b419ee11a",
+      "artifacts": [
+        {
+          "name": "umbrella-verify.json",
+          "bytes": 3981,
+          "sha256": "df89977f3d30dcd5db18df1d15ac54922cbff7007cd0bee45a9fa762698bd68e",
+          "external_review_hash_match": true
+        }
+      ]
+    },
+    {
+      "task_short": "project-task-b7affeb5",
+      "project_role": "theory",
+      "action": "root-certificate-verify",
+      "exit_code": 0,
+      "cleanup_confirmed": true,
+      "output_complete": true,
+      "output_truncated": false,
+      "snapshot_sha256": "9f756aca18e58416a59bea78f47a2ccd1867bfb18b4f2f5010dc51334b7751f6",
+      "artifacts": [
+        {
+          "name": "root-certificate-verify.json",
+          "bytes": 19778,
+          "sha256": "e2b44b73519117b368ea90f71db0402c75a8f44ce1f9dcff30e741d0645298b6",
+          "external_review_hash_match": true
+        }
+      ]
+    },
+    {
+      "task_short": "project-task-fe023eab",
+      "project_role": "theory",
+      "action": "compute",
+      "exit_code": 0,
+      "cleanup_confirmed": true,
+      "output_complete": true,
+      "output_truncated": false,
+      "snapshot_sha256": "4ec7e8a7768f1daafdc13f50a79e6e0f7aeff2d99c2dca2ca60b4e3d7ea1794a",
+      "artifacts": [
+        {
+          "name": "certificate-results.json",
+          "bytes": 253671,
+          "sha256": "aff7443b39cc9e2f238a9cb9f5bf973ec3e347d7b71da1d29e5193b658229120",
+          "external_review_hash_match": true
+        }
+      ]
+    }
+  ],
+  "knowledge_counts": {
+    "external_seed_import_events": 12,
+    "successful_source_actual_read_events": 9,
+    "seed_read_tool_calls": 12,
+    "rejected_seed_read_tool_seqs": [
+      96,
+      97,
+      98
+    ],
+    "math_body_read_events": 18,
+    "math_search_tool_calls": 11,
+    "seed_index_tool_calls": 10,
+    "successful_math_publication_events": 10,
+    "math_publish_tool_calls": 14,
+    "math_review_events": 4,
+    "math_challenge_events": 0,
+    "adoption_declaration_events": 13,
+    "adoption_declarations_by_id_class": {
+      "external": 7,
+      "native": 6
+    },
+    "adoption_count_is_not_unique_independently_verified_external_adoptions": true,
+    "declarations_include_planned_artifacts_correction_and_same_author_reuse": true
+  },
+  "source_actual_reads": [
+    {
+      "seq": 81,
+      "reader": "root",
+      "source_name": "README.md",
+      "source_sha256": "874b660f4a1c9f6846a7f437e9a7f86e7ee11ff463a663feb2922223690a6d7d",
+      "fixed_revision": "51f6c2a413b829568efed24d1167e049d2756220",
+      "offset": 0,
+      "chars": 5837,
+      "total_chars": 5837,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 101,
+      "reader": "application_lead",
+      "source_name": "shortest_certificate.json",
+      "source_sha256": "6946fda0afee248115f7555cde7bc77ed30cc5f71692f20142057a88a42d1f30",
+      "fixed_revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "offset": 0,
+      "chars": 2123,
+      "total_chars": 2123,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 103,
+      "reader": "application_lead",
+      "source_name": "certify_shortest.py",
+      "source_sha256": "8b5f1334072dbfb3cd1f364797fe79d1d5c705df59b2cd4280369852217fd9bf",
+      "fixed_revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "offset": 0,
+      "chars": 4855,
+      "total_chars": 4855,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 105,
+      "reader": "application_lead",
+      "source_name": "official_verdict.json",
+      "source_sha256": "880a0a57c2d964b1c76ff2a6139d56b50452a08531b87df6626396caf1bb7769",
+      "fixed_revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "offset": 0,
+      "chars": 857,
+      "total_chars": 857,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 117,
+      "reader": "application_lead",
+      "source_name": "certify.py",
+      "source_sha256": "d7235090980d9db6429fb78ba0e50a34c50ecf37dcb0dedb8a026eb4487efb7f",
+      "fixed_revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "offset": 0,
+      "chars": 6773,
+      "total_chars": 6773,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 119,
+      "reader": "application_lead",
+      "source_name": "README.md",
+      "source_sha256": "874b660f4a1c9f6846a7f437e9a7f86e7ee11ff463a663feb2922223690a6d7d",
+      "fixed_revision": "51f6c2a413b829568efed24d1167e049d2756220",
+      "offset": 0,
+      "chars": 5837,
+      "total_chars": 5837,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 165,
+      "reader": "theory_lead",
+      "source_name": "README.md",
+      "source_sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+      "fixed_revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "offset": 0,
+      "chars": 6851,
+      "total_chars": 6851,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 227,
+      "reader": "root",
+      "source_name": "shortest_certificate.json",
+      "source_sha256": "6946fda0afee248115f7555cde7bc77ed30cc5f71692f20142057a88a42d1f30",
+      "fixed_revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "offset": 0,
+      "chars": 2123,
+      "total_chars": 2123,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    },
+    {
+      "seq": 453,
+      "reader": "root",
+      "source_name": "README.md",
+      "source_sha256": "e08afb8d4beb43140d53021fcf3cf790c5a2cb06571e35412e9f6e9110369fd5",
+      "fixed_revision": "9afa13603ab26d435d7b5729d057e9b7de9bf8bb",
+      "offset": 0,
+      "chars": 6851,
+      "total_chars": 6851,
+      "full_requested_source_returned": true,
+      "is_adoption": false
+    }
+  ],
+  "checked_source_versions": [
+    {
+      "artifact": "application/resource-interface.md.tex",
+      "source_revision_sha256": "c126845b142eb94bf39d7936b16fb446d805b50d7cf39e6b9583ee4f77c9c31b",
+      "external_review_hash_match": true
+    },
+    {
+      "artifact": "theory/irredundant-certificates.md.tex",
+      "source_revision_sha256": "33af44aa743ea56f642f1728760bdacdc07ac71731fb7e89833d175b7e7d8d83",
+      "external_review_hash_match": true
+    },
+    {
+      "artifact": "theory/research.py.tex",
+      "source_revision_sha256": "f0b68c31dc20c59694dc96c2e45faa7b7019ae9237b0b443c90e01f924b8f7a0",
+      "external_review_hash_match": true
+    }
+  ],
+  "sharing_chains": [
+    {
+      "name": "root theorem to application interface",
+      "entry": "M-5606eba96406db45@1",
+      "publication_seqs": [
+        184,
+        185
+      ],
+      "exact_body_read_seq": 238,
+      "independent_review_tool_seq": 259,
+      "adoption_tool_seq": 276,
+      "result_entry": "M-6b4cec1ce5182e16@1",
+      "result_publication_seqs": [
+        277,
+        278
+      ],
+      "artifact": "application/resource-interface.md.tex",
+      "source_revision_sha256": "c126845b142eb94bf39d7936b16fb446d805b50d7cf39e6b9583ee4f77c9c31b",
+      "artifact_evidence": "Contains signature composition and concrete work calculations 40+14-5=49 and 39+13-4=48.",
+      "not_dependency_of_earlier_application_first_run": true,
+      "strength": "event chain plus inspected versioned source"
+    },
+    {
+      "name": "application result to root verifier and returned evidence",
+      "entry": "M-0d87e4c929e155d1@1",
+      "root_plan_message_seq": 230,
+      "root_task_submit_seq": 245,
+      "exact_body_read_seq": 267,
+      "review_tool_seq": 291,
+      "verifier_entry": "M-809143f7c563abe4@1",
+      "verifier_publication_seqs": [
+        288,
+        289
+      ],
+      "application_return_read_seqs": [
+        318,
+        320
+      ],
+      "application_archive_message_seq": 328,
+      "verifier_task_short": "project-task-a8e6f1d6",
+      "artifact_sha256": "df89977f3d30dcd5db18df1d15ac54922cbff7007cd0bee45a9fa762698bd68e",
+      "strength": "distinct author and implementation, successful receipt and artifact hash; shared frozen move table; not blinded or official CLI"
+    },
+    {
+      "name": "theory criterion to root verifier and manuscript",
+      "entry": "M-05ac7d1d25ae1353@1",
+      "publication_seqs": [
+        255,
+        256
+      ],
+      "root_exact_body_read_seq": 303,
+      "root_task_submit_seq": 339,
+      "review_tool_seq": 348,
+      "verifier_entry": "M-8551c6027291f241@1",
+      "verifier_publication_seqs": [
+        345,
+        346
+      ],
+      "theory_exact_body_read_seq": 367,
+      "manuscript_adoption_tool_seq": 407,
+      "verifier_task_short": "project-task-b7affeb5",
+      "artifact_sha256": "e2b44b73519117b368ea90f71db0402c75a8f44ce1f9dcff30e741d0645298b6",
+      "strength": "distinct author and literal split/direct graph methods plus manuscript incorporation"
+    },
+    {
+      "name": "same author criterion reuse in second theory computation",
+      "entry": "M-05ac7d1d25ae1353@1",
+      "adoption_tool_seq": 375,
+      "source_revision_sha256": "f0b68c31dc20c59694dc96c2e45faa7b7019ae9237b0b443c90e01f924b8f7a0",
+      "task_short": "project-task-fe023eab",
+      "artifact_sha256": "aff7443b39cc9e2f238a9cb9f5bf973ec3e347d7b71da1d29e5193b658229120",
+      "artifact_native_math_dependencies": [
+        {
+          "id": "M-05ac7d1d25ae1353",
+          "revision": 1
+        }
+      ],
+      "later_extension_publication_not_backdated_into_run_dependency": true,
+      "strength": "source and computed artifact explicitly record dependency; same author"
+    },
+    {
+      "name": "extension theorem to later manuscript and root proof review",
+      "entry": "M-eea68ed0edda0837@1",
+      "publication_seqs": [
+        369,
+        370
+      ],
+      "later_manuscript_adoption_tool_seq": 409,
+      "root_exact_body_read_seq": 438,
+      "root_external_full_proof_read_seq": 453,
+      "review_tool_seq": 456,
+      "decision": "verified_general_proof_only",
+      "review_artifact": "theory/near-double-independent-proof-review.md.tex",
+      "independent_rerun_of_90_cases": false,
+      "all_v2_code_lines_reviewed": false,
+      "strength": "exact body and baseline read, written proof review; original computation provenance checked"
+    }
+  ],
+  "plan_change": {
+    "root_independent_verification_plan_message_seq": 230,
+    "application_plan_change_message_seq": 235,
+    "changes": [
+      "cancel planned duplicate same-author enumeration",
+      "temporarily avoid concurrent manifest edits",
+      "read and review root theorem, then create application interface"
+    ],
+    "evidence_strength": "explicit native message plus subsequent read/review/new artifact chain",
+    "cancelled_computation_was_not_an_already_running_task": true
+  },
+  "corrections_and_objections": {
+    "substantive_peer_mathematical_objection_causing_theorem_revision_observed": false,
+    "work_convention_clarification_message_seq": 122,
+    "root_rejected_publication_seq": 174,
+    "root_correction_message_seq": 182,
+    "root_successful_publication_seqs": [
+      184,
+      185
+    ],
+    "application_rejected_publication_seqs": [
+      221,
+      222
+    ],
+    "application_correction_message_seq": 224,
+    "application_successful_publication_seqs": [
+      225,
+      231
+    ],
+    "theory_rejected_publication_seq": 254,
+    "rejected_proposed_ids_are_not_publications": true
+  },
+  "external_or_host_framework": [
+    "theory and application directions and initial role requirements",
+    "model floor and leader configuration",
+    "project-scoped native access",
+    "version checks and isolated task receipts",
+    "versioned shared mathematics and fixed-source allowlist",
+    "memory and explicit continuation mechanism",
+    "node, concurrency, duration and per-task tool limits"
+  ],
+  "resource_interpretation": {
+    "per_task_tool_limit": 128,
+    "observed_tool_calls_total": 278,
+    "all_observed_tasks_below_tool_limit": true,
+    "index_then_exact_body_reads_observed": true,
+    "cached_input_reports_are_not_shared_library_savings": true,
+    "usage_is_not_unique_new_content_tokens": true,
+    "root_closeout_raw_cumulative_usage_includes_root_initial_baseline": true,
+    "do_not_sum_raw_cumulative_and_prior_turn": true,
+    "root_closeout_usage_still_provisional": true,
+    "no_content_level_token_attribution": true,
+    "no_no_library_control": true,
+    "no_supplier_charge_estimate": true
+  },
+  "public_redaction": {
+    "raw_chat_included": false,
+    "host_paths_included": false,
+    "credentials_included": false,
+    "account_budget_included": false,
+    "supplier_identifiers_included": false,
+    "node_ids_role_mapped": true,
+    "task_ids_shortened": true,
+    "math_entry_ids_and_artifact_hashes_preserved": true
+  },
+  "claims_not_supported_within_original_native_prefix": [
+    "spontaneous emergence of theory/application directions",
+    "stable organizational differentiation from a single short prefix",
+    "direct reciprocal new-theorem adoption between the two direction leads",
+    "all four model tasks completed",
+    "all adoption declarations independently verified",
+    "quantified token or fee savings due to the shared mathematics library",
+    "independent numerical reproduction of the 90 extension-family cases",
+    "new official AC CLI or platform validation"
+  ]
+}

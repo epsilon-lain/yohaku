@@ -1,0 +1,67 @@
+{
+  "schema": "yohaku-native465-public-projection/1",
+  "archive_sha256": "e4f0d195344034ce8fdef88216a31d95036eaf13cc0297548649786c25d600be",
+  "scope": "Public review projection and mathematical replay inputs; not the full native archive or its event stream. This file lists all other files in this directory.",
+  "files": [
+    {
+      "path": "COLLABORATION.md",
+      "bytes": 1959,
+      "sha256": "6500daaeaa3eb7ee7c2a793c7bee1dff1ef8830933e84b72b86244da2957623a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4928,
+      "sha256": "be656b0e92465243afb477c6f2c906fe596738bd11df4aa38cf7a5713fd3c95e"
+    },
+    {
+      "path": "RUNTIME.md",
+      "bytes": 5329,
+      "sha256": "45f5e088e7e8c6e53a7572e65dff7ffa97c58830146d5d1dcd33c603672f6bb2"
+    },
+    {
+      "path": "WORKFLOW.md",
+      "bytes": 7763,
+      "sha256": "16acfce000fc3030a21a6f66a01c252148a1f0aee859f1876622680e94ba869a"
+    },
+    {
+      "path": "data/ac-paths.json",
+      "bytes": 17872,
+      "sha256": "f063df6c0c385460463500f3821c72339f789d161af6420133353245bc1c8ce9"
+    },
+    {
+      "path": "data/ac-submission.txt",
+      "bytes": 37,
+      "sha256": "0114c5aa4bdddd2fd9465c04a677fec7fa24bc60c06992d06a8df1a0318fc215"
+    },
+    {
+      "path": "official-cli-receipt.json",
+      "bytes": 666,
+      "sha256": "80a9b18a2fe67d689fb285222aa0ae58a011658125b3914f96cf909a6f0856a3"
+    },
+    {
+      "path": "official-replay.json",
+      "bytes": 11218,
+      "sha256": "179a8af8040f03e905bbbaecb2588d87330500fe583d1517af38a2a323e4b4f3"
+    },
+    {
+      "path": "official-source-provenance.json",
+      "bytes": 9715,
+      "sha256": "dc37ce9508cba5adfceb41cd9e8c8989d92073adbf1287530acbdcc4ace81145"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 12379,
+      "sha256": "64ba1745da3abfa1b5d6ed934291fcaaf2e39464cba7c2d33656728cda90c613"
+    },
+    {
+      "path": "verify_official.py",
+      "bytes": 4568,
+      "sha256": "7ed91a1c23204860d24b992ed6c07ebcdd61c849f8afcca502e4bfeefeada6dd"
+    },
+    {
+      "path": "workflow-evidence.json",
+      "bytes": 20265,
+      "sha256": "239fab365d5f61bf7943acfd82ca98bbef7255795a27d62332f490cc3ad9f91f"
+    }
+  ]
+}

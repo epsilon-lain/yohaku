@@ -1,0 +1,20 @@
+{
+  "kind": "new_external_review_not_original_native_receipt",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "command_template": "python3 -B -m verifier --manifest verifier/data/manifest.json --submission /absolute/path/to/ac-submission.txt --pretty",
+  "cwd_relative_to_official_repository": "competition/tools",
+  "exit_code": 0,
+  "stdout_json": {
+    "accepted": true,
+    "results": [
+      {
+        "ok": true,
+        "length": 8,
+        "work": 48,
+        "certificate_hash": "sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1",
+        "challenge_id": "ac-08491"
+      }
+    ]
+  },
+  "platform_upload": false
+}

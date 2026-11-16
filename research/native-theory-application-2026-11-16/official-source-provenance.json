@@ -1,0 +1,221 @@
+{
+  "repository": "SAIRcompetition/Andrews-Curtis",
+  "commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "tree": "32cedaa1e6891a0d89cf8ddaa856b194b36eb903",
+  "retrieval_notes": [
+    "GitHub connector supplied small files. Contents API returned an empty string for 12.4MB manifest; Git blob transport and connector raw fallback failed. Manifest was retrieved directly from its official raw URL at the same pinned commit.",
+    "This is a minimal local official-source checkout, not a complete clone. No solver code or contestant solution has been altered into official data."
+  ],
+  "files": [
+    {
+      "path": "LICENSE",
+      "expected_git_blob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "git_blob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "README.md",
+      "expected_git_blob": "64a2123b27673e6be2f9a2473b1b2e88ac780db2",
+      "git_blob": "64a2123b27673e6be2f9a2473b1b2e88ac780db2",
+      "sha256": "875f88b8bd3b94d995117dac969650eca0895f5593b03c91f65ae72c72c5c8a6",
+      "bytes": 3430
+    },
+    {
+      "path": "competition/README.md",
+      "expected_git_blob": "642ecb183130facc83afbf6a22eff7834618ef02",
+      "git_blob": "642ecb183130facc83afbf6a22eff7834618ef02",
+      "sha256": "da07218860fb2084f7112008e5114283a53e0c84cc41f01a233155e13c0e114f",
+      "bytes": 2920
+    },
+    {
+      "path": "competition/examples/README.md",
+      "expected_git_blob": "079b71b4e50162a436b5425e2197d97d339643b5",
+      "git_blob": "079b71b4e50162a436b5425e2197d97d339643b5",
+      "sha256": "b4f3593727415cca3f84854322ab9421b84c152ee2b8653db622d323124e572b",
+      "bytes": 6730
+    },
+    {
+      "path": "competition/examples/ac.jsonl",
+      "expected_git_blob": "65e862d6fb94cd50e310db5726043efdf01282b0",
+      "git_blob": "65e862d6fb94cd50e310db5726043efdf01282b0",
+      "sha256": "f9cbc91ecdcfbab7237a1225def6eaa55c37c8cf0a0b5db8347fa7a1cbc98620",
+      "bytes": 57724
+    },
+    {
+      "path": "competition/examples/sample_submission.txt",
+      "expected_git_blob": "049a9faf79f39b841f9e5bca9848df215d48f427",
+      "git_blob": "049a9faf79f39b841f9e5bca9848df215d48f427",
+      "sha256": "c0573bf89a05c92ceafcfd3c217f8e97e7e769daa81018fc1ab75e6b207eda51",
+      "bytes": 256
+    },
+    {
+      "path": "competition/examples/sample_verdict.json",
+      "expected_git_blob": "73af7fe701e640cb4f93f3b82bf3ff81662b4cfa",
+      "git_blob": "73af7fe701e640cb4f93f3b82bf3ff81662b4cfa",
+      "sha256": "a3c89c9e850c4931ff87f1952f6cbe36381b5f94c42b7e04c10ee42074706639",
+      "bytes": 457
+    },
+    {
+      "path": "competition/examples/stable_ac.jsonl",
+      "expected_git_blob": "a18effe073c70615fbb0175926a61c9cd3e0fdb4",
+      "git_blob": "a18effe073c70615fbb0175926a61c9cd3e0fdb4",
+      "sha256": "045c6f27d34e44d148126a4950cea6e92c1162c9f8820aabcda9ab398f3648cc",
+      "bytes": 58148
+    },
+    {
+      "path": "competition/examples/stable_training_424.json",
+      "expected_git_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235",
+      "git_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235",
+      "sha256": "6fb92c5a8224d0f227fb4fb78bacea6a2d5716272bd5d1ea40ee5eacf037f6c0",
+      "bytes": 398119
+    },
+    {
+      "path": "competition/examples/training_424.json",
+      "expected_git_blob": "699487c7b502adc55953418acfde094890c9fe81",
+      "git_blob": "699487c7b502adc55953418acfde094890c9fe81",
+      "sha256": "4a607b16b30390de3d5cb04d84254d80a7fc518ff087d690f32717802a9c8545",
+      "bytes": 408949
+    },
+    {
+      "path": "competition/examples/training_manifest.json",
+      "expected_git_blob": "3f2fba9fc7ca1c6136b33d0941d18adab40aa94f",
+      "git_blob": "3f2fba9fc7ca1c6136b33d0941d18adab40aa94f",
+      "sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c",
+      "bytes": 557698
+    },
+    {
+      "path": "competition/problems/README.md",
+      "expected_git_blob": "4371c64cbc25f1ef8e6f806c72baaebffcdf2aa5",
+      "git_blob": "4371c64cbc25f1ef8e6f806c72baaebffcdf2aa5",
+      "sha256": "a27d04094cb75af7401f2bb0ceeffd2859109b73e3dcc2f20de3f111c656eac1",
+      "bytes": 3680
+    },
+    {
+      "path": "competition/rules/discovery.md",
+      "expected_git_blob": "fd7fb9b85d1484430a3ad9a7ddb25b13b1e456fa",
+      "git_blob": "fd7fb9b85d1484430a3ad9a7ddb25b13b1e456fa",
+      "sha256": "e1d0e2346803be86f656a3c536dfdcb6716c1046a4a0f6a131dfeb07255f7dcf",
+      "bytes": 4959
+    },
+    {
+      "path": "competition/rules/overview.md",
+      "expected_git_blob": "1aa7377572938c9f3c15b6fd40c7ac3886e57626",
+      "git_blob": "1aa7377572938c9f3c15b6fd40c7ac3886e57626",
+      "sha256": "e3d78eea7dfcd52a82c1152ea015b1335e066e4ae0466f1512fdbf9389cc7cf4",
+      "bytes": 3583
+    },
+    {
+      "path": "competition/rules/proof.md",
+      "expected_git_blob": "d662a425596c1d221267d4d808cbdb98f2ae108f",
+      "git_blob": "d662a425596c1d221267d4d808cbdb98f2ae108f",
+      "sha256": "7cbd61299640ff34e9f16fc321abcca3eeae4ab9f4b61984dab4ac0291cd0ffa",
+      "bytes": 2765
+    },
+    {
+      "path": "competition/tools/verifier/README.md",
+      "expected_git_blob": "8f44f20ea3e3ae179d6ef65657b53b1cdbda173a",
+      "git_blob": "8f44f20ea3e3ae179d6ef65657b53b1cdbda173a",
+      "sha256": "3c81542f208f9ad61aff397f4fe2f5fd3f19689bb32364807248b3ac026288fb",
+      "bytes": 13478
+    },
+    {
+      "path": "competition/tools/verifier/__init__.py",
+      "expected_git_blob": "082c916279b4a3fa68dea9abce87a7185760c334",
+      "git_blob": "082c916279b4a3fa68dea9abce87a7185760c334",
+      "sha256": "54171b83dfb830bb939b3c9874a40eb0d7f5953202249167a031acea2639f9f4",
+      "bytes": 1302
+    },
+    {
+      "path": "competition/tools/verifier/__main__.py",
+      "expected_git_blob": "dd8a8c90e6b7af74ed3657ef5b74aaa5ebf0abd4",
+      "git_blob": "dd8a8c90e6b7af74ed3657ef5b74aaa5ebf0abd4",
+      "sha256": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e",
+      "bytes": 52
+    },
+    {
+      "path": "competition/tools/verifier/canon.py",
+      "expected_git_blob": "93175152acd876566ff60bbfaf7cd90cd8cd2fa9",
+      "git_blob": "93175152acd876566ff60bbfaf7cd90cd8cd2fa9",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297",
+      "bytes": 3196
+    },
+    {
+      "path": "competition/tools/verifier/cli.py",
+      "expected_git_blob": "95817c89371e4763bba23341c72bd27076905ce8",
+      "git_blob": "95817c89371e4763bba23341c72bd27076905ce8",
+      "sha256": "f9a677b7bfd0b5e43fd1889c52906d72dbaf74935ea20c4671e79c0314e279eb",
+      "bytes": 4957
+    },
+    {
+      "path": "competition/tools/verifier/core.py",
+      "expected_git_blob": "0a5da5fe6e3e42c96877734dad46b155a69c02b2",
+      "git_blob": "0a5da5fe6e3e42c96877734dad46b155a69c02b2",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5",
+      "bytes": 6740
+    },
+    {
+      "path": "competition/tools/verifier/data/README.md",
+      "expected_git_blob": "84ec968ef06e094a31cb4984fe4f890534bf243e",
+      "git_blob": "84ec968ef06e094a31cb4984fe4f890534bf243e",
+      "sha256": "7f0a1208d8ea7f5a96130a74a56155c31f8b724722b1277861b43f38d29b1bee",
+      "bytes": 8318
+    },
+    {
+      "path": "competition/tools/verifier/data/golden_vectors.json",
+      "expected_git_blob": "d7f6a95db69dcc96d93d09b0e50633422df4a0ad",
+      "git_blob": "d7f6a95db69dcc96d93d09b0e50633422df4a0ad",
+      "sha256": "6bf8979e71ff74530d97fc90d0fb3bee6497fadf61de43b5a62915fda469a781",
+      "bytes": 67538
+    },
+    {
+      "path": "competition/tools/verifier/data/move_spec.json",
+      "expected_git_blob": "717c03edc89eade3b160a0647a728a3b07a322c6",
+      "git_blob": "717c03edc89eade3b160a0647a728a3b07a322c6",
+      "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708",
+      "bytes": 3829
+    },
+    {
+      "path": "competition/tools/verifier/data/stable_move_spec.json",
+      "expected_git_blob": "8dab61d21e5817467d64dede0217787f0ac05ec3",
+      "git_blob": "8dab61d21e5817467d64dede0217787f0ac05ec3",
+      "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9",
+      "bytes": 42953
+    },
+    {
+      "path": "competition/tools/verifier/golden.py",
+      "expected_git_blob": "d3feb8c2e909b8b0c7527b4957b25c3811150770",
+      "git_blob": "d3feb8c2e909b8b0c7527b4957b25c3811150770",
+      "sha256": "9e513713fee4f550e323910c29bb1e4a8f724fe94f33e2e89548b5ef2adeb79a",
+      "bytes": 2759
+    },
+    {
+      "path": "competition/tools/verifier/specs.py",
+      "expected_git_blob": "1dd4ec6cf660013f46cfce2d58e5c3810dcc606d",
+      "git_blob": "1dd4ec6cf660013f46cfce2d58e5c3810dcc606d",
+      "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0",
+      "bytes": 4656
+    },
+    {
+      "path": "competition/tools/verifier/stable_core.py",
+      "expected_git_blob": "af48e32f766dbcd0cad0becd8c1c4edb4358efac",
+      "git_blob": "af48e32f766dbcd0cad0becd8c1c4edb4358efac",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d",
+      "bytes": 10765
+    },
+    {
+      "path": "competition/tools/verifier/submission.py",
+      "expected_git_blob": "8f3149ab8621423d7be8f9dc69e50223eeed72ea",
+      "git_blob": "8f3149ab8621423d7be8f9dc69e50223eeed72ea",
+      "sha256": "665529bc6e47f249c8f1bfd7f8ed6c9e93fc86c5cb4454f4b7c613e8b3301cbb",
+      "bytes": 6828
+    },
+    {
+      "path": "competition/tools/verifier/data/manifest.json",
+      "expected_git_blob": "accdb626ee08a06beea3f88dc7f351514c99eb27",
+      "git_blob": "accdb626ee08a06beea3f88dc7f351514c99eb27",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+      "bytes": 12378899
+    }
+  ]
+}

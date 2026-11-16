@@ -1,0 +1,362 @@
+{
+  "kind": "new_external_review_not_original_native_receipt",
+  "official_repository": "SAIRcompetition/Andrews-Curtis",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "manifest_file_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "manifest_canonical_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+  "challenge": {
+    "challenge_id": "ac-08491",
+    "generators": [
+      "x",
+      "y"
+    ],
+    "initial_relators": [
+      [
+        -2,
+        -1
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        -1,
+        2,
+        2,
+        1
+      ]
+    ],
+    "target_relators": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "move_spec_version": "ac-r2-v1",
+    "scored": true,
+    "base_score": 1,
+    "instance_hash": "sha256:2938e3e2872ea496fe609883c1e0e58c0be982a39e7b0469e61c2fe3fb36b25e",
+    "freeze_date": null
+  },
+  "move_spec_hashes_match": true,
+  "archive_paths_sha256": "f063df6c0c385460463500f3821c72339f789d161af6420133353245bc1c8ce9",
+  "all_eight_official_core_replays": [
+    {
+      "moves": [
+        7,
+        4,
+        1,
+        12,
+        12,
+        2,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 51,
+      "certificate_hash": "sha256:10385198143e7d1bafdd554eb45f247ee92101191ecb50314ff4eea5d7fbf0ec",
+      "archived_states_and_lengths_match": true
+    },
+    {
+      "moves": [
+        7,
+        4,
+        12,
+        1,
+        12,
+        2,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 49,
+      "certificate_hash": "sha256:33b48c0c493aee87616d07731abb7a5b1cd25e392eb93f89f1fd5ee1e1e38526",
+      "archived_states_and_lengths_match": true
+    },
+    {
+      "moves": [
+        7,
+        4,
+        12,
+        12,
+        1,
+        2,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 49,
+      "certificate_hash": "sha256:c62b209d2a7aaa18d47a90411b0d15844f12ac2f8bf06e61ec90a45a80b03fae",
+      "archived_states_and_lengths_match": true
+    },
+    {
+      "moves": [
+        7,
+        4,
+        12,
+        12,
+        3,
+        1,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 48,
+      "certificate_hash": "sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1",
+      "archived_states_and_lengths_match": true
+    },
+    {
+      "moves": [
+        8,
+        4,
+        1,
+        12,
+        12,
+        2,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 51,
+      "certificate_hash": "sha256:246c45ad4b3317b2a552787f6e6958bd70c5add784bc4907a2d2c35b6fe23eb8",
+      "archived_states_and_lengths_match": true
+    },
+    {
+      "moves": [
+        8,
+        4,
+        12,
+        1,
+        12,
+        2,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 49,
+      "certificate_hash": "sha256:e74367d4f9603b4e5ffcf7f531fc4d7854a7a376014796db4b730fd83ac209b8",
+      "archived_states_and_lengths_match": true
+    },
+    {
+      "moves": [
+        8,
+        4,
+        12,
+        12,
+        1,
+        2,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 49,
+      "certificate_hash": "sha256:a45838890684e0ca74e9b1088f267fcc73026efc480b21433bd58eb1a5610111",
+      "archived_states_and_lengths_match": true
+    },
+    {
+      "moves": [
+        8,
+        4,
+        12,
+        12,
+        3,
+        1,
+        5,
+        5
+      ],
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 9,
+      "work": 48,
+      "certificate_hash": "sha256:5ac775a5a69e2c580607811cf6343f8ef766121cc4262d7938968ae5dec00065",
+      "archived_states_and_lengths_match": true
+    }
+  ],
+  "submission_sha256": "0114c5aa4bdddd2fd9465c04a677fec7fa24bc60c06992d06a8df1a0318fc215",
+  "local_submission_parser_verdict": {
+    "accepted": true,
+    "results": [
+      {
+        "ok": true,
+        "length": 8,
+        "work": 48,
+        "certificate_hash": "sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1",
+        "challenge_id": "ac-08491"
+      }
+    ]
+  },
+  "verified_official_sources": [
+    {
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "git_blob": "d645695673349e3947e8e5ae42332d0ac3164cd7"
+    },
+    {
+      "path": "README.md",
+      "sha256": "875f88b8bd3b94d995117dac969650eca0895f5593b03c91f65ae72c72c5c8a6",
+      "git_blob": "64a2123b27673e6be2f9a2473b1b2e88ac780db2"
+    },
+    {
+      "path": "competition/README.md",
+      "sha256": "da07218860fb2084f7112008e5114283a53e0c84cc41f01a233155e13c0e114f",
+      "git_blob": "642ecb183130facc83afbf6a22eff7834618ef02"
+    },
+    {
+      "path": "competition/examples/README.md",
+      "sha256": "b4f3593727415cca3f84854322ab9421b84c152ee2b8653db622d323124e572b",
+      "git_blob": "079b71b4e50162a436b5425e2197d97d339643b5"
+    },
+    {
+      "path": "competition/examples/ac.jsonl",
+      "sha256": "f9cbc91ecdcfbab7237a1225def6eaa55c37c8cf0a0b5db8347fa7a1cbc98620",
+      "git_blob": "65e862d6fb94cd50e310db5726043efdf01282b0"
+    },
+    {
+      "path": "competition/examples/sample_submission.txt",
+      "sha256": "c0573bf89a05c92ceafcfd3c217f8e97e7e769daa81018fc1ab75e6b207eda51",
+      "git_blob": "049a9faf79f39b841f9e5bca9848df215d48f427"
+    },
+    {
+      "path": "competition/examples/sample_verdict.json",
+      "sha256": "a3c89c9e850c4931ff87f1952f6cbe36381b5f94c42b7e04c10ee42074706639",
+      "git_blob": "73af7fe701e640cb4f93f3b82bf3ff81662b4cfa"
+    },
+    {
+      "path": "competition/examples/stable_ac.jsonl",
+      "sha256": "045c6f27d34e44d148126a4950cea6e92c1162c9f8820aabcda9ab398f3648cc",
+      "git_blob": "a18effe073c70615fbb0175926a61c9cd3e0fdb4"
+    },
+    {
+      "path": "competition/examples/stable_training_424.json",
+      "sha256": "6fb92c5a8224d0f227fb4fb78bacea6a2d5716272bd5d1ea40ee5eacf037f6c0",
+      "git_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235"
+    },
+    {
+      "path": "competition/examples/training_424.json",
+      "sha256": "4a607b16b30390de3d5cb04d84254d80a7fc518ff087d690f32717802a9c8545",
+      "git_blob": "699487c7b502adc55953418acfde094890c9fe81"
+    },
+    {
+      "path": "competition/examples/training_manifest.json",
+      "sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c",
+      "git_blob": "3f2fba9fc7ca1c6136b33d0941d18adab40aa94f"
+    },
+    {
+      "path": "competition/problems/README.md",
+      "sha256": "a27d04094cb75af7401f2bb0ceeffd2859109b73e3dcc2f20de3f111c656eac1",
+      "git_blob": "4371c64cbc25f1ef8e6f806c72baaebffcdf2aa5"
+    },
+    {
+      "path": "competition/rules/discovery.md",
+      "sha256": "e1d0e2346803be86f656a3c536dfdcb6716c1046a4a0f6a131dfeb07255f7dcf",
+      "git_blob": "fd7fb9b85d1484430a3ad9a7ddb25b13b1e456fa"
+    },
+    {
+      "path": "competition/rules/overview.md",
+      "sha256": "e3d78eea7dfcd52a82c1152ea015b1335e066e4ae0466f1512fdbf9389cc7cf4",
+      "git_blob": "1aa7377572938c9f3c15b6fd40c7ac3886e57626"
+    },
+    {
+      "path": "competition/rules/proof.md",
+      "sha256": "7cbd61299640ff34e9f16fc321abcca3eeae4ab9f4b61984dab4ac0291cd0ffa",
+      "git_blob": "d662a425596c1d221267d4d808cbdb98f2ae108f"
+    },
+    {
+      "path": "competition/tools/verifier/README.md",
+      "sha256": "3c81542f208f9ad61aff397f4fe2f5fd3f19689bb32364807248b3ac026288fb",
+      "git_blob": "8f44f20ea3e3ae179d6ef65657b53b1cdbda173a"
+    },
+    {
+      "path": "competition/tools/verifier/__init__.py",
+      "sha256": "54171b83dfb830bb939b3c9874a40eb0d7f5953202249167a031acea2639f9f4",
+      "git_blob": "082c916279b4a3fa68dea9abce87a7185760c334"
+    },
+    {
+      "path": "competition/tools/verifier/__main__.py",
+      "sha256": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e",
+      "git_blob": "dd8a8c90e6b7af74ed3657ef5b74aaa5ebf0abd4"
+    },
+    {
+      "path": "competition/tools/verifier/canon.py",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297",
+      "git_blob": "93175152acd876566ff60bbfaf7cd90cd8cd2fa9"
+    },
+    {
+      "path": "competition/tools/verifier/cli.py",
+      "sha256": "f9a677b7bfd0b5e43fd1889c52906d72dbaf74935ea20c4671e79c0314e279eb",
+      "git_blob": "95817c89371e4763bba23341c72bd27076905ce8"
+    },
+    {
+      "path": "competition/tools/verifier/core.py",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5",
+      "git_blob": "0a5da5fe6e3e42c96877734dad46b155a69c02b2"
+    },
+    {
+      "path": "competition/tools/verifier/data/README.md",
+      "sha256": "7f0a1208d8ea7f5a96130a74a56155c31f8b724722b1277861b43f38d29b1bee",
+      "git_blob": "84ec968ef06e094a31cb4984fe4f890534bf243e"
+    },
+    {
+      "path": "competition/tools/verifier/data/golden_vectors.json",
+      "sha256": "6bf8979e71ff74530d97fc90d0fb3bee6497fadf61de43b5a62915fda469a781",
+      "git_blob": "d7f6a95db69dcc96d93d09b0e50633422df4a0ad"
+    },
+    {
+      "path": "competition/tools/verifier/data/move_spec.json",
+      "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708",
+      "git_blob": "717c03edc89eade3b160a0647a728a3b07a322c6"
+    },
+    {
+      "path": "competition/tools/verifier/data/stable_move_spec.json",
+      "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9",
+      "git_blob": "8dab61d21e5817467d64dede0217787f0ac05ec3"
+    },
+    {
+      "path": "competition/tools/verifier/golden.py",
+      "sha256": "9e513713fee4f550e323910c29bb1e4a8f724fe94f33e2e89548b5ef2adeb79a",
+      "git_blob": "d3feb8c2e909b8b0c7527b4957b25c3811150770"
+    },
+    {
+      "path": "competition/tools/verifier/specs.py",
+      "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0",
+      "git_blob": "1dd4ec6cf660013f46cfce2d58e5c3810dcc606d"
+    },
+    {
+      "path": "competition/tools/verifier/stable_core.py",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d",
+      "git_blob": "af48e32f766dbcd0cad0becd8c1c4edb4358efac"
+    },
+    {
+      "path": "competition/tools/verifier/submission.py",
+      "sha256": "665529bc6e47f249c8f1bfd7f8ed6c9e93fc86c5cb4454f4b7c613e8b3301cbb",
+      "git_blob": "8f3149ab8621423d7be8f9dc69e50223eeed72ea"
+    },
+    {
+      "path": "competition/tools/verifier/data/manifest.json",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+      "git_blob": "accdb626ee08a06beea3f88dc7f351514c99eb27"
+    }
+  ],
+  "platform_upload": false,
+  "scope": [
+    "Pinned official local core and parser validation, not service acceptance.",
+    "Scored instance membership is established in the pinned official manifest.",
+    "Raw length eight is unchanged; work48 refines the previous work49 witness.",
+    "No claim about current leaderboard, globally minimal work, or unpublished cases."
+  ]
+}
