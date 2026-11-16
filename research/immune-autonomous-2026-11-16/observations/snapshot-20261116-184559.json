@@ -1,0 +1,83 @@
+{
+  "format": "public-research-snapshot/1",
+  "experiment_id": "immune-autonomous-20261116-01",
+  "package_capture_local": "2026-11-16T18:45:59+08:00",
+  "state_observed_at": "2026-11-16T18:45:58.129+08:00",
+  "timezone": "Asia/Shanghai",
+  "event_prefix": 45,
+  "is_live_status": false,
+  "run_state_in_snapshot": {
+    "A": "running",
+    "B": "running",
+    "supervisor_reported_alive": true
+  },
+  "model": {
+    "provider": "adaption",
+    "name": "gemma-4-26b-a4b-it",
+    "reasoning_effort": "none",
+    "max_output_tokens": 65536,
+    "identity_basis": "complete supplier response model fields, rather than request settings alone"
+  },
+  "image_condition": "Identical common-seed text; neither experimental group was shown the PNG. PNG retained as source illustration.",
+  "groups": {
+    "A": {
+      "requests_reserved": 8,
+      "complete_receipts": 8,
+      "unresolved_model_outcomes": 0,
+      "known_not_sent_retained_liabilities": 0,
+      "input_tokens": 110063,
+      "output_tokens": 1826
+    },
+    "B": {
+      "requests_reserved": 7,
+      "complete_receipts": 6,
+      "unresolved_model_outcomes": 0,
+      "known_not_sent_retained_liabilities": 1,
+      "input_tokens": 66065,
+      "output_tokens": 192
+    }
+  },
+  "shared_math_revisions": [
+    {
+      "id": "COMMON-SEED",
+      "revision": 1,
+      "source_group": "COMMON",
+      "claim_kind": "共同起点",
+      "body_sha256": "146c15dcbe751d0a51ded50aa1fae27e8c2bdb4373cd2cdac5e229775e1be410"
+    }
+  ],
+  "tool_completed_counts": {
+    "adopt_file": 1,
+    "ai_node_memory_read": 1,
+    "create_document": 2,
+    "list_directory": 2,
+    "math_search": 2,
+    "read_document": 3,
+    "read_range": 1,
+    "read_text": 1,
+    "research_continue": 1
+  },
+  "unobserved_in_prefix": [
+    "new shared mathematics publication",
+    "shared mathematics full-body read via math_read",
+    "claimed adoption via math_adopt",
+    "peer creation or dispatch",
+    "stable division of labor",
+    "verified new mathematical theorem"
+  ],
+  "separate_later_user_report": {
+    "at": "2026-11-16T18:46:51+08:00",
+    "reported_complete_receipts": {
+      "A": 8,
+      "B": 7
+    },
+    "basis": "user-pasted later report, not independently verified within this package",
+    "included_in_snapshot_counters": false
+  },
+  "limitations": [
+    "One coupled trajectory pair with immediate shared mathematics, not independent causal A/B groups.",
+    "Snapshot counters distinguish reserved requests from complete receipts; B includes one definitely-not-sent TLS attempt with retained liability.",
+    "Tool success is not proof that a subsequent model request consumed the returned text.",
+    "No platform account debit inference is made from token counts."
+  ]
+}

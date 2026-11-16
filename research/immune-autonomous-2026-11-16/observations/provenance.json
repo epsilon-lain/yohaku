@@ -1,0 +1,111 @@
+{
+  "format": "public-provenance/1",
+  "source_archive": {
+    "name": "PROCESS-LATEST.zip",
+    "sha256": "5690db72e955d1e8029c3a04e78fb1f077d2e4c789fa5b5cb9266bdc34b84f8e",
+    "bytes": 4480590,
+    "zip_members": 458,
+    "publicly_uploaded": false
+  },
+  "manifest": {
+    "path": "MANIFEST.json",
+    "sha256": "ec0dc6e91d205a267dd140c23066ff67f6cef9ef2169bdaae8f4a9b0f828b2b7",
+    "entries_verified": 457,
+    "missing_or_mismatched": []
+  },
+  "projection_policy": "Public summaries and selected fields are newly serialized projections. They are not byte-identical raw logs. Source paths are archive-relative; source event line hashes exclude newline bytes. Whole archive is retained privately, not published by this projection.",
+  "source_files": [
+    {
+      "path": "CAPTURE-NOTE.txt",
+      "sha256": "3470cee5f1cac17680e893fc7c8cde7a6880c0db2c9c17b5c49368d5f67d6134",
+      "bytes": 335
+    },
+    {
+      "path": "CURRENT.json",
+      "sha256": "db16abdcf77d8f8bdedfa95bca0d05e468c1a3bd931998e02452f238c6e37a1e",
+      "bytes": 18382
+    },
+    {
+      "path": "REGISTRATION.json",
+      "sha256": "73581ff58eb96966073329139dc1e12707f3c3a06a4a63adc28e7240a587e4b3",
+      "bytes": 1676
+    },
+    {
+      "path": "shared-mathematics/events.jsonl",
+      "sha256": "a20e81d4deb0fa5e561ebcf62d8ebb4743d64cfb82c78997fec6f267f3784db4",
+      "bytes": 70900
+    },
+    {
+      "path": "shared-mathematics/all-revisions.json",
+      "sha256": "504435eae91b6f2a754ec98118fc4273b440d95bc3c43769fddac677771198cd",
+      "bytes": 4930
+    },
+    {
+      "path": "group-workspaces/group-A/research_logs/research_start_log",
+      "sha256": "44d4bb14a6a7cb6619bbc70bfdcc7a027ede51dbbefca42069848f2c4d00d3ba",
+      "bytes": 2217
+    },
+    {
+      "path": "host-implementation/immune_runtime.py",
+      "sha256": "6c29639da73368e3c57e75ea15309d690c7256098e8f46c24d3255eabfa276c5",
+      "bytes": 27410
+    },
+    {
+      "path": "host-implementation/manage.py",
+      "sha256": "297c5d43b639e087e79ab4bb8ed63c49f51b198f1198b23e19aeb327d82703b5",
+      "bytes": 24070
+    },
+    {
+      "path": "host-evidence/PRE-HTTP-FAILURE-PROOF.json",
+      "sha256": "18c356c2b06b3e4773492aae1e926250e98152501da1fd410bc1b5a9ca120d46",
+      "bytes": 1518
+    },
+    {
+      "path": "host-evidence/FIRST-REAL-RECEIPTS.json",
+      "sha256": "250b16f3f6238ff250a658e139ec717f4409f02390fecd019c70ccb8b86354a9",
+      "bytes": 6506
+    },
+    {
+      "path": "input/COMMON_SEED.txt",
+      "sha256": "146c15dcbe751d0a51ded50aa1fae27e8c2bdb4373cd2cdac5e229775e1be410",
+      "bytes": 4151
+    },
+    {
+      "path": "input/A_IMMUNE.txt",
+      "sha256": "c855e94ce509df6d11318c2e678c61a4bd1fbd6f3fcb12f0aed8d1338f29cc66",
+      "bytes": 2269
+    },
+    {
+      "path": "input/B_AUTONOMOUS.txt",
+      "sha256": "e8ba953b89d8b574f1511c445eb37ae44e60716ab52915e4a8fcb8984ae92206",
+      "bytes": 1121
+    },
+    {
+      "path": "input/seed_diagram.png",
+      "sha256": "dd643727a0aaad555ab7cc12167bf87061cdfe0562e765a70348ec8fa20acc80",
+      "bytes": 123138
+    }
+  ],
+  "public_exact_copies": [
+    {
+      "source": "input/COMMON_SEED.txt",
+      "published": "prompts/common-seed.txt",
+      "sha256": "146c15dcbe751d0a51ded50aa1fae27e8c2bdb4373cd2cdac5e229775e1be410"
+    },
+    {
+      "source": "input/A_IMMUNE.txt",
+      "published": "prompts/immune.txt",
+      "sha256": "c855e94ce509df6d11318c2e678c61a4bd1fbd6f3fcb12f0aed8d1338f29cc66"
+    },
+    {
+      "source": "input/B_AUTONOMOUS.txt",
+      "published": "prompts/autonomous.txt",
+      "sha256": "e8ba953b89d8b574f1511c445eb37ae44e60716ab52915e4a8fcb8984ae92206"
+    },
+    {
+      "source": "input/seed_diagram.png",
+      "published": "prompts/seed_diagram.png",
+      "sha256": "dd643727a0aaad555ab7cc12167bf87061cdfe0562e765a70348ec8fa20acc80"
+    }
+  ]
+}
