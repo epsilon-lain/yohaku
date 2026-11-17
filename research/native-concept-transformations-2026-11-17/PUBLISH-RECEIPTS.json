@@ -1,0 +1,136 @@
+{
+  "format": "yohaku-concept-transformations-publication/1",
+  "original_user_event": 968,
+  "publication_state": "published_and_readback_verified",
+  "scientific_repos": [
+    {
+      "repo": "epsilon-lain/yohaku",
+      "branch": "codex/initial-release",
+      "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+      "public": true,
+      "verified": true,
+      "parent_before_publication": "0683661bb89751c6d9d75e6269a77a44b633698e",
+      "tree_sha": "63ff612713e241dc4f9a8974eb58e02a522801a9",
+      "key": "yohaku",
+      "old_blobs_preserved": 2920,
+      "new_blobs_verified": 98,
+      "only_existing_file_changed": null
+    },
+    {
+      "repo": "epsilon-lain/lain-s-note",
+      "branch": "main",
+      "commit": "43c3c2e9b026cb098f9c33d338a3bd2be34c24b5",
+      "public": true,
+      "verified": true,
+      "parent_before_publication": "1e1c2514a77caeaaf57479f6eb5b305a9f285225",
+      "tree_sha": "e99e3aa12b1eccbcebf78a1e955c6a5fb587a02c",
+      "key": "math",
+      "old_blobs_preserved": 1600,
+      "new_blobs_verified": 19,
+      "only_existing_file_changed": "README.md index entry; prior text retained"
+    }
+  ],
+  "links": [
+    {
+      "key": "progress",
+      "repo": "epsilon-lain/yohaku",
+      "path": "research/native-concept-transformations-2026-11-17/中文进展.md",
+      "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+      "url": "https://github.com/epsilon-lain/yohaku/blob/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/%E4%B8%AD%E6%96%87%E8%BF%9B%E5%B1%95.md",
+      "blob_sha": "df3c0e52176d21611ed254d753dc6f259824a36e",
+      "existence_verified": true
+    },
+    {
+      "key": "processIndex",
+      "repo": "epsilon-lain/yohaku",
+      "path": "research/native-concept-transformations-2026-11-17/过程包索引.md",
+      "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+      "url": "https://github.com/epsilon-lain/yohaku/blob/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/%E8%BF%87%E7%A8%8B%E5%8C%85%E7%B4%A2%E5%BC%95.md",
+      "blob_sha": "5eb0821fc88675d44b9f7ad1d4ba1293ea6d9975",
+      "existence_verified": true
+    },
+    {
+      "key": "models",
+      "repo": "epsilon-lain/yohaku",
+      "path": "research/native-concept-transformations-2026-11-17/evidence/model-task-receipts.json",
+      "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+      "url": "https://github.com/epsilon-lain/yohaku/blob/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/evidence/model-task-receipts.json",
+      "blob_sha": "c8fd7be3bc94f993b459b64a14e50c8eade65bec",
+      "existence_verified": true
+    },
+    {
+      "key": "submission",
+      "repo": "epsilon-lain/yohaku",
+      "path": "research/native-concept-transformations-2026-11-17/submission.txt",
+      "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+      "url": "https://github.com/epsilon-lain/yohaku/blob/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/submission.txt",
+      "blob_sha": "ad98736e4aa901ed0554765a42a782f56c595eed",
+      "existence_verified": true
+    },
+    {
+      "key": "cli",
+      "repo": "epsilon-lain/yohaku",
+      "path": "research/native-concept-transformations-2026-11-17/local-official-verdict.json",
+      "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+      "url": "https://github.com/epsilon-lain/yohaku/blob/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/local-official-verdict.json",
+      "blob_sha": "7b9f503a422241f4fa1be6068d741445611e0ea6",
+      "existence_verified": true
+    },
+    {
+      "key": "math",
+      "repo": "epsilon-lain/lain-s-note",
+      "path": "research/concept-transformations-2026-11-17/README.md",
+      "commit": "43c3c2e9b026cb098f9c33d338a3bd2be34c24b5",
+      "url": "https://github.com/epsilon-lain/lain-s-note/blob/43c3c2e9b026cb098f9c33d338a3bd2be34c24b5/research/concept-transformations-2026-11-17/README.md",
+      "blob_sha": "22a993251142cdbdbee9cee351f52fe7863bd479",
+      "existence_verified": true
+    },
+    {
+      "key": "processZip",
+      "repo": "epsilon-lain/yohaku",
+      "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+      "path": "research/native-concept-transformations-2026-11-17/process-package.zip",
+      "url": "https://github.com/epsilon-lain/yohaku/blob/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/process-package.zip",
+      "download_url": "https://raw.githubusercontent.com/epsilon-lain/yohaku/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/process-package.zip",
+      "blob_sha": "a6a39e7d8243ee6fcf5cb3198c39b5ffaeec485c",
+      "bytes": 2043921,
+      "sha256": "55e19cbe20e5555470bcbde5a4fdef3739648d716eb74bc2484ffc0a621f7013",
+      "existence_verified": true,
+      "full_download_verified": true
+    }
+  ],
+  "archive_verification": {
+    "commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+    "url": "https://raw.githubusercontent.com/epsilon-lain/yohaku/b28fab89c3ed32ec8a201f93ceb31cb4ef897820/research/native-concept-transformations-2026-11-17/process-package.zip",
+    "http_status": 200,
+    "bytes": 2043921,
+    "sha256": "55e19cbe20e5555470bcbde5a4fdef3739648d716eb74bc2484ffc0a621f7013",
+    "all_inner_file_hashes_verified": 121,
+    "zip_crc_passed": true,
+    "account_credentials_used": false,
+    "at": 1794890283.761512
+  },
+  "native_summary": {
+    "original_nodes_preserved": 3,
+    "new_research_nodes_created": 0,
+    "model_tasks": 9,
+    "done": 8,
+    "historical_error_retained": 1,
+    "currently_in_flight": 0,
+    "real_scientific_project_tasks": 3,
+    "all_requested_and_native_readback": "gpt-6.1-sol / max",
+    "old_stops_cleared": false,
+    "old_budget_or_deadline_reset": false,
+    "user_turns_reserved": 9,
+    "user_turn_ceiling": 12,
+    "platform_upload": false,
+    "strict_competition_improvement": false,
+    "supplier_debit": "unknown"
+  },
+  "zip_upload_transport_recovery": {
+    "upload_call_response": "transport timeout and orchestration runtime replacement",
+    "query": "original precomputed Git blob SHA referenced successfully in tree; public download full SHA and every inner file verified",
+    "request_replayed": false
+  },
+  "postpublication_addendum": "The committed scientific ZIP remains unchanged. Auditable bridge bootstrap sources and this receipt are added separately after readback."
+}
