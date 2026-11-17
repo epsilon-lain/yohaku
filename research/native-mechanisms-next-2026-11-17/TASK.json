@@ -1,0 +1,32 @@
+{
+  "kind": "native-codex-handoff-not-a-start-receipt",
+  "goal_id": "native-mechanisms-next-20261117-v1",
+  "host": "WSL archlinux:/root/projects/yohaku",
+  "source_workflow_commit": "c51ccae2ea38ab14aa376fecdfed774403ce776b",
+  "source_math_commit": "d2afe810877587f0dd621fce8a49bc9b25d41df0",
+  "recommended_new_grant_requires_user_message": {
+    "total_native_model_turns": 8,
+    "seconds_from_first_admission": 5400,
+    "task_seconds_cap": 900,
+    "task_tool_call_cap": 96,
+    "concurrent_model_tasks_cap": 3,
+    "shared_across_all_teams_failures_retries_and_continuations": true,
+    "old_remaining_authority_reused": false
+  },
+  "requested_models": {
+    "leaders": "gpt-6.1-sol/max",
+    "collaborator_minimum": "gpt-6.1-sol/high",
+    "astra_or_weaker_fallback": false
+  },
+  "shared_program_caps": {
+    "official_search_apply": 2000000,
+    "official_verification_apply": 50000
+  },
+  "theory_goal": "A general conditional reusable mechanism, counterexample or operation-class obstruction with complete cost accounting.",
+  "application_goal": "Attempt a fully expanded and independently verified sac-07445 certificate shorter than 15 primitives; preserve the 15/work128 incumbent.",
+  "observe_actual_organization_and_adoption": true,
+  "publish_research_to_existing_authorized_github_repositories": true,
+  "competition_platform_submission": false,
+  "leaderboard_access": false,
+  "native_dispatched_by_this_cloud_handoff": false
+}
