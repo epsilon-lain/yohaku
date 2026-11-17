@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "official_apply": 0,
+  "author_code_imported": false,
+  "scope": "Analytic enumeration ledger check plus independently evaluated three named final outputs; not rerun of author checker.",
+  "source_sha256": "8fafa6c792b91dc5a7f441a7791fe0761f4a5122e9992f2e87cc8a06af8014a9",
+  "code_sha256": "babea4c1a64da7c4ce36d61bf3b6dd7f266166dae0ee4f14147ebdb38577002b",
+  "aggregate_counts": {
+    "cases": 38748,
+    "direct_arithmetic": 147306,
+    "encoded_arithmetic": 341724,
+    "strict_saving": 0,
+    "ties": 489,
+    "strict_loss": 38259
+  },
+  "by_n": [
+    {
+      "n": 1,
+      "cases": 21,
+      "direct_arithmetic": 30,
+      "encoded_arithmetic": 30,
+      "ties": 21
+    },
+    {
+      "n": 2,
+      "cases": 387,
+      "direct_arithmetic": 936,
+      "encoded_arithmetic": 1710,
+      "ties": 36
+    },
+    {
+      "n": 3,
+      "cases": 4239,
+      "direct_arithmetic": 13500,
+      "encoded_arithmetic": 29106,
+      "ties": 108
+    },
+    {
+      "n": 4,
+      "cases": 34101,
+      "direct_arithmetic": 132840,
+      "encoded_arithmetic": 310878,
+      "ties": 324
+    }
+  ],
+  "named_outputs": [
+    {
+      "name": "large_full_range_saving",
+      "output_sha256": "226a259c46d14008a10e6f27c22d4f3d335055bc40e980e891f32dd0e9ded0f2",
+      "direct": 200000,
+      "encoded": 2198,
+      "with_common_copies": [
+        202000,
+        4198
+      ]
+    },
+    {
+      "name": "large_point_updates_loss",
+      "output_sha256": "36f1f09f2387730586c24295ccd71518b24b058c1b118f8bf95104147399ce3e",
+      "direct": 200,
+      "encoded": 2398,
+      "with_common_copies": [
+        2200,
+        4398
+      ]
+    },
+    {
+      "name": "distinct_suffix_saving",
+      "output_sha256": "9a661b7eef5b65928d25d1b9ed75f492680a6449bc94fa93de0ed1229c1da5ce",
+      "direct": 5050,
+      "encoded": 298,
+      "with_common_copies": [
+        5250,
+        498
+      ]
+    }
+  ]
+}

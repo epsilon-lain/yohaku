@@ -1,0 +1,20 @@
+{
+  "sha256": {
+    "FREEZE.json": "c54e20dfea22f6b54cf6249eee0e3605b2ef1c9ff8fa2a3ff537898f055114f9",
+    "MECHANISM-CLASSIFICATION.json": "96b580765c35aeeb86c8c16b31696532ca9b031982e4425a7c826dbea615fcab",
+    "METHOD-LOG.md": "28a61c12b3c5a0e1de78f605fa07c0cee9c903375d14ebe302603c8fa82e7606",
+    "README.zh.md": "a9bb7a09c973e1e9204d0713e8d9f9f60f562765988809cdaf5c782e52728825",
+    "TEST-ACCESS.json": "885290bade0e85e37368c30c094d9268ba0a8c9786737aba0545a58e3be0cbef",
+    "attempt-ledger.json": "426c3988bbec98104ab5ab90dac4f632e3f8067b2d8395ccf99592ab982bb1cc",
+    "case-summary.csv": "799f0a96ccd64b3e09ba4065edaec60f486cbe4f5cc06ca4f8239fcc7b8be63a",
+    "development-results.json": "2538e35ae4a7395e43686a524980275cfe665dabce85de444f2dfce6ac49a19e",
+    "improved-certificates.json": "ba470aba7b81c977bd3d593c42cffcb728f881388437947dc3447425dc69a714",
+    "new-elimination-submission.txt": "43534e8f6eba9e9d4d31a721b1a86fc14aae66acae61a41e0467de4ff282fb56",
+    "results.json": "91e17ef00c4963f089c5055f5ce817ecee8c8033ac0c74b1d2fa8aad92699dba",
+    "run_suffix.py": "ec6aa9ac68883c809ba7ab7e568a923a16fab8c6a35d301140af67ab964b8168",
+    "scored-results.json": "70dcfda9e360147c1decce1c0d42df5ec8f0d2cdda71a1af3003aa077772379e",
+    "test-results.json": "0fe557a9867eb2db2575db2e1bda2151a1e68fab0a461012d016f1fbe0390526"
+  },
+  "all_files_under_200000_bytes": true,
+  "frozen_script_unchanged": true
+}

@@ -1,0 +1,273 @@
+{
+  "status": "passed",
+  "code_sha256": "36cf974f7720e0a3413672f13412636ee32a8d336ebdb637666828e069400c93",
+  "scope": "Metadata consistency and route-identity provenance only; declared access timing is not externally observed blind-test attestation.",
+  "official_apply": 0,
+  "search": 0,
+  "teams": [
+    {
+      "team": "goal_suffix",
+      "status": "accept",
+      "frozen_code_and_config_match": true,
+      "freeze_precedes_declared_test_access": true,
+      "search": 57442,
+      "verification": 1522
+    },
+    {
+      "team": "fragment_selection",
+      "status": "accept",
+      "frozen_code_and_rules_match": true,
+      "freeze_precedes_declared_test_access": true,
+      "search": 342096,
+      "verification": 1265
+    },
+    {
+      "team": "conjugation_frames",
+      "status": "accept",
+      "v1_v2_frozen_code_match": true,
+      "no_new8_access_claimed": true,
+      "search": 697,
+      "verification": 2893
+    },
+    {
+      "team": "symbolic_rules",
+      "status": "accept",
+      "frozen_rule_hash_match": true,
+      "no_new8_access_claimed": true,
+      "search": 0,
+      "verification": 1865,
+      "symbolic": 162958
+    }
+  ],
+  "selection": {
+    "cases": 29,
+    "total_length": 387,
+    "all_selected_routes_previously_independently_replayed": true,
+    "additional_replay_runs": 0,
+    "coverage": [
+      {
+        "challenge_id": "sac-07445",
+        "length": 15,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "current_review:frames-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0009",
+        "length": 9,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0013",
+        "length": 13,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0014",
+        "length": 14,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0015",
+        "length": 13,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "current_review:symbolic-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0026",
+        "length": 15,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0031",
+        "length": 13,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0033",
+        "length": 17,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0062",
+        "length": 18,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0081",
+        "length": 8,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0094",
+        "length": 10,
+        "independent_coverage": [
+          "current_review:fragment-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0099",
+        "length": 15,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0108",
+        "length": 16,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0113",
+        "length": 16,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0117",
+        "length": 10,
+        "independent_coverage": [
+          "current_review:fragment-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0160",
+        "length": 8,
+        "independent_coverage": [
+          "current_review:goal-suffix-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0164",
+        "length": 14,
+        "independent_coverage": [
+          "current_review:fragment-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0201",
+        "length": 17,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0204",
+        "length": 13,
+        "independent_coverage": [
+          "current_review:fragment-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0218",
+        "length": 14,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "current_review:symbolic-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0231",
+        "length": 18,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "current_review:frames-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0235",
+        "length": 12,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0258",
+        "length": 13,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "current_review:frames-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0281",
+        "length": 11,
+        "independent_coverage": [
+          "current_review:fragment-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0286",
+        "length": 15,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "current_review:frames-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0373",
+        "length": 13,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "current_review:symbolic-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0379",
+        "length": 12,
+        "independent_coverage": [
+          "current_review:fragment-input.json",
+          "previous_round2_independent_review"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0380",
+        "length": 13,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      },
+      {
+        "challenge_id": "sac-train-0389",
+        "length": 12,
+        "independent_coverage": [
+          "current_review:goal-suffix-other-improvements-input.json"
+        ]
+      }
+    ]
+  },
+  "all_team_search_excluding_root": 400235,
+  "all_team_verification_excluding_root_and_review": 7545
+}

@@ -1,0 +1,174 @@
+{
+  "status": "completed",
+  "primary_result": "results-v2.json",
+  "scope": "old20 development original public training certificates plus old sac-07445; no new8 or reserved v1 evaluation action access",
+  "original_total_length": 345,
+  "final_total_length": 343,
+  "improved_cases": [
+    {
+      "source_id": "ms-train-0218",
+      "official_id": "sac-train-0218",
+      "before": {
+        "length": 18,
+        "work": 114,
+        "peak_total_relator_length": 13,
+        "state_total_lengths_including_initial": [
+          13,
+          13,
+          13,
+          13,
+          10,
+          8,
+          6,
+          6,
+          6,
+          5,
+          3,
+          3,
+          2,
+          3,
+          3,
+          4,
+          2,
+          1,
+          0
+        ]
+      },
+      "after": {
+        "length": 16,
+        "work": 104,
+        "peak_total_relator_length": 13,
+        "state_total_lengths_including_initial": [
+          13,
+          13,
+          13,
+          13,
+          10,
+          8,
+          8,
+          5,
+          3,
+          3,
+          2,
+          3,
+          3,
+          4,
+          2,
+          1,
+          0
+        ]
+      }
+    }
+  ],
+  "v1_contiguous_common_frames": {
+    "result": "no match",
+    "common_frame_intervals": 0,
+    "candidate_count": 0,
+    "accepted_rewrites": 0
+  },
+  "v2_pending_compatible_frames": {
+    "candidate_count": 2,
+    "accepted_rewrites": 1,
+    "distinct_improved_cases": 1
+  },
+  "mechanism_deduplication": {
+    "same_as_symbolic_rule": "sym-dev-010",
+    "independent_discovery_claim": false,
+    "v2_structure_prompted_by_peer_message": true
+  },
+  "old_scored_incumbent": {
+    "id": "sac-07445",
+    "before": {
+      "length": 15,
+      "work": 128,
+      "peak_total_relator_length": 13,
+      "state_total_lengths_including_initial": [
+        12,
+        12,
+        13,
+        11,
+        11,
+        11,
+        11,
+        11,
+        9,
+        8,
+        8,
+        5,
+        3,
+        2,
+        1,
+        0
+      ]
+    },
+    "after": {
+      "length": 15,
+      "work": 128,
+      "peak_total_relator_length": 13,
+      "state_total_lengths_including_initial": [
+        12,
+        12,
+        13,
+        11,
+        11,
+        11,
+        11,
+        11,
+        9,
+        8,
+        8,
+        5,
+        3,
+        2,
+        1,
+        0
+      ]
+    }
+  },
+  "cumulative_official_apply_counts_all_versions_and_attempts": {
+    "search": 697,
+    "verification": 2893,
+    "total": 3590,
+    "official_verify_calls": 161,
+    "search_cap": 250000,
+    "verification_cap": 5000,
+    "warning": "These are cumulative v1+v2 totals; do not add v1 or v2 counters again. Independent-review costs belong to its own budget."
+  },
+  "attempt_count": 4,
+  "failed_attempt_count": 0,
+  "independent_review": {
+    "status": "passed",
+    "report": "../independent_review/frames-certificates-review.json",
+    "routes": 26,
+    "official_apply_in_review_budget": 782,
+    "own_apply_in_review_budget": 391
+  },
+  "synthetic_complete_certificates": [
+    {
+      "version": "v1",
+      "old_length": 13,
+      "new_length": 5,
+      "old_work": 90,
+      "new_work": 14,
+      "old_peak": 13,
+      "new_peak": 5
+    },
+    {
+      "version": "v2",
+      "old_length": 8,
+      "new_length": 4,
+      "old_work": 31,
+      "new_work": 9,
+      "old_peak": 7,
+      "new_peak": 3
+    }
+  ],
+  "no_claims": [
+    "new scored result",
+    "global shortest certificate",
+    "mathematical novelty",
+    "general AC solution",
+    "native Yohaku continuation",
+    "token or runtime speedup"
+  ]
+}

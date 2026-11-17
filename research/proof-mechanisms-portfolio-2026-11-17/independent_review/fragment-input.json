@@ -1,0 +1,2326 @@
+{
+  "scope": "approved_final_certificates_only",
+  "approval": "fragment lead postfreeze final handoff; original/new routes only from approved results",
+  "source_artifacts": [
+    {
+      "path": "proof_mechanisms_portfolio_20261117/fragment_selection/development-results.json",
+      "sha256": "992d94d6d29abf8009069ac8e7e2406dfe5ca4e030d83f37f7c51478565cf526"
+    },
+    {
+      "path": "proof_mechanisms_portfolio_20261117/fragment_selection/test-results.json",
+      "sha256": "84d75bfe7ed8902e650f0c824928f15efc12e7e7dcd199824980f845d63ad2cf"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "ms-train-0009",
+      "challenge": {
+        "challenge_id": "sac-train-0009",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:e2dbcabf516ce29265e87f9ec1ff582681d980955aeba6ba2f0d3a7e5251d21c",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0009"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            2,
+            4,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 64,
+            "peak_total_relator_length": 9
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            2,
+            4,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 9,
+            "work": 50,
+            "peak_total_relator_length": 9
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0013",
+      "challenge": {
+        "challenge_id": "sac-train-0013",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:b6e7808495ef4b122e6115a00d808a31dfba00b9b2b515affaf40c9a851517d3",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0013"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            9,
+            9,
+            0,
+            2,
+            4,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 136,
+            "peak_total_relator_length": 17
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            9,
+            9,
+            0,
+            2,
+            4,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 122,
+            "peak_total_relator_length": 17
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0014",
+      "challenge": {
+        "challenge_id": "sac-train-0014",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:dc4cfaf6f20a5d8181e7754d947928d9a571510253f3d83adfea47db6119eae1",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0014"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            9,
+            9,
+            9,
+            0,
+            2,
+            4,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 19,
+            "work": 159,
+            "peak_total_relator_length": 19
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            9,
+            9,
+            9,
+            0,
+            2,
+            4,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 145,
+            "peak_total_relator_length": 19
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0015",
+      "challenge": {
+        "challenge_id": "sac-train-0015",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:6c426f8a00d5b40d7c9555141f757c38bdcc9cf7b884384de21730f3fdb84319",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0015"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            0,
+            9,
+            4,
+            0,
+            2,
+            7,
+            2,
+            0,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 66,
+            "peak_total_relator_length": 8
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            9,
+            5,
+            2,
+            7,
+            2,
+            0,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 57,
+            "peak_total_relator_length": 8
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0031",
+      "challenge": {
+        "challenge_id": "sac-train-0031",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:232d86f64eba61a98e33d703b5390ce552abf71a6cc84efb8b70d1a81126cc89",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0031"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            1,
+            2,
+            0,
+            6,
+            2,
+            7,
+            7,
+            1,
+            4,
+            4,
+            4,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 109,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            1,
+            2,
+            0,
+            6,
+            2,
+            7,
+            7,
+            1,
+            4,
+            4,
+            4,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 95,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0033",
+      "challenge": {
+        "challenge_id": "sac-train-0033",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:16c6e14ff8f6f4ebc28b4e4c021845bc033daf3b3474b074738cb5934d0f0377",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0033"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            1,
+            2,
+            7,
+            2,
+            0,
+            6,
+            4,
+            1,
+            2,
+            7,
+            2,
+            4,
+            4,
+            2,
+            0,
+            4,
+            3,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 19,
+            "work": 152,
+            "peak_total_relator_length": 17
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0062",
+      "challenge": {
+        "challenge_id": "sac-train-0062",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:0076ffcd8459c14d8dbdfa8eaa75897b9380f816e2f850ada9f481c488510410",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0062"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            1,
+            2,
+            7,
+            2,
+            0,
+            6,
+            4,
+            1,
+            2,
+            7,
+            2,
+            4,
+            4,
+            4,
+            2,
+            0,
+            4,
+            3,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 20,
+            "work": 194,
+            "peak_total_relator_length": 22
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0081",
+      "challenge": {
+        "challenge_id": "sac-train-0081",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            1,
+            2,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:74d547a73c14b02df193176bdb50074383df320a111cc795564bf240f8a2f92f",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0081"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            2,
+            9,
+            0,
+            2,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 56,
+            "peak_total_relator_length": 11
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            2,
+            9,
+            0,
+            2,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 8,
+            "work": 42,
+            "peak_total_relator_length": 11
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0099",
+      "challenge": {
+        "challenge_id": "sac-train-0099",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:36b9d387c7c00f1098b96131615c824d35d189707a8ca5e471802b62f20adc74",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0099"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            0,
+            7,
+            2,
+            4,
+            4,
+            4,
+            4,
+            2,
+            0,
+            4,
+            3,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 131,
+            "peak_total_relator_length": 17
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0108",
+      "challenge": {
+        "challenge_id": "sac-train-0108",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:4d8eec76d7efdf8cf41cf4858c7dc4d51602a673c8cb74f2c145ca1f86488505",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0108"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 19,
+            "work": 150,
+            "peak_total_relator_length": 21
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 147,
+            "peak_total_relator_length": 21
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0160",
+      "challenge": {
+        "challenge_id": "sac-train-0160",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            1,
+            2,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:fae6feef2af388a7f32cf39606c4c641e700949e536328e2067236f2699b5e74",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0160"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            2,
+            9,
+            1,
+            4,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 9,
+            "work": 47,
+            "peak_total_relator_length": 12
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0201",
+      "challenge": {
+        "challenge_id": "sac-train-0201",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:8ae914df07daa26e5b0dfd1300f84715c7d9887d3875dbc945ec6d7375d80896",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0201"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 20,
+            "work": 175,
+            "peak_total_relator_length": 24
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 172,
+            "peak_total_relator_length": 24
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0218",
+      "challenge": {
+        "challenge_id": "sac-train-0218",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:2052baf8618a8570538c1fdbe90c1a96118fedb3f9e297211e5b0c9b2eacf5f0",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0218"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            13,
+            1,
+            9,
+            2,
+            8,
+            1,
+            2,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 114,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            3,
+            13,
+            2,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 93,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0231",
+      "challenge": {
+        "challenge_id": "sac-train-0231",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:7dfcd004ba33eb6372c86424c0e021246afd4bdd4729a42e15e79c6f35b99620",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0231"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            1,
+            8,
+            13,
+            13,
+            2,
+            0,
+            8,
+            4,
+            2,
+            6,
+            2,
+            2,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 148,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0235",
+      "challenge": {
+        "challenge_id": "sac-train-0235",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -1,
+            2,
+            2,
+            1,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:e67e2247eb70b73348ef8039796771b1593d635bed5ba5787bc11c5d35eb9f3d",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0235"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            0,
+            9,
+            4,
+            1,
+            8,
+            2,
+            9,
+            9,
+            1,
+            2,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 104,
+            "peak_total_relator_length": 15
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            0,
+            9,
+            4,
+            1,
+            8,
+            2,
+            9,
+            9,
+            1,
+            2,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 12,
+            "work": 90,
+            "peak_total_relator_length": 15
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0258",
+      "challenge": {
+        "challenge_id": "sac-train-0258",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -1,
+            2,
+            1,
+            -2,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:838c37d6b2cd467ae75230b880e4ba070dda614efb330fe2f741d74aed8082de",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0258"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            9,
+            11,
+            1,
+            4,
+            8,
+            10,
+            2,
+            0,
+            6,
+            4,
+            2,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 97,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0286",
+      "challenge": {
+        "challenge_id": "sac-train-0286",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            1,
+            2,
+            -1,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:898c02d28c24db0e9452c64c059e21b43ffcf92101dbacaaa41b4be09f744985",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0286"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            8,
+            4,
+            1,
+            9,
+            2,
+            8,
+            0,
+            4,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 119,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0373",
+      "challenge": {
+        "challenge_id": "sac-train-0373",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            1,
+            1,
+            2,
+            2,
+            -1,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:af712ca81fb0243d8498e24a43fe85fcc7da3abe787dc50d5a52e44c390d2501",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0373"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            11,
+            4,
+            6,
+            11,
+            2,
+            0,
+            4,
+            11,
+            4,
+            0,
+            6,
+            4,
+            2,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 115,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            11,
+            4,
+            6,
+            11,
+            2,
+            5,
+            11,
+            5,
+            6,
+            4,
+            2,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 101,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0379",
+      "challenge": {
+        "challenge_id": "sac-train-0379",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            1,
+            1,
+            2,
+            -1,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:5e77a9755bfb42dd7003216cbb0f4d407adee73fa22bc90ecdc3263565f21812",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0379"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            11,
+            4,
+            11,
+            2,
+            9,
+            0,
+            2,
+            4,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 101,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            11,
+            4,
+            11,
+            2,
+            9,
+            0,
+            2,
+            4,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 12,
+            "work": 87,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0380",
+      "challenge": {
+        "challenge_id": "sac-train-0380",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:1eca9ebe5966b1313965997d3ed4933f655d2b5753e142e3c38749761af5a2f5",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0380"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            11,
+            2,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 16,
+            "work": 85,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            11,
+            2,
+            0,
+            6,
+            2,
+            0,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 82,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "sac-07445",
+      "challenge": {
+        "challenge_id": "sac-07445",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -2,
+            -2,
+            1,
+            2,
+            1
+          ],
+          [
+            -2,
+            -2,
+            -1,
+            2,
+            1,
+            2,
+            -1
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": true,
+        "base_score": 1,
+        "instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+        "freeze_date": null
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            12,
+            1,
+            3,
+            6,
+            12,
+            2,
+            5,
+            6,
+            4,
+            2,
+            4,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 128,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0164",
+      "challenge": {
+        "challenge_id": "sac-train-0164",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            1,
+            -2,
+            -1,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:30c5a32bcbd692b68695ce5bdf4238268e48fd0032c83997ad7b157fa9bc4ccc",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0164"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            1,
+            8,
+            2,
+            0,
+            6,
+            4,
+            2,
+            2,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 120,
+            "peak_total_relator_length": 14
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0389",
+      "challenge": {
+        "challenge_id": "sac-train-0389",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            1,
+            2,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:7cc028480681cc14ca28a5cb681be7ead41f0b03928451115502905d611ca3cf",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0389"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            2,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 75,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            2,
+            0,
+            6,
+            2,
+            0,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 72,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0026",
+      "challenge": {
+        "challenge_id": "sac-train-0026",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:737f1cc0e2ab1b4dda1bde00b7ca760441ca42d022fd111d44eef090fb8bfd02",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0026"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 113,
+            "peak_total_relator_length": 16
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 16,
+            "work": 110,
+            "peak_total_relator_length": 16
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0204",
+      "challenge": {
+        "challenge_id": "sac-train-0204",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2,
+            -2,
+            -1,
+            2,
+            1
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:7c57ebeba9bb6c74d969dd104e592d6a6e08c873b0ead179b404e49a59c2e35e",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0204"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            9,
+            11,
+            1,
+            12,
+            9,
+            4,
+            8,
+            2,
+            8,
+            0,
+            4,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 100,
+            "peak_total_relator_length": 12
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0117",
+      "challenge": {
+        "challenge_id": "sac-train-0117",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            1,
+            2,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:ecca59bef4042e85fcd171387a5404a252c00460e0fbba1474184e620dab9bf5",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0117"
+      },
+      "routes": [
+        {
+          "label": "original_equal_greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            0,
+            9,
+            2,
+            8,
+            1,
+            4,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 10,
+            "work": 59,
+            "peak_total_relator_length": 12
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0094",
+      "challenge": {
+        "challenge_id": "sac-train-0094",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            1,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:862e2fcdafc748b5cc79c4733a0b62463bc6b7aaaa57b365a311419060a3fce2",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0094"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            11,
+            13,
+            2,
+            9,
+            0,
+            2,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 74,
+            "peak_total_relator_length": 11
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            11,
+            13,
+            2,
+            9,
+            0,
+            2,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 10,
+            "work": 60,
+            "peak_total_relator_length": 11
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0113",
+      "challenge": {
+        "challenge_id": "sac-train-0113",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -1,
+            2,
+            2,
+            1
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:afc4eebcb76c725e452fbe8cc024b8f3d35a759f887fa11f0ca0778e395983b0",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0113"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            9,
+            11,
+            1,
+            4,
+            1,
+            2,
+            1,
+            6,
+            2,
+            7,
+            0,
+            4,
+            4,
+            3,
+            4,
+            3,
+            10,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 19,
+            "work": 133,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            9,
+            11,
+            1,
+            4,
+            3,
+            6,
+            2,
+            7,
+            0,
+            4,
+            4,
+            3,
+            4,
+            3,
+            10,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 114,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0281",
+      "challenge": {
+        "challenge_id": "sac-train-0281",
+        "generators": [
+          "x",
+          "y"
+        ],
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            1,
+            2,
+            2,
+            -1,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1",
+        "scored": false,
+        "base_score": 0,
+        "instance_hash": "sha256:f69bddd70b56286deb80c7e85529f2edc31527824450809fd486f302b95b8625",
+        "freeze_date": null,
+        "source_training_id": "ms-train-0281"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            11,
+            13,
+            2,
+            9,
+            9,
+            0,
+            2,
+            0,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 16,
+            "work": 95,
+            "peak_total_relator_length": 15
+          }
+        },
+        {
+          "label": "greedy_equal_dp",
+          "moves": [
+            6,
+            4,
+            11,
+            13,
+            2,
+            9,
+            9,
+            0,
+            2,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 11,
+            "work": 81,
+            "peak_total_relator_length": 15
+          }
+        }
+      ]
+    }
+  ]
+}

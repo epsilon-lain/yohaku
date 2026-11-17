@@ -1,0 +1,73 @@
+{
+  "version": "symbolic-rules-attempt-ledger-v1",
+  "attempts": [
+    {
+      "id": "discovery-v1",
+      "execution": "discover_rules.py",
+      "symbolic_primitive_apply": 4478,
+      "official_search_apply": 0,
+      "official_verification_apply": 0,
+      "status": "completed",
+      "counts_by_phase": {
+        "enumerate_short": 2954,
+        "scan_development": 1440,
+        "selected_proof_replay": 84
+      }
+    },
+    {
+      "id": "resource-v1",
+      "execution": "inline Python; same algorithm later saved as resource_exhaustive.py without rerun",
+      "symbolic_primitive_apply": 155526,
+      "official_search_apply": 0,
+      "official_verification_apply": 0,
+      "status": "completed",
+      "pair_count": 25921
+    },
+    {
+      "id": "fingerprint-digest-v1",
+      "execution": "fingerprint_digest.py; repeated short table construction counted anew",
+      "symbolic_primitive_apply": 2954,
+      "official_search_apply": 0,
+      "official_verification_apply": 0,
+      "status": "completed"
+    },
+    {
+      "id": "official-verification-v1",
+      "execution": "verify_rules.py",
+      "symbolic_primitive_apply": 0,
+      "official_search_apply": 0,
+      "official_verification_apply": 1865,
+      "status": "completed",
+      "counts_by_phase": {
+        "development_original_step_replay": 330,
+        "development_original_full_verify": 330,
+        "development_candidate_step_replay": 261,
+        "development_candidate_full_verify": 261,
+        "synthetic_rule_step_replay": 672,
+        "resource_counterexample_step_replay": 6,
+        "resource_counterexample_full_verify": 5
+      },
+      "failed_apply_calls_included": 1,
+      "expected_failed_verdict": "E_LENGTH_LIMIT"
+    }
+  ],
+  "totals": {
+    "symbolic_primitive_apply": 162958,
+    "official_search_apply": 0,
+    "official_verification_apply": 1865
+  },
+  "caps": {
+    "symbolic_primitive_apply": 200000,
+    "official_search_apply": 0,
+    "official_verification_apply": 5000
+  },
+  "definition": "One nonofficial symbolic operation is one I/M/C primitive application to an ordered pair, including its inversions and free reductions. Hashing, comparisons and 88 signature substitutions are not primitive applications; no time complexity/token saving is inferred.",
+  "independent_review_separate_ledger": {
+    "nonofficial_symbolic_apply": 96,
+    "official_apply": 728
+  },
+  "test_actions_accessed": [],
+  "reserved_v1_actions_accessed": [],
+  "unexpected_failures": [],
+  "source_read_retry_note": "First interface message failed because recipient did not yet exist; no action operations. Initial extraction was later hash-checked and reproduced identically; no action operations."
+}

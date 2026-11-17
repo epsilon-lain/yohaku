@@ -1,0 +1,8488 @@
+{
+  "traces": [
+    {
+      "case_id": "ms-train-0009",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 9,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 18,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 27,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 3,
+          "move": 9,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 34,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 4,
+          "move": 9,
+          "state": [
+            [
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 39,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              2,
+              2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 44,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 6,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 47,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 7,
+          "move": 4,
+          "state": [
+            [
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 49,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 8,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 51,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 9,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 54,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 10,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 57,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 61,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 12,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 63,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 13,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 64,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 14,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 64,
+          "peak_total_relator_length": 9
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0013",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 17,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 34,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 51,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 3,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 66,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 4,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 79,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 5,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 90,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 6,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 99,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 7,
+          "move": 9,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 106,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 8,
+          "move": 9,
+          "state": [
+            [
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 111,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 9,
+          "move": 0,
+          "state": [
+            [
+              2,
+              2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 116,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 10,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 119,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 11,
+          "move": 4,
+          "state": [
+            [
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 121,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 12,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 123,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 13,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 126,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 14,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 129,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 15,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 133,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 16,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 135,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 17,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 136,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 18,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 136,
+          "peak_total_relator_length": 17
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0014",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 19,
+          "work": 19,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 19,
+          "work": 38,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 19,
+          "work": 57,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 3,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 74,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 4,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 89,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 5,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 102,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 6,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 113,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 7,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 122,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 8,
+          "move": 9,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 129,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 9,
+          "move": 9,
+          "state": [
+            [
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 134,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 10,
+          "move": 0,
+          "state": [
+            [
+              2,
+              2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 139,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 142,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 12,
+          "move": 4,
+          "state": [
+            [
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 144,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 13,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 146,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 14,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 149,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 15,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 152,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 16,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 156,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 17,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 158,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 18,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 159,
+          "peak_total_relator_length": 19
+        },
+        {
+          "step": 19,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 159,
+          "peak_total_relator_length": 19
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0015",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 8,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 1,
+          "move": 0,
+          "state": [
+            [
+              2,
+              2,
+              -1,
+              -2,
+              1
+            ],
+            [
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 16,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              2,
+              2,
+              -1,
+              -2,
+              1
+            ],
+            [
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 23,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 3,
+          "move": 1,
+          "state": [
+            [
+              2,
+              2,
+              -1,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 30,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 4,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              -1
+            ],
+            [
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 35,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              1,
+              -2,
+              -2
+            ],
+            [
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 40,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 6,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              1,
+              -2
+            ],
+            [
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 45,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 7,
+          "move": 4,
+          "state": [
+            [
+              -2,
+              1,
+              -2
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 49,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 8,
+          "move": 0,
+          "state": [
+            [
+              2,
+              -1,
+              2
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 53,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 9,
+          "move": 2,
+          "state": [
+            [
+              2,
+              -1
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 56,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 10,
+          "move": 7,
+          "state": [
+            [
+              -1,
+              2
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 59,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              -1
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 61,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 12,
+          "move": 0,
+          "state": [
+            [
+              1
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 63,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 13,
+          "move": 1,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 65,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 14,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 66,
+          "peak_total_relator_length": 8
+        },
+        {
+          "step": 15,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 66,
+          "peak_total_relator_length": 8
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0031",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 1,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -1
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 37,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 0,
+          "state": [
+            [
+              1,
+              2,
+              -1,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 48,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 6,
+          "state": [
+            [
+              1,
+              1,
+              2,
+              -1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 59,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 2,
+          "state": [
+            [
+              1,
+              1,
+              2,
+              -1,
+              -1
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 68,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 7,
+          "state": [
+            [
+              1,
+              2,
+              -1
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 75,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 7,
+          "state": [
+            [
+              2
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 80,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 1,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 85,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 4,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 89,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 4,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 92,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 4,
+          "state": [
+            [
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 94,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 96,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 99,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 102,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 106,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 16,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 108,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 17,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 109,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 18,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 109,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0033",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 17,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 1,
+          "move": 1,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 34,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 49,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 3,
+          "move": 7,
+          "state": [
+            [
+              -1,
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 64,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 4,
+          "move": 2,
+          "state": [
+            [
+              -1,
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 75,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 86,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 6,
+          "move": 6,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 97,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 7,
+          "move": 4,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 107,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 8,
+          "move": 1,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 117,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 9,
+          "move": 2,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 124,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 10,
+          "move": 7,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 131,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 135,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 12,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 138,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 13,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 140,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 14,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 143,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 15,
+          "move": 0,
+          "state": [
+            [
+              1,
+              2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 146,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 16,
+          "move": 4,
+          "state": [
+            [
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 149,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 17,
+          "move": 3,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 151,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 18,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 152,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 19,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 152,
+          "peak_total_relator_length": 17
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0062",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 22,
+          "work": 22,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 1,
+          "move": 1,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 22,
+          "work": 44,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 19,
+          "work": 63,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 3,
+          "move": 7,
+          "state": [
+            [
+              -1,
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 19,
+          "work": 82,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 4,
+          "move": 2,
+          "state": [
+            [
+              -1,
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 14,
+          "work": 96,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 14,
+          "work": 110,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 6,
+          "move": 6,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 14,
+          "work": 124,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 7,
+          "move": 4,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 137,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 8,
+          "move": 1,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 150,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 9,
+          "move": 2,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              -1,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 159,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 10,
+          "move": 7,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 168,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 173,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 12,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 177,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 13,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 180,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 14,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 182,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 15,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 185,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 16,
+          "move": 0,
+          "state": [
+            [
+              1,
+              2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 188,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 17,
+          "move": 4,
+          "state": [
+            [
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 191,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 18,
+          "move": 3,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 193,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 19,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 194,
+          "peak_total_relator_length": 22
+        },
+        {
+          "step": 20,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 194,
+          "peak_total_relator_length": 22
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0081",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 11,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 22,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 28,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 3,
+          "move": 2,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 33,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 4,
+          "move": 9,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 36,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              2,
+              -1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 39,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 6,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 41,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 7,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 43,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 8,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 46,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 9,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 49,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 10,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 53,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 11,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 55,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 12,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 56,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 13,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 56,
+          "peak_total_relator_length": 11
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0099",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 17,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 1,
+          "move": 0,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 34,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 16,
+          "work": 50,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 3,
+          "move": 1,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 16,
+          "work": 66,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 4,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              -1
+            ],
+            [
+              -1,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 77,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              -1,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 88,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 6,
+          "move": 7,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 99,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 7,
+          "move": 2,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 105,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 8,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 110,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 9,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 114,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 10,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 117,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 11,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 119,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 12,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 122,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 13,
+          "move": 0,
+          "state": [
+            [
+              1,
+              2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 125,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 14,
+          "move": 4,
+          "state": [
+            [
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 128,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 15,
+          "move": 3,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 130,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 16,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 131,
+          "peak_total_relator_length": 17
+        },
+        {
+          "step": 17,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 131,
+          "peak_total_relator_length": 17
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0108",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 21,
+          "work": 21,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 21,
+          "work": 42,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 57,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 3,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 70,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 4,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 81,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              -1,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 92,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 6,
+          "move": 6,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 103,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 7,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 110,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 8,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 117,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 9,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 123,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 10,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 128,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 11,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 132,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 12,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 135,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 13,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 137,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 14,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 140,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 15,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 143,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 16,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 147,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 17,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 149,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 18,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 150,
+          "peak_total_relator_length": 21
+        },
+        {
+          "step": 19,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 150,
+          "peak_total_relator_length": 21
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0160",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              1,
+              2,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 12,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              1,
+              2,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 24,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 31,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 3,
+          "move": 2,
+          "state": [
+            [
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 36,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 4,
+          "move": 9,
+          "state": [
+            [
+              1
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 39,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 5,
+          "move": 1,
+          "state": [
+            [
+              1
+            ],
+            [
+              -2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 42,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 6,
+          "move": 4,
+          "state": [
+            [
+              1
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 44,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 7,
+          "move": 1,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 46,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 8,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 47,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 9,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 47,
+          "peak_total_relator_length": 12
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0201",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 24,
+          "work": 24,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 24,
+          "work": 48,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 17,
+          "work": 65,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 3,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 80,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 4,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 93,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              -1,
+              -2,
+              -2,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 106,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 6,
+          "move": 6,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 119,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 7,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 127,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 8,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 135,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 9,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 142,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 10,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 148,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 11,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 153,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 12,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 157,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 13,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 160,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 14,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 162,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 15,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 165,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 16,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 168,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 17,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 172,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 18,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 174,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 19,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 175,
+          "peak_total_relator_length": 24
+        },
+        {
+          "step": 20,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 175,
+          "peak_total_relator_length": 24
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0218",
+      "label": "original",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 11,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 39,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 52,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 4,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 62,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 70,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 76,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 1,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 82,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 88,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              -2,
+              -1,
+              2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 93,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 8,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 96,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 1,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 99,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 2,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 101,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 104,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 107,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 111,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 16,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 113,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 17,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 114,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 18,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 114,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0218",
+      "label": "frames_v2_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 11,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 39,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              1,
+              -2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 52,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 4,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 62,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 70,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 1,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 78,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 83,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 86,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 1,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 89,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 2,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 91,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 94,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 97,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 101,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 103,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 104,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 16,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 104,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0231",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 11,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 39,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 52,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 4,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 62,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 1,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 72,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 8,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 82,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 13,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              2,
+              -1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 92,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 13,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 102,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 2,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              2
+            ],
+            [
+              2,
+              2,
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 111,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 0,
+          "state": [
+            [
+              -2,
+              -2,
+              -2,
+              1
+            ],
+            [
+              2,
+              2,
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 120,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 8,
+          "state": [
+            [
+              -2,
+              -2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 129,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 4,
+          "state": [
+            [
+              -2,
+              -2,
+              1,
+              -2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 134,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 138,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 6,
+          "state": [
+            [
+              1,
+              -2,
+              -2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 142,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 2,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 145,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 16,
+          "move": 2,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 147,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 17,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 148,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 18,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 148,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0235",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -1,
+              2,
+              2,
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 15,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 1,
+          "move": 0,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1
+            ],
+            [
+              1,
+              -2,
+              -1,
+              2,
+              2,
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 30,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 2,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              1,
+              -2,
+              -1,
+              2,
+              2,
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 15,
+          "work": 45,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 3,
+          "move": 4,
+          "state": [
+            [
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 53,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 4,
+          "move": 1,
+          "state": [
+            [
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 61,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 5,
+          "move": 8,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 69,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 6,
+          "move": 2,
+          "state": [
+            [
+              2,
+              2,
+              2,
+              -1,
+              -2,
+              -2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 76,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 7,
+          "move": 9,
+          "state": [
+            [
+              2,
+              2,
+              -1,
+              -2
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 81,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 8,
+          "move": 9,
+          "state": [
+            [
+              2,
+              -1
+            ],
+            [
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 84,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 9,
+          "move": 1,
+          "state": [
+            [
+              2,
+              -1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 87,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 10,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 89,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 11,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 91,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 12,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 94,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 13,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 97,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 14,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 101,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 15,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 103,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 16,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 104,
+          "peak_total_relator_length": 15
+        },
+        {
+          "step": 17,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 104,
+          "peak_total_relator_length": 15
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0258",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 11,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 39,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 1,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              -1,
+              2,
+              2,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 52,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 4,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 60,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 8,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              -1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 68,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 10,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 76,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 2,
+          "state": [
+            [
+              -1,
+              2
+            ],
+            [
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 81,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 0,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 86,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 6,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 91,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 4,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 94,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 96,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 97,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 97,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0286",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 11,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 39,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 52,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 4,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 64,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 13,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 74,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 8,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 84,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 4,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 91,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 1,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 98,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 9,
+          "state": [
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 105,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              -1,
+              2
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 110,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 8,
+          "state": [
+            [
+              -1
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 113,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 0,
+          "state": [
+            [
+              1
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 116,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 4,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 118,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 119,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 119,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0373",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              1,
+              1,
+              2,
+              2,
+              -1,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 11,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              -1,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              -1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 38,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 6,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              -1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 50,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 11,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 62,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 71,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 0,
+          "state": [
+            [
+              -1,
+              2
+            ],
+            [
+              1,
+              2,
+              2,
+              -1,
+              -2,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 80,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 4,
+          "state": [
+            [
+              -1,
+              2
+            ],
+            [
+              1,
+              2,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 87,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 11,
+          "state": [
+            [
+              -1,
+              2
+            ],
+            [
+              2,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 94,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 4,
+          "state": [
+            [
+              -1,
+              2
+            ],
+            [
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 99,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 0,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 104,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 6,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 109,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 4,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 112,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 2,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 114,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 115,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 115,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0379",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              1,
+              1,
+              2,
+              -1,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              1,
+              2,
+              -1,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              1,
+              2,
+              -1,
+              -2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 38,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 11,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 48,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 4,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              -2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 57,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 11,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 64,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 2,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 71,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 9,
+          "state": [
+            [
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 76,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 0,
+          "state": [
+            [
+              2,
+              2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 81,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 84,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 4,
+          "state": [
+            [
+              2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 86,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 88,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 91,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 94,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 98,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 100,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 16,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 101,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 17,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 101,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0380",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -1,
+              2,
+              1,
+              -2,
+              -2
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              2,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 13,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              2,
+              2,
+              -1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 26,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              1,
+              2,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 10,
+          "work": 36,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 11,
+          "state": [
+            [
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 44,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 2,
+          "state": [
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 49,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 0,
+          "state": [
+            [
+              -1,
+              -2
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 54,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 6,
+          "state": [
+            [
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 59,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 2,
+          "state": [
+            [
+              2
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 63,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 0,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 67,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 70,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 4,
+          "state": [
+            [
+              -2
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 72,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 75,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 5,
+          "state": [
+            [
+              -2,
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 78,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 2,
+          "state": [
+            [
+              -2,
+              1,
+              2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 82,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 8,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 84,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 85,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 16,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 85,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "sac-07445",
+      "label": "original_equal_frames_final",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              -2,
+              -2,
+              1,
+              2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 12,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 1,
+          "move": 6,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 12,
+          "work": 24,
+          "peak_total_relator_length": 12
+        },
+        {
+          "step": 2,
+          "move": 4,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 37,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 3,
+          "move": 12,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 48,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 4,
+          "move": 1,
+          "state": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 59,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 3,
+          "state": [
+            [
+              1,
+              -2,
+              1,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 70,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 6,
+          "state": [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 81,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 12,
+          "state": [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 92,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 2,
+          "state": [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 101,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 5,
+          "state": [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 109,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 6,
+          "state": [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 117,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 4,
+          "state": [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 122,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 2,
+          "state": [
+            [
+              1
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 125,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 4,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 127,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 14,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 128,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 15,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 128,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "synthetic-complete-stable",
+      "label": "old",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              1,
+              2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 5,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 1,
+          "move": 8,
+          "state": [
+            [
+              2,
+              1,
+              2,
+              -1,
+              -2
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 12,
+          "peak_total_relator_length": 7
+        },
+        {
+          "step": 2,
+          "move": 6,
+          "state": [
+            [
+              1,
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 9,
+          "work": 21,
+          "peak_total_relator_length": 9
+        },
+        {
+          "step": 3,
+          "move": 12,
+          "state": [
+            [
+              1,
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              -1
+            ],
+            [
+              2,
+              1,
+              -2,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 32,
+          "peak_total_relator_length": 11
+        },
+        {
+          "step": 4,
+          "move": 10,
+          "state": [
+            [
+              1,
+              2,
+              1,
+              2,
+              -1,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 13,
+          "work": 45,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 5,
+          "move": 2,
+          "state": [
+            [
+              1,
+              2,
+              1,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              1,
+              -2,
+              -2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 56,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 6,
+          "move": 1,
+          "state": [
+            [
+              1,
+              2,
+              1,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              2,
+              -1,
+              -2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 11,
+          "work": 67,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 7,
+          "move": 4,
+          "state": [
+            [
+              1,
+              2,
+              1,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 8,
+          "work": 75,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 8,
+          "move": 7,
+          "state": [
+            [
+              2,
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 6,
+          "work": 81,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 9,
+          "move": 9,
+          "state": [
+            [
+              1
+            ],
+            [
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 85,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 10,
+          "move": 11,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 87,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 11,
+          "move": 13,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 89,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 12,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 90,
+          "peak_total_relator_length": 13
+        },
+        {
+          "step": 13,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 90,
+          "peak_total_relator_length": 13
+        }
+      ]
+    },
+    {
+      "case_id": "synthetic-complete-stable",
+      "label": "new",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              1,
+              2,
+              -1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 5,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 1,
+          "move": 2,
+          "state": [
+            [
+              1
+            ],
+            [
+              1,
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 8,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 2,
+          "move": 1,
+          "state": [
+            [
+              1
+            ],
+            [
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 11,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 3,
+          "move": 4,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 13,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 4,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 14,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 5,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 14,
+          "peak_total_relator_length": 5
+        }
+      ]
+    },
+    {
+      "case_id": "synthetic-interleaved-frame-complete",
+      "label": "old",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 3,
+          "peak_total_relator_length": 3
+        },
+        {
+          "step": 1,
+          "move": 10,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 8,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 2,
+          "move": 1,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 5,
+          "work": 13,
+          "peak_total_relator_length": 5
+        },
+        {
+          "step": 3,
+          "move": 6,
+          "state": [
+            [
+              1,
+              1,
+              -2,
+              -1
+            ],
+            [
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 7,
+          "work": 20,
+          "peak_total_relator_length": 7
+        },
+        {
+          "step": 4,
+          "move": 2,
+          "state": [
+            [
+              1
+            ],
+            [
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 24,
+          "peak_total_relator_length": 7
+        },
+        {
+          "step": 5,
+          "move": 7,
+          "state": [
+            [
+              1
+            ],
+            [
+              1,
+              2,
+              -1
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 4,
+          "work": 28,
+          "peak_total_relator_length": 7
+        },
+        {
+          "step": 6,
+          "move": 11,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 30,
+          "peak_total_relator_length": 7
+        },
+        {
+          "step": 7,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 31,
+          "peak_total_relator_length": 7
+        },
+        {
+          "step": 8,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 31,
+          "peak_total_relator_length": 7
+        }
+      ]
+    },
+    {
+      "case_id": "synthetic-interleaved-frame-complete",
+      "label": "new",
+      "steps": [
+        {
+          "step": 0,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              -2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 3,
+          "peak_total_relator_length": 3
+        },
+        {
+          "step": 1,
+          "move": 1,
+          "state": [
+            [
+              1,
+              -2
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 3,
+          "work": 6,
+          "peak_total_relator_length": 3
+        },
+        {
+          "step": 2,
+          "move": 2,
+          "state": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ],
+          "rank": 2,
+          "total_relator_length": 2,
+          "work": 8,
+          "peak_total_relator_length": 3
+        },
+        {
+          "step": 3,
+          "move": 16,
+          "state": [
+            [
+              1
+            ]
+          ],
+          "rank": 1,
+          "total_relator_length": 1,
+          "work": 9,
+          "peak_total_relator_length": 3
+        },
+        {
+          "step": 4,
+          "move": 15,
+          "state": [],
+          "rank": 0,
+          "total_relator_length": 0,
+          "work": 9,
+          "peak_total_relator_length": 3
+        }
+      ]
+    }
+  ]
+}

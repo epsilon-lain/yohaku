@@ -1,0 +1,16 @@
+{
+  "dictionary_entries": 1550,
+  "strings_by_length": {
+    "0": 1,
+    "1": 14,
+    "2": 196,
+    "3": 2744
+  },
+  "canonical_serialization": "sort entries by signed integer ordered output tuple; JSON list of output/canonical_moves dictionaries in that key insertion order; ensure_ascii=True,separators=(',',':'); UTF-8; no trailing newline",
+  "canonical_serialization_bytes": 92944,
+  "dictionary_sha256": "39533ded37b4a983f63a8353f43a7742ce3095fe87e45bbf50910109ab892e13",
+  "symbolic_operations": {
+    "enumerate_short": 2954
+  },
+  "symbolic_operations_total": 2954
+}

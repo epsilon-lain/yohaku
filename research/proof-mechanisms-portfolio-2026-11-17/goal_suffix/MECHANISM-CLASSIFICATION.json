@@ -1,0 +1,16 @@
+{
+  "scope": "two concrete exact entrances; not general novelty or global minimality",
+  "new_candidate_mechanisms": 1,
+  "elimination_candidate_ids": [
+    "ms-train-0015",
+    "ms-train-0160"
+  ],
+  "known_direct_deletion_hits": 19,
+  "known_direct_deletion_saved_steps": 54,
+  "elimination_candidate_hits": 2,
+  "elimination_candidate_saved_steps": 2,
+  "other_saved_steps": 0,
+  "old_direct_deletion_includes": "all signed/permuted single-letter bases needing only I/D",
+  "review": "../independent_review/goal-suffix-review.json",
+  "test_elimination_candidate_hits": 0
+}

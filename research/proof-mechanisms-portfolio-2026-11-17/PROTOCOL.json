@@ -1,0 +1,134 @@
+{
+  "version": "distinct-mechanisms-cloud-portfolio-v1",
+  "registered_at": "2026-11-17T11:24:12.050853+00:00",
+  "execution": "six cloud lead tasks; not native Yohaku continuation",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "known_development_training_ids": [
+    "ms-train-0009",
+    "ms-train-0013",
+    "ms-train-0014",
+    "ms-train-0015",
+    "ms-train-0031",
+    "ms-train-0033",
+    "ms-train-0062",
+    "ms-train-0081",
+    "ms-train-0099",
+    "ms-train-0108",
+    "ms-train-0160",
+    "ms-train-0201",
+    "ms-train-0218",
+    "ms-train-0231",
+    "ms-train-0235",
+    "ms-train-0258",
+    "ms-train-0286",
+    "ms-train-0373",
+    "ms-train-0379",
+    "ms-train-0380"
+  ],
+  "excluded_reserved_v1_evaluation_ids": [
+    "ms-train-0234",
+    "ms-train-0316",
+    "ms-train-0154",
+    "ms-train-0107"
+  ],
+  "new_public_training_test": [
+    {
+      "id": "ms-train-0164",
+      "selection_hash": "00dc3b2bb61a834b517036316921ca5176348f1956b80fd9a4fc9d8af1507379",
+      "declared_length": 14
+    },
+    {
+      "id": "ms-train-0389",
+      "selection_hash": "00f5bc37d92b469dbdf637da5e29e780c3baec9c15de3d9925f3a1718ca9b543",
+      "declared_length": 15
+    },
+    {
+      "id": "ms-train-0026",
+      "selection_hash": "045b608630046f39bb86a4d6759c0135800b97bdc0c7465b9b2f6813c618054d",
+      "declared_length": 18
+    },
+    {
+      "id": "ms-train-0204",
+      "selection_hash": "072415476747fd102378968192b672ea41b360bc9b32d4ec6225649c2b1bed6e",
+      "declared_length": 13
+    },
+    {
+      "id": "ms-train-0117",
+      "selection_hash": "0d8828e4ca25a936d473f3164dea8854f3130797c5c0cfcfcfb4ec4f4b078e18",
+      "declared_length": 10
+    },
+    {
+      "id": "ms-train-0094",
+      "selection_hash": "0e45fbd79f9abf3caf62737b82dd482a28ff71587d4672a11fa011386150b11e",
+      "declared_length": 15
+    },
+    {
+      "id": "ms-train-0113",
+      "selection_hash": "13ab5e1ea3d382a4f797a3bf6e743b708fe86326814b884cefead8fe86b364d5",
+      "declared_length": 19
+    },
+    {
+      "id": "ms-train-0281",
+      "selection_hash": "1622c473d2ad0bf2104ad6bafda1ee98d6dcba71499a185b8dc5d2eb16d9c070",
+      "declared_length": 16
+    }
+  ],
+  "selection_rule": "Among length<=20 remaining public training metadata, SHA256(pin|id|distinct_mechanisms_portfolio_v1), first8. No test move lists inspected for selection.",
+  "old_scored_incumbent": {
+    "id": "sac-07445",
+    "moves": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ]
+  },
+  "teams": {
+    "goal_suffix": {
+      "search_official_apply_cap": 500000,
+      "verification_official_apply_cap": 15000
+    },
+    "symbolic_rules": {
+      "search_official_apply_cap": 0,
+      "verification_official_apply_cap": 5000,
+      "symbolic_operation_cap": 200000
+    },
+    "conjugation_frames": {
+      "search_official_apply_cap": 250000,
+      "verification_official_apply_cap": 5000
+    },
+    "fragment_selection": {
+      "search_official_apply_cap": 1500000,
+      "verification_official_apply_cap": 15000
+    },
+    "boundary_encoding": {
+      "search_official_apply_cap": 0,
+      "verification_official_apply_cap": 0,
+      "synthetic_case_cap": 200000
+    },
+    "independent_review": {
+      "search_official_apply_cap": 0,
+      "verification_official_apply_cap": 15000
+    },
+    "root_acceptance": {
+      "search_official_apply_cap": 0,
+      "verification_official_apply_cap": 5000
+    }
+  },
+  "total_search_official_apply_cap": 2250000,
+  "total_verification_official_apply_cap": 60000,
+  "workflow_observation": "Record actual messages, reads, adoption, failed attempts and freeze boundaries; no immune/autonomous causal A/B claim.",
+  "test_boundary": "Only application teams may access their new8 test action lists after writing code/config/source+selected-ID hashes; no tuning after access. Other teams should not read new test actions.",
+  "publication": "Authorized GitHub research only, no competition-platform upload."
+}

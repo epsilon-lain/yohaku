@@ -1,0 +1,102 @@
+{
+  "captured_at": "2026-11-17T11:47:53.272461+00:00",
+  "root": "/root",
+  "organizing_method": "Root assigned five research directions plus independent review; not a controlled self-organization or immune/autonomous study.",
+  "participants": [
+    {
+      "task": "/root/portfolio_goal_suffix",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "max",
+      "members": 1,
+      "status": "completed"
+    },
+    {
+      "task": "/root/portfolio_symbolic_rules",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "max",
+      "members": 1,
+      "status": "completed"
+    },
+    {
+      "task": "/root/portfolio_frames",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "max",
+      "members": 1,
+      "status": "completed"
+    },
+    {
+      "task": "/root/portfolio_fragment_selection",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "max",
+      "members": 1,
+      "status": "completed"
+    },
+    {
+      "task": "/root/portfolio_boundary_encoding",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "max",
+      "members": 1,
+      "status": "completed"
+    },
+    {
+      "task": "/root/portfolio_review",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "max",
+      "members": 1,
+      "status": "completed"
+    }
+  ],
+  "native_yohaku_connected": false,
+  "native_tasks_dispatched": 0,
+  "shared_start": [
+    "SHARED.md",
+    "PROTOCOL.json",
+    "previous immutable proof reconstruction results"
+  ],
+  "observed_knowledge_transfers": [
+    {
+      "from": "symbolic_rules",
+      "to": "fragment_selection",
+      "item": "Frozen 11-rule library",
+      "evidence": "RULES bytes and SHA copied/locked before both development/test; new test used sym-dev-008 twice."
+    },
+    {
+      "from": "conjugation_frames",
+      "to": "fragment_selection",
+      "item": "Strict continuous common-frame v1 generator",
+      "evidence": "Copied frame_rules.py and rule hash locked before test; v2 was not retrofitted."
+    },
+    {
+      "from": "symbolic_rules",
+      "to": "conjugation_frames",
+      "item": "Interleaved common-frame shape from sym010/011",
+      "evidence": "Frames retained zero-hit v1 and wrote explicit pending-frame v2; matched the same mechanism, not an independent new discovery."
+    },
+    {
+      "from": "independent_review",
+      "to": "symbolic_rules",
+      "item": "Independent word-peak counterexample and general identity check",
+      "evidence": "Resource feasibility kept distinct from endpoint/length; no new test information shared back."
+    },
+    {
+      "from": "goal_suffix",
+      "to": "independent_review",
+      "item": "Exponent-sum obstruction distinguishes M-dependent elimination from old signed-basis deletion",
+      "evidence": "Both exact entry matrices checked under explicitly restricted I/M/C/D move subset."
+    },
+    {
+      "from": "boundary_encoding",
+      "to": "independent_review",
+      "item": "Invertible boundary representation, complete arithmetic/IO costs and loss counterexample",
+      "evidence": "Separate oracle and boundary-cost checks; no official AC actions."
+    }
+  ],
+  "adaptive_workflow_observation": "One team revised its representation after a zero-hit first recognizer and a peer hint. This is an observed event, not a causal claim about team count or performance.",
+  "failures_retained": [
+    "fragment reporting KeyError with zero action calls",
+    "independent metadata assertion corrected from five to six runs, zero action calls"
+  ],
+  "test_boundary": "Goal and fragment code/config/rule hashes frozen before new8 action access; other research teams did not use new8 paths; old reserved four excluded.",
+  "public_training_not_true_blind_test": true,
+  "model_usage_or_cost_measured": false
+}

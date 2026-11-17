@@ -1,0 +1,145 @@
+{
+  "scope": "Actual reviewer execution ledger; static reads and hand proofs incur no official actions. Official calls are separately persisted at call granularity in verification-ledger.json.",
+  "official_runs": [
+    {
+      "kind": "official_certificate_replay",
+      "run": 1,
+      "input_sha256": "518e0ed28e17cd97f43ef652bf7732341c50748eb2e0d568e70301b71a75e13a",
+      "status": "passed",
+      "official_apply": 92,
+      "own_apply": 46,
+      "official_verify": 4,
+      "new_test_known_status": "Only authorized final materials after owner freeze/execution; no optimizer rerun"
+    },
+    {
+      "kind": "official_certificate_replay",
+      "run": 2,
+      "input_sha256": "310d8b514a36fea796dba1aff544b0a060c0709e544c9290382c2465b54dea22",
+      "status": "passed",
+      "official_apply": 1204,
+      "own_apply": 602,
+      "official_verify": 38,
+      "new_test_known_status": "Only authorized final materials after owner freeze/execution; no optimizer rerun"
+    },
+    {
+      "kind": "official_certificate_replay",
+      "run": 3,
+      "input_sha256": "aabc92ec40b4a1dd5dc507ee358a3328f5c5bdff377ff720ba9eb70e70feae77",
+      "status": "passed",
+      "official_apply": 728,
+      "own_apply": 364,
+      "official_verify": 23,
+      "new_test_known_status": "Only authorized final materials after owner freeze/execution; no optimizer rerun"
+    },
+    {
+      "kind": "official_certificate_replay",
+      "run": 4,
+      "input_sha256": "d79268daa441e158ea295124c6ba6ee0be9de3904a6b06f0fb4cfba915ae1db0",
+      "status": "passed",
+      "official_apply": 1404,
+      "own_apply": 702,
+      "official_verify": 47,
+      "new_test_known_status": "Only authorized final materials after owner freeze/execution; no optimizer rerun"
+    },
+    {
+      "kind": "official_certificate_replay",
+      "run": 5,
+      "input_sha256": "64d59d55c8ef552788134099b182f02c638dbc6d4eb5764265a39b56069b6a02",
+      "status": "passed",
+      "official_apply": 782,
+      "own_apply": 391,
+      "official_verify": 26,
+      "new_test_known_status": "Only authorized final materials after owner freeze/execution; no optimizer rerun"
+    }
+  ],
+  "other_runs": [
+    {
+      "kind": "boundary_oracle",
+      "script": "boundary_oracle.py",
+      "runs": 1,
+      "status": "passed",
+      "array_cases": 517,
+      "cost_formula_cases": 25,
+      "official_apply": 0,
+      "author_final_results_known": false
+    },
+    {
+      "kind": "fixed_symbolic_rule_replay",
+      "script": "symbolic_replay.py",
+      "runs": 1,
+      "status": "passed",
+      "nonofficial_symbolic_apply": 96,
+      "official_apply": 0,
+      "scope": "Frozen rules and hand-derived peak examples only; no rule search"
+    },
+    {
+      "kind": "boundary_author_acceptance",
+      "script": "boundary_author_acceptance.py",
+      "runs": 1,
+      "status": "passed",
+      "named_outputs_independently_computed": 3,
+      "aggregate_cases_checked_combinatorially": 38748,
+      "official_apply": 0,
+      "author_final_results_known": true
+    },
+    {
+      "kind": "frozen_graph_audit",
+      "script": "fragment_graph_audit.py",
+      "runs": 1,
+      "status": "passed",
+      "nonofficial_original_apply": 465,
+      "nonofficial_edge_apply": 1715,
+      "official_apply": 0,
+      "new_test_known_status": "Authorized final graph/results after both freeze and execution"
+    },
+    {
+      "kind": "boundary_payload_stability",
+      "script": "inline stdlib JSON/hash",
+      "runs": 1,
+      "status": "passed",
+      "official_apply": 0,
+      "array_checker_rerun": false
+    },
+    {
+      "kind": "metadata_and_selected_route_provenance",
+      "script": "metadata_and_selection_review.py",
+      "attempt": 1,
+      "status": "failed",
+      "official_apply": 0,
+      "error": "Reviewer assertion expected 5 fragment attempts; observed 6, including two selfchecks",
+      "new_test_known_status": "All applications completed; metadata correction only, no rule or parameter changes"
+    },
+    {
+      "kind": "metadata_and_selected_route_provenance",
+      "script": "metadata_and_selection_review.py",
+      "attempt": 2,
+      "status": "passed",
+      "official_apply": 0,
+      "correction": "Expected attempt count set to 6",
+      "new_test_known_status": "All applications completed; no application rerun"
+    }
+  ],
+  "read_retries": [
+    {
+      "attempted_filename": "goal_suffix/run_experiment.py",
+      "reason": "Wrong guessed path; then listed files and read run_suffix.py",
+      "official_apply": 0
+    },
+    {
+      "attempted_filename": "conjugation_frames/run_pending_frames.py",
+      "reason": "Wrong guessed path; then listed files and read check_pending_frames.py",
+      "official_apply": 0
+    }
+  ],
+  "totals": {
+    "official_search_apply": 0,
+    "official_verification_apply": 4210,
+    "official_verify_calls": 138,
+    "certificate_own_apply": 2105,
+    "fixed_rule_own_apply": 96,
+    "frozen_graph_own_apply": 2180,
+    "nonofficial_primitive_total": 4381,
+    "boundary_array_output_checks": 520,
+    "boundary_cost_formula_checks": 25
+  }
+}

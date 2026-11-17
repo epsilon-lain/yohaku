@@ -1,0 +1,3948 @@
+{
+  "status": "passed",
+  "created": "2026-11-17T11:31:40.310327+00:00",
+  "rank_matrix_case_count": 21,
+  "rank_matrix": [
+    {
+      "name": "synthetic-frame-r2-0",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          1,
+          -2
+        ]
+      ],
+      "target": [
+        [
+          1,
+          -2,
+          -1,
+          2,
+          1,
+          -2
+        ],
+        [
+          2,
+          -1,
+          -1,
+          -2,
+          1,
+          2,
+          -1
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        0,
+        2,
+        1,
+        5,
+        7,
+        11
+      ],
+      "new_moves": [
+        0,
+        2,
+        1,
+        5
+      ],
+      "old": {
+        "length": 8,
+        "work": 105,
+        "peak_total_relator_length": 17,
+        "state_total_lengths_including_initial": [
+          6,
+          8,
+          10,
+          10,
+          13,
+          13,
+          17,
+          15,
+          13
+        ]
+      },
+      "new": {
+        "length": 4,
+        "work": 43,
+        "peak_total_relator_length": 13,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          9,
+          9,
+          13
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 8,
+        "peak_total_relator_length": 17,
+        "work": 105,
+        "certificate_hash": "sha256:0a635f8ff0fd97af343e57555de624b2da5b852883615f3987e2b479266d719f"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 4,
+        "peak_total_relator_length": 13,
+        "work": 43,
+        "certificate_hash": "sha256:06dc46c1d6238611c0b98be96899e3b831eb4c496e58463db663eca8841fb4c6"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r2-1",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          1,
+          -2
+        ]
+      ],
+      "target": [
+        [
+          2,
+          1,
+          -2,
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          -1,
+          -1,
+          -2,
+          1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        0,
+        2,
+        1,
+        5,
+        7,
+        11
+      ],
+      "new_moves": [
+        0,
+        2,
+        1,
+        5,
+        8,
+        12
+      ],
+      "old": {
+        "length": 10,
+        "work": 155,
+        "peak_total_relator_length": 21,
+        "state_total_lengths_including_initial": [
+          6,
+          8,
+          10,
+          12,
+          14,
+          14,
+          17,
+          17,
+          21,
+          19,
+          17
+        ]
+      },
+      "new": {
+        "length": 6,
+        "work": 75,
+        "peak_total_relator_length": 17,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          9,
+          9,
+          13,
+          15,
+          17
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 10,
+        "peak_total_relator_length": 21,
+        "work": 155,
+        "certificate_hash": "sha256:be69ae3034e1c1c96806bb99dec73ef51b8e25e970cdacaa5ba614de3d6b7e4e"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 6,
+        "peak_total_relator_length": 17,
+        "work": 75,
+        "certificate_hash": "sha256:83c93f61cbcdba7d69531a94587b07ee4aed5ddc19fbf9b0f4d0db1b9a71a31e"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r2-2",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          1,
+          -2
+        ]
+      ],
+      "target": [
+        [
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          2,
+          1,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          2,
+          -1,
+          -1,
+          -2,
+          1,
+          2,
+          -1,
+          -2,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        0,
+        2,
+        1,
+        5,
+        7,
+        8,
+        11,
+        12
+      ],
+      "new_moves": [
+        0,
+        2,
+        1,
+        5,
+        8,
+        8,
+        12,
+        12
+      ],
+      "old": {
+        "length": 12,
+        "work": 199,
+        "peak_total_relator_length": 21,
+        "state_total_lengths_including_initial": [
+          6,
+          8,
+          10,
+          12,
+          14,
+          14,
+          17,
+          17,
+          21,
+          19,
+          21,
+          19,
+          21
+        ]
+      },
+      "new": {
+        "length": 8,
+        "work": 115,
+        "peak_total_relator_length": 21,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          9,
+          9,
+          13,
+          15,
+          17,
+          19,
+          21
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 12,
+        "peak_total_relator_length": 21,
+        "work": 199,
+        "certificate_hash": "sha256:5f316a0101cdb55596f291057fd38652aef944e8c07722a5c1f85f1f44f30cf7"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 8,
+        "peak_total_relator_length": 21,
+        "work": 115,
+        "certificate_hash": "sha256:9c8cf47d03684c2595369ca0e1a6b45ca5626358b683ff07beb765c089afab24"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r3-0",
+      "initial": [
+        [],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          1,
+          -3
+        ]
+      ],
+      "target": [
+        [
+          3,
+          1,
+          -3
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          -1,
+          -1,
+          -3
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        161,
+        0,
+        29,
+        23,
+        54,
+        7,
+        11,
+        162
+      ],
+      "new_moves": [
+        0,
+        29,
+        23,
+        54
+      ],
+      "old": {
+        "length": 10,
+        "work": 122,
+        "peak_total_relator_length": 16,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          8,
+          10,
+          10,
+          15,
+          15,
+          16,
+          14,
+          12,
+          10
+        ]
+      },
+      "new": {
+        "length": 4,
+        "work": 40,
+        "peak_total_relator_length": 10,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          9,
+          9,
+          10
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 10,
+        "peak_total_relator_length": 16,
+        "work": 122,
+        "certificate_hash": "sha256:b7153e4ec715b324997f7b5eafcfba93ddf51807dbece34aaa22e202cbd15c6a"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 4,
+        "peak_total_relator_length": 10,
+        "work": 40,
+        "certificate_hash": "sha256:0cc44836a647052b16d1d510cff921964485d8dfc4a54c4e5e1e7268757bce02"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r3-1",
+      "initial": [
+        [],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          1,
+          -3
+        ]
+      ],
+      "target": [
+        [
+          2,
+          3,
+          1,
+          -3,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          3,
+          -1,
+          -1,
+          -3,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        0,
+        29,
+        23,
+        54,
+        7,
+        11,
+        162
+      ],
+      "new_moves": [
+        0,
+        29,
+        23,
+        54,
+        8,
+        12,
+        163
+      ],
+      "old": {
+        "length": 13,
+        "work": 194,
+        "peak_total_relator_length": 22,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          6,
+          8,
+          10,
+          12,
+          14,
+          14,
+          21,
+          21,
+          22,
+          20,
+          18,
+          16
+        ]
+      },
+      "new": {
+        "length": 7,
+        "work": 82,
+        "peak_total_relator_length": 16,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          9,
+          9,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 22,
+        "work": 194,
+        "certificate_hash": "sha256:1f58871627f151216642f88f2e69e4f3843a22ea14829c38ffd4440e695f6ed2"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 7,
+        "peak_total_relator_length": 16,
+        "work": 82,
+        "certificate_hash": "sha256:62b5b996155457a94bb1c7246d8706c90721c919d2641dae85b2485c2705a834"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r3-2",
+      "initial": [
+        [],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          1,
+          -3
+        ]
+      ],
+      "target": [
+        [
+          2,
+          2,
+          3,
+          1,
+          -3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          2,
+          3,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          -1,
+          -1,
+          -3,
+          -2,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        0,
+        29,
+        23,
+        54,
+        7,
+        8,
+        11,
+        12,
+        162,
+        163
+      ],
+      "new_moves": [
+        0,
+        29,
+        23,
+        54,
+        8,
+        8,
+        12,
+        12,
+        163,
+        163
+      ],
+      "old": {
+        "length": 16,
+        "work": 266,
+        "peak_total_relator_length": 22,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          6,
+          8,
+          10,
+          12,
+          14,
+          14,
+          21,
+          21,
+          22,
+          20,
+          22,
+          20,
+          22,
+          20,
+          22
+        ]
+      },
+      "new": {
+        "length": 10,
+        "work": 142,
+        "peak_total_relator_length": 22,
+        "state_total_lengths_including_initial": [
+          6,
+          6,
+          9,
+          9,
+          10,
+          12,
+          14,
+          16,
+          18,
+          20,
+          22
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 16,
+        "peak_total_relator_length": 22,
+        "work": 266,
+        "certificate_hash": "sha256:5c9fc1fbfdfdc70ae26a7c620aef762b5ec932a454559051318c46fe76a5632e"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 10,
+        "peak_total_relator_length": 22,
+        "work": 142,
+        "certificate_hash": "sha256:dcad403af1eceaa51f7267a11ab4bbc6118617fc22a0b33d55d56d9d8fef36df"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r4-0",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          1,
+          -4
+        ]
+      ],
+      "target": [
+        [
+          1,
+          -2,
+          -1,
+          4,
+          1,
+          -4
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          -1,
+          -1,
+          -4,
+          1,
+          2,
+          -1
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        161,
+        177,
+        0,
+        31,
+        24,
+        68,
+        7,
+        11,
+        162,
+        178
+      ],
+      "new_moves": [
+        0,
+        31,
+        24,
+        68
+      ],
+      "old": {
+        "length": 12,
+        "work": 261,
+        "peak_total_relator_length": 27,
+        "state_total_lengths_including_initial": [
+          12,
+          14,
+          16,
+          18,
+          20,
+          20,
+          23,
+          23,
+          27,
+          25,
+          23,
+          21,
+          19
+        ]
+      },
+      "new": {
+        "length": 4,
+        "work": 73,
+        "peak_total_relator_length": 19,
+        "state_total_lengths_including_initial": [
+          12,
+          12,
+          15,
+          15,
+          19
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 12,
+        "peak_total_relator_length": 27,
+        "work": 261,
+        "certificate_hash": "sha256:69d1243a2ef446c080d43eace7640294a80881fc2f0106fd055382b8fecc4aed"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 4,
+        "peak_total_relator_length": 19,
+        "work": 73,
+        "certificate_hash": "sha256:a0ba64060da2b45f27f1618ab60108a2b689893c7b17b6a1c25b3c992e3cf2b6"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r4-1",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          1,
+          -4
+        ]
+      ],
+      "target": [
+        [
+          2,
+          1,
+          -2,
+          -1,
+          4,
+          1,
+          -4,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          3,
+          4,
+          -3,
+          -2
+        ],
+        [
+          2,
+          4,
+          -1,
+          -1,
+          -4,
+          1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        0,
+        31,
+        24,
+        68,
+        7,
+        11,
+        162,
+        178
+      ],
+      "new_moves": [
+        0,
+        31,
+        24,
+        68,
+        8,
+        12,
+        163,
+        179
+      ],
+      "old": {
+        "length": 16,
+        "work": 425,
+        "peak_total_relator_length": 35,
+        "state_total_lengths_including_initial": [
+          12,
+          14,
+          16,
+          18,
+          20,
+          22,
+          24,
+          26,
+          28,
+          28,
+          31,
+          31,
+          35,
+          33,
+          31,
+          29,
+          27
+        ]
+      },
+      "new": {
+        "length": 8,
+        "work": 169,
+        "peak_total_relator_length": 27,
+        "state_total_lengths_including_initial": [
+          12,
+          12,
+          15,
+          15,
+          19,
+          21,
+          23,
+          25,
+          27
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 16,
+        "peak_total_relator_length": 35,
+        "work": 425,
+        "certificate_hash": "sha256:942ea6eb5056947cf8a8ed37e8db87e7c5dd0cbe554ae8f5d8a72ed7e84b3f1a"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 8,
+        "peak_total_relator_length": 27,
+        "work": 169,
+        "certificate_hash": "sha256:8e98ca504ade4ad3d27554f9a2c8421ab90cbbb7aee25ad52c78d617e08551f6"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r4-2",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          1,
+          -4
+        ]
+      ],
+      "target": [
+        [
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          4,
+          1,
+          -4,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          2,
+          3,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          4,
+          -3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          4,
+          -1,
+          -1,
+          -4,
+          1,
+          2,
+          -1,
+          -2,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        0,
+        31,
+        24,
+        68,
+        7,
+        8,
+        11,
+        12,
+        162,
+        163,
+        178,
+        179
+      ],
+      "new_moves": [
+        0,
+        31,
+        24,
+        68,
+        8,
+        8,
+        12,
+        12,
+        163,
+        163,
+        179,
+        179
+      ],
+      "old": {
+        "length": 20,
+        "work": 577,
+        "peak_total_relator_length": 35,
+        "state_total_lengths_including_initial": [
+          12,
+          14,
+          16,
+          18,
+          20,
+          22,
+          24,
+          26,
+          28,
+          28,
+          31,
+          31,
+          35,
+          33,
+          35,
+          33,
+          35,
+          33,
+          35,
+          33,
+          35
+        ]
+      },
+      "new": {
+        "length": 12,
+        "work": 297,
+        "peak_total_relator_length": 35,
+        "state_total_lengths_including_initial": [
+          12,
+          12,
+          15,
+          15,
+          19,
+          21,
+          23,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 20,
+        "peak_total_relator_length": 35,
+        "work": 577,
+        "certificate_hash": "sha256:54da9be7c023120b68cfc42a563024f48d2596481ae2f285fa1534663f74639a"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 12,
+        "peak_total_relator_length": 35,
+        "work": 297,
+        "certificate_hash": "sha256:0fcf9c38c59586f8e7050594e3fd6a76164a623fec9af15f3ba76dd608234500"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r5-0",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          1,
+          -5
+        ]
+      ],
+      "target": [
+        [
+          1,
+          -2,
+          -1,
+          5,
+          1,
+          -5
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          -1,
+          -1,
+          -5,
+          1,
+          2,
+          -1
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        161,
+        177,
+        193,
+        0,
+        33,
+        25,
+        82,
+        7,
+        11,
+        162,
+        178,
+        194
+      ],
+      "new_moves": [
+        0,
+        33,
+        25,
+        82
+      ],
+      "old": {
+        "length": 14,
+        "work": 363,
+        "peak_total_relator_length": 32,
+        "state_total_lengths_including_initial": [
+          15,
+          17,
+          19,
+          21,
+          23,
+          25,
+          25,
+          28,
+          28,
+          32,
+          30,
+          28,
+          26,
+          24,
+          22
+        ]
+      },
+      "new": {
+        "length": 4,
+        "work": 88,
+        "peak_total_relator_length": 22,
+        "state_total_lengths_including_initial": [
+          15,
+          15,
+          18,
+          18,
+          22
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 14,
+        "peak_total_relator_length": 32,
+        "work": 363,
+        "certificate_hash": "sha256:b6bcd2da8c61a83235fe57f84018acae63d6f34dca91c7e510b4a1948086eca4"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 4,
+        "peak_total_relator_length": 22,
+        "work": 88,
+        "certificate_hash": "sha256:868644516ad366288a87a779176336266280e554f9d4d8fce80eecb6293dd2b3"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r5-1",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          1,
+          -5
+        ]
+      ],
+      "target": [
+        [
+          2,
+          1,
+          -2,
+          -1,
+          5,
+          1,
+          -5,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          3,
+          4,
+          -3,
+          -2
+        ],
+        [
+          2,
+          4,
+          5,
+          -4,
+          -2
+        ],
+        [
+          2,
+          5,
+          -1,
+          -1,
+          -5,
+          1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        0,
+        33,
+        25,
+        82,
+        7,
+        11,
+        162,
+        178,
+        194
+      ],
+      "new_moves": [
+        0,
+        33,
+        25,
+        82,
+        8,
+        12,
+        163,
+        179,
+        195
+      ],
+      "old": {
+        "length": 19,
+        "work": 608,
+        "peak_total_relator_length": 42,
+        "state_total_lengths_including_initial": [
+          15,
+          17,
+          19,
+          21,
+          23,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35,
+          35,
+          38,
+          38,
+          42,
+          40,
+          38,
+          36,
+          34,
+          32
+        ]
+      },
+      "new": {
+        "length": 9,
+        "work": 228,
+        "peak_total_relator_length": 32,
+        "state_total_lengths_including_initial": [
+          15,
+          15,
+          18,
+          18,
+          22,
+          24,
+          26,
+          28,
+          30,
+          32
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 19,
+        "peak_total_relator_length": 42,
+        "work": 608,
+        "certificate_hash": "sha256:14ced37e60dbfff611372a15bee49802e80fc3192cdf572f7e9013622f9adb0b"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 9,
+        "peak_total_relator_length": 32,
+        "work": 228,
+        "certificate_hash": "sha256:06aaefb898b52f94ef55c2971d2defd5dd468dec1ffe3fa7d9010743da0f0db2"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r5-2",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          1,
+          -5
+        ]
+      ],
+      "target": [
+        [
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          5,
+          1,
+          -5,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          2,
+          3,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          4,
+          -3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          4,
+          5,
+          -4,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          5,
+          -1,
+          -1,
+          -5,
+          1,
+          2,
+          -1,
+          -2,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        0,
+        33,
+        25,
+        82,
+        7,
+        8,
+        11,
+        12,
+        162,
+        163,
+        178,
+        179,
+        194,
+        195
+      ],
+      "new_moves": [
+        0,
+        33,
+        25,
+        82,
+        8,
+        8,
+        12,
+        12,
+        163,
+        163,
+        179,
+        179,
+        195,
+        195
+      ],
+      "old": {
+        "length": 24,
+        "work": 838,
+        "peak_total_relator_length": 42,
+        "state_total_lengths_including_initial": [
+          15,
+          17,
+          19,
+          21,
+          23,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35,
+          35,
+          38,
+          38,
+          42,
+          40,
+          42,
+          40,
+          42,
+          40,
+          42,
+          40,
+          42,
+          40,
+          42
+        ]
+      },
+      "new": {
+        "length": 14,
+        "work": 418,
+        "peak_total_relator_length": 42,
+        "state_total_lengths_including_initial": [
+          15,
+          15,
+          18,
+          18,
+          22,
+          24,
+          26,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 24,
+        "peak_total_relator_length": 42,
+        "work": 838,
+        "certificate_hash": "sha256:4e95c51271e6439fe6367b04339187fefcdd6de1f50774fb897360800887f10b"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 14,
+        "peak_total_relator_length": 42,
+        "work": 418,
+        "certificate_hash": "sha256:58c86eb14ebd09d63cc10a557c9948abd523d894b3006eafa3109dd168807a0a"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r6-0",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          1,
+          -6
+        ]
+      ],
+      "target": [
+        [
+          1,
+          -2,
+          -1,
+          6,
+          1,
+          -6
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          -1,
+          -1,
+          -6,
+          1,
+          2,
+          -1
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        161,
+        177,
+        193,
+        209,
+        0,
+        35,
+        26,
+        96,
+        7,
+        11,
+        162,
+        178,
+        194,
+        210
+      ],
+      "new_moves": [
+        0,
+        35,
+        26,
+        96
+      ],
+      "old": {
+        "length": 16,
+        "work": 481,
+        "peak_total_relator_length": 37,
+        "state_total_lengths_including_initial": [
+          18,
+          20,
+          22,
+          24,
+          26,
+          28,
+          30,
+          30,
+          33,
+          33,
+          37,
+          35,
+          33,
+          31,
+          29,
+          27,
+          25
+        ]
+      },
+      "new": {
+        "length": 4,
+        "work": 103,
+        "peak_total_relator_length": 25,
+        "state_total_lengths_including_initial": [
+          18,
+          18,
+          21,
+          21,
+          25
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 16,
+        "peak_total_relator_length": 37,
+        "work": 481,
+        "certificate_hash": "sha256:284e338001b1d945fd3c9bfdc549e7853351f62b8d7a2210c1a4c358860feb7e"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 4,
+        "peak_total_relator_length": 25,
+        "work": 103,
+        "certificate_hash": "sha256:86e5a8760e69939d815699fbb30a785bb0899878bb09f2b1afe96753a02066c9"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r6-1",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          1,
+          -6
+        ]
+      ],
+      "target": [
+        [
+          2,
+          1,
+          -2,
+          -1,
+          6,
+          1,
+          -6,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          3,
+          4,
+          -3,
+          -2
+        ],
+        [
+          2,
+          4,
+          5,
+          -4,
+          -2
+        ],
+        [
+          2,
+          5,
+          6,
+          -5,
+          -2
+        ],
+        [
+          2,
+          6,
+          -1,
+          -1,
+          -6,
+          1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        211,
+        209,
+        0,
+        35,
+        26,
+        96,
+        7,
+        11,
+        162,
+        178,
+        194,
+        210
+      ],
+      "new_moves": [
+        0,
+        35,
+        26,
+        96,
+        8,
+        12,
+        163,
+        179,
+        195,
+        211
+      ],
+      "old": {
+        "length": 22,
+        "work": 823,
+        "peak_total_relator_length": 49,
+        "state_total_lengths_including_initial": [
+          18,
+          20,
+          22,
+          24,
+          26,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42,
+          42,
+          45,
+          45,
+          49,
+          47,
+          45,
+          43,
+          41,
+          39,
+          37
+        ]
+      },
+      "new": {
+        "length": 10,
+        "work": 295,
+        "peak_total_relator_length": 37,
+        "state_total_lengths_including_initial": [
+          18,
+          18,
+          21,
+          21,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35,
+          37
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 22,
+        "peak_total_relator_length": 49,
+        "work": 823,
+        "certificate_hash": "sha256:347900d80a5776fc57c7bcf1e5502a07e20b5401ce1e9e9bff6614f241144f61"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 10,
+        "peak_total_relator_length": 37,
+        "work": 295,
+        "certificate_hash": "sha256:a4f25ce7bfb0638256a6a4b217001227a738cd7376d2daeb71365361a066ab4d"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r6-2",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          1,
+          -6
+        ]
+      ],
+      "target": [
+        [
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          6,
+          1,
+          -6,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          2,
+          3,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          4,
+          -3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          4,
+          5,
+          -4,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          5,
+          6,
+          -5,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          6,
+          -1,
+          -1,
+          -6,
+          1,
+          2,
+          -1,
+          -2,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        211,
+        209,
+        0,
+        35,
+        26,
+        96,
+        7,
+        8,
+        11,
+        12,
+        162,
+        163,
+        178,
+        179,
+        194,
+        195,
+        210,
+        211
+      ],
+      "new_moves": [
+        0,
+        35,
+        26,
+        96,
+        8,
+        8,
+        12,
+        12,
+        163,
+        163,
+        179,
+        179,
+        195,
+        195,
+        211,
+        211
+      ],
+      "old": {
+        "length": 28,
+        "work": 1147,
+        "peak_total_relator_length": 49,
+        "state_total_lengths_including_initial": [
+          18,
+          20,
+          22,
+          24,
+          26,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42,
+          42,
+          45,
+          45,
+          49,
+          47,
+          49,
+          47,
+          49,
+          47,
+          49,
+          47,
+          49,
+          47,
+          49,
+          47,
+          49
+        ]
+      },
+      "new": {
+        "length": 16,
+        "work": 559,
+        "peak_total_relator_length": 49,
+        "state_total_lengths_including_initial": [
+          18,
+          18,
+          21,
+          21,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35,
+          37,
+          39,
+          41,
+          43,
+          45,
+          47,
+          49
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 28,
+        "peak_total_relator_length": 49,
+        "work": 1147,
+        "certificate_hash": "sha256:5542da00b708b39522935f619ca9bb76b825335155dbbbec7414f989e9a4f396"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 16,
+        "peak_total_relator_length": 49,
+        "work": 559,
+        "certificate_hash": "sha256:36533653e10a833b57598fca74a6ea45abb8d3215cdd7e86029e3a7178ff995a"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r7-0",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          1,
+          -7
+        ]
+      ],
+      "target": [
+        [
+          1,
+          -2,
+          -1,
+          7,
+          1,
+          -7
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          -1,
+          -1,
+          -7,
+          1,
+          2,
+          -1
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        161,
+        177,
+        193,
+        209,
+        225,
+        0,
+        37,
+        27,
+        110,
+        7,
+        11,
+        162,
+        178,
+        194,
+        210,
+        226
+      ],
+      "new_moves": [
+        0,
+        37,
+        27,
+        110
+      ],
+      "old": {
+        "length": 18,
+        "work": 615,
+        "peak_total_relator_length": 42,
+        "state_total_lengths_including_initial": [
+          21,
+          23,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35,
+          35,
+          38,
+          38,
+          42,
+          40,
+          38,
+          36,
+          34,
+          32,
+          30,
+          28
+        ]
+      },
+      "new": {
+        "length": 4,
+        "work": 118,
+        "peak_total_relator_length": 28,
+        "state_total_lengths_including_initial": [
+          21,
+          21,
+          24,
+          24,
+          28
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 18,
+        "peak_total_relator_length": 42,
+        "work": 615,
+        "certificate_hash": "sha256:24b6d725a6c6876fc6fe7394d438982022f850a043720f355f3bf58bcc0d0f28"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 4,
+        "peak_total_relator_length": 28,
+        "work": 118,
+        "certificate_hash": "sha256:2f1ec43e592c4e3972c7f06c26b5dc58a5a86e99eec21b12e61e0a69c561babe"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r7-1",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          1,
+          -7
+        ]
+      ],
+      "target": [
+        [
+          2,
+          1,
+          -2,
+          -1,
+          7,
+          1,
+          -7,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          3,
+          4,
+          -3,
+          -2
+        ],
+        [
+          2,
+          4,
+          5,
+          -4,
+          -2
+        ],
+        [
+          2,
+          5,
+          6,
+          -5,
+          -2
+        ],
+        [
+          2,
+          6,
+          7,
+          -6,
+          -2
+        ],
+        [
+          2,
+          7,
+          -1,
+          -1,
+          -7,
+          1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        211,
+        209,
+        227,
+        225,
+        0,
+        37,
+        27,
+        110,
+        7,
+        11,
+        162,
+        178,
+        194,
+        210,
+        226
+      ],
+      "new_moves": [
+        0,
+        37,
+        27,
+        110,
+        8,
+        12,
+        163,
+        179,
+        195,
+        211,
+        227
+      ],
+      "old": {
+        "length": 25,
+        "work": 1070,
+        "peak_total_relator_length": 56,
+        "state_total_lengths_including_initial": [
+          21,
+          23,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35,
+          37,
+          39,
+          41,
+          43,
+          45,
+          47,
+          49,
+          49,
+          52,
+          52,
+          56,
+          54,
+          52,
+          50,
+          48,
+          46,
+          44,
+          42
+        ]
+      },
+      "new": {
+        "length": 11,
+        "work": 370,
+        "peak_total_relator_length": 42,
+        "state_total_lengths_including_initial": [
+          21,
+          21,
+          24,
+          24,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 25,
+        "peak_total_relator_length": 56,
+        "work": 1070,
+        "certificate_hash": "sha256:1d9d42afd055ad4170843d2f8e3e4234de30b63aeff7d57ec5306c9d441e34ca"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 11,
+        "peak_total_relator_length": 42,
+        "work": 370,
+        "certificate_hash": "sha256:f7641479fa234ce9f0f9eed9804b75c3ef722decf5085c963762c387c8e0b9b4"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r7-2",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          1,
+          -7
+        ]
+      ],
+      "target": [
+        [
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          7,
+          1,
+          -7,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          2,
+          3,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          4,
+          -3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          4,
+          5,
+          -4,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          5,
+          6,
+          -5,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          6,
+          7,
+          -6,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          7,
+          -1,
+          -1,
+          -7,
+          1,
+          2,
+          -1,
+          -2,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        211,
+        209,
+        227,
+        225,
+        0,
+        37,
+        27,
+        110,
+        7,
+        8,
+        11,
+        12,
+        162,
+        163,
+        178,
+        179,
+        194,
+        195,
+        210,
+        211,
+        226,
+        227
+      ],
+      "new_moves": [
+        0,
+        37,
+        27,
+        110,
+        8,
+        8,
+        12,
+        12,
+        163,
+        163,
+        179,
+        179,
+        195,
+        195,
+        211,
+        211,
+        227,
+        227
+      ],
+      "old": {
+        "length": 32,
+        "work": 1504,
+        "peak_total_relator_length": 56,
+        "state_total_lengths_including_initial": [
+          21,
+          23,
+          25,
+          27,
+          29,
+          31,
+          33,
+          35,
+          37,
+          39,
+          41,
+          43,
+          45,
+          47,
+          49,
+          49,
+          52,
+          52,
+          56,
+          54,
+          56,
+          54,
+          56,
+          54,
+          56,
+          54,
+          56,
+          54,
+          56,
+          54,
+          56,
+          54,
+          56
+        ]
+      },
+      "new": {
+        "length": 18,
+        "work": 720,
+        "peak_total_relator_length": 56,
+        "state_total_lengths_including_initial": [
+          21,
+          21,
+          24,
+          24,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50,
+          52,
+          54,
+          56
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 32,
+        "peak_total_relator_length": 56,
+        "work": 1504,
+        "certificate_hash": "sha256:ff71ce363bd3500b26204fe342286d35060ea701457ecdcbdf8083f1e9ed5d27"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 18,
+        "peak_total_relator_length": 56,
+        "work": 720,
+        "certificate_hash": "sha256:9d4ffa38853355f346ddb017b31279c2c5adf4b627268f9c8c6eabad3442a2cf"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r8-0",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          8,
+          -7
+        ],
+        [
+          8,
+          1,
+          -8
+        ]
+      ],
+      "target": [
+        [
+          1,
+          -2,
+          -1,
+          8,
+          1,
+          -8
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          8,
+          -7
+        ],
+        [
+          8,
+          -1,
+          -1,
+          -8,
+          1,
+          2,
+          -1
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        161,
+        177,
+        193,
+        209,
+        225,
+        241,
+        0,
+        39,
+        28,
+        124,
+        7,
+        11,
+        162,
+        178,
+        194,
+        210,
+        226,
+        242
+      ],
+      "new_moves": [
+        0,
+        39,
+        28,
+        124
+      ],
+      "old": {
+        "length": 20,
+        "work": 765,
+        "peak_total_relator_length": 47,
+        "state_total_lengths_including_initial": [
+          24,
+          26,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          40,
+          43,
+          43,
+          47,
+          45,
+          43,
+          41,
+          39,
+          37,
+          35,
+          33,
+          31
+        ]
+      },
+      "new": {
+        "length": 4,
+        "work": 133,
+        "peak_total_relator_length": 31,
+        "state_total_lengths_including_initial": [
+          24,
+          24,
+          27,
+          27,
+          31
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 20,
+        "peak_total_relator_length": 47,
+        "work": 765,
+        "certificate_hash": "sha256:6c61e862d964dccdd29435e0d5fa75a14de625ee66ed545652bd8afd0daddef2"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 4,
+        "peak_total_relator_length": 31,
+        "work": 133,
+        "certificate_hash": "sha256:44e84bb92a20b2056bbb97828c9dc40a083da5b2bd95b48d492288adec8f89a7"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r8-1",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          8,
+          -7
+        ],
+        [
+          8,
+          1,
+          -8
+        ]
+      ],
+      "target": [
+        [
+          2,
+          1,
+          -2,
+          -1,
+          8,
+          1,
+          -8,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          3,
+          4,
+          -3,
+          -2
+        ],
+        [
+          2,
+          4,
+          5,
+          -4,
+          -2
+        ],
+        [
+          2,
+          5,
+          6,
+          -5,
+          -2
+        ],
+        [
+          2,
+          6,
+          7,
+          -6,
+          -2
+        ],
+        [
+          2,
+          7,
+          8,
+          -7,
+          -2
+        ],
+        [
+          2,
+          8,
+          -1,
+          -1,
+          -8,
+          1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        211,
+        209,
+        227,
+        225,
+        243,
+        241,
+        0,
+        39,
+        28,
+        124,
+        7,
+        11,
+        162,
+        178,
+        194,
+        210,
+        226,
+        242
+      ],
+      "new_moves": [
+        0,
+        39,
+        28,
+        124,
+        8,
+        12,
+        163,
+        179,
+        195,
+        211,
+        227,
+        243
+      ],
+      "old": {
+        "length": 28,
+        "work": 1349,
+        "peak_total_relator_length": 63,
+        "state_total_lengths_including_initial": [
+          24,
+          26,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50,
+          52,
+          54,
+          56,
+          56,
+          59,
+          59,
+          63,
+          61,
+          59,
+          57,
+          55,
+          53,
+          51,
+          49,
+          47
+        ]
+      },
+      "new": {
+        "length": 12,
+        "work": 453,
+        "peak_total_relator_length": 47,
+        "state_total_lengths_including_initial": [
+          24,
+          24,
+          27,
+          27,
+          31,
+          33,
+          35,
+          37,
+          39,
+          41,
+          43,
+          45,
+          47
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 28,
+        "peak_total_relator_length": 63,
+        "work": 1349,
+        "certificate_hash": "sha256:7beb9993a77b4185191bf29316efe3cd386e77d22539036d47f0f3d9fead6f88"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 12,
+        "peak_total_relator_length": 47,
+        "work": 453,
+        "certificate_hash": "sha256:bd065d573d827567b66f04ebf70f614a406e2961b5708ede5b65fc98df925ba3"
+      },
+      "recognized_candidates": 1
+    },
+    {
+      "name": "synthetic-frame-r8-2",
+      "initial": [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          2,
+          3,
+          -2
+        ],
+        [
+          3,
+          4,
+          -3
+        ],
+        [
+          4,
+          5,
+          -4
+        ],
+        [
+          5,
+          6,
+          -5
+        ],
+        [
+          6,
+          7,
+          -6
+        ],
+        [
+          7,
+          8,
+          -7
+        ],
+        [
+          8,
+          1,
+          -8
+        ]
+      ],
+      "target": [
+        [
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          8,
+          1,
+          -8,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          2,
+          3,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          3,
+          4,
+          -3,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          4,
+          5,
+          -4,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          5,
+          6,
+          -5,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          6,
+          7,
+          -6,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          7,
+          8,
+          -7,
+          -2,
+          -2
+        ],
+        [
+          2,
+          2,
+          8,
+          -1,
+          -1,
+          -8,
+          1,
+          2,
+          -1,
+          -2,
+          -2
+        ]
+      ],
+      "old_moves": [
+        8,
+        6,
+        12,
+        10,
+        163,
+        161,
+        179,
+        177,
+        195,
+        193,
+        211,
+        209,
+        227,
+        225,
+        243,
+        241,
+        0,
+        39,
+        28,
+        124,
+        7,
+        8,
+        11,
+        12,
+        162,
+        163,
+        178,
+        179,
+        194,
+        195,
+        210,
+        211,
+        226,
+        227,
+        242,
+        243
+      ],
+      "new_moves": [
+        0,
+        39,
+        28,
+        124,
+        8,
+        8,
+        12,
+        12,
+        163,
+        163,
+        179,
+        179,
+        195,
+        195,
+        211,
+        211,
+        227,
+        227,
+        243,
+        243
+      ],
+      "old": {
+        "length": 36,
+        "work": 1909,
+        "peak_total_relator_length": 63,
+        "state_total_lengths_including_initial": [
+          24,
+          26,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50,
+          52,
+          54,
+          56,
+          56,
+          59,
+          59,
+          63,
+          61,
+          63,
+          61,
+          63,
+          61,
+          63,
+          61,
+          63,
+          61,
+          63,
+          61,
+          63,
+          61,
+          63,
+          61,
+          63
+        ]
+      },
+      "new": {
+        "length": 20,
+        "work": 901,
+        "peak_total_relator_length": 63,
+        "state_total_lengths_including_initial": [
+          24,
+          24,
+          27,
+          27,
+          31,
+          33,
+          35,
+          37,
+          39,
+          41,
+          43,
+          45,
+          47,
+          49,
+          51,
+          53,
+          55,
+          57,
+          59,
+          61,
+          63
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 36,
+        "peak_total_relator_length": 63,
+        "work": 1909,
+        "certificate_hash": "sha256:95cf16ae8c87f78a0bb71f1cc6c1e67fbcb11bde747e68caf6497e36559fc725"
+      },
+      "new_official": {
+        "ok": true,
+        "length": 20,
+        "peak_total_relator_length": 63,
+        "work": 901,
+        "certificate_hash": "sha256:013367b76da6ec821307482bad48efdb3317ed77666d47b351b48cd24c94ebdb"
+      },
+      "recognized_candidates": 1
+    }
+  ],
+  "complete_stable_certificate": {
+    "name": "synthetic-complete-stable",
+    "initial": [
+      [
+        1,
+        2,
+        -1
+      ],
+      [
+        1,
+        -2
+      ]
+    ],
+    "target": [],
+    "old_moves": [
+      8,
+      6,
+      12,
+      10,
+      2,
+      1,
+      4,
+      7,
+      9,
+      11,
+      13,
+      16,
+      15
+    ],
+    "new_moves": [
+      2,
+      1,
+      4,
+      16,
+      15
+    ],
+    "old": {
+      "length": 13,
+      "work": 90,
+      "peak_total_relator_length": 13,
+      "state_total_lengths_including_initial": [
+        5,
+        7,
+        9,
+        11,
+        13,
+        11,
+        11,
+        8,
+        6,
+        4,
+        2,
+        2,
+        1,
+        0
+      ]
+    },
+    "new": {
+      "length": 5,
+      "work": 14,
+      "peak_total_relator_length": 5,
+      "state_total_lengths_including_initial": [
+        5,
+        3,
+        3,
+        2,
+        1,
+        0
+      ]
+    },
+    "old_official": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 13,
+      "work": 90,
+      "certificate_hash": "sha256:eea1cba7861baa05e650b96308f41287e01edf2e5a537df8bc15cb3d71083681"
+    },
+    "new_official": {
+      "ok": true,
+      "length": 5,
+      "peak_total_relator_length": 5,
+      "work": 14,
+      "certificate_hash": "sha256:f2378c30ed1b47cad1a22c755ebda5219ef4bc31d04d77384e3baaa83cc3d365"
+    },
+    "old_states": [
+      [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          2,
+          -1,
+          -2
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          1,
+          2,
+          -1,
+          -2,
+          -1
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          1,
+          2,
+          -1,
+          -2,
+          -1
+        ],
+        [
+          2,
+          1,
+          -2,
+          -2
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          1,
+          2,
+          -1,
+          -2,
+          -1
+        ],
+        [
+          1,
+          2,
+          1,
+          -2,
+          -2,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          1,
+          -2,
+          -1
+        ],
+        [
+          1,
+          2,
+          1,
+          -2,
+          -2,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          1,
+          -2,
+          -1
+        ],
+        [
+          1,
+          2,
+          2,
+          -1,
+          -2,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          2,
+          1,
+          -2,
+          -1
+        ],
+        [
+          1,
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          2,
+          1,
+          -2
+        ],
+        [
+          1,
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          1,
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      [
+        [
+          1
+        ]
+      ],
+      []
+    ],
+    "new_states": [
+      [
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      [
+        [
+          1
+        ]
+      ],
+      []
+    ]
+  },
+  "counterexamples": {
+    "single_slot": {
+      "initial": [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "old_moves": [
+        6,
+        2,
+        7
+      ],
+      "proposed_moves": [
+        2
+      ],
+      "old_endpoint": [
+        [
+          2,
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "proposed_endpoint": [
+        [
+          1,
+          2
+        ],
+        [
+          2
+        ]
+      ]
+    },
+    "conjugation_middle": {
+      "initial": [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "old_moves": [
+        6,
+        10,
+        8,
+        7,
+        11
+      ],
+      "proposed_moves": [
+        8
+      ],
+      "old_endpoint": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "proposed_endpoint": [
+        [
+          2,
+          1,
+          -2
+        ],
+        [
+          2
+        ]
+      ]
+    },
+    "stabilization": {
+      "initial": [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "frame_then_Z_endpoint": [
+        [
+          1
+        ],
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          3
+        ]
+      ],
+      "Z_then_extended_frame_endpoint": [
+        [
+          1
+        ],
+        [
+          1,
+          2,
+          -1
+        ],
+        [
+          1,
+          3,
+          -1
+        ]
+      ]
+    },
+    "destabilization": {
+      "initial": [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "D0_endpoint": [
+        [
+          1
+        ]
+      ],
+      "common_Cy_state": [
+        [
+          2,
+          1,
+          -2
+        ],
+        [
+          2
+        ]
+      ],
+      "D0_after_frame_reason": "destabilize_precondition"
+    },
+    "resource": {
+      "initial_definition": "(x^-1 y^5000 x, x^-1 y^2500 x)",
+      "initial_sha256": "f2e8c4d38c8025db099cdca4783cd415ef3bfb47b6cadfcab00bd26c6f06942c",
+      "old_moves": [
+        6,
+        10,
+        2,
+        3,
+        7,
+        11
+      ],
+      "proposed_moves": [
+        2,
+        3
+      ],
+      "old": {
+        "length": 6,
+        "work": 55012,
+        "peak_total_relator_length": 10000,
+        "state_total_lengths_including_initial": [
+          7504,
+          7502,
+          7500,
+          10000,
+          7500,
+          7502,
+          7504
+        ]
+      },
+      "proposed": {
+        "length": 2,
+        "work": 25012,
+        "peak_total_relator_length": 10004,
+        "state_total_lengths_including_initial": [
+          7504,
+          10004,
+          7504
+        ]
+      },
+      "old_official": {
+        "ok": true,
+        "length": 6,
+        "peak_total_relator_length": 10000,
+        "work": 55012,
+        "certificate_hash": "sha256:34354148c18311779a4074f32e3d6ac2f42a04d2286cae766060d52d41a2e113"
+      },
+      "proposed_official": {
+        "ok": false,
+        "code": "E_LENGTH_LIMIT",
+        "move_index": 0,
+        "total_relator_length": 10004,
+        "max_total_relator_length": 10000
+      }
+    }
+  },
+  "counters_at_finish": {
+    "verification_official_apply": 1248,
+    "synthetic_manual_apply": 606,
+    "official_verify_calls": 46,
+    "synthetic_verify_apply": 606,
+    "synthetic_counterexample_apply": 21,
+    "synthetic_resource_manual_apply": 8,
+    "synthetic_resource_verify_apply": 7
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "status": "passed",
+  "scope": "Independent final-route replay; no optimizer/search reproduction.",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "input_sha256": "518e0ed28e17cd97f43ef652bf7732341c50748eb2e0d568e70301b71a75e13a",
+  "code_sha256": "3b75aa5f1ba38557502618f9b1c54ce74809415246b441a70357accd8e05dff2",
+  "old_interpreter_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+  "counts": {
+    "official_apply": 92,
+    "own_apply": 46,
+    "official_verify": 4
+  },
+  "results": [
+    {
+      "case_id": "ms-train-0015",
+      "label": "original",
+      "challenge_id": "sac-train-0015",
+      "length": 15,
+      "work": 66,
+      "peak_total_relator_length": 8,
+      "final_rank": 0,
+      "certificate_hash": "sha256:c54cbde51678dae875bfdfacc7feb49ac21c6fb533fc24456b7cea7dd8f6a97d",
+      "ordered_state_rank_work_peak_match_every_step": true,
+      "official_verdict": {
+        "ok": true,
+        "length": 15,
+        "peak_total_relator_length": 8,
+        "work": 66,
+        "certificate_hash": "sha256:c54cbde51678dae875bfdfacc7feb49ac21c6fb533fc24456b7cea7dd8f6a97d"
+      }
+    },
+    {
+      "case_id": "ms-train-0015",
+      "label": "goal_suffix_final",
+      "challenge_id": "sac-train-0015",
+      "length": 14,
+      "work": 63,
+      "peak_total_relator_length": 8,
+      "final_rank": 0,
+      "certificate_hash": "sha256:68c65f0bafafef12505b5b482f664f38f1004a56f43a909db509ed8ba7d425fc",
+      "ordered_state_rank_work_peak_match_every_step": true,
+      "official_verdict": {
+        "ok": true,
+        "length": 14,
+        "peak_total_relator_length": 8,
+        "work": 63,
+        "certificate_hash": "sha256:68c65f0bafafef12505b5b482f664f38f1004a56f43a909db509ed8ba7d425fc"
+      }
+    },
+    {
+      "case_id": "ms-train-0160",
+      "label": "original",
+      "challenge_id": "sac-train-0160",
+      "length": 9,
+      "work": 47,
+      "peak_total_relator_length": 12,
+      "final_rank": 0,
+      "certificate_hash": "sha256:e94492471688db5cb52971611a3617e75c165d89e3ed51cea9a3f5d96ccbb77e",
+      "ordered_state_rank_work_peak_match_every_step": true,
+      "official_verdict": {
+        "ok": true,
+        "length": 9,
+        "peak_total_relator_length": 12,
+        "work": 47,
+        "certificate_hash": "sha256:e94492471688db5cb52971611a3617e75c165d89e3ed51cea9a3f5d96ccbb77e"
+      }
+    },
+    {
+      "case_id": "ms-train-0160",
+      "label": "goal_suffix_final",
+      "challenge_id": "sac-train-0160",
+      "length": 8,
+      "work": 45,
+      "peak_total_relator_length": 12,
+      "final_rank": 0,
+      "certificate_hash": "sha256:bd8f524ec1f42773ab5f29607d15b070fc9980055d5faabf8dd3f6d62da784ea",
+      "ordered_state_rank_work_peak_match_every_step": true,
+      "official_verdict": {
+        "ok": true,
+        "length": 8,
+        "peak_total_relator_length": 12,
+        "work": 45,
+        "certificate_hash": "sha256:bd8f524ec1f42773ab5f29607d15b070fc9980055d5faabf8dd3f6d62da784ea"
+      }
+    }
+  ],
+  "total_ledger_official_apply": 92
+}

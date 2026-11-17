@@ -1,0 +1,794 @@
+{
+  "scope": "approved_final_certificates_only",
+  "approval": "symbolic_rules lead final certificate handoff; no new test actions accessed",
+  "source_artifacts": [
+    {
+      "path": "symbolic_rules/CERTIFICATES.json",
+      "sha256": "d40e63b22c12d3f2f939da4516af7521ac42df804a51c04aedc6332507db81e0"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "ms-train-0373",
+      "challenge": {
+        "challenge_id": "sac-train-0373",
+        "move_spec_version": "sac-r8-v1",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            1,
+            1,
+            2,
+            2,
+            -1,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": []
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            11,
+            4,
+            6,
+            11,
+            2,
+            0,
+            4,
+            11,
+            4,
+            0,
+            6,
+            4,
+            2,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 115,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-001:5",
+          "moves": [
+            11,
+            4,
+            6,
+            11,
+            2,
+            5,
+            11,
+            5,
+            6,
+            4,
+            2,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 101,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0015",
+      "challenge": {
+        "challenge_id": "sac-train-0015",
+        "move_spec_version": "sac-r8-v1",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": []
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            0,
+            9,
+            4,
+            0,
+            2,
+            7,
+            2,
+            0,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 66,
+            "peak_total_relator_length": 8
+          }
+        },
+        {
+          "label": "sym-dev-002:4",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            9,
+            5,
+            2,
+            7,
+            2,
+            0,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 57,
+            "peak_total_relator_length": 8
+          }
+        },
+        {
+          "label": "sym-dev-003:4",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            9,
+            5,
+            2,
+            7,
+            2,
+            0,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 57,
+            "peak_total_relator_length": 8
+          }
+        },
+        {
+          "label": "sym-dev-006:3",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            9,
+            5,
+            2,
+            7,
+            2,
+            0,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 13,
+            "work": 57,
+            "peak_total_relator_length": 8
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0218",
+      "challenge": {
+        "challenge_id": "sac-train-0218",
+        "move_spec_version": "sac-r8-v1",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": []
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            13,
+            1,
+            9,
+            2,
+            8,
+            1,
+            2,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 114,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-004:10",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            13,
+            1,
+            9,
+            2,
+            8,
+            5,
+            2,
+            0,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 16,
+            "work": 110,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-005:6",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            13,
+            9,
+            3,
+            8,
+            2,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 16,
+            "work": 105,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-010:5",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            1,
+            2,
+            13,
+            1,
+            2,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 16,
+            "work": 104,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-011:5",
+          "moves": [
+            9,
+            11,
+            13,
+            4,
+            13,
+            3,
+            13,
+            2,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 93,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0108",
+      "challenge": {
+        "challenge_id": "sac-train-0108",
+        "move_spec_version": "sac-r8-v1",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        ],
+        "target_relators": []
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 19,
+            "work": 150,
+            "peak_total_relator_length": 21
+          }
+        },
+        {
+          "label": "sym-dev-007:12",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 147,
+            "peak_total_relator_length": 21
+          }
+        },
+        {
+          "label": "sym-dev-008:12",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 147,
+            "peak_total_relator_length": 21
+          }
+        },
+        {
+          "label": "sym-dev-009:11",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            2,
+            5,
+            3,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 17,
+            "work": 151,
+            "peak_total_relator_length": 21
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0201",
+      "challenge": {
+        "challenge_id": "sac-train-0201",
+        "move_spec_version": "sac-r8-v1",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        ],
+        "target_relators": []
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 20,
+            "work": 175,
+            "peak_total_relator_length": 24
+          }
+        },
+        {
+          "label": "sym-dev-007:13",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 172,
+            "peak_total_relator_length": 24
+          }
+        },
+        {
+          "label": "sym-dev-008:13",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 172,
+            "peak_total_relator_length": 24
+          }
+        },
+        {
+          "label": "sym-dev-009:12",
+          "moves": [
+            6,
+            2,
+            9,
+            9,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            4,
+            4,
+            2,
+            5,
+            3,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 18,
+            "work": 176,
+            "peak_total_relator_length": 24
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0380",
+      "challenge": {
+        "challenge_id": "sac-train-0380",
+        "move_spec_version": "sac-r8-v1",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": []
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            11,
+            2,
+            0,
+            6,
+            2,
+            0,
+            4,
+            4,
+            2,
+            5,
+            2,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 16,
+            "work": 85,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-007:9",
+          "moves": [
+            6,
+            4,
+            11,
+            2,
+            0,
+            6,
+            2,
+            0,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 82,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-008:9",
+          "moves": [
+            6,
+            4,
+            11,
+            2,
+            0,
+            6,
+            2,
+            0,
+            4,
+            2,
+            5,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 82,
+            "peak_total_relator_length": 13
+          }
+        },
+        {
+          "label": "sym-dev-009:8",
+          "moves": [
+            6,
+            4,
+            11,
+            2,
+            0,
+            6,
+            2,
+            0,
+            2,
+            5,
+            3,
+            8,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 86,
+            "peak_total_relator_length": 13
+          }
+        }
+      ]
+    }
+  ]
+}

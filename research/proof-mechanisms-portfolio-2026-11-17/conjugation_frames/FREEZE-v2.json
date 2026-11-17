@@ -1,0 +1,26 @@
+{
+  "script_sha256": "85f323aed502e6c9bc6aba5e793b23f6b3afb535028ded5dcc99c99ef92b3e10",
+  "core_script_sha256": "39adba8863da3fe919f09a6aa11fcea3a0cfaa5a53d84d541794f178edf8d795",
+  "rule_sha256": "3d97fae596c46385fd98ae2b23c18ad66735e6c4b2d56e37382c72b46b4c82eb",
+  "v1_rule_sha256": "c903775f783637b0fcc47d390ee30deaf0ac670662ba0204a2ecb31ba8349586",
+  "config": {
+    "rule_version": "pending-compatible-conjugation-frames-v2",
+    "revision": 2,
+    "search_official_apply_cap_including_failures_retries": 250000,
+    "verification_official_apply_cap_including_failures_retries": 5000,
+    "scope": "old20 development original certificates plus old sac-07445 only",
+    "maximum_accepted_rewrites": 3,
+    "enumeration": "all rank-fixed I/M/C intervals whose each M has syntactically equal reduced pending target/donor words; require nonempty shared frame carried through M; strict primitive shortening",
+    "choice": "full length, full work including initial, full peak, start, end, full move list",
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "provenance": "interleaved opening / partial closing extension prompted by peer symbolic_rules message identifying sym-dev-010/011 as common-frame special cases; no new8 access"
+  },
+  "config_sha256": "1e53d574b5ab7c9fb6ee73afb4489e3be53b9f1c81d92804f2afe6c32557ae3c",
+  "protocol_sha256": "6c512292007dd448491583409a63ccd6b90e0f9073e5d13c2dde3f213552d2b5",
+  "created": "2026-11-17T11:35:21.814365+00:00",
+  "access": "only old20 and old07445; no new8"
+}

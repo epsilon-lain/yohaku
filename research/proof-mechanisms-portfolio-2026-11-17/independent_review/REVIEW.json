@@ -1,0 +1,97 @@
+{
+  "status": "passed",
+  "scope": "Independent proof/code review and final-certificate acceptance; no optimizer/search reproduction",
+  "official_search_apply": 0,
+  "official_verification_apply": 4210,
+  "official_verification_cap": 15000,
+  "full_route_check_count": 138,
+  "deduplicated_certificate_count": 78,
+  "official_replay_failure_count": 0,
+  "official_verify_calls": 138,
+  "own_certificate_apply": 2105,
+  "nonofficial_rule_apply": 96,
+  "nonofficial_frozen_graph_apply": 2180,
+  "all_nonofficial_primitive_apply": 4381,
+  "mechanism_count": 6,
+  "mechanism_count_definition": "Operational families, not proved algebraic independence or novelty",
+  "mechanisms": [
+    {
+      "id": 1,
+      "name": "逆标记迁移",
+      "rules": [
+        "sym-dev-001",
+        "sym-dev-002",
+        "sym-dev-003",
+        "sym-dev-005",
+        "sym-dev-006"
+      ],
+      "status": "accept"
+    },
+    {
+      "id": 2,
+      "name": "Nielsen乘法交互",
+      "rules": [
+        "sym-dev-004",
+        "sym-dev-007",
+        "sym-dev-008",
+        "sym-dev-009"
+      ],
+      "status": "condition",
+      "condition": "Full actual-resource acceptance; core007 work monotone but peak not monotone"
+    },
+    {
+      "id": 3,
+      "name": "共同共轭框架搬运",
+      "rules": [
+        "sym-dev-010",
+        "sym-dev-011",
+        "frames-v1",
+        "frames-v2"
+      ],
+      "status": "condition",
+      "condition": "Fixed rank, compatible shared pending frames, paid residual expansion, actual resources"
+    },
+    {
+      "id": 4,
+      "name": "目标感知消除生成元依赖后D",
+      "cases": [
+        "ms-train-0015",
+        "ms-train-0160"
+      ],
+      "status": "accept",
+      "scope": "Two concrete entries; no general optimality claim"
+    },
+    {
+      "id": 5,
+      "name": "固定DAG预算组合选择",
+      "status": "condition",
+      "condition": "Generated fixed graph only; no caps hit; 29 identical greedy/DP routes, zero extra wins"
+    },
+    {
+      "id": 6,
+      "name": "保边界差分编码",
+      "status": "condition",
+      "condition": "Exact unit data-arithmetic/copy model, final full-array output; outside AC"
+    }
+  ],
+  "root_selected_path_coverage": {
+    "cases": 29,
+    "total_length": 387,
+    "covered": 29,
+    "new_replay_apply": 0
+  },
+  "real_scored_change": false,
+  "real_incumbent": {
+    "id": "sac-07445",
+    "length": 15,
+    "work": 128,
+    "peak": 13
+  },
+  "metadata_audit_failure_count": 1,
+  "metadata_audit_failure_reason": "Incorrect reviewer expected attempt count 5 instead of 6; corrected with no official calls or application rerun",
+  "all_official_action_totals_including_root": {
+    "search": 400235,
+    "verification": 12142,
+    "total": 412377
+  }
+}

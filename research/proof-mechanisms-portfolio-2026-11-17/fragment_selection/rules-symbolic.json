@@ -1,0 +1,1833 @@
+{
+  "version": "symbolic-rank2-dev-v1",
+  "frozen": true,
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "symbol_encoding": {
+    "1": "X",
+    "2": "Y",
+    "3": "U",
+    "4": "V",
+    "negative": "inverse"
+  },
+  "initial_symbolic_state": [
+    [
+      3
+    ],
+    [
+      4
+    ]
+  ],
+  "proof": "In F(X,Y,U,V), equality of reduced ordered outputs implies equality after every homomorphism fixing X,Y and substituting arbitrary U,V in F(X,Y). Each I/M/C primitive commutes with that substitution.",
+  "interface": "At any rank2 occurrence of old_moves, expand new_moves verbatim; verify the complete certificate and resources. No state parameters, no official search.",
+  "selection": {
+    "short_max": 3,
+    "old_max": 6,
+    "development_ids": [
+      "ms-train-0009",
+      "ms-train-0013",
+      "ms-train-0014",
+      "ms-train-0015",
+      "ms-train-0031",
+      "ms-train-0033",
+      "ms-train-0062",
+      "ms-train-0081",
+      "ms-train-0099",
+      "ms-train-0108",
+      "ms-train-0160",
+      "ms-train-0201",
+      "ms-train-0218",
+      "ms-train-0231",
+      "ms-train-0235",
+      "ms-train-0258",
+      "ms-train-0286",
+      "ms-train-0373",
+      "ms-train-0379",
+      "ms-train-0380"
+    ],
+    "test_actions_accessed": [],
+    "tie_break": "minimum primitive length then lexicographic move list",
+    "exclude": [
+      "identity output",
+      "adjacent inverse cancellation",
+      "known four-step donor rule",
+      "direct destabilization mechanism"
+    ]
+  },
+  "rules": [
+    {
+      "old_moves": [
+        0,
+        4,
+        11,
+        4,
+        0
+      ],
+      "new_moves": [
+        5,
+        11,
+        5
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          3
+        ],
+        [
+          -1,
+          4,
+          -3,
+          1,
+          -3
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0373",
+          "start": 5,
+          "end_exclusive": 10
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -3
+          ],
+          [
+            4,
+            -3
+          ]
+        ],
+        [
+          [
+            -3
+          ],
+          [
+            -1,
+            4,
+            -3,
+            1
+          ]
+        ],
+        [
+          [
+            -3
+          ],
+          [
+            -1,
+            4,
+            -3,
+            1,
+            -3
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -1,
+            4,
+            -3,
+            1,
+            -3
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            4,
+            -3
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -1,
+            4,
+            -3,
+            1
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -1,
+            4,
+            -3,
+            1,
+            -3
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          5,
+          11,
+          5
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-001"
+    },
+    {
+      "old_moves": [
+        0,
+        9,
+        4,
+        0
+      ],
+      "new_moves": [
+        9,
+        5
+      ],
+      "old_length": 4,
+      "new_length": 2,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          -2,
+          3,
+          2
+        ],
+        [
+          4,
+          -2,
+          -3,
+          2
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0015",
+          "start": 4,
+          "end_exclusive": 8
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            -3,
+            2
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            -3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          9,
+          5
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-002"
+    },
+    {
+      "old_moves": [
+        0,
+        9,
+        4,
+        0,
+        2
+      ],
+      "new_moves": [
+        9,
+        5,
+        2
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          -2,
+          3,
+          2,
+          4,
+          -2,
+          -3,
+          2
+        ],
+        [
+          4,
+          -2,
+          -3,
+          2
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0015",
+          "start": 4,
+          "end_exclusive": 9
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            -3,
+            2
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            -3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2,
+            4,
+            -2,
+            -3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2,
+            4,
+            -2,
+            -3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -3,
+            2
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          9,
+          5,
+          2
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-003"
+    },
+    {
+      "old_moves": [
+        1,
+        2,
+        2,
+        5,
+        2
+      ],
+      "new_moves": [
+        5,
+        2,
+        0
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          3,
+          -4,
+          -3
+        ],
+        [
+          4,
+          -3
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0218",
+          "start": 10,
+          "end_exclusive": 15
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            3,
+            -4,
+            -4
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            3,
+            -4,
+            -4
+          ],
+          [
+            4,
+            -3
+          ]
+        ],
+        [
+          [
+            3,
+            -4,
+            -3
+          ],
+          [
+            4,
+            -3
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            4,
+            -3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            -3
+          ],
+          [
+            4,
+            -3
+          ]
+        ],
+        [
+          [
+            3,
+            -4,
+            -3
+          ],
+          [
+            4,
+            -3
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          5,
+          2,
+          0
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-004"
+    },
+    {
+      "old_moves": [
+        1,
+        9,
+        2,
+        8,
+        1
+      ],
+      "new_moves": [
+        9,
+        3,
+        8
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          3,
+          2,
+          -4,
+          -2
+        ],
+        [
+          4
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0218",
+          "start": 6,
+          "end_exclusive": 11
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2,
+            -4
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            3,
+            2,
+            -4,
+            -2
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            3,
+            2,
+            -4,
+            -2
+          ],
+          [
+            4
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2,
+            -4
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            2,
+            -4,
+            -2
+          ],
+          [
+            4
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          9,
+          3,
+          8
+        ],
+        [
+          12,
+          3,
+          13
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-005"
+    },
+    {
+      "old_moves": [
+        2,
+        0,
+        9,
+        4,
+        0
+      ],
+      "new_moves": [
+        2,
+        9,
+        5
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          -2,
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          -2,
+          -4,
+          -3,
+          2
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0015",
+          "start": 3,
+          "end_exclusive": 8
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -4,
+            -3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            -4,
+            -3,
+            2
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            -4,
+            -3,
+            2
+          ],
+          [
+            4,
+            -2,
+            -4,
+            -3,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            4,
+            2
+          ],
+          [
+            4,
+            -2,
+            -4,
+            -3,
+            2
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            4,
+            2
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            4,
+            2
+          ],
+          [
+            4,
+            -2,
+            -4,
+            -3,
+            2
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          2,
+          9,
+          5
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-006"
+    },
+    {
+      "old_moves": [
+        4,
+        2,
+        5,
+        2
+      ],
+      "new_moves": [
+        2,
+        5
+      ],
+      "old_length": 4,
+      "new_length": 2,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          3,
+          4
+        ],
+        [
+          -3
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0108",
+          "start": 12,
+          "end_exclusive": 16
+        },
+        {
+          "training_id": "ms-train-0201",
+          "start": 13,
+          "end_exclusive": 17
+        },
+        {
+          "training_id": "ms-train-0380",
+          "start": 9,
+          "end_exclusive": 13
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3
+          ],
+          [
+            -3
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            -3
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            -3
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          2,
+          5
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-007"
+    },
+    {
+      "old_moves": [
+        4,
+        2,
+        5,
+        2,
+        8
+      ],
+      "new_moves": [
+        2,
+        5,
+        8
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          2,
+          3,
+          4,
+          -2
+        ],
+        [
+          -3
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0108",
+          "start": 12,
+          "end_exclusive": 17
+        },
+        {
+          "training_id": "ms-train-0201",
+          "start": 13,
+          "end_exclusive": 18
+        },
+        {
+          "training_id": "ms-train-0380",
+          "start": 9,
+          "end_exclusive": 14
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3
+          ],
+          [
+            -3
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            -3
+          ]
+        ],
+        [
+          [
+            2,
+            3,
+            4,
+            -2
+          ],
+          [
+            -3
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            -3
+          ]
+        ],
+        [
+          [
+            2,
+            3,
+            4,
+            -2
+          ],
+          [
+            -3
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          2,
+          5,
+          8
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-008"
+    },
+    {
+      "old_moves": [
+        4,
+        4,
+        2,
+        5,
+        2
+      ],
+      "new_moves": [
+        2,
+        5,
+        3
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          3,
+          4,
+          3
+        ],
+        [
+          -3
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0108",
+          "start": 11,
+          "end_exclusive": 16
+        },
+        {
+          "training_id": "ms-train-0201",
+          "start": 12,
+          "end_exclusive": 17
+        },
+        {
+          "training_id": "ms-train-0380",
+          "start": 8,
+          "end_exclusive": 13
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            4,
+            3,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3,
+            3
+          ],
+          [
+            4,
+            3,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3,
+            3
+          ],
+          [
+            -3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3
+          ],
+          [
+            -3
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            4
+          ],
+          [
+            -3
+          ]
+        ],
+        [
+          [
+            3,
+            4,
+            3
+          ],
+          [
+            -3
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          2,
+          5,
+          3
+        ],
+        [
+          4,
+          2,
+          5
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-009"
+    },
+    {
+      "old_moves": [
+        13,
+        1,
+        9,
+        2,
+        8
+      ],
+      "new_moves": [
+        1,
+        2,
+        13
+      ],
+      "old_length": 5,
+      "new_length": 3,
+      "length_saved": 2,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          3,
+          -4
+        ],
+        [
+          -2,
+          -4,
+          2
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0218",
+          "start": 5,
+          "end_exclusive": 10
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -2,
+            4,
+            2
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            -4,
+            2
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            -4
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          1,
+          2,
+          13
+        ],
+        [
+          3,
+          1,
+          13
+        ],
+        [
+          3,
+          13,
+          1
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-010"
+    },
+    {
+      "old_moves": [
+        13,
+        1,
+        9,
+        2,
+        8,
+        1
+      ],
+      "new_moves": [
+        3,
+        13
+      ],
+      "old_length": 6,
+      "new_length": 2,
+      "length_saved": 4,
+      "classification": "nontrivial_universal_rewrite",
+      "proof_symbolic_output": [
+        [
+          3,
+          -4
+        ],
+        [
+          -2,
+          4,
+          2
+        ]
+      ],
+      "sources": [
+        {
+          "training_id": "ms-train-0218",
+          "start": 5,
+          "end_exclusive": 11
+        }
+      ],
+      "proof_old_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -2,
+            4,
+            2
+          ]
+        ],
+        [
+          [
+            3
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            2
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ],
+        [
+          [
+            -2,
+            3,
+            -4,
+            2
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            -2,
+            -4,
+            2
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            -2,
+            4,
+            2
+          ]
+        ]
+      ],
+      "proof_new_symbolic_states": [
+        [
+          [
+            3
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            4
+          ]
+        ],
+        [
+          [
+            3,
+            -4
+          ],
+          [
+            -2,
+            4,
+            2
+          ]
+        ]
+      ],
+      "shortest_known_alternatives": [
+        [
+          3,
+          13
+        ]
+      ],
+      "conditions": {
+        "rank": 2,
+        "alphabet": "ambient X,Y; arbitrary freely reduced U,V in F(X,Y)",
+        "endpoint": "complete ordered freely reduced tuple equal; no quotient equivalence",
+        "resource_guard": "Replay replacement on actual entry and complete resulting certificate from original initial state; require official limits.",
+        "limits": {
+          "max_path_length": 100000,
+          "max_total_relator_length": 10000,
+          "max_work": 5000000
+        }
+      },
+      "id": "sym-dev-011"
+    }
+  ]
+}

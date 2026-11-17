@@ -1,0 +1,974 @@
+{
+  "source": "ac_official/competition/examples/stable_training_424.json",
+  "source_git_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235",
+  "accessed_action_ids": [
+    "ms-train-0009",
+    "ms-train-0013",
+    "ms-train-0014",
+    "ms-train-0015",
+    "ms-train-0031",
+    "ms-train-0033",
+    "ms-train-0062",
+    "ms-train-0081",
+    "ms-train-0099",
+    "ms-train-0108",
+    "ms-train-0160",
+    "ms-train-0201",
+    "ms-train-0218",
+    "ms-train-0231",
+    "ms-train-0235",
+    "ms-train-0258",
+    "ms-train-0286",
+    "ms-train-0373",
+    "ms-train-0379",
+    "ms-train-0380"
+  ],
+  "records": [
+    {
+      "training_id": "ms-train-0009",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        0,
+        2,
+        4,
+        0,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 14,
+      "work": 64,
+      "peak_total_relator_length": 9
+    },
+    {
+      "training_id": "ms-train-0013",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        0,
+        2,
+        4,
+        0,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 18,
+      "work": 136,
+      "peak_total_relator_length": 17
+    },
+    {
+      "training_id": "ms-train-0014",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        0,
+        2,
+        4,
+        0,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 19,
+      "work": 159,
+      "peak_total_relator_length": 19
+    },
+    {
+      "training_id": "ms-train-0015",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        0,
+        4,
+        1,
+        2,
+        0,
+        9,
+        4,
+        0,
+        2,
+        7,
+        2,
+        0,
+        1,
+        16,
+        15
+      ],
+      "length": 15,
+      "work": 66,
+      "peak_total_relator_length": 8
+    },
+    {
+      "training_id": "ms-train-0031",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        1,
+        2,
+        0,
+        6,
+        2,
+        7,
+        7,
+        1,
+        4,
+        4,
+        4,
+        0,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 18,
+      "work": 109,
+      "peak_total_relator_length": 13
+    },
+    {
+      "training_id": "ms-train-0033",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        1,
+        2,
+        7,
+        2,
+        0,
+        6,
+        4,
+        1,
+        2,
+        7,
+        2,
+        4,
+        4,
+        2,
+        0,
+        4,
+        3,
+        16,
+        15
+      ],
+      "length": 19,
+      "work": 152,
+      "peak_total_relator_length": 17
+    },
+    {
+      "training_id": "ms-train-0062",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        1,
+        2,
+        7,
+        2,
+        0,
+        6,
+        4,
+        1,
+        2,
+        7,
+        2,
+        4,
+        4,
+        4,
+        2,
+        0,
+        4,
+        3,
+        16,
+        15
+      ],
+      "length": 20,
+      "work": 194,
+      "peak_total_relator_length": 22
+    },
+    {
+      "training_id": "ms-train-0081",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          2,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        4,
+        2,
+        9,
+        0,
+        2,
+        0,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 13,
+      "work": 56,
+      "peak_total_relator_length": 11
+    },
+    {
+      "training_id": "ms-train-0099",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        0,
+        4,
+        1,
+        2,
+        0,
+        7,
+        2,
+        4,
+        4,
+        4,
+        4,
+        2,
+        0,
+        4,
+        3,
+        16,
+        15
+      ],
+      "length": 17,
+      "work": 131,
+      "peak_total_relator_length": 17
+    },
+    {
+      "training_id": "ms-train-0108",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        4,
+        4,
+        4,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 19,
+      "work": 150,
+      "peak_total_relator_length": 21
+    },
+    {
+      "training_id": "ms-train-0160",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          1,
+          2,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        4,
+        2,
+        9,
+        1,
+        4,
+        1,
+        16,
+        15
+      ],
+      "length": 9,
+      "work": 47,
+      "peak_total_relator_length": 12
+    },
+    {
+      "training_id": "ms-train-0201",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 20,
+      "work": 175,
+      "peak_total_relator_length": 24
+    },
+    {
+      "training_id": "ms-train-0218",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        9,
+        11,
+        13,
+        4,
+        13,
+        13,
+        1,
+        9,
+        2,
+        8,
+        1,
+        2,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 18,
+      "work": 114,
+      "peak_total_relator_length": 13
+    },
+    {
+      "training_id": "ms-train-0231",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        9,
+        11,
+        13,
+        4,
+        1,
+        8,
+        13,
+        13,
+        2,
+        0,
+        8,
+        4,
+        2,
+        6,
+        2,
+        2,
+        16,
+        15
+      ],
+      "length": 18,
+      "work": 148,
+      "peak_total_relator_length": 13
+    },
+    {
+      "training_id": "ms-train-0235",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -1,
+          2,
+          2,
+          1,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        0,
+        9,
+        4,
+        1,
+        8,
+        2,
+        9,
+        9,
+        1,
+        2,
+        0,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 17,
+      "work": 104,
+      "peak_total_relator_length": 15
+    },
+    {
+      "training_id": "ms-train-0258",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -1,
+          2,
+          1,
+          -2,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        9,
+        11,
+        1,
+        4,
+        8,
+        10,
+        2,
+        0,
+        6,
+        4,
+        2,
+        16,
+        15
+      ],
+      "length": 13,
+      "work": 97,
+      "peak_total_relator_length": 13
+    },
+    {
+      "training_id": "ms-train-0286",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          1,
+          2,
+          -1,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        9,
+        11,
+        13,
+        4,
+        13,
+        8,
+        4,
+        1,
+        9,
+        2,
+        8,
+        0,
+        4,
+        16,
+        15
+      ],
+      "length": 15,
+      "work": 119,
+      "peak_total_relator_length": 13
+    },
+    {
+      "training_id": "ms-train-0373",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          2,
+          -1,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        11,
+        4,
+        6,
+        11,
+        2,
+        0,
+        4,
+        11,
+        4,
+        0,
+        6,
+        4,
+        2,
+        16,
+        15
+      ],
+      "length": 15,
+      "work": 115,
+      "peak_total_relator_length": 13
+    },
+    {
+      "training_id": "ms-train-0379",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          -1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        4,
+        11,
+        4,
+        11,
+        2,
+        9,
+        0,
+        2,
+        4,
+        0,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 17,
+      "work": 101,
+      "peak_total_relator_length": 13
+    },
+    {
+      "training_id": "ms-train-0380",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": [],
+      "move_spec_version": "sac-r8-v1",
+      "moves": [
+        6,
+        4,
+        11,
+        2,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "length": 16,
+      "work": 85,
+      "peak_total_relator_length": 13
+    }
+  ]
+}

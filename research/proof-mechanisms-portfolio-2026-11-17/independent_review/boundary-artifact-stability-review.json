@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "previous_audited_artifact_sha256": "8fafa6c792b91dc5a7f441a7791fe0761f4a5122e9992f2e87cc8a06af8014a9",
+  "current_artifact_sha256": "6d0ed99aaa7158cca104d36a5bcf520c558f039e1be0fd09a71c8321564e64b2",
+  "unchanged_mathematical_payload_sha256": "03ab5a2a83efb356a97d3945289563616f7f2f2a5ddd981ff72a3f07886e9bdd",
+  "note": "Only author source-document hashes changed after first audit; exact payload hash independently recomputed after excluding payload hash and artifact_source_sha256. No array checker rerun."
+}

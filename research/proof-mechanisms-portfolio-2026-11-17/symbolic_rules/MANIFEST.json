@@ -1,0 +1,100 @@
+{
+  "files": [
+    {
+      "path": "ATTEMPT-LEDGER.json",
+      "bytes": 2699,
+      "sha256": "c718ba20852038363818dafb8121d7bde8790171e3e888afee3c925f6d68472e"
+    },
+    {
+      "path": "CERTIFICATES.json",
+      "bytes": 18946,
+      "sha256": "d40e63b22c12d3f2f939da4516af7521ac42df804a51c04aedc6332507db81e0"
+    },
+    {
+      "path": "DEVELOPMENT-INPUT.json",
+      "bytes": 14250,
+      "sha256": "0d31c7c738202364655c500233b33018cc599f9e8cc54c2f2cb7b7c50eddfd6e"
+    },
+    {
+      "path": "DISCOVERY-RESULTS.json",
+      "bytes": 1004,
+      "sha256": "c34fb59737b177d788dab40548de521e521565571f3158f04000c45fee7a16c0"
+    },
+    {
+      "path": "EXCLUDED-CANDIDATES.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "FINGERPRINT-DIGEST.json",
+      "bytes": 576,
+      "sha256": "687852cf94f0fa6b47402ea1830858786dac7bfedfcdcf4d77d2fff889ddcfab"
+    },
+    {
+      "path": "FREEZE.json",
+      "bytes": 1718,
+      "sha256": "1a316c83c934967364f64775b0eb2a989212d7ef77e2b5b85c54cc4465480173"
+    },
+    {
+      "path": "INPUT-SOURCE-CHECK.json",
+      "bytes": 830,
+      "sha256": "3adb67905bb81c06e6f43c48ab0bf81080e18d5698a8f18833996a1342d455b4"
+    },
+    {
+      "path": "MECHANISM-FAMILIES.json",
+      "bytes": 916,
+      "sha256": "c8014268e5c7fbfe28ff4145c8ccb405e6039074cbc0ba342b1ff95ed04c5753"
+    },
+    {
+      "path": "METHOD-LOG.md",
+      "bytes": 5592,
+      "sha256": "36c3f76c197c9059c64c528c2906fcd3be96c3fbb247848728ebda7093346ff8"
+    },
+    {
+      "path": "OFFICIAL-VERIFICATION.json",
+      "bytes": 165286,
+      "sha256": "a9e0b3c246b97725f47cd421a416fbcfc8ed7e31a62321d004be603c0d6c93c9"
+    },
+    {
+      "path": "README.zh.md",
+      "bytes": 11039,
+      "sha256": "0573556c7ad3857bf326db68b536abf1d7a04529b88c29fd7b9f912ee9af6138"
+    },
+    {
+      "path": "RESOURCE-EXHAUSTIVE.json",
+      "bytes": 1375,
+      "sha256": "9f7c7b07b3acb392a351465a2bfc5e99dfcf45eee366b4cac235f2d2fc6d703d"
+    },
+    {
+      "path": "RULES.json",
+      "bytes": 30866,
+      "sha256": "701b9b233a7ba0a1e926d0333ae8fef652e6c9bd83ab4a6ef12070bbd617e2bc"
+    },
+    {
+      "path": "discover_rules.py",
+      "bytes": 9605,
+      "sha256": "0c75ce16610b737a610e14e46aefa4a04ff576b06ccc61b0f7ff0619882148c2"
+    },
+    {
+      "path": "extract_development_input.py",
+      "bytes": 2243,
+      "sha256": "30d39f6a5db652d21edf2ea37777e1746c8619ba431015a5547f5e2c8d26a361"
+    },
+    {
+      "path": "fingerprint_digest.py",
+      "bytes": 1297,
+      "sha256": "3a3c53b040e5e2a61a53b0ca095510ae1a8a5b3737894cf9ab52e055b6068cc5"
+    },
+    {
+      "path": "resource_exhaustive.py",
+      "bytes": 2070,
+      "sha256": "c6aa0131f6170a2749c50c4bdd9934929dec9565c2b0d5c96f47df3b53596c10"
+    },
+    {
+      "path": "verify_rules.py",
+      "bytes": 10955,
+      "sha256": "7e63492c336481bbfe9bf954e5e3ac87b5f9c291515b4e50a4b38b93f4e8f372"
+    }
+  ],
+  "publication_note": "Only listed source/text/data files; generated __pycache__ is not an artifact. Root handles publication."
+}

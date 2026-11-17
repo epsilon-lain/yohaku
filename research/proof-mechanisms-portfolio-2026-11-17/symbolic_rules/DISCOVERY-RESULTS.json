@@ -1,0 +1,35 @@
+{
+  "short_string_counts": {
+    "0": 1,
+    "1": 14,
+    "2": 196,
+    "3": 2744
+  },
+  "short_total_strings": 2955,
+  "distinct_short_fingerprints": 1550,
+  "scanned_fragment_counts_by_length": {
+    "1": 290,
+    "2": 270,
+    "3": 250,
+    "4": 230,
+    "5": 210,
+    "6": 190
+  },
+  "scanned_fragment_occurrences": 1440,
+  "unique_shortenable_old_new_pairs": 11,
+  "selected_rule_count": 11,
+  "selected_occurrence_count": 17,
+  "excluded_counts": {},
+  "symbolic_operations": {
+    "enumerate_short": 2954,
+    "scan_development": 1440,
+    "selected_proof_replay": 84
+  },
+  "symbolic_operations_total": 4478,
+  "symbolic_operation_cap": 200000,
+  "official_search_apply_calls": 0,
+  "official_verification_apply_calls_in_discovery": 0,
+  "script_sha256": "0c75ce16610b737a610e14e46aefa4a04ff576b06ccc61b0f7ff0619882148c2",
+  "input_sha256": "0d31c7c738202364655c500233b33018cc599f9e8cc54c2f2cb7b7c50eddfd6e",
+  "rules_sha256": "701b9b233a7ba0a1e926d0333ae8fef652e6c9bd83ab4a6ef12070bbd617e2bc"
+}

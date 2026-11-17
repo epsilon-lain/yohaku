@@ -1,0 +1,357 @@
+{
+  "status": "passed",
+  "rule_count": 11,
+  "nonofficial_symbolic_apply": 96,
+  "official_apply": 0,
+  "optimizer_imported": false,
+  "rules_sha256": "701b9b233a7ba0a1e926d0333ae8fef652e6c9bd83ab4a6ef12070bbd617e2bc",
+  "code_sha256": "749decfba5dd1ac9388b2357cf8e81e9489cabe90d25bd8c1e45f74d707b13a6",
+  "independent_interpreter_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+  "universal_argument": "Equality in F(X,Y,U,V), followed by arbitrary substitution U,V into F(X,Y) fixing X,Y; fixed-rank I/M/C commute with substitution.",
+  "core007_work_difference": "(a+d-b)+(a+e-c)+(d+e)>=0 by triangle inequalities",
+  "core007_peak_counterexamples": [
+    {
+      "n": 1,
+      "U": "x",
+      "V": "x^-1 y^n x^-1",
+      "lengths": {
+        "old": [
+          4,
+          3,
+          3,
+          2,
+          3
+        ],
+        "new": [
+          4,
+          5,
+          3
+        ]
+      }
+    },
+    {
+      "n": 4999,
+      "U": "x",
+      "V": "x^-1 y^n x^-1",
+      "lengths": {
+        "old": [
+          5002,
+          5001,
+          9999,
+          5000,
+          5001
+        ],
+        "new": [
+          5002,
+          10001,
+          5001
+        ]
+      }
+    }
+  ],
+  "results": [
+    {
+      "id": "sym-dev-001",
+      "old": [
+        0,
+        4,
+        11,
+        4,
+        0
+      ],
+      "new": [
+        5,
+        11,
+        5
+      ],
+      "ordered_symbolic_output": [
+        [
+          3
+        ],
+        [
+          -1,
+          4,
+          -3,
+          1,
+          -3
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-002",
+      "old": [
+        0,
+        9,
+        4,
+        0
+      ],
+      "new": [
+        9,
+        5
+      ],
+      "ordered_symbolic_output": [
+        [
+          -2,
+          3,
+          2
+        ],
+        [
+          4,
+          -2,
+          -3,
+          2
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-003",
+      "old": [
+        0,
+        9,
+        4,
+        0,
+        2
+      ],
+      "new": [
+        9,
+        5,
+        2
+      ],
+      "ordered_symbolic_output": [
+        [
+          -2,
+          3,
+          2,
+          4,
+          -2,
+          -3,
+          2
+        ],
+        [
+          4,
+          -2,
+          -3,
+          2
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-004",
+      "old": [
+        1,
+        2,
+        2,
+        5,
+        2
+      ],
+      "new": [
+        5,
+        2,
+        0
+      ],
+      "ordered_symbolic_output": [
+        [
+          3,
+          -4,
+          -3
+        ],
+        [
+          4,
+          -3
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-005",
+      "old": [
+        1,
+        9,
+        2,
+        8,
+        1
+      ],
+      "new": [
+        9,
+        3,
+        8
+      ],
+      "ordered_symbolic_output": [
+        [
+          3,
+          2,
+          -4,
+          -2
+        ],
+        [
+          4
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-006",
+      "old": [
+        2,
+        0,
+        9,
+        4,
+        0
+      ],
+      "new": [
+        2,
+        9,
+        5
+      ],
+      "ordered_symbolic_output": [
+        [
+          -2,
+          3,
+          4,
+          2
+        ],
+        [
+          4,
+          -2,
+          -4,
+          -3,
+          2
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-007",
+      "old": [
+        4,
+        2,
+        5,
+        2
+      ],
+      "new": [
+        2,
+        5
+      ],
+      "ordered_symbolic_output": [
+        [
+          3,
+          4
+        ],
+        [
+          -3
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-008",
+      "old": [
+        4,
+        2,
+        5,
+        2,
+        8
+      ],
+      "new": [
+        2,
+        5,
+        8
+      ],
+      "ordered_symbolic_output": [
+        [
+          2,
+          3,
+          4,
+          -2
+        ],
+        [
+          -3
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-009",
+      "old": [
+        4,
+        4,
+        2,
+        5,
+        2
+      ],
+      "new": [
+        2,
+        5,
+        3
+      ],
+      "ordered_symbolic_output": [
+        [
+          3,
+          4,
+          3
+        ],
+        [
+          -3
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-010",
+      "old": [
+        13,
+        1,
+        9,
+        2,
+        8
+      ],
+      "new": [
+        1,
+        2,
+        13
+      ],
+      "ordered_symbolic_output": [
+        [
+          3,
+          -4
+        ],
+        [
+          -2,
+          -4,
+          2
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    },
+    {
+      "id": "sym-dev-011",
+      "old": [
+        13,
+        1,
+        9,
+        2,
+        8,
+        1
+      ],
+      "new": [
+        3,
+        13
+      ],
+      "ordered_symbolic_output": [
+        [
+          3,
+          -4
+        ],
+        [
+          -2,
+          4,
+          2
+        ]
+      ],
+      "all_claimed_symbolic_states_match": true
+    }
+  ]
+}

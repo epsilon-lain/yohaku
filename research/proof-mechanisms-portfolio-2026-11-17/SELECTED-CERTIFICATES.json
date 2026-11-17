@@ -1,0 +1,954 @@
+{
+  "scope": "Post-experiment selection among already verified full certificates, not an additional search or causal comparison. Previous incumbents retained whenever shorter.",
+  "cases": [
+    {
+      "challenge_id": "sac-07445",
+      "moves": [
+        6,
+        4,
+        12,
+        1,
+        3,
+        6,
+        12,
+        2,
+        5,
+        6,
+        4,
+        2,
+        4,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 15,
+        "peak_total_relator_length": 13,
+        "work": 128,
+        "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+      },
+      "sources_with_same_selected_path": [
+        "conjugation_frames/v2",
+        "fragment_selection/fixed-graph DP",
+        "goal_suffix/final",
+        "original official published certificate",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 15,
+      "selected_length": 15
+    },
+    {
+      "challenge_id": "sac-train-0009",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        0,
+        2,
+        4,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 9,
+        "peak_total_relator_length": 9,
+        "work": 50,
+        "certificate_hash": "sha256:f8334761405e349a051cb0525c4aba3313d1932ab685b71c55f53cd7faf49e0e"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 14,
+      "selected_length": 9
+    },
+    {
+      "challenge_id": "sac-train-0013",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        0,
+        2,
+        4,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 17,
+        "work": 122,
+        "certificate_hash": "sha256:9bb11fdb1309237daf923e17ead9a043276d8c57d2ac05ce41dc247af150e0ea"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 18,
+      "selected_length": 13
+    },
+    {
+      "challenge_id": "sac-train-0014",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        0,
+        2,
+        4,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 14,
+        "peak_total_relator_length": 19,
+        "work": 145,
+        "certificate_hash": "sha256:40dceef7e91abd9f2c6dc1ce08ca93cf2348b1bd6a969446bac08e4747924864"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 19,
+      "selected_length": 14
+    },
+    {
+      "challenge_id": "sac-train-0015",
+      "moves": [
+        0,
+        4,
+        1,
+        2,
+        9,
+        5,
+        2,
+        7,
+        2,
+        0,
+        1,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 8,
+        "work": 57,
+        "certificate_hash": "sha256:c16c4a436ec1e5c474b43212791db79002595b6bcd23b56dab0203f54d3676a8"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "symbolic_rules/sym-dev-002",
+        "symbolic_rules/sym-dev-003",
+        "symbolic_rules/sym-dev-006"
+      ],
+      "candidate_count": 8,
+      "original_length": 15,
+      "selected_length": 13
+    },
+    {
+      "challenge_id": "sac-train-0026",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        9,
+        9,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        16,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 15,
+        "peak_total_relator_length": 16,
+        "work": 102,
+        "certificate_hash": "sha256:b21dc31c4dbd2fe74ea63572d6cf001923863bcfd81bbaec21fd000222c86920"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 3,
+      "original_length": 18,
+      "selected_length": 15
+    },
+    {
+      "challenge_id": "sac-train-0031",
+      "moves": [
+        1,
+        2,
+        0,
+        6,
+        2,
+        7,
+        7,
+        1,
+        4,
+        4,
+        4,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 13,
+        "work": 95,
+        "certificate_hash": "sha256:30e7f5b1d6e02f34e1587a45d677d22c9602c11eb96669a434b72a9857ffbb06"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 18,
+      "selected_length": 13
+    },
+    {
+      "challenge_id": "sac-train-0033",
+      "moves": [
+        1,
+        2,
+        7,
+        2,
+        0,
+        6,
+        4,
+        1,
+        2,
+        7,
+        2,
+        4,
+        4,
+        0,
+        15,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 17,
+        "peak_total_relator_length": 17,
+        "work": 144,
+        "certificate_hash": "sha256:cab220d9b258cfaa6cbe15713020c3e2adde78ba59e94149c3a371469a7190d2"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 5,
+      "original_length": 19,
+      "selected_length": 17
+    },
+    {
+      "challenge_id": "sac-train-0062",
+      "moves": [
+        1,
+        2,
+        7,
+        2,
+        0,
+        6,
+        4,
+        1,
+        2,
+        7,
+        2,
+        4,
+        4,
+        4,
+        0,
+        15,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 18,
+        "peak_total_relator_length": 22,
+        "work": 186,
+        "certificate_hash": "sha256:b3569c404752a318fa48f90835f962cec5a041a3ce836ad778c4f6c1c9ec11ea"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 5,
+      "original_length": 20,
+      "selected_length": 18
+    },
+    {
+      "challenge_id": "sac-train-0081",
+      "moves": [
+        6,
+        4,
+        2,
+        9,
+        0,
+        2,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 8,
+        "peak_total_relator_length": 11,
+        "work": 42,
+        "certificate_hash": "sha256:26cfd567712f5669890c9ecfd1ef30da2e71fb5ba616b455511750d97c49e1d8"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 13,
+      "selected_length": 8
+    },
+    {
+      "challenge_id": "sac-train-0094",
+      "moves": [
+        6,
+        4,
+        11,
+        13,
+        2,
+        9,
+        0,
+        2,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 10,
+        "peak_total_relator_length": 11,
+        "work": 60,
+        "certificate_hash": "sha256:5edca68e67ca1eb358db66bc1d97dcd562eeca6476e504959d9834a132111dee"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP"
+      ],
+      "candidate_count": 3,
+      "original_length": 15,
+      "selected_length": 10
+    },
+    {
+      "challenge_id": "sac-train-0099",
+      "moves": [
+        0,
+        4,
+        1,
+        2,
+        0,
+        7,
+        2,
+        4,
+        4,
+        4,
+        4,
+        0,
+        15,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 15,
+        "peak_total_relator_length": 17,
+        "work": 123,
+        "certificate_hash": "sha256:c32eed477b93063445c31119db73575c726d51fb2f7ea3529517e00b3c2bfcd3"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 5,
+      "original_length": 17,
+      "selected_length": 15
+    },
+    {
+      "challenge_id": "sac-train-0108",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        4,
+        4,
+        4,
+        16,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 16,
+        "peak_total_relator_length": 21,
+        "work": 139,
+        "certificate_hash": "sha256:9a5efcdd31b2ebdc20b7bb348636be7905264b928219da0706ae5cb8632f276a"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 8,
+      "original_length": 19,
+      "selected_length": 16
+    },
+    {
+      "challenge_id": "sac-train-0113",
+      "moves": [
+        9,
+        11,
+        1,
+        4,
+        1,
+        2,
+        1,
+        6,
+        2,
+        7,
+        0,
+        4,
+        4,
+        15,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 16,
+        "peak_total_relator_length": 13,
+        "work": 120,
+        "certificate_hash": "sha256:4817e973e64b0f180ac8d39eab988b3595bd0a53eba99fe748e1b13247bcd5e9"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 3,
+      "original_length": 19,
+      "selected_length": 16
+    },
+    {
+      "challenge_id": "sac-train-0117",
+      "moves": [
+        6,
+        4,
+        0,
+        9,
+        2,
+        8,
+        1,
+        4,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 10,
+        "peak_total_relator_length": 12,
+        "work": 59,
+        "certificate_hash": "sha256:6ffb73088ff967713e4f48592f0197bc9e8f8af5637b0c317aa9b2e46feb89ae"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "goal_suffix/final",
+        "original official published certificate"
+      ],
+      "candidate_count": 3,
+      "original_length": 10,
+      "selected_length": 10
+    },
+    {
+      "challenge_id": "sac-train-0160",
+      "moves": [
+        6,
+        4,
+        2,
+        9,
+        11,
+        5,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 8,
+        "peak_total_relator_length": 12,
+        "work": 45,
+        "certificate_hash": "sha256:bd8f524ec1f42773ab5f29607d15b070fc9980055d5faabf8dd3f6d62da784ea"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 5,
+      "original_length": 9,
+      "selected_length": 8
+    },
+    {
+      "challenge_id": "sac-train-0164",
+      "moves": [
+        9,
+        11,
+        13,
+        4,
+        1,
+        8,
+        2,
+        0,
+        6,
+        4,
+        2,
+        2,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 14,
+        "peak_total_relator_length": 14,
+        "work": 120,
+        "certificate_hash": "sha256:df8c0a27fde6c1a1454f02eba76ff940228ba31dde3951f9ca0f825bf111cfad"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "goal_suffix/final",
+        "original official published certificate"
+      ],
+      "candidate_count": 3,
+      "original_length": 14,
+      "selected_length": 14
+    },
+    {
+      "challenge_id": "sac-train-0201",
+      "moves": [
+        6,
+        2,
+        9,
+        9,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        4,
+        4,
+        4,
+        4,
+        16,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 17,
+        "peak_total_relator_length": 24,
+        "work": 164,
+        "certificate_hash": "sha256:7c6805b079f9817fcd99ffec1cc4e57680a7c6539d51cc034275136504d08194"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 8,
+      "original_length": 20,
+      "selected_length": 17
+    },
+    {
+      "challenge_id": "sac-train-0204",
+      "moves": [
+        9,
+        11,
+        1,
+        12,
+        9,
+        4,
+        8,
+        2,
+        8,
+        0,
+        4,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 12,
+        "work": 100,
+        "certificate_hash": "sha256:08951bd2191f7d856bf54b2164f3902fa709e012d411fbbb10022bbc5aa20b53"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "goal_suffix/final",
+        "original official published certificate"
+      ],
+      "candidate_count": 3,
+      "original_length": 13,
+      "selected_length": 13
+    },
+    {
+      "challenge_id": "sac-train-0218",
+      "moves": [
+        9,
+        11,
+        13,
+        4,
+        13,
+        3,
+        13,
+        2,
+        2,
+        5,
+        2,
+        8,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 14,
+        "peak_total_relator_length": 13,
+        "work": 93,
+        "certificate_hash": "sha256:778d1ba9a03d4077fb7e054aa35b72dd33af4f8109c1c7ebe3d6a9e0e5975d8a"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "symbolic_rules/sym-dev-011"
+      ],
+      "candidate_count": 9,
+      "original_length": 18,
+      "selected_length": 14
+    },
+    {
+      "challenge_id": "sac-train-0231",
+      "moves": [
+        9,
+        11,
+        13,
+        4,
+        1,
+        8,
+        13,
+        13,
+        2,
+        0,
+        8,
+        4,
+        2,
+        6,
+        2,
+        2,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 18,
+        "peak_total_relator_length": 13,
+        "work": 148,
+        "certificate_hash": "sha256:2819897d6092df5d10dbfcf2862ae7b6b6a6d36374b782666d4eab1ef72b5ea1"
+      },
+      "sources_with_same_selected_path": [
+        "conjugation_frames/v2",
+        "fragment_selection/fixed-graph DP",
+        "goal_suffix/final",
+        "original official published certificate",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 18,
+      "selected_length": 18
+    },
+    {
+      "challenge_id": "sac-train-0235",
+      "moves": [
+        0,
+        9,
+        4,
+        1,
+        8,
+        2,
+        9,
+        9,
+        1,
+        2,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 12,
+        "peak_total_relator_length": 15,
+        "work": 90,
+        "certificate_hash": "sha256:a071ef868b41c85cf36ec5ace20715b7c2a3eab2f05c5a6c47bcfe7bcad6d220"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 17,
+      "selected_length": 12
+    },
+    {
+      "challenge_id": "sac-train-0258",
+      "moves": [
+        9,
+        11,
+        1,
+        4,
+        8,
+        10,
+        2,
+        0,
+        6,
+        4,
+        2,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 13,
+        "work": 97,
+        "certificate_hash": "sha256:7a3d78e84af061f410d4c2a2c2d77246d4307cf5acfd1855f6d913adb0ab8656"
+      },
+      "sources_with_same_selected_path": [
+        "conjugation_frames/v2",
+        "fragment_selection/fixed-graph DP",
+        "goal_suffix/final",
+        "original official published certificate",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 13,
+      "selected_length": 13
+    },
+    {
+      "challenge_id": "sac-train-0281",
+      "moves": [
+        6,
+        4,
+        11,
+        13,
+        2,
+        9,
+        9,
+        0,
+        2,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 11,
+        "peak_total_relator_length": 15,
+        "work": 81,
+        "certificate_hash": "sha256:83d42b89898012a355f079a429ed2eb73522073bed58fd06e436a52d755baef1"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP"
+      ],
+      "candidate_count": 3,
+      "original_length": 16,
+      "selected_length": 11
+    },
+    {
+      "challenge_id": "sac-train-0286",
+      "moves": [
+        9,
+        11,
+        13,
+        4,
+        13,
+        8,
+        4,
+        1,
+        9,
+        2,
+        8,
+        0,
+        4,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 15,
+        "peak_total_relator_length": 13,
+        "work": 119,
+        "certificate_hash": "sha256:92f9e80fd884c7fcaa7032f2deeac52bd3c0d36b44113dd819ec023e0a883893"
+      },
+      "sources_with_same_selected_path": [
+        "conjugation_frames/v2",
+        "fragment_selection/fixed-graph DP",
+        "goal_suffix/final",
+        "original official published certificate",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 15,
+      "selected_length": 15
+    },
+    {
+      "challenge_id": "sac-train-0373",
+      "moves": [
+        11,
+        4,
+        6,
+        11,
+        2,
+        5,
+        11,
+        5,
+        6,
+        4,
+        2,
+        16,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 13,
+        "work": 101,
+        "certificate_hash": "sha256:2018f654f0a5acc9436c71b5ac9907470f205aacb95c430e731092d3207eedae"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "symbolic_rules/sym-dev-001"
+      ],
+      "candidate_count": 6,
+      "original_length": 15,
+      "selected_length": 13
+    },
+    {
+      "challenge_id": "sac-train-0379",
+      "moves": [
+        6,
+        4,
+        11,
+        4,
+        11,
+        2,
+        9,
+        0,
+        2,
+        4,
+        15,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 12,
+        "peak_total_relator_length": 13,
+        "work": 87,
+        "certificate_hash": "sha256:cafe3e11171e21cc595114671017d7a3172085e36571b12073fb831c2b71712d"
+      },
+      "sources_with_same_selected_path": [
+        "fragment_selection/fixed-graph DP",
+        "previous verified baseline"
+      ],
+      "candidate_count": 5,
+      "original_length": 17,
+      "selected_length": 12
+    },
+    {
+      "challenge_id": "sac-train-0380",
+      "moves": [
+        6,
+        4,
+        11,
+        2,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        16,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 13,
+        "peak_total_relator_length": 13,
+        "work": 74,
+        "certificate_hash": "sha256:57069700cfa3b9fb8b899f5593842d4344b88768f90745ad2b23e498ff32d747"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 8,
+      "original_length": 16,
+      "selected_length": 13
+    },
+    {
+      "challenge_id": "sac-train-0389",
+      "moves": [
+        6,
+        4,
+        2,
+        0,
+        6,
+        2,
+        0,
+        4,
+        4,
+        16,
+        0,
+        15
+      ],
+      "verdict": {
+        "ok": true,
+        "length": 12,
+        "peak_total_relator_length": 13,
+        "work": 64,
+        "certificate_hash": "sha256:557e22e6685e45ffb0cde2f87b3e299e022f9668d2c8c57ab602e5f95c064b92"
+      },
+      "sources_with_same_selected_path": [
+        "goal_suffix/final"
+      ],
+      "candidate_count": 3,
+      "original_length": 15,
+      "selected_length": 12
+    }
+  ],
+  "summary": {
+    "cases": 29,
+    "original_total_length": 465,
+    "selected_total_length": 387,
+    "improved_cases": 22
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "word_max_length": 4,
+  "word_count": 161,
+  "pair_count": 25921,
+  "symbolic_operations": {
+    "resource_exhaustive": 155526
+  },
+  "symbolic_operations_total": 155526,
+  "bad_work_count": 0,
+  "bad_peak_count": 568,
+  "minimum_work_saving": 0,
+  "first_peak_counterexample": [
+    [
+      [
+        1
+      ],
+      [
+        2,
+        -1
+      ],
+      4,
+      5,
+      [
+        [
+          [
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        [
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ],
+        [
+          [
+            1,
+            2
+          ],
+          [
+            2
+          ]
+        ],
+        [
+          [
+            1,
+            2
+          ],
+          [
+            -1
+          ]
+        ],
+        [
+          [
+            1,
+            2,
+            -1
+          ],
+          [
+            -1
+          ]
+        ]
+      ],
+      [
+        [
+          [
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        [
+          [
+            1,
+            2,
+            -1
+          ],
+          [
+            2,
+            -1
+          ]
+        ],
+        [
+          [
+            1,
+            2,
+            -1
+          ],
+          [
+            -1
+          ]
+        ]
+      ]
+    ]
+  ]
+}

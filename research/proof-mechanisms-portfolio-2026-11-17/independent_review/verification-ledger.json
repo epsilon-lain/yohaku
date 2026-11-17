@@ -1,0 +1,645 @@
+{
+  "official_apply_cap": 15000,
+  "official_apply": 4210,
+  "own_apply": 2105,
+  "official_verify": 138,
+  "runs": [
+    {
+      "started_at": "2026-11-17T11:31:17.975702+00:00",
+      "input": "proof_mechanisms_portfolio_20261117/independent_review/goal-suffix-input.json",
+      "input_sha256": "518e0ed28e17cd97f43ef652bf7732341c50748eb2e0d568e70301b71a75e13a",
+      "code_sha256": "3b75aa5f1ba38557502618f9b1c54ce74809415246b441a70357accd8e05dff2",
+      "interpreter_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+      "planned_official_apply": 92,
+      "counts": {
+        "official_apply": 92,
+        "own_apply": 46,
+        "official_verify": 4
+      },
+      "status": "passed",
+      "completed_routes": [
+        {
+          "case_id": "ms-train-0015",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0160",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0160",
+          "label": "goal_suffix_final"
+        }
+      ],
+      "ended_at": "2026-11-17T11:31:17.976298+00:00"
+    },
+    {
+      "started_at": "2026-11-17T11:32:04.154460+00:00",
+      "input": "proof_mechanisms_portfolio_20261117/independent_review/goal-suffix-other-improvements-input.json",
+      "input_sha256": "310d8b514a36fea796dba1aff544b0a060c0709e544c9290382c2465b54dea22",
+      "code_sha256": "3b75aa5f1ba38557502618f9b1c54ce74809415246b441a70357accd8e05dff2",
+      "interpreter_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+      "planned_official_apply": 1204,
+      "counts": {
+        "official_apply": 1204,
+        "own_apply": 602,
+        "official_verify": 38
+      },
+      "status": "passed",
+      "completed_routes": [
+        {
+          "case_id": "ms-train-0009",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0009",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0013",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0013",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0014",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0014",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0031",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0031",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0033",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0033",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0062",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0062",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0081",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0081",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0099",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0099",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0235",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0235",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0379",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0379",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0389",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0389",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0026",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0026",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0094",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0094",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0113",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0113",
+          "label": "goal_suffix_final"
+        },
+        {
+          "case_id": "ms-train-0281",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0281",
+          "label": "goal_suffix_final"
+        }
+      ],
+      "ended_at": "2026-11-17T11:32:04.159817+00:00"
+    },
+    {
+      "started_at": "2026-11-17T11:35:05.815385+00:00",
+      "input": "proof_mechanisms_portfolio_20261117/independent_review/symbolic-input.json",
+      "input_sha256": "aabc92ec40b4a1dd5dc507ee358a3328f5c5bdff377ff720ba9eb70e70feae77",
+      "code_sha256": "3b75aa5f1ba38557502618f9b1c54ce74809415246b441a70357accd8e05dff2",
+      "interpreter_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+      "planned_official_apply": 728,
+      "counts": {
+        "official_apply": 728,
+        "own_apply": 364,
+        "official_verify": 23
+      },
+      "status": "passed",
+      "completed_routes": [
+        {
+          "case_id": "ms-train-0373",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0373",
+          "label": "sym-dev-001:5"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "sym-dev-002:4"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "sym-dev-003:4"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "sym-dev-006:3"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "sym-dev-004:10"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "sym-dev-005:6"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "sym-dev-010:5"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "sym-dev-011:5"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "sym-dev-007:12"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "sym-dev-008:12"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "sym-dev-009:11"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "sym-dev-007:13"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "sym-dev-008:13"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "sym-dev-009:12"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "sym-dev-007:9"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "sym-dev-008:9"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "sym-dev-009:8"
+        }
+      ],
+      "ended_at": "2026-11-17T11:35:05.819208+00:00"
+    },
+    {
+      "started_at": "2026-11-17T11:38:10.916365+00:00",
+      "input": "proof_mechanisms_portfolio_20261117/independent_review/fragment-input.json",
+      "input_sha256": "d79268daa441e158ea295124c6ba6ee0be9de3904a6b06f0fb4cfba915ae1db0",
+      "code_sha256": "3b75aa5f1ba38557502618f9b1c54ce74809415246b441a70357accd8e05dff2",
+      "interpreter_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+      "planned_official_apply": 1404,
+      "counts": {
+        "official_apply": 1404,
+        "own_apply": 702,
+        "official_verify": 47
+      },
+      "status": "passed",
+      "completed_routes": [
+        {
+          "case_id": "ms-train-0009",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0009",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0013",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0013",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0014",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0014",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0031",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0031",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0033",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0062",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0081",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0081",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0099",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0160",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0231",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0235",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0235",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0258",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0286",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0373",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0373",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0379",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0379",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "sac-07445",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0164",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0389",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0389",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0026",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0026",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0204",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0117",
+          "label": "original_equal_greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0094",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0094",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0113",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0113",
+          "label": "greedy_equal_dp"
+        },
+        {
+          "case_id": "ms-train-0281",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0281",
+          "label": "greedy_equal_dp"
+        }
+      ],
+      "ended_at": "2026-11-17T11:38:10.922910+00:00"
+    },
+    {
+      "started_at": "2026-11-17T11:38:42.324859+00:00",
+      "input": "proof_mechanisms_portfolio_20261117/independent_review/frames-input.json",
+      "input_sha256": "64d59d55c8ef552788134099b182f02c638dbc6d4eb5764265a39b56069b6a02",
+      "code_sha256": "3b75aa5f1ba38557502618f9b1c54ce74809415246b441a70357accd8e05dff2",
+      "interpreter_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+      "planned_official_apply": 782,
+      "counts": {
+        "official_apply": 782,
+        "own_apply": 391,
+        "official_verify": 26
+      },
+      "status": "passed",
+      "completed_routes": [
+        {
+          "case_id": "ms-train-0009",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0013",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0014",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0015",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0031",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0033",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0062",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0081",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0099",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0108",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0160",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0201",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "original"
+        },
+        {
+          "case_id": "ms-train-0218",
+          "label": "frames_v2_final"
+        },
+        {
+          "case_id": "ms-train-0231",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0235",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0258",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0286",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0373",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0379",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "ms-train-0380",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "sac-07445",
+          "label": "original_equal_frames_final"
+        },
+        {
+          "case_id": "synthetic-complete-stable",
+          "label": "old"
+        },
+        {
+          "case_id": "synthetic-complete-stable",
+          "label": "new"
+        },
+        {
+          "case_id": "synthetic-interleaved-frame-complete",
+          "label": "old"
+        },
+        {
+          "case_id": "synthetic-interleaved-frame-complete",
+          "label": "new"
+        }
+      ],
+      "ended_at": "2026-11-17T11:38:42.328752+00:00"
+    }
+  ]
+}

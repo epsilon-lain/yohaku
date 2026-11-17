@@ -1,0 +1,1299 @@
+[
+  {
+    "rule_id": "sym-dev-001",
+    "training_id": "ms-train-0373",
+    "start": 5,
+    "end_exclusive": 10,
+    "challenge": {
+      "challenge_id": "sac-train-0373",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          2,
+          -1,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      11,
+      4,
+      6,
+      11,
+      2,
+      0,
+      4,
+      11,
+      4,
+      0,
+      6,
+      4,
+      2,
+      16,
+      15
+    ],
+    "moves": [
+      11,
+      4,
+      6,
+      11,
+      2,
+      5,
+      11,
+      5,
+      6,
+      4,
+      2,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 13,
+      "work": 101,
+      "certificate_hash": "sha256:2018f654f0a5acc9436c71b5ac9907470f205aacb95c430e731092d3207eedae"
+    }
+  },
+  {
+    "rule_id": "sym-dev-002",
+    "training_id": "ms-train-0015",
+    "start": 4,
+    "end_exclusive": 8,
+    "challenge": {
+      "challenge_id": "sac-train-0015",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      0,
+      4,
+      1,
+      2,
+      0,
+      9,
+      4,
+      0,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "moves": [
+      0,
+      4,
+      1,
+      2,
+      9,
+      5,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 8,
+      "work": 57,
+      "certificate_hash": "sha256:c16c4a436ec1e5c474b43212791db79002595b6bcd23b56dab0203f54d3676a8"
+    }
+  },
+  {
+    "rule_id": "sym-dev-003",
+    "training_id": "ms-train-0015",
+    "start": 4,
+    "end_exclusive": 9,
+    "challenge": {
+      "challenge_id": "sac-train-0015",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      0,
+      4,
+      1,
+      2,
+      0,
+      9,
+      4,
+      0,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "moves": [
+      0,
+      4,
+      1,
+      2,
+      9,
+      5,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 8,
+      "work": 57,
+      "certificate_hash": "sha256:c16c4a436ec1e5c474b43212791db79002595b6bcd23b56dab0203f54d3676a8"
+    }
+  },
+  {
+    "rule_id": "sym-dev-004",
+    "training_id": "ms-train-0218",
+    "start": 10,
+    "end_exclusive": 15,
+    "challenge": {
+      "challenge_id": "sac-train-0218",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      13,
+      1,
+      9,
+      2,
+      8,
+      1,
+      2,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      13,
+      1,
+      9,
+      2,
+      8,
+      5,
+      2,
+      0,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 16,
+      "peak_total_relator_length": 13,
+      "work": 110,
+      "certificate_hash": "sha256:d48ce5fd24b0a773623262954ef46305452646c8a4fed353906d908b08e33e4f"
+    }
+  },
+  {
+    "rule_id": "sym-dev-005",
+    "training_id": "ms-train-0218",
+    "start": 6,
+    "end_exclusive": 11,
+    "challenge": {
+      "challenge_id": "sac-train-0218",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      13,
+      1,
+      9,
+      2,
+      8,
+      1,
+      2,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      13,
+      9,
+      3,
+      8,
+      2,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 16,
+      "peak_total_relator_length": 13,
+      "work": 105,
+      "certificate_hash": "sha256:bb6eec1c56a3b71d66b9c99a18f4df3b5c52dd82bcc968793d2795b25fa742f6"
+    }
+  },
+  {
+    "rule_id": "sym-dev-006",
+    "training_id": "ms-train-0015",
+    "start": 3,
+    "end_exclusive": 8,
+    "challenge": {
+      "challenge_id": "sac-train-0015",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      0,
+      4,
+      1,
+      2,
+      0,
+      9,
+      4,
+      0,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "moves": [
+      0,
+      4,
+      1,
+      2,
+      9,
+      5,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 8,
+      "work": 57,
+      "certificate_hash": "sha256:c16c4a436ec1e5c474b43212791db79002595b6bcd23b56dab0203f54d3676a8"
+    }
+  },
+  {
+    "rule_id": "sym-dev-007",
+    "training_id": "ms-train-0108",
+    "start": 12,
+    "end_exclusive": 16,
+    "challenge": {
+      "challenge_id": "sac-train-0108",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 17,
+      "peak_total_relator_length": 21,
+      "work": 147,
+      "certificate_hash": "sha256:fc2ff791b33d5a8fb67c12bdcba603b65ce1b8355584f51600b3e66920043eea"
+    }
+  },
+  {
+    "rule_id": "sym-dev-007",
+    "training_id": "ms-train-0201",
+    "start": 13,
+    "end_exclusive": 17,
+    "challenge": {
+      "challenge_id": "sac-train-0201",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 18,
+      "peak_total_relator_length": 24,
+      "work": 172,
+      "certificate_hash": "sha256:1c089bb908efd4d7100285b4b2a994ea101c32f2b762955281a8f4dd280ba16e"
+    }
+  },
+  {
+    "rule_id": "sym-dev-007",
+    "training_id": "ms-train-0380",
+    "start": 9,
+    "end_exclusive": 13,
+    "challenge": {
+      "challenge_id": "sac-train-0380",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      4,
+      11,
+      2,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      4,
+      11,
+      2,
+      0,
+      6,
+      2,
+      0,
+      4,
+      2,
+      5,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 14,
+      "peak_total_relator_length": 13,
+      "work": 82,
+      "certificate_hash": "sha256:3a30475a8149f87bf712b6af645fb394fac0ef333c83a8822816aa8c8a1a4fc7"
+    }
+  },
+  {
+    "rule_id": "sym-dev-008",
+    "training_id": "ms-train-0108",
+    "start": 12,
+    "end_exclusive": 17,
+    "challenge": {
+      "challenge_id": "sac-train-0108",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 17,
+      "peak_total_relator_length": 21,
+      "work": 147,
+      "certificate_hash": "sha256:fc2ff791b33d5a8fb67c12bdcba603b65ce1b8355584f51600b3e66920043eea"
+    }
+  },
+  {
+    "rule_id": "sym-dev-008",
+    "training_id": "ms-train-0201",
+    "start": 13,
+    "end_exclusive": 18,
+    "challenge": {
+      "challenge_id": "sac-train-0201",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 18,
+      "peak_total_relator_length": 24,
+      "work": 172,
+      "certificate_hash": "sha256:1c089bb908efd4d7100285b4b2a994ea101c32f2b762955281a8f4dd280ba16e"
+    }
+  },
+  {
+    "rule_id": "sym-dev-008",
+    "training_id": "ms-train-0380",
+    "start": 9,
+    "end_exclusive": 14,
+    "challenge": {
+      "challenge_id": "sac-train-0380",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      4,
+      11,
+      2,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      4,
+      11,
+      2,
+      0,
+      6,
+      2,
+      0,
+      4,
+      2,
+      5,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 14,
+      "peak_total_relator_length": 13,
+      "work": 82,
+      "certificate_hash": "sha256:3a30475a8149f87bf712b6af645fb394fac0ef333c83a8822816aa8c8a1a4fc7"
+    }
+  },
+  {
+    "rule_id": "sym-dev-009",
+    "training_id": "ms-train-0108",
+    "start": 11,
+    "end_exclusive": 16,
+    "challenge": {
+      "challenge_id": "sac-train-0108",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      2,
+      5,
+      3,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 17,
+      "peak_total_relator_length": 21,
+      "work": 151,
+      "certificate_hash": "sha256:ff0941fd0cc4ed763777d858be48ca669dcce2e6ee2b4a13aaa1f6d5a6894799"
+    }
+  },
+  {
+    "rule_id": "sym-dev-009",
+    "training_id": "ms-train-0201",
+    "start": 12,
+    "end_exclusive": 17,
+    "challenge": {
+      "challenge_id": "sac-train-0201",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      4,
+      4,
+      2,
+      5,
+      3,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 18,
+      "peak_total_relator_length": 24,
+      "work": 176,
+      "certificate_hash": "sha256:eb8d70374bc17cbfee76ebcca47bcf458fe66939dc9e6078e025a171ca8bad1d"
+    }
+  },
+  {
+    "rule_id": "sym-dev-009",
+    "training_id": "ms-train-0380",
+    "start": 8,
+    "end_exclusive": 13,
+    "challenge": {
+      "challenge_id": "sac-train-0380",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      6,
+      4,
+      11,
+      2,
+      0,
+      6,
+      2,
+      0,
+      4,
+      4,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      6,
+      4,
+      11,
+      2,
+      0,
+      6,
+      2,
+      0,
+      2,
+      5,
+      3,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 14,
+      "peak_total_relator_length": 13,
+      "work": 86,
+      "certificate_hash": "sha256:41020247c1b46b108d414304ee39346f91ca950c5ab1f2fef04c47ab06b8a45a"
+    }
+  },
+  {
+    "rule_id": "sym-dev-010",
+    "training_id": "ms-train-0218",
+    "start": 5,
+    "end_exclusive": 10,
+    "challenge": {
+      "challenge_id": "sac-train-0218",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      13,
+      1,
+      9,
+      2,
+      8,
+      1,
+      2,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      1,
+      2,
+      13,
+      1,
+      2,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 16,
+      "peak_total_relator_length": 13,
+      "work": 104,
+      "certificate_hash": "sha256:6f75ed05c901d3b6d0c10c5aab5ee214a7daa5607400b61e91d9da754e265df7"
+    }
+  },
+  {
+    "rule_id": "sym-dev-011",
+    "training_id": "ms-train-0218",
+    "start": 5,
+    "end_exclusive": 11,
+    "challenge": {
+      "challenge_id": "sac-train-0218",
+      "move_spec_version": "sac-r8-v1",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -1,
+          -2
+        ]
+      ],
+      "target_relators": []
+    },
+    "original_moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      13,
+      1,
+      9,
+      2,
+      8,
+      1,
+      2,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "moves": [
+      9,
+      11,
+      13,
+      4,
+      13,
+      3,
+      13,
+      2,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 14,
+      "peak_total_relator_length": 13,
+      "work": 93,
+      "certificate_hash": "sha256:778d1ba9a03d4077fb7e054aa35b72dd33af4f8109c1c7ebe3d6a9e0e5975d8a"
+    }
+  }
+]

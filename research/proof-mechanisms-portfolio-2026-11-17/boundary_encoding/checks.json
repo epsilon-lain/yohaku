@@ -1,0 +1,727 @@
+{
+  "artifact_source_sha256": {
+    "METHOD-LOG.md": "5d7996d59957c6ca86f2e7394d6605e11f7f8dabcf5912f2fbc0f123f9ce3070",
+    "README.md": "4850bca2b4a9ef3ec206f6451db467fb1f10bed7a032bc92b154dee688f00d30",
+    "check.py": "c4d3ea3c547eaff163facfc70572eb305ba8243d1a4902bf56d9867fc6f38e90"
+  },
+  "cost_model": {
+    "explicit_unary_negations_used": 0,
+    "index_loop_control_validation_and_test_harness": "not data-arithmetic units; no CPU timing claim",
+    "input_is_retained": true,
+    "input_scalar_copies_each_algorithm": "n",
+    "output_array_cells_each_algorithm": "n",
+    "output_scalar_copies_each_algorithm": "n",
+    "unary_negation_as_0_minus_value": 1,
+    "unit_data_addition": 1,
+    "unit_data_subtraction": 1,
+    "working_array_cells_each_algorithm": "n"
+  },
+  "deleted_boundary_counterexample": {
+    "additional_full_algorithm_cases": 2,
+    "different_outputs_after_same_operations": [
+      [
+        0,
+        0,
+        -1
+      ],
+      [
+        5,
+        5,
+        4
+      ]
+    ],
+    "equal_interior_differences": [
+      1,
+      -1
+    ],
+    "initial_arrays": [
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        5,
+        6,
+        5
+      ]
+    ],
+    "no_update_outputs": [
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        5,
+        6,
+        5
+      ]
+    ],
+    "same_nonempty_operations": [
+      [
+        1,
+        2,
+        -1
+      ]
+    ]
+  },
+  "exhaustive": {
+    "aggregate_data_arithmetic": {
+      "boundary_encoded": 341724,
+      "elementwise": 147306
+    },
+    "by_n": [
+      {
+        "cases": 21,
+        "initial_arrays": 3,
+        "n": 1,
+        "operation_alphabet_size": 2,
+        "operation_sequences_per_array": 7
+      },
+      {
+        "cases": 387,
+        "initial_arrays": 9,
+        "n": 2,
+        "operation_alphabet_size": 6,
+        "operation_sequences_per_array": 43
+      },
+      {
+        "cases": 4239,
+        "initial_arrays": 27,
+        "n": 3,
+        "operation_alphabet_size": 12,
+        "operation_sequences_per_array": 157
+      },
+      {
+        "cases": 34101,
+        "initial_arrays": 81,
+        "n": 4,
+        "operation_alphabet_size": 20,
+        "operation_sequences_per_array": 421
+      }
+    ],
+    "cases": 38748,
+    "maximum_observed_signed_width": {
+      "boundary_encoded": 4,
+      "elementwise": 3
+    },
+    "ordered_inputs_outputs_and_ledgers_sha256": "a9fac6cc5a908241ded46baf7a981bbaefa020fd28ffdbecaf91bd647f56eedd",
+    "outcomes": {
+      "strict_loss": 38259,
+      "strict_saving": 0,
+      "tie": 489
+    },
+    "scope": "all n=1..4, all a coordinates in {-1,0,1}, every ordered sequence of 0,1,2 inclusive-interval +/-1 updates"
+  },
+  "format": "reversible-boundary-encoding-v1",
+  "formula": {
+    "K": "number of updates with right<n-1",
+    "S": "sum of inclusive interval lengths",
+    "boundary_encoded": "2(n-1)+Q+K",
+    "elementwise": "S",
+    "strict_saving_iff": "S>2(n-1)+Q+K"
+  },
+  "named_cases": [
+    {
+      "K": 0,
+      "Q": 1,
+      "S": 6,
+      "arithmetic_saving": -5,
+      "boundary_encoded": {
+        "additions": 6,
+        "arithmetic_plus_copies_total": 23,
+        "arithmetic_result_stores_already_included_in_arithmetic": 11,
+        "data_arithmetic_total": 11,
+        "input_scalar_copies": 6,
+        "maximum_absolute_integer": 3,
+        "maximum_signed_width": 3,
+        "output_scalar_copies": 6,
+        "subtractions": 5,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 6,
+        "arithmetic_plus_copies_total": 18,
+        "arithmetic_result_stores_already_included_in_arithmetic": 6,
+        "data_arithmetic_total": 6,
+        "input_scalar_copies": 6,
+        "maximum_absolute_integer": 3,
+        "maximum_signed_width": 3,
+        "output_scalar_copies": 6,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "initial_array": [
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "input_formula": "a_i=i-3; b_i=i-2",
+      "input_sha256": "ecb8d97714e8dc37666e08ce111a49762995d15f6e288ec1ada45687f181e28b",
+      "n": 6,
+      "name": "full_range_Q1_loss",
+      "operations": [
+        [
+          0,
+          5,
+          1
+        ]
+      ],
+      "output": [
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3
+      ],
+      "output_sha256": "93459f5ceff84f8631373cc341e3255a025e0c659e466ef3d0712eb6ccbeb763"
+    },
+    {
+      "K": 0,
+      "Q": 2,
+      "S": 12,
+      "arithmetic_saving": 0,
+      "boundary_encoded": {
+        "additions": 7,
+        "arithmetic_plus_copies_total": 24,
+        "arithmetic_result_stores_already_included_in_arithmetic": 12,
+        "data_arithmetic_total": 12,
+        "input_scalar_copies": 6,
+        "maximum_absolute_integer": 4,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 6,
+        "subtractions": 5,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 12,
+        "arithmetic_plus_copies_total": 24,
+        "arithmetic_result_stores_already_included_in_arithmetic": 12,
+        "data_arithmetic_total": 12,
+        "input_scalar_copies": 6,
+        "maximum_absolute_integer": 4,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 6,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "initial_array": [
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "input_formula": "a_i=i-3; b_i=i-1",
+      "input_sha256": "0c58d1d8636ac52d3d707e258079cf6a39f4bbc4ba1d94544e6ee7e6daeb962f",
+      "n": 6,
+      "name": "full_range_Q2_tie",
+      "operations": [
+        [
+          0,
+          5,
+          1
+        ],
+        [
+          0,
+          5,
+          1
+        ]
+      ],
+      "output": [
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "output_sha256": "cc9ba2ba498bb1ed6169437b131be67fa7bc8662f013d47565f35cc907eabb3e"
+    },
+    {
+      "K": 0,
+      "Q": 3,
+      "S": 18,
+      "arithmetic_saving": 5,
+      "boundary_encoded": {
+        "additions": 8,
+        "arithmetic_plus_copies_total": 25,
+        "arithmetic_result_stores_already_included_in_arithmetic": 13,
+        "data_arithmetic_total": 13,
+        "input_scalar_copies": 6,
+        "maximum_absolute_integer": 5,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 6,
+        "subtractions": 5,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 18,
+        "arithmetic_plus_copies_total": 30,
+        "arithmetic_result_stores_already_included_in_arithmetic": 18,
+        "data_arithmetic_total": 18,
+        "input_scalar_copies": 6,
+        "maximum_absolute_integer": 5,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 6,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "initial_array": [
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "input_formula": "a_i=i-3; b_i=i",
+      "input_sha256": "6e6853769c348b0f98f35eb8de0913034ebe2d72a1ec2333b9d53b34acc5b191",
+      "n": 6,
+      "name": "full_range_Q3_saving",
+      "operations": [
+        [
+          0,
+          5,
+          1
+        ],
+        [
+          0,
+          5,
+          1
+        ],
+        [
+          0,
+          5,
+          1
+        ]
+      ],
+      "output": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "output_sha256": "4e098021cf9ec15699efd082b803811ec67394af4b3ea324e86edbccc3cbeac3"
+    },
+    {
+      "K": 0,
+      "Q": 4,
+      "S": 10,
+      "arithmetic_saving": 0,
+      "boundary_encoded": {
+        "additions": 7,
+        "arithmetic_plus_copies_total": 18,
+        "arithmetic_result_stores_already_included_in_arithmetic": 10,
+        "data_arithmetic_total": 10,
+        "input_scalar_copies": 4,
+        "maximum_absolute_integer": 5,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 4,
+        "subtractions": 3,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 10,
+        "arithmetic_plus_copies_total": 18,
+        "arithmetic_result_stores_already_included_in_arithmetic": 10,
+        "data_arithmetic_total": 10,
+        "input_scalar_copies": 4,
+        "maximum_absolute_integer": 5,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 4,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "initial_array": [
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "input_formula": "a_i=i-2; b_i=2i-1",
+      "input_sha256": "edbc84c6711ab38496bd0da2b15a12a1bae7a743b84294d1b13cf20ef4227bd5",
+      "n": 4,
+      "name": "suffix_family_n4_tie",
+      "operations": [
+        [
+          0,
+          3,
+          1
+        ],
+        [
+          1,
+          3,
+          1
+        ],
+        [
+          2,
+          3,
+          1
+        ],
+        [
+          3,
+          3,
+          1
+        ]
+      ],
+      "output": [
+        -1,
+        1,
+        3,
+        5
+      ],
+      "output_sha256": "602917a12716830aade7d859d2898c5d82d2a2a19487da40a6f3cf1fb58025ba"
+    },
+    {
+      "K": 0,
+      "Q": 5,
+      "S": 15,
+      "arithmetic_saving": 2,
+      "boundary_encoded": {
+        "additions": 9,
+        "arithmetic_plus_copies_total": 23,
+        "arithmetic_result_stores_already_included_in_arithmetic": 13,
+        "data_arithmetic_total": 13,
+        "input_scalar_copies": 5,
+        "maximum_absolute_integer": 7,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 5,
+        "subtractions": 4,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 15,
+        "arithmetic_plus_copies_total": 25,
+        "arithmetic_result_stores_already_included_in_arithmetic": 15,
+        "data_arithmetic_total": 15,
+        "input_scalar_copies": 5,
+        "maximum_absolute_integer": 7,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 5,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "initial_array": [
+        -2,
+        -1,
+        0,
+        1,
+        2
+      ],
+      "input_formula": "a_i=i-2; b_i=2i-1",
+      "input_sha256": "f9cdb3f4477e07800500fb0786a9300407dede3d7129f0542640c613536819b2",
+      "n": 5,
+      "name": "suffix_family_n5_saving",
+      "operations": [
+        [
+          0,
+          4,
+          1
+        ],
+        [
+          1,
+          4,
+          1
+        ],
+        [
+          2,
+          4,
+          1
+        ],
+        [
+          3,
+          4,
+          1
+        ],
+        [
+          4,
+          4,
+          1
+        ]
+      ],
+      "output": [
+        -1,
+        1,
+        3,
+        5,
+        7
+      ],
+      "output_sha256": "a8d57349e67f4aa20964acb45ad9ec77502bfb273f7cd72d31a21f432e230411"
+    },
+    {
+      "K": 0,
+      "Q": 200,
+      "S": 200000,
+      "arithmetic_saving": 197802,
+      "boundary_encoded": {
+        "additions": 1199,
+        "arithmetic_plus_copies_total": 4198,
+        "arithmetic_result_stores_already_included_in_arithmetic": 2198,
+        "data_arithmetic_total": 2198,
+        "input_scalar_copies": 1000,
+        "maximum_absolute_integer": 699,
+        "maximum_signed_width": 11,
+        "output_scalar_copies": 1000,
+        "subtractions": 999,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 200000,
+        "arithmetic_plus_copies_total": 202000,
+        "arithmetic_result_stores_already_included_in_arithmetic": 200000,
+        "data_arithmetic_total": 200000,
+        "input_scalar_copies": 1000,
+        "maximum_absolute_integer": 699,
+        "maximum_signed_width": 11,
+        "output_scalar_copies": 1000,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "input_formula": "a_i=i-500; b_i=i-300",
+      "input_sha256": "27e4d6929072559a4618bb2e8a568daf615d90a58d178dd1551e048a2daf2fda",
+      "n": 1000,
+      "name": "large_full_range_saving",
+      "operation_specification": "200 repetitions of (0,999,+1)",
+      "output_first_5": [
+        -300,
+        -299,
+        -298,
+        -297,
+        -296
+      ],
+      "output_last_5": [
+        695,
+        696,
+        697,
+        698,
+        699
+      ],
+      "output_sha256": "226a259c46d14008a10e6f27c22d4f3d335055bc40e980e891f32dd0e9ded0f2"
+    },
+    {
+      "K": 200,
+      "Q": 200,
+      "S": 200,
+      "arithmetic_saving": -2198,
+      "boundary_encoded": {
+        "additions": 1199,
+        "arithmetic_plus_copies_total": 4398,
+        "arithmetic_result_stores_already_included_in_arithmetic": 2398,
+        "data_arithmetic_total": 2398,
+        "input_scalar_copies": 1000,
+        "maximum_absolute_integer": 500,
+        "maximum_signed_width": 10,
+        "output_scalar_copies": 1000,
+        "subtractions": 1199,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 200,
+        "arithmetic_plus_copies_total": 2200,
+        "arithmetic_result_stores_already_included_in_arithmetic": 200,
+        "data_arithmetic_total": 200,
+        "input_scalar_copies": 1000,
+        "maximum_absolute_integer": 500,
+        "maximum_signed_width": 10,
+        "output_scalar_copies": 1000,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "input_formula": "a_i=i-500; b_500=200 and b_i=a_i otherwise",
+      "input_sha256": "5858328c3c894c54e3d277b475c94d6a6332f8b9fe03c330a91c97a323891bb9",
+      "n": 1000,
+      "name": "large_point_updates_loss",
+      "operation_specification": "200 repetitions of (500,500,+1)",
+      "output_first_5": [
+        -500,
+        -499,
+        -498,
+        -497,
+        -496
+      ],
+      "output_last_5": [
+        495,
+        496,
+        497,
+        498,
+        499
+      ],
+      "output_sha256": "36f1f09f2387730586c24295ccd71518b24b058c1b118f8bf95104147399ce3e"
+    },
+    {
+      "K": 0,
+      "Q": 100,
+      "S": 5050,
+      "arithmetic_saving": 4752,
+      "boundary_encoded": {
+        "additions": 199,
+        "arithmetic_plus_copies_total": 498,
+        "arithmetic_result_stores_already_included_in_arithmetic": 298,
+        "data_arithmetic_total": 298,
+        "input_scalar_copies": 100,
+        "maximum_absolute_integer": 149,
+        "maximum_signed_width": 9,
+        "output_scalar_copies": 100,
+        "subtractions": 99,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 5050,
+        "arithmetic_plus_copies_total": 5250,
+        "arithmetic_result_stores_already_included_in_arithmetic": 5050,
+        "data_arithmetic_total": 5050,
+        "input_scalar_copies": 100,
+        "maximum_absolute_integer": 149,
+        "maximum_signed_width": 9,
+        "output_scalar_copies": 100,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "input_formula": "a_i=i-50; b_i=2i-49",
+      "input_sha256": "0f1c1dc105da5136e84f0a6b085a7a428d548e493b8291a33bedc854167b2f1a",
+      "n": 100,
+      "name": "distinct_suffix_saving",
+      "operation_specification": "(j,99,+1) for j=0..99 in increasing order",
+      "output_first_5": [
+        -49,
+        -47,
+        -45,
+        -43,
+        -41
+      ],
+      "output_last_5": [
+        141,
+        143,
+        145,
+        147,
+        149
+      ],
+      "output_sha256": "9a661b7eef5b65928d25d1b9ed75f492680a6449bc94fa93de0ed1229c1da5ce"
+    },
+    {
+      "K": 1,
+      "Q": 2,
+      "S": 4,
+      "arithmetic_saving": -3,
+      "boundary_encoded": {
+        "additions": 4,
+        "arithmetic_plus_copies_total": 13,
+        "arithmetic_result_stores_already_included_in_arithmetic": 7,
+        "data_arithmetic_total": 7,
+        "input_scalar_copies": 3,
+        "maximum_absolute_integer": 1329229263435516101133208556983549952,
+        "maximum_signed_width": 122,
+        "output_scalar_copies": 3,
+        "subtractions": 3,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 4,
+        "arithmetic_plus_copies_total": 10,
+        "arithmetic_result_stores_already_included_in_arithmetic": 4,
+        "data_arithmetic_total": 4,
+        "input_scalar_copies": 3,
+        "maximum_absolute_integer": 1329229263435516101133208556983549952,
+        "maximum_signed_width": 122,
+        "output_scalar_copies": 3,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "initial_array": [
+        1267650600228229401496703205376,
+        -1267650600228229401496703205376,
+        1267650600228229401496703205375
+      ],
+      "input_formula": "explicit input and operations recorded below",
+      "input_sha256": "a915c005cd8e810d680b2e0c3f918bb4495ce83f5ff1d0d82ddaa9bb9c9c7b92",
+      "n": 3,
+      "name": "large_integer_signed_updates",
+      "operations": [
+        [
+          0,
+          1,
+          1329227995784915872903807060280344576
+        ],
+        [
+          1,
+          2,
+          -664613997892457936451903530140172288
+        ]
+      ],
+      "output": [
+        1329229263435516101133208556983549952,
+        664612730241857708222502033436966912,
+        -664612730241857708222502033436966913
+      ],
+      "output_sha256": "9fb4e2ae2e9f3df1d5ee3e63e1be799110ebf7ee56d62898afe939e917c3ee84"
+    },
+    {
+      "K": 0,
+      "Q": 0,
+      "S": 0,
+      "arithmetic_saving": -4,
+      "boundary_encoded": {
+        "additions": 2,
+        "arithmetic_plus_copies_total": 10,
+        "arithmetic_result_stores_already_included_in_arithmetic": 4,
+        "data_arithmetic_total": 4,
+        "input_scalar_copies": 3,
+        "maximum_absolute_integer": 12,
+        "maximum_signed_width": 5,
+        "output_scalar_copies": 3,
+        "subtractions": 2,
+        "unary_negations": 0
+      },
+      "elementwise": {
+        "additions": 0,
+        "arithmetic_plus_copies_total": 6,
+        "arithmetic_result_stores_already_included_in_arithmetic": 0,
+        "data_arithmetic_total": 0,
+        "input_scalar_copies": 3,
+        "maximum_absolute_integer": 7,
+        "maximum_signed_width": 4,
+        "output_scalar_copies": 3,
+        "subtractions": 0,
+        "unary_negations": 0
+      },
+      "initial_array": [
+        7,
+        -5,
+        2
+      ],
+      "input_formula": "b=a; conversion/recovery still charged",
+      "input_sha256": "0c683564c8eea321d556d829113e9ace87e2f9a2d8fca2c753524069d8d20b4c",
+      "n": 3,
+      "name": "empty_update_batch",
+      "operations": [],
+      "output": [
+        7,
+        -5,
+        2
+      ],
+      "output_sha256": "cd1b43c3bff23a3e234e17d862eac01049457c57b62d3411991a42add46611e4"
+    }
+  ],
+  "provenance": {
+    "deterministic": true,
+    "scope": "finite self-check plus algebraic proof; not independent review or CPU benchmark",
+    "stdlib_only": true
+  },
+  "resource_ledger": {
+    "full_algorithm_cases": 38760,
+    "official_AC_search_apply": 0,
+    "official_AC_verification_apply": 0,
+    "official_action_lists_read": 0,
+    "synthetic_case_cap": 200000
+  },
+  "result_payload_sha256": "03ab5a2a83efb356a97d3945289563616f7f2f2a5ddd981ff72a3f07886e9bdd"
+}

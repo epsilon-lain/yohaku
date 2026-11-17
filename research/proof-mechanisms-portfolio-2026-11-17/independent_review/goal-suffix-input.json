@@ -1,0 +1,151 @@
+{
+  "scope": "approved_final_certificates_only",
+  "approval": "goal_suffix lead message after freeze and test execution; originals and finals of development0015/0160",
+  "source_artifacts": [
+    {
+      "path": "goal_suffix/development-results.json"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "ms-train-0015",
+      "challenge": {
+        "challenge_id": "sac-train-0015",
+        "source_training_id": "ms-train-0015",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            -2,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            0,
+            9,
+            4,
+            0,
+            2,
+            7,
+            2,
+            0,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 15,
+            "work": 66,
+            "peak_total_relator_length": 8
+          }
+        },
+        {
+          "label": "goal_suffix_final",
+          "moves": [
+            0,
+            4,
+            1,
+            2,
+            0,
+            9,
+            4,
+            0,
+            2,
+            0,
+            3,
+            15,
+            0,
+            15
+          ],
+          "expected_metrics": {
+            "length": 14,
+            "work": 63,
+            "peak_total_relator_length": 8
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "ms-train-0160",
+      "challenge": {
+        "challenge_id": "sac-train-0160",
+        "source_training_id": "ms-train-0160",
+        "initial_relators": [
+          [
+            -1,
+            2,
+            1,
+            -2,
+            -2
+          ],
+          [
+            1,
+            2,
+            1,
+            2,
+            2,
+            -1,
+            -2
+          ]
+        ],
+        "target_relators": [],
+        "move_spec_version": "sac-r8-v1"
+      },
+      "routes": [
+        {
+          "label": "original",
+          "moves": [
+            6,
+            4,
+            2,
+            9,
+            1,
+            4,
+            1,
+            16,
+            15
+          ],
+          "expected_metrics": {
+            "length": 9,
+            "work": 47,
+            "peak_total_relator_length": 12
+          }
+        },
+        {
+          "label": "goal_suffix_final",
+          "moves": [
+            6,
+            4,
+            2,
+            9,
+            11,
+            5,
+            15,
+            15
+          ],
+          "expected_metrics": {
+            "length": 8,
+            "work": 45,
+            "peak_total_relator_length": 12
+          }
+        }
+      ]
+    }
+  ]
+}

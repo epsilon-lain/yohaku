@@ -1,0 +1,187 @@
+{
+  "attempts": [
+    {
+      "command": "synthetic",
+      "started": "2026-11-17T11:31:40.297593+00:00",
+      "script_sha256": "39adba8863da3fe919f09a6aa11fcea3a0cfaa5a53d84d541794f178edf8d795",
+      "rule_sha256": "c903775f783637b0fcc47d390ee30deaf0ac670662ba0204a2ecb31ba8349586",
+      "config_sha256": "8ab0cbd8cfeac9937895a1adf3d9a8e417829a751a78d783b0a8adbde6cebca1",
+      "before": {},
+      "status": "completed",
+      "finished": "2026-11-17T11:31:40.313427+00:00",
+      "after": {
+        "verification_official_apply": 1248,
+        "synthetic_manual_apply": 606,
+        "official_verify_calls": 46,
+        "synthetic_verify_apply": 606,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7
+      },
+      "consumed": {
+        "verification_official_apply": 1248,
+        "synthetic_manual_apply": 606,
+        "official_verify_calls": 46,
+        "synthetic_verify_apply": 606,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7
+      }
+    },
+    {
+      "command": "development",
+      "started": "2026-11-17T11:31:57.380283+00:00",
+      "script_sha256": "39adba8863da3fe919f09a6aa11fcea3a0cfaa5a53d84d541794f178edf8d795",
+      "rule_sha256": "c903775f783637b0fcc47d390ee30deaf0ac670662ba0204a2ecb31ba8349586",
+      "config_sha256": "8ab0cbd8cfeac9937895a1adf3d9a8e417829a751a78d783b0a8adbde6cebca1",
+      "before": {
+        "verification_official_apply": 1248,
+        "synthetic_manual_apply": 606,
+        "official_verify_calls": 46,
+        "synthetic_verify_apply": 606,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7
+      },
+      "status": "completed",
+      "finished": "2026-11-17T11:31:57.599559+00:00",
+      "after": {
+        "verification_official_apply": 1938,
+        "synthetic_manual_apply": 606,
+        "official_verify_calls": 88,
+        "synthetic_verify_apply": 606,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7,
+        "development_original_verify_apply": 345,
+        "search_official_apply": 345,
+        "development_trace_apply": 345,
+        "development_final_verify_apply": 345
+      },
+      "consumed": {
+        "verification_official_apply": 690,
+        "official_verify_calls": 42,
+        "development_original_verify_apply": 345,
+        "search_official_apply": 345,
+        "development_trace_apply": 345,
+        "development_final_verify_apply": 345
+      }
+    },
+    {
+      "command": "v2-synthetic",
+      "started": "2026-11-17T11:35:21.925828+00:00",
+      "script_sha256": "85f323aed502e6c9bc6aba5e793b23f6b3afb535028ded5dcc99c99ef92b3e10",
+      "core_script_sha256": "39adba8863da3fe919f09a6aa11fcea3a0cfaa5a53d84d541794f178edf8d795",
+      "rule_sha256": "3d97fae596c46385fd98ae2b23c18ad66735e6c4b2d56e37382c72b46b4c82eb",
+      "config_sha256": "1e53d574b5ab7c9fb6ee73afb4489e3be53b9f1c81d92804f2afe6c32557ae3c",
+      "before": {
+        "verification_official_apply": 1938,
+        "synthetic_manual_apply": 606,
+        "official_verify_calls": 88,
+        "synthetic_verify_apply": 606,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7,
+        "development_original_verify_apply": 345,
+        "search_official_apply": 345,
+        "development_trace_apply": 345,
+        "development_final_verify_apply": 345
+      },
+      "status": "completed",
+      "finished": "2026-11-17T11:35:21.929161+00:00",
+      "after": {
+        "verification_official_apply": 2189,
+        "synthetic_manual_apply": 730,
+        "official_verify_calls": 118,
+        "synthetic_verify_apply": 730,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7,
+        "development_original_verify_apply": 345,
+        "search_official_apply": 345,
+        "development_trace_apply": 345,
+        "development_final_verify_apply": 345,
+        "v2_guard_manual_apply": 3
+      },
+      "consumed": {
+        "verification_official_apply": 251,
+        "synthetic_manual_apply": 124,
+        "official_verify_calls": 30,
+        "synthetic_verify_apply": 124,
+        "v2_guard_manual_apply": 3
+      }
+    },
+    {
+      "command": "v2-development",
+      "started": "2026-11-17T11:35:25.230856+00:00",
+      "script_sha256": "85f323aed502e6c9bc6aba5e793b23f6b3afb535028ded5dcc99c99ef92b3e10",
+      "core_script_sha256": "39adba8863da3fe919f09a6aa11fcea3a0cfaa5a53d84d541794f178edf8d795",
+      "rule_sha256": "3d97fae596c46385fd98ae2b23c18ad66735e6c4b2d56e37382c72b46b4c82eb",
+      "config_sha256": "1e53d574b5ab7c9fb6ee73afb4489e3be53b9f1c81d92804f2afe6c32557ae3c",
+      "before": {
+        "verification_official_apply": 2189,
+        "synthetic_manual_apply": 730,
+        "official_verify_calls": 118,
+        "synthetic_verify_apply": 730,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7,
+        "development_original_verify_apply": 345,
+        "search_official_apply": 345,
+        "development_trace_apply": 345,
+        "development_final_verify_apply": 345,
+        "v2_guard_manual_apply": 3
+      },
+      "status": "completed",
+      "finished": "2026-11-17T11:35:25.438373+00:00",
+      "after": {
+        "verification_official_apply": 2893,
+        "synthetic_manual_apply": 730,
+        "official_verify_calls": 161,
+        "synthetic_verify_apply": 730,
+        "synthetic_counterexample_apply": 21,
+        "synthetic_resource_manual_apply": 8,
+        "synthetic_resource_verify_apply": 7,
+        "development_original_verify_apply": 345,
+        "search_official_apply": 697,
+        "development_trace_apply": 345,
+        "development_final_verify_apply": 345,
+        "v2_guard_manual_apply": 3,
+        "v2_original_verify_apply": 345,
+        "v2_trace_apply": 345,
+        "v2_final_verify_apply": 343,
+        "v2_candidate_apply": 7,
+        "v2_rewrite_verify_apply": 16
+      },
+      "consumed": {
+        "verification_official_apply": 704,
+        "official_verify_calls": 43,
+        "search_official_apply": 352,
+        "v2_original_verify_apply": 345,
+        "v2_trace_apply": 345,
+        "v2_final_verify_apply": 343,
+        "v2_candidate_apply": 7,
+        "v2_rewrite_verify_apply": 16
+      }
+    }
+  ],
+  "counters": {
+    "verification_official_apply": 2893,
+    "synthetic_manual_apply": 730,
+    "official_verify_calls": 161,
+    "synthetic_verify_apply": 730,
+    "synthetic_counterexample_apply": 21,
+    "synthetic_resource_manual_apply": 8,
+    "synthetic_resource_verify_apply": 7,
+    "development_original_verify_apply": 345,
+    "search_official_apply": 697,
+    "development_trace_apply": 345,
+    "development_final_verify_apply": 345,
+    "v2_guard_manual_apply": 3,
+    "v2_original_verify_apply": 345,
+    "v2_trace_apply": 345,
+    "v2_final_verify_apply": 343,
+    "v2_candidate_apply": 7,
+    "v2_rewrite_verify_apply": 16
+  }
+}

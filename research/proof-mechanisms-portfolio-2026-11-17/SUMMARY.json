@@ -1,0 +1,74 @@
+{
+  "status": "complete",
+  "execution": "cloud shared workspace; no native Yohaku tasks dispatched",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "team_count": 6,
+  "team_costs": {
+    "goal_suffix": {
+      "search": 57442,
+      "verification": 1522
+    },
+    "symbolic_rules": {
+      "search": 0,
+      "verification": 1865
+    },
+    "conjugation_frames": {
+      "search": 697,
+      "verification": 2893
+    },
+    "fragment_selection": {
+      "search": 342096,
+      "verification": 1265
+    },
+    "boundary_encoding": {
+      "search": 0,
+      "verification": 0
+    },
+    "independent_review": {
+      "search": 0,
+      "verification": 4210
+    },
+    "root_acceptance": {
+      "search": 0,
+      "verification": 387
+    }
+  },
+  "official_search_apply": 400235,
+  "official_verification_apply": 12142,
+  "official_total_apply": 412377,
+  "selection": {
+    "cases": 29,
+    "original_total_length": 465,
+    "selected_total_length": 387,
+    "improved_cases": 22
+  },
+  "selected_training_original_total": 450,
+  "selected_training_final_total": 372,
+  "old20_training_final_total": 271,
+  "new8_training_final_total": 101,
+  "prior_round_steps_already_saved": 35,
+  "extra_steps_after_posthoc_selection": 43,
+  "selection_warning": "Selection among complete already verified certificates after all experiments; not a new causal arm. All savings are public training, not scoring improvement.",
+  "scored_incumbent": {
+    "challenge_id": "sac-07445",
+    "length": 15,
+    "work": 128,
+    "improved": false
+  },
+  "frozen_dag": {
+    "cases": 29,
+    "dp_extra_length_wins": 0,
+    "new8_selected_symbolic_edge_uses": 2,
+    "new8_symbolic_edge_steps_saved": 4,
+    "causal_baseline_for_symbolic_increment": false
+  },
+  "independent_review": {
+    "full_route_checks": 138,
+    "unique_certificates": 78,
+    "official_replay_failure_count": 0,
+    "frozen_graph_edges": 731,
+    "symbolic_rules": 11
+  },
+  "native_budget_modified": false,
+  "platform_uploaded": false
+}

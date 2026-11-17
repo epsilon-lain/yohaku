@@ -1,0 +1,61 @@
+{
+  "version": "symbolic-rules-code-freeze-v1",
+  "recorded_at": "2026-11-17T11:37:56.125561+00:00",
+  "rule_library_frozen_before_any_test_action_access": true,
+  "test_action_access_permitted": false,
+  "test_actions_accessed": [],
+  "rules_sha256": "701b9b233a7ba0a1e926d0333ae8fef652e6c9bd83ab4a6ef12070bbd617e2bc",
+  "discovery_script_sha256": "0c75ce16610b737a610e14e46aefa4a04ff576b06ccc61b0f7ff0619882148c2",
+  "verification_script_sha256": "7e63492c336481bbfe9bf954e5e3ac87b5f9c291515b4e50a4b38b93f4e8f372",
+  "input_sha256": "0d31c7c738202364655c500233b33018cc599f9e8cc54c2f2cb7b7c50eddfd6e",
+  "rules_frozen_at_first_delivery_note": "First delivery to fragment_selection/root/review preceded all resource and official checks. RULES content unchanged thereafter. No new8 actions accessed at any time.",
+  "config": {
+    "short_max": 3,
+    "old_max": 6,
+    "rank": 2,
+    "move_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "new_representative": "shortest then lexicographic",
+    "development_ids": [
+      "ms-train-0009",
+      "ms-train-0013",
+      "ms-train-0014",
+      "ms-train-0015",
+      "ms-train-0031",
+      "ms-train-0033",
+      "ms-train-0062",
+      "ms-train-0081",
+      "ms-train-0099",
+      "ms-train-0108",
+      "ms-train-0160",
+      "ms-train-0201",
+      "ms-train-0218",
+      "ms-train-0231",
+      "ms-train-0235",
+      "ms-train-0258",
+      "ms-train-0286",
+      "ms-train-0373",
+      "ms-train-0379",
+      "ms-train-0380"
+    ]
+  },
+  "totals": {
+    "symbolic_primitive_apply": 162958,
+    "official_search_apply": 0,
+    "official_verification_apply": 1865
+  }
+}

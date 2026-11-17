@@ -1,0 +1,275 @@
+{
+  "status": "passed",
+  "scope": "Independent audit of already frozen graph edges and selected chains; no greedy/DP optimizer rerun.",
+  "code_sha256": "4954d2bd02d9ab8dc2a1713f34077b8f276aa64beb7863580b7be42449a3036d",
+  "cases": 29,
+  "counts": {
+    "nonofficial_original_apply": 465,
+    "nonofficial_edge_apply": 1715,
+    "edges": 731,
+    "official_apply": 0
+  },
+  "results": [
+    {
+      "id": "ms-train-0009",
+      "graph_sha256": "7b86bedf3207129c75c9b5d4309d0314852db130be1155a003efb7b5146aa82d",
+      "edges": 26,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0013",
+      "graph_sha256": "0878aedfd8f90aaf2b7ebd904cc4bff9c1ac7a49e65920b9c5a86270a7f3d782",
+      "edges": 29,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0014",
+      "graph_sha256": "abf0019dd083cffaca0d12d3d1d87d013fb6d66dafacc0474812be262fe39ac1",
+      "edges": 30,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0015",
+      "graph_sha256": "c900f93b6e5d90ca0e631830a94f5130965800b7e714a5f45bfad89be19973d4",
+      "edges": 29,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0031",
+      "graph_sha256": "7451326d5f0e1b8ed0215f679468adea297248ad07996b227d333a0b85f8c3b0",
+      "edges": 29,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0033",
+      "graph_sha256": "eb259a4e6ebf876c84e278173ba14ddf5d63767495e2b0f2c2d0562ff09864ad",
+      "edges": 20,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0062",
+      "graph_sha256": "c9ffbc6d7df67539c38b9af1999bd7e37123cc742a25a10af2c4706178d991ae",
+      "edges": 21,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0081",
+      "graph_sha256": "11e5e815f7cbe3213b824c94832fb75586eb29ce7dd578aeee76d8551a1391de",
+      "edges": 34,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0099",
+      "graph_sha256": "01ebc77930022f1102322055a5710e047a2640118d1658338734807434866db2",
+      "edges": 18,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0108",
+      "graph_sha256": "b21e0b1f354250b910934e0c2d92f49807fa17c4915888efbf7fbe5845e8a9ed",
+      "edges": 31,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0160",
+      "graph_sha256": "7e5b5508f95a0b4f85ed33ac4d4be4d2e043e22de5698692cc897379527787a7",
+      "edges": 13,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0201",
+      "graph_sha256": "66530e16be3b94221273149402f7e1aa905c5e42206b3b2140e71798f254aeb5",
+      "edges": 32,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0218",
+      "graph_sha256": "4b5c43ad43c3961547ed90d200b5f0bc2240fe16bd421956a178cfde7c4f592c",
+      "edges": 32,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0231",
+      "graph_sha256": "1e50d9d4e4c333369f0c932c70a1c35e68980f8fe8e07704ce1302bc3936f9ca",
+      "edges": 20,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0235",
+      "graph_sha256": "277d10ad873ada8a9f70af6928dd630358d3985bbc39f542c8b1d02f47c5549e",
+      "edges": 30,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0258",
+      "graph_sha256": "99882dfa948cce6809e69af836145189866601c3de27cb3a7586c2f9148da7e2",
+      "edges": 17,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0286",
+      "graph_sha256": "70fa420ad8b93f03b008c7ef313e39ae410e0cab1e1329c95d9f389ceed1b55d",
+      "edges": 18,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0373",
+      "graph_sha256": "f3c543260f5957f0a13771037d50449648485173e52c300df43ef4e90ca76ada",
+      "edges": 22,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0379",
+      "graph_sha256": "747cd502861f172d5a1d3aee1e108f2193434aa4010fad9106ec5c453568a6a3",
+      "edges": 27,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0380",
+      "graph_sha256": "c649c2fd76c2dffed01de37d35976bd3d381d667b7de1ff53b084b021309cc4c",
+      "edges": 29,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "sac-07445",
+      "graph_sha256": "0727acb153d906753ff66dc3cbb6035d5182ba7f23ad37626b6f90a92eb01c1a",
+      "edges": 17,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0164",
+      "graph_sha256": "df9b68014d08f05aa27dcdaf43e9c2f2f5306ab4b25c44727980712d66ba96d7",
+      "edges": 15,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0389",
+      "graph_sha256": "89523a88e18b3994bb80d563395e3b384f77e9f53af0b295c662251992018136",
+      "edges": 28,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0026",
+      "graph_sha256": "b4f791a5ebdc69321af92f910691f628a9200ccef3aebb3f5c1133314a6df454",
+      "edges": 34,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0204",
+      "graph_sha256": "81f8ee4090f78e85d68685dfed6446d19489f215cc4c27333de302cf4ea2dfc0",
+      "edges": 16,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0117",
+      "graph_sha256": "f8be3192fc7e39a98b0ae6c57622f03c65d34f82f2b2b2677805bb9ce3720553",
+      "edges": 13,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0094",
+      "graph_sha256": "dc0a7465292c5713462569190c89cbb78f87e0eca81d80eae05ae87825c3197e",
+      "edges": 35,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0113",
+      "graph_sha256": "ca8c5017b2fa73df2d54dc5c9232566f34b9903c5c62b1a89e8b8745fb968e78",
+      "edges": 29,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    },
+    {
+      "id": "ms-train-0281",
+      "graph_sha256": "1aabab3ce5716a739759fc91c4aaf281bbadf73775ebbcf0a42b1c1bbb0afb75",
+      "edges": 37,
+      "every_edge_exact_endpoint_and_cost": true,
+      "selected_expansion_and_cost_match": true,
+      "greedy_dp_moves_equal": true,
+      "dp_peak_labels_at_vertex": 1
+    }
+  ]
+}

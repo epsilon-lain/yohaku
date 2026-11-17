@@ -1,0 +1,21 @@
+{
+  "version": "fixed-candidate-dag-v1",
+  "search_official_apply_cap": 1500000,
+  "verification_official_apply_cap": 15000,
+  "search_apply_cap_per_case": 40000,
+  "diagnostic_search_apply_cap": 100000,
+  "case_allocation": {"development": 21, "test": 8, "total_reserved": 1160000, "diagnostic_reserved": 100000, "unallocated_failure_reserve": 240000},
+  "graph_edge_cap": 10000,
+  "pareto_labels_per_vertex_cap": 2048,
+  "pareto_transitions_cap": 2000000,
+  "h_max_length": 2,
+  "limits": {"max_path_length": 100000, "max_total_relator_length": 10000, "max_work": 5000000},
+  "official_max_rank": 8,
+  "candidate_order": ["all_original_adjacent", "all_exact_state_loops", "symbolic_original_substrings", "common_conjugation_frames", "all_start_primitive_ids", "all_start_left3", "h_length_then_all_start_donor"],
+  "candidate_admission": "all forward exact ordered state endpoints; keep shorter, equal and longer routes; enforce local peak; full budgets only during selection",
+  "deduplication": "same start, end, expanded primitive route; retain all source families",
+  "greedy": "same frozen DAG; replace current subpath only between surviving original-position vertices; require strict full-path length reduction and full resource feasibility; choose resulting length,work,peak,start,end,route lexicographically",
+  "dp": "topological 3-dimensional Pareto labels; objective terminal length,work,peak lexicographic; ties first generated; guarantee only if label and transition caps unhit, within generated graph",
+  "external_rule_adapters": {"symbolic": "rank exactly2 throughout exact old_moves occurrence -> new_moves", "frames": "pure C common-frame B_h; nonempty I/M P; pure C common-frame B_g -> P; C_reduce(g h), fixed rank, nonempty h/g, strictly shorter; exact vendored peer enumerator"},
+  "test_tuning": "none after FREEZE; cumulative budget and explicit revision for any bug fix"
+}

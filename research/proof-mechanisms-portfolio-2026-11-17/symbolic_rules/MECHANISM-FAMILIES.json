@@ -1,0 +1,34 @@
+{
+  "version": "mechanism-families-v1",
+  "rules_file_sha256": "701b9b233a7ba0a1e926d0333ae8fef652e6c9bd83ab4a6ef12070bbd617e2bc",
+  "counting": "11 concrete source-filtered rewrites, grouped into 3 algebraic families; not 11 independent mechanisms",
+  "families": [
+    {
+      "id": "inverse_marker_transport",
+      "rule_ids": [
+        "sym-dev-001",
+        "sym-dev-002",
+        "sym-dev-003",
+        "sym-dev-005",
+        "sym-dev-006"
+      ]
+    },
+    {
+      "id": "nielsen_multiplication_interaction",
+      "rule_ids": [
+        "sym-dev-004",
+        "sym-dev-007",
+        "sym-dev-008",
+        "sym-dev-009"
+      ]
+    },
+    {
+      "id": "common_conjugation_transport",
+      "rule_ids": [
+        "sym-dev-010",
+        "sym-dev-011"
+      ]
+    }
+  ],
+  "note": "Common conjugation transport overlaps the conjugation_frames team. Context prefixes/suffixes are not additional mechanisms."
+}
