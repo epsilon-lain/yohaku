@@ -11,6 +11,7 @@ name: Windows preview packaging tools
 on:
   pull_request:
     paths:
+      - '**/*.tex'
       - 'README.md*'
       - 'docs/windows/**'
       - 'source-documents.json*'
@@ -19,6 +20,7 @@ on:
       - '.github/workflows/windows-preview-tools.yml*'
   push:
     paths:
+      - '**/*.tex'
       - 'README.md*'
       - 'docs/windows/**'
       - 'source-documents.json*'
