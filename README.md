@@ -2,9 +2,28 @@
 
 Yohaku is an experimental native, local-first workspace for people and AI.
 It is independent of Lain Brain. Loom, the deterministic `.tex` text generator,
-is kept in this repository. This source-only local version is **not open source**:
+is kept in this repository. This source snapshot is **not open source**:
 original material is all rights reserved. See [LICENSE](LICENSE) and
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Windows preview download
+
+[Download the Windows x64 portable ZIP](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip) · [Release notes and SHA256SUMS](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1) · [Windows 下载与试用说明](docs/windows/README.md)
+
+**2026.11.17-preview1** is a native Windows x64 technical preview. Extract the
+complete ZIP and double-click `Launch-Yohaku.cmd`; Rust, Python and WSL do not
+need to be installed. The package includes its own runtime and stores default
+data under `data/Yohaku` in the extracted folder. Model setup remains optional
+and user-owned; real-model tools and image understanding remain unverified.
+
+Validation is limited to the maintainer's Windows 11 Home machine with fresh
+data/profile variables and a system-only PATH, including Chinese/space paths.
+**仅在当前电脑隔离环境验证，尚未在独立干净 Windows 环境验证。**
+GitHub's **Code → Download ZIP** and automatic **Source code** assets contain
+repository source; use the named Windows ZIP above to run the app. The Windows
+payload's separate source/build identity is recorded in `BUILD-SOURCE.json`.
+The repository's default build and Linux capabilities below remain separate
+from the native Windows preview. See the [maintainer guide](docs/windows/RELEASING.md).
 
 ## Capabilities
 
@@ -23,7 +42,7 @@ original material is all rights reserved. See [LICENSE](LICENSE) and
 
 Tested on Arch Linux in WSL2, Windows 11, with the X11 host backend. Use an
 existing working graphics/WSLg setup; this project does not install or repair it.
-Native Windows and macOS builds are not verified.
+The separate native Windows technical preview has only the verification scope stated above; macOS builds are not verified.
 
 Requirements: Rust/Cargo supporting edition 2024, Python 3, C compiler, binutils,
 pkg-config, Wayland client/server libraries, EGL/GLES2, libxkbcommon, X11
@@ -117,7 +136,7 @@ node links never add implicit Loom dependencies. See `loom-src/FORMAT.md` and
 
 ## Known limits
 
-- This prototype is not a security audit or a cross-platform/binary release.
+- This prototype is not a security audit or a stable cross-platform release. The separate Windows binary is a limited technical preview.
 - Node queries scan `.tex` metadata. BFS has depth/result caps, deduplicates
   cycles and reports broken/ambiguous links; there is no vector database.
 - Coordinates are 1-based Unicode characters and end-exclusive. Explicit
