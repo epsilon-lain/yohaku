@@ -1,0 +1,96 @@
+{
+  "format": "round4-native-user-directed-start/1",
+  "idempotent_goal_key": "user-event2411-operation-universes-literature-v1",
+  "user_event": 2411,
+  "observed_utc": "2026-11-17 06:11:31 UTC",
+  "stage": "native-concept-transformations-sol-20261117-03",
+  "unchanged": "Original deadline, policy/state counters/stops and old requests preserved; no new stage or unlimited budget",
+  "admission_observed": {
+    "phase": "open",
+    "shared_stop": null,
+    "native_turns_remaining_after_root": 2,
+    "remaining_seconds": 1277.558299779892
+  },
+  "tasks": {
+    "root": {
+      "task_id": "model-task-d1bc98e338842bb8ab774ca582b3e06d",
+      "request_id": "user-operation-universes-20261117-v1",
+      "status": "running",
+      "session_id": "01a1e7a0-e1d4-7950-88e7-9dc7e1581c18",
+      "model": {
+        "event": "model_settings",
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max"
+      },
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 600,
+          "max_tool_calls": 64
+        }
+      },
+      "turn_seconds": 600
+    },
+    "theory": {
+      "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+      "request_id": "user-event2411-round4-theory-operation-universes-v1",
+      "status": "running",
+      "session_id": "01a1e475-9e78-7e82-b806-e6843a7ff4f9",
+      "model": {
+        "event": "model_settings",
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max"
+      },
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 600,
+          "max_tool_calls": 64
+        }
+      },
+      "turn_seconds": 600
+    },
+    "application": {
+      "task_id": "model-task-9a68d4a32ccc7f6a6339c7d1ad70f5ef",
+      "request_id": "user-event2411-round4-application-advantage-chain-v1",
+      "status": "running",
+      "session_id": "01a1e475-a5fd-75c2-9163-66b3f1b347a9",
+      "model": {
+        "event": "model_settings",
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max"
+      },
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 600,
+          "max_tool_calls": 64
+        }
+      },
+      "turn_seconds": 600
+    }
+  },
+  "head_idempotent_requests": {
+    "theory": "user-event2411-round4-theory-operation-universes-v1",
+    "application": "user-event2411-round4-application-advantage-chain-v1"
+  },
+  "old_boundary": "Old app96bda and theory049852 queried done/ended/native_cleanup_complete=true. HOST reported all previous9 tasks8done/1error cleaned; no old request replay.",
+  "host_shell_boundary": "Only Yohaku-native registered tools available. observe.py and acquire_sources.py were not executed by this node; live research_resources, ai_node_status and known registered literature source contract used. HOST import is not model research.",
+  "work_done": "Root read exact resource/seed and 3 private original pages; published independent theorem M-2149d7062a0719a3@1 and saved own Chinese proof. Two original heads actually running, not just planned. No token/fee/speed claim.",
+  "recovery": "Read current root memory; query above original request/task IDs, never replay unknown. No continuation is authorized or requested; remaining turns reserved for original heads."
+}

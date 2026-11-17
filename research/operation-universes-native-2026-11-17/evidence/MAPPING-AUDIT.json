@@ -1,0 +1,514 @@
+{
+  "at": 1794896947.749551,
+  "documents": 46,
+  "unique_registered_mapping": true,
+  "documents_verified": [
+    {
+      "id": "op4-theory-381b5f896b17394d",
+      "canonical_source": "files/theory/round4-inputs/task/README.md.tex",
+      "revision": "5963305d1a051c442c020af1b377c8e89246a364e62bda8679e1311250a0d9c4",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/README.md.tex"
+      ],
+      "body_sha256": "662d5ed3e81bf01428f91809263eff4f0c870f417227eaabc751e9ac4b1fb8cb",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-91ab68e21543430e",
+      "canonical_source": "files/theory/round4-inputs/task/CODEX_TASK.md.tex",
+      "revision": "59de48fb8da8bb2751fbe4974457eb8a221c284aac5cac41a2e1c6ce9b87bdb0",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/CODEX_TASK.md.tex"
+      ],
+      "body_sha256": "d17e9631911144e3dcfc89734635a021a1492a1b333c54f97c36cb9d098eab8a",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-1a4baf81f1809797",
+      "canonical_source": "files/theory/round4-inputs/task/MOCHIZUKI_SOURCE_MAP.md.tex",
+      "revision": "69c0eceee3cea8d16e77bec30b593539c0a9f8b5555e9c29ca8b1cc43b58cbba",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/MOCHIZUKI_SOURCE_MAP.md.tex"
+      ],
+      "body_sha256": "e653df7c5950b2cadbbf13b1d3120cbe4492fa64008d386bd9d36879d5a322d7",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-3e6926f0ef350d07",
+      "canonical_source": "files/theory/round4-inputs/task/sources.json.tex",
+      "revision": "93b637d57a6d59854642d89173e5cdb187bba89dc51fd6294fefdec2099e8abc",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/sources.json.tex"
+      ],
+      "body_sha256": "0aed054d4e8399156c158ae13ccc20337d2ea07c11bab6ded8a7fdeee736735f",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-d30508c5883880f3",
+      "canonical_source": "files/theory/round4-inputs/task/acquire_sources.py.tex",
+      "revision": "8d60f574f5d8dba076ecd26c057e17106160a1e65980d2e5c0f46b601a4cb009",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/acquire_sources.py.tex"
+      ],
+      "body_sha256": "418d872afc032b7ec1e84966792b0cd5d36caea544c1bc4872cc414472f7f543",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-7b62580bdc3a09bb",
+      "canonical_source": "files/theory/round4-inputs/task/competition-discovery.md.tex",
+      "revision": "d4970f5567c300c9564bbbbf4239c520a93c852b927b7a29a8096545e583e9d0",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/competition-discovery.md.tex"
+      ],
+      "body_sha256": "f7c38d5f0ddf3877ece4a943e7bd7ec31d5fcf67bc55016c2bf3631c1f645b3a",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-7b5ef86c0e8012b9",
+      "canonical_source": "files/theory/round4-inputs/task/STATUS.json.tex",
+      "revision": "4dea71a6e5ea45ee9789b484aa56b7e58ef327dcaabd028cf0659ee50ece0289",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/STATUS.json.tex"
+      ],
+      "body_sha256": "7e5a5b798db9361eeaa071af17a47f816959b6f48c9a35af4fba40ce592c9819",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-e0a947a1c637df17",
+      "canonical_source": "files/theory/round4-inputs/task/PACKAGE-MANIFEST.json.tex",
+      "revision": "295d72ba8d6c16447ecfc3d681b0473291791c1c417314e28bfb181645452aef",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/task/PACKAGE-MANIFEST.json.tex"
+      ],
+      "body_sha256": "b25620808685dc9017774d7923b74fd3224daf91ad24f1f8924da68c2f2100e4",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-464ad84779eb456d",
+      "canonical_source": "files/theory/round4-inputs/external-seed/README.md.tex",
+      "revision": "458722547a50b081657762c0f544086e893a879b0d0e58923fa00da199424f29",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/external-seed/README.md.tex"
+      ],
+      "body_sha256": "89ee75c44b041ed0ff417989b0b2cd58746cb8c23cf8875129e6f8f9af899c09",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-0d9f0be2282cf32d",
+      "canonical_source": "files/theory/round4-inputs/external-seed/REVIEW.md.tex",
+      "revision": "047e71aa76283541af3156396f81c4b11a00be7f6a63078f96e314efff153b4c",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/external-seed/REVIEW.md.tex"
+      ],
+      "body_sha256": "f4587f1cc1b5563b5dd4516446c3c9b81451a1e0d043acda29ff25202cb1b4a6",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-c9b4d629d4002fb4",
+      "canonical_source": "files/theory/round4-inputs/external-seed/check.py.tex",
+      "revision": "014e5a665e2f8a91d815531e3d6dcb93c6148dd5c98c1e7537b41045bf14a687",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/external-seed/check.py.tex"
+      ],
+      "body_sha256": "f432362f014ce797341897d07ab95479caf345267e2db0a939c0b7d69c1e04a7",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-5390c4d0f507dc9c",
+      "canonical_source": "files/theory/round4-inputs/external-seed/checks.json.tex",
+      "revision": "29ac08a8a4aab8e00d28ebc6bdb6d893407ec74dc641119bd69245451d2649ef",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/external-seed/checks.json.tex"
+      ],
+      "body_sha256": "e8f9deaf363f96512c8e79323b6bb29536b53c081c0e41c83b8c0fd2ed55c32d",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-838309943754383d",
+      "canonical_source": "files/theory/round4-inputs/private-literature/PANO-page-011.txt.tex",
+      "revision": "12078de74d369a0c4aff0ce48c0a0ac8f71b7196957bb5e9e17df7888e3f9d9a",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/PANO-page-011.txt.tex"
+      ],
+      "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-05850d111687606c",
+      "canonical_source": "files/theory/round4-inputs/private-literature/PANO-page-028.txt.tex",
+      "revision": "485328984320d3d3c30e750236f562c1784e80c0471fa42b3dfb380675ff5167",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/PANO-page-028.txt.tex"
+      ],
+      "body_sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-25b37a0069f80e65",
+      "canonical_source": "files/theory/round4-inputs/private-literature/PANO-page-029.txt.tex",
+      "revision": "7344209f9846cab41c7c035cba72086c862d7526d10184e35a5032a2e0d25e1b",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/PANO-page-029.txt.tex"
+      ],
+      "body_sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-9721f53637ec9bf0",
+      "canonical_source": "files/theory/round4-inputs/private-literature/PANO-page-038.txt.tex",
+      "revision": "acfada1d932f8a3af84f08ec1fbe020008a7e767a0fd51f367b4cbca8d75ca62",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/PANO-page-038.txt.tex"
+      ],
+      "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-d4f9c8829c35b25b",
+      "canonical_source": "files/theory/round4-inputs/private-literature/PANO-page-039.txt.tex",
+      "revision": "aa6819ed60ea8e9a634c55c7e2321c7f496c54fdb0a39f8497fcc91ead4c5d45",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/PANO-page-039.txt.tex"
+      ],
+      "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-f991780f24be3a0f",
+      "canonical_source": "files/theory/round4-inputs/private-literature/PANO-page-040.txt.tex",
+      "revision": "a09d34a4fcd153956e279a7a71d35b3cf0bca6569a42b13950d2975337a30218",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/PANO-page-040.txt.tex"
+      ],
+      "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-1372b790ccad2cc5",
+      "canonical_source": "files/theory/round4-inputs/private-literature/IUT1-page-001.txt.tex",
+      "revision": "7488bee287a567dcb92d36feefd5f08afd9a06c6c6932050fc28e504236cd70f",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/IUT1-page-001.txt.tex"
+      ],
+      "body_sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-b001f0ff3366b4cc",
+      "canonical_source": "files/theory/round4-inputs/private-literature/IUT1-page-012.txt.tex",
+      "revision": "7c81752013767ce9cb66171d3ef5fad36c5bd679d56ce144960e87f7f9f0328c",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/IUT1-page-012.txt.tex"
+      ],
+      "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-b01db2b1db1161f2",
+      "canonical_source": "files/theory/round4-inputs/private-literature/IUT1-page-013.txt.tex",
+      "revision": "2b2d597215262acffa86c69ad9def6b3c31a46f756ef1bfa1e339e1be7235d1b",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/IUT1-page-013.txt.tex"
+      ],
+      "body_sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-ed76f07e70d9661b",
+      "canonical_source": "files/theory/round4-inputs/private-literature/IUT1-page-014.txt.tex",
+      "revision": "c8559fd5116af495a27ed93f72b80b68f6d7f8d7e6a114138f8a87088243e69d",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/IUT1-page-014.txt.tex"
+      ],
+      "body_sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-theory-25e312f3c778ac44",
+      "canonical_source": "files/theory/round4-inputs/private-literature/IUT1-page-015.txt.tex",
+      "revision": "dac4d8b35da9ef0a968c39ad52f7d1ffe6c330ac77212fa7efe0d4354e883b17",
+      "registered_occurrences": [
+        "files/theory/round4-inputs/private-literature/IUT1-page-015.txt.tex"
+      ],
+      "body_sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-381b5f896b17394d",
+      "canonical_source": "files/application/round4-inputs/task/README.md.tex",
+      "revision": "b43a77dd76baeb820439b2f7db3f2ab0fbd2606e0bb26f7971eecd7495b658b7",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/README.md.tex"
+      ],
+      "body_sha256": "662d5ed3e81bf01428f91809263eff4f0c870f417227eaabc751e9ac4b1fb8cb",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-91ab68e21543430e",
+      "canonical_source": "files/application/round4-inputs/task/CODEX_TASK.md.tex",
+      "revision": "a481f0740c4a15c61febd896d7e97eb25467b4c6cdfc5142f3716c26aec77081",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/CODEX_TASK.md.tex"
+      ],
+      "body_sha256": "d17e9631911144e3dcfc89734635a021a1492a1b333c54f97c36cb9d098eab8a",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-1a4baf81f1809797",
+      "canonical_source": "files/application/round4-inputs/task/MOCHIZUKI_SOURCE_MAP.md.tex",
+      "revision": "57c1db952d2ace296804d7e05a37c648b24e15308b272256a1c699073e06543a",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/MOCHIZUKI_SOURCE_MAP.md.tex"
+      ],
+      "body_sha256": "e653df7c5950b2cadbbf13b1d3120cbe4492fa64008d386bd9d36879d5a322d7",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-3e6926f0ef350d07",
+      "canonical_source": "files/application/round4-inputs/task/sources.json.tex",
+      "revision": "c40e5e3dd0b90a4b7b21c04f86bb6d8a6647e4f8f3b158741cf6b4dbd38c46e6",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/sources.json.tex"
+      ],
+      "body_sha256": "0aed054d4e8399156c158ae13ccc20337d2ea07c11bab6ded8a7fdeee736735f",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-d30508c5883880f3",
+      "canonical_source": "files/application/round4-inputs/task/acquire_sources.py.tex",
+      "revision": "215001819d814a3670030d610baa0b94d86ddb9e76c5ca066fa7d75f9efac578",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/acquire_sources.py.tex"
+      ],
+      "body_sha256": "418d872afc032b7ec1e84966792b0cd5d36caea544c1bc4872cc414472f7f543",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-7b62580bdc3a09bb",
+      "canonical_source": "files/application/round4-inputs/task/competition-discovery.md.tex",
+      "revision": "4383599665cf4bdbf1017a0eb2a6c3b9fff5a2648bed579515f37033a1b310f1",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/competition-discovery.md.tex"
+      ],
+      "body_sha256": "f7c38d5f0ddf3877ece4a943e7bd7ec31d5fcf67bc55016c2bf3631c1f645b3a",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-7b5ef86c0e8012b9",
+      "canonical_source": "files/application/round4-inputs/task/STATUS.json.tex",
+      "revision": "3f054f6c5d3a3d3429c448a9194a44d6c07133bee1e20c4340901ce0d13f01db",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/STATUS.json.tex"
+      ],
+      "body_sha256": "7e5a5b798db9361eeaa071af17a47f816959b6f48c9a35af4fba40ce592c9819",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-e0a947a1c637df17",
+      "canonical_source": "files/application/round4-inputs/task/PACKAGE-MANIFEST.json.tex",
+      "revision": "78f47ffe332933bfcb1ca798386ad756ed96b3fafc87bcc0209bc5a4b4be0285",
+      "registered_occurrences": [
+        "files/application/round4-inputs/task/PACKAGE-MANIFEST.json.tex"
+      ],
+      "body_sha256": "b25620808685dc9017774d7923b74fd3224daf91ad24f1f8924da68c2f2100e4",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-464ad84779eb456d",
+      "canonical_source": "files/application/round4-inputs/external-seed/README.md.tex",
+      "revision": "11e74bad350c44bcceeb73e0a8e5ba8919cbf9a58bffe5819398f6b19dc495bf",
+      "registered_occurrences": [
+        "files/application/round4-inputs/external-seed/README.md.tex"
+      ],
+      "body_sha256": "89ee75c44b041ed0ff417989b0b2cd58746cb8c23cf8875129e6f8f9af899c09",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-0d9f0be2282cf32d",
+      "canonical_source": "files/application/round4-inputs/external-seed/REVIEW.md.tex",
+      "revision": "9270566fd2496bce82e37ef908b7106e6a517cd1181653311f370025c33d79e8",
+      "registered_occurrences": [
+        "files/application/round4-inputs/external-seed/REVIEW.md.tex"
+      ],
+      "body_sha256": "f4587f1cc1b5563b5dd4516446c3c9b81451a1e0d043acda29ff25202cb1b4a6",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-c9b4d629d4002fb4",
+      "canonical_source": "files/application/round4-inputs/external-seed/check.py.tex",
+      "revision": "e257a0cc2fefeff72dc832b474049960315ce8258b659fcac8a5264669939617",
+      "registered_occurrences": [
+        "files/application/round4-inputs/external-seed/check.py.tex"
+      ],
+      "body_sha256": "f432362f014ce797341897d07ab95479caf345267e2db0a939c0b7d69c1e04a7",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-5390c4d0f507dc9c",
+      "canonical_source": "files/application/round4-inputs/external-seed/checks.json.tex",
+      "revision": "2e091d40e16e33be023e503c793d108155048d6ea348d03c0aeead85c05aeb73",
+      "registered_occurrences": [
+        "files/application/round4-inputs/external-seed/checks.json.tex"
+      ],
+      "body_sha256": "e8f9deaf363f96512c8e79323b6bb29536b53c081c0e41c83b8c0fd2ed55c32d",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-838309943754383d",
+      "canonical_source": "files/application/round4-inputs/private-literature/PANO-page-011.txt.tex",
+      "revision": "b615bd89986f96ccd11df097fdef091052bed0daef314a93d68f11301e8c9c11",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/PANO-page-011.txt.tex"
+      ],
+      "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-05850d111687606c",
+      "canonical_source": "files/application/round4-inputs/private-literature/PANO-page-028.txt.tex",
+      "revision": "94303e86ae7462825e0b938212bc2d5ad8d23b1a3a4411c653a99fad26415685",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/PANO-page-028.txt.tex"
+      ],
+      "body_sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-25b37a0069f80e65",
+      "canonical_source": "files/application/round4-inputs/private-literature/PANO-page-029.txt.tex",
+      "revision": "cccba49b2f611d28570151bf8f0d853f744c7299c1a084e3844bc40e95019d0b",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/PANO-page-029.txt.tex"
+      ],
+      "body_sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-9721f53637ec9bf0",
+      "canonical_source": "files/application/round4-inputs/private-literature/PANO-page-038.txt.tex",
+      "revision": "730e43c3b658f4d839fb835b4b970f25dcdd5c75f1c8a7be1819be7c096d44f9",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/PANO-page-038.txt.tex"
+      ],
+      "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-d4f9c8829c35b25b",
+      "canonical_source": "files/application/round4-inputs/private-literature/PANO-page-039.txt.tex",
+      "revision": "754fd0e5ab81b70272b21162d8b68d0b0d4bd0cf952de12edbf50b756a5f5379",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/PANO-page-039.txt.tex"
+      ],
+      "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-f991780f24be3a0f",
+      "canonical_source": "files/application/round4-inputs/private-literature/PANO-page-040.txt.tex",
+      "revision": "19ede447be4599440d10633dc475419cfef944395468bd1356260f85a4a9f372",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/PANO-page-040.txt.tex"
+      ],
+      "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-1372b790ccad2cc5",
+      "canonical_source": "files/application/round4-inputs/private-literature/IUT1-page-001.txt.tex",
+      "revision": "98466f389350ee040804fdc7f6ac7467ce0c7b943498655f49ef435772152d56",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/IUT1-page-001.txt.tex"
+      ],
+      "body_sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-b001f0ff3366b4cc",
+      "canonical_source": "files/application/round4-inputs/private-literature/IUT1-page-012.txt.tex",
+      "revision": "48d91d6877dcb570446d59cbf5dcd8d0d43765ec2fecc489d8f6ecc5539343c8",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/IUT1-page-012.txt.tex"
+      ],
+      "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-b01db2b1db1161f2",
+      "canonical_source": "files/application/round4-inputs/private-literature/IUT1-page-013.txt.tex",
+      "revision": "bd72a96ebd3447e423497ac6b457556c4de1f2589c8f916d742de6de985177d4",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/IUT1-page-013.txt.tex"
+      ],
+      "body_sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-ed76f07e70d9661b",
+      "canonical_source": "files/application/round4-inputs/private-literature/IUT1-page-014.txt.tex",
+      "revision": "f5ab84417fc16dc54817dd4fa6e069b4e166cf61c302faec593b4059698cc483",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/IUT1-page-014.txt.tex"
+      ],
+      "body_sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0",
+      "generated_equal": true,
+      "valid": true
+    },
+    {
+      "id": "op4-application-25e312f3c778ac44",
+      "canonical_source": "files/application/round4-inputs/private-literature/IUT1-page-015.txt.tex",
+      "revision": "a66ab6279cb5e696be024e0eabe83ca7559202747b93dc341213b88b29f55136",
+      "registered_occurrences": [
+        "files/application/round4-inputs/private-literature/IUT1-page-015.txt.tex"
+      ],
+      "body_sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306",
+      "generated_equal": true,
+      "valid": true
+    }
+  ],
+  "source_text_published": false
+}

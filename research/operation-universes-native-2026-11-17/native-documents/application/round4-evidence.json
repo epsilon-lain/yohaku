@@ -1,0 +1,279 @@
+{
+  "format": "round4-application-evidence/1",
+  "task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+  "request_id": "app-r4-07445-guarded-window-v1",
+  "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+  "summary": {
+    "entries_executed": 14,
+    "entries_planned": 14,
+    "windows_checked": 60,
+    "complete_balls": 14,
+    "guards": [],
+    "global_guard": null,
+    "short_endpoint_hits": 0,
+    "accepted_short_proposals": 0,
+    "wrapper_search_calls": 51301,
+    "current_length": 15,
+    "strict_improvement": false,
+    "current_kind": "equal_length_certified_reordering",
+    "elapsed_seconds": 1.0607964619994164,
+    "platform_upload": false
+  },
+  "certificate": {
+    "entry": [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    "exit": [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    "offset": 2,
+    "old": [
+      12,
+      1
+    ],
+    "replacement": [
+      1,
+      12
+    ],
+    "expanded_old_length": 2,
+    "expanded_new_length": 2,
+    "full_path": [
+      6,
+      4,
+      1,
+      12,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 130,
+      "certificate_hash": "sha256:1f3f6d0480d7d6a171598e1d3b0d125e59232a9989ef9f6211de15d7a76121bc"
+    },
+    "guard": "same exact ordered entry; rank2 legal IDs; full path resource replay"
+  },
+  "baseline_verdict": {
+    "format": "yohaku-task-result-view/1",
+    "task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+    "project_id": "native-application",
+    "artifact": {
+      "id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb:round4-results.json",
+      "path": "round4-results.json",
+      "sha256": "59e9f7db0fccc4ddf30aff4b1c35ac2d944d17255328bea2c38532934d1be652",
+      "bytes": 21374,
+      "producer_task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "registration_kind": "original_declared_artifact_receipt"
+    },
+    "json_pointer": "/regressions/sac-07445",
+    "host_generated_display_aid": true,
+    "mathematical_interpretation_authored_by_host": false,
+    "source_bytes": 21374,
+    "source_sha256": "59e9f7db0fccc4ddf30aff4b1c35ac2d944d17255328bea2c38532934d1be652",
+    "items": [
+      {
+        "key": "ok",
+        "value": true
+      },
+      {
+        "key": "length",
+        "value": 15
+      },
+      {
+        "key": "peak_total_relator_length",
+        "value": 13
+      },
+      {
+        "key": "work",
+        "value": 128
+      },
+      {
+        "key": "certificate_hash",
+        "value": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+      }
+    ],
+    "offset": 0,
+    "next_offset": 5,
+    "total_items": 5,
+    "cursor_unit": "items",
+    "has_more": false,
+    "complete_field_returned": false,
+    "read_scope": "Selected items compacted; nested omissions remain references"
+  },
+  "cli": {
+    "returncode": 0,
+    "stdout": "{\n  \"accepted\": true,\n  \"results\": [\n    {\n      \"certificate_hash\": \"sha256:e13f345f7c99dd9813e1e59c6eda976d2a8918b6c79feb3027dc73cfe3483e2a\",\n      \"challenge_id\": \"ac-07445\",\n      \"length\": 13,\n      \"ok\": true,\n      \"work\": 127\n    },\n    {\n      \"certificate_hash\": \"sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1\",\n      \"challenge_id\": \"ac-08491\",\n      \"length\": 8,\n      \"ok\": true,\n      \"work\": 48\n    },\n    {\n      \"certificate_hash\": \"sha256:1f3f6d0480d7d6a171598e1d3b0d125e59232a9989ef9f6211de15d7a76121bc\",\n      \"challenge_id\": \"sac-07445\",\n      \"length\": 15,\n      \"ok\": true,\n      \"work\": 130\n    },\n    {\n      \"certificate_hash\": \"sha256:3432ef3c28cf1da26ebb85f8c9afd094014420570e06e706721a5bbb9cbeed58\",\n      \"challenge_id\": \"sac-08491\",\n      \"length\": 10,\n      \"ok\": true,\n      \"work\": 50\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  "artifacts": [
+    {
+      "id": "artifact-174a83ea267457dd7f674ea7fc9502de82f05cbcaeeff6e9a5a69fe27b0a4e4d",
+      "path": "round4-results.json",
+      "expected_sha256": "59e9f7db0fccc4ddf30aff4b1c35ac2d944d17255328bea2c38532934d1be652",
+      "valid": true,
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "expected_executable": false,
+      "actual_sha256": "59e9f7db0fccc4ddf30aff4b1c35ac2d944d17255328bea2c38532934d1be652",
+      "bytes": 21374,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-fddb56f2fa16892d9c25334005dc2f61b848bec60b67057de2d42bc135660264",
+      "path": "round4-checkpoint.json",
+      "expected_sha256": "8c597baa22ef74db892dcd4018dda3ea70118edda19a187364fab37566e97f78",
+      "valid": true,
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "expected_executable": false,
+      "actual_sha256": "8c597baa22ef74db892dcd4018dda3ea70118edda19a187364fab37566e97f78",
+      "bytes": 11911,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-1b84a23213a8666e0552404f8c8f309a16d9302d5b84e2c924f9cd377072f035",
+      "path": "round4-candidate.json",
+      "expected_sha256": "5c0aa86250d7e42aeb7e50d62c171233ded1b798ee3ca619c0512c0a0214341c",
+      "valid": true,
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "expected_executable": false,
+      "actual_sha256": "5c0aa86250d7e42aeb7e50d62c171233ded1b798ee3ca619c0512c0a0214341c",
+      "bytes": 177,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-ca5df499127d22694b346d254833877144fbff45662b4e507d2ecdff0dfeb815",
+      "path": "round4-submission.txt",
+      "expected_sha256": "f82d435bd4cde897fed72f188b2f241b79e93dafd3871c47d1c81828b87738dc",
+      "valid": true,
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "expected_executable": false,
+      "actual_sha256": "f82d435bd4cde897fed72f188b2f241b79e93dafd3871c47d1c81828b87738dc",
+      "bytes": 196,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-3386e9f49454cce0be6523d57154039f60b9c6d26a433c260fdf55baf54ae1f0",
+      "path": "round4-cli.json",
+      "expected_sha256": "8e1eff012c17f016781d2933a5291839d65193823fc0a315deb9ed0c1eee2d54",
+      "valid": true,
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "expected_executable": false,
+      "actual_sha256": "8e1eff012c17f016781d2933a5291839d65193823fc0a315deb9ed0c1eee2d54",
+      "bytes": 1004,
+      "actual_executable": false,
+      "bytes_verified": true
+    }
+  ],
+  "source_mappings": [
+    {
+      "body_source_line": 10,
+      "macro": "macros/raw.source.md",
+      "macro_hash": "67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8",
+      "map": ".provenance/maps/7acf92b0aedd1b57c9e5a75b229c95cbddf98ffc93a9f5fea16b08e5189f047f.json",
+      "output": "round4-protocol.json",
+      "output_hash": "80f6bc4f5c06cc9a4076fe103cc9c7b1d1a1e55f321119f8a78b509404812a46",
+      "source": "files/application/round4-protocol.json.tex",
+      "source_revision": "d2b2554a56d7eab4559b91dfdb8dfaecb394299ed01a43513eb77ca576c21551",
+      "generated_line_count": 48
+    },
+    {
+      "body_source_line": 10,
+      "macro": "macros/raw.source.md",
+      "macro_hash": "67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8",
+      "map": ".provenance/maps/775c76f8ca2111448311d0ae60f0b05ef4e4488ba42f13f7fec7f78a0d568736.json",
+      "output": "round4-window-search.py",
+      "output_hash": "7b566c75cba2e814c89fd142e5733f6047496b85389a74847c4b16a2f5d4517d",
+      "source": "files/application/round4-window-search.py.tex",
+      "source_revision": "9245544b39507cb48430c9f2e53877c96ff4c9e371bb7975a563c73858be382c",
+      "generated_line_count": 110
+    }
+  ],
+  "literature_reads": [
+    {
+      "id": "external/mochizuki/PANO/p038",
+      "revision": 1,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 38,
+      "pdf_index_zero_based": 37,
+      "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea",
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "application_source": "files/application/round4-inputs/private-literature/PANO-page-038.txt.tex",
+      "application_source_revision": "730e43c3b658f4d839fb835b4b970f25dcdd5c75f1c8a7be1819be7c096d44f9"
+    },
+    {
+      "id": "external/mochizuki/PANO/p039",
+      "revision": 1,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 39,
+      "pdf_index_zero_based": 38,
+      "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd",
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "application_source": "files/application/round4-inputs/private-literature/PANO-page-039.txt.tex",
+      "application_source_revision": "754fd0e5ab81b70272b21162d8b68d0b0d4bd0cf952de12edbf50b756a5f5379"
+    },
+    {
+      "id": "external/mochizuki/PANO/p040",
+      "revision": 1,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 40,
+      "pdf_index_zero_based": 39,
+      "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d",
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "application_source": "files/application/round4-inputs/private-literature/PANO-page-040.txt.tex",
+      "application_source_revision": "19ede447be4599440d10633dc475419cfef944395468bd1356260f85a4a9f372"
+    }
+  ],
+  "literature_use": "prose inspiration only, no IUT formula/speed theorem; no private text in snapshot or publication",
+  "prior_records_unchanged": true,
+  "independent_reproduction": false
+}

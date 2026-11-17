@@ -1,0 +1,114 @@
+{
+  "schema": "yohaku-literature-source-lock-v1",
+  "source_catalog": "https://www.kurims.kyoto-u.ac.jp/~motizuki/papers-english.html",
+  "default_source_ids": [
+    "PANO",
+    "IUT1"
+  ],
+  "essential_read_pages": 11,
+  "native_imported": false,
+  "sources": [
+    {
+      "id": "PANO",
+      "author": "Shinichi Mochizuki",
+      "title": "A Panoramic Overview of Inter-universal Teichmüller Theory",
+      "url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "filename": "mochizuki-panoramic-overview.pdf",
+      "sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "bytes": 372426,
+      "pdf_pages": 45,
+      "catalog_revision_date": "2013-08-20",
+      "priority": "essential",
+      "read_pdf_indices_zero_based": [
+        10,
+        27,
+        28,
+        37,
+        38,
+        39
+      ],
+      "read_printed_pages": [
+        11,
+        28,
+        29,
+        38,
+        39,
+        40
+      ]
+    },
+    {
+      "id": "IUT1",
+      "author": "Shinichi Mochizuki",
+      "title": "Inter-universal Teichmüller Theory I: Construction of Hodge Theaters",
+      "url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20I.pdf",
+      "filename": "mochizuki-iut1.pdf",
+      "sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "bytes": 1280589,
+      "pdf_pages": 186,
+      "catalog_revision_date": "2020-05-18",
+      "priority": "essential",
+      "read_pdf_indices_zero_based": [
+        0,
+        11,
+        12,
+        13,
+        14
+      ],
+      "read_printed_pages": [
+        1,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "id": "IUT2",
+      "author": "Shinichi Mochizuki",
+      "title": "Inter-universal Teichmüller Theory II: Hodge-Arakelov-theoretic Evaluation",
+      "url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20II.pdf",
+      "filename": "mochizuki-iut2.pdf",
+      "sha256": "180bfa6aaddc4ae37af37acaad51f61e0a47b33b8255ad3169e28a970ae39b7c",
+      "bytes": 1203855,
+      "pdf_pages": 174,
+      "catalog_revision_date": "2020-12-23",
+      "priority": "on_demand",
+      "read_pdf_indices_zero_based": [
+        2,
+        3
+      ],
+      "read_printed_pages": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "IUT3",
+      "author": "Shinichi Mochizuki",
+      "title": "Inter-universal Teichmüller Theory III: Canonical Splittings of the Log-theta-lattice",
+      "url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20III.pdf",
+      "filename": "mochizuki-iut3.pdf",
+      "sha256": "9a7ee3c77b1c7717210c0613eb39b6844649d0040dc3d9e1be7d544f8f91a0b9",
+      "bytes": 1307865,
+      "pdf_pages": 199,
+      "catalog_revision_date": "2020-05-18",
+      "priority": "on_demand",
+      "read_pdf_indices_zero_based": [],
+      "read_printed_pages": []
+    },
+    {
+      "id": "IUT4",
+      "author": "Shinichi Mochizuki",
+      "title": "Inter-universal Teichmüller Theory IV: Log-volume Computations and Set-theoretic Foundations",
+      "url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20IV.pdf",
+      "filename": "mochizuki-iut4.pdf",
+      "sha256": "5bf4b1e0a8c2686562a6859e5009d301335044cfb5efec5d3a9edf764e4af87f",
+      "bytes": 632447,
+      "pdf_pages": 87,
+      "catalog_revision_date": "2020-04-22",
+      "priority": "on_demand",
+      "read_pdf_indices_zero_based": [],
+      "read_printed_pages": []
+    }
+  ]
+}

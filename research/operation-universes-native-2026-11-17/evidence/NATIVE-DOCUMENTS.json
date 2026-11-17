@@ -1,0 +1,86 @@
+[
+  {
+    "source": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "public_path": "native-documents/theory/round4-linear-operation-boundary.zh.md",
+    "body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2"
+  },
+  {
+    "source": "files/theory/round4-literature-receipts.json.tex",
+    "revision": "4be8b795706b5dd6502462e91ef909d2144e18c721438a83a47bfb41cd19ed10",
+    "public_path": "native-documents/theory/round4-literature-receipts.json",
+    "body_sha256": "1531f15d853e255a41a010affb0ff8f9bcf11e97477bf47cf2f9f4dffe9b0925"
+  },
+  {
+    "source": "files/theory/round4-progress.zh.md.tex",
+    "revision": "eab4b55a681bbd657f806a485ca8ea263bf6098d699b97794a8464d29d897dc7",
+    "public_path": "native-documents/theory/round4-progress.zh.md",
+    "body_sha256": "52077398a8fc7a80b656c79e60610373da00f7977c23a09d1b2f51b953838800"
+  },
+  {
+    "source": "files/theory/round4-root-magnitude-core.zh.md.tex",
+    "revision": "ed0dd0f10d6a42ce5bac91e1ef93323f490660a57b07b4f531ed019bcc100ca0",
+    "public_path": "native-documents/theory/round4-root-magnitude-core.zh.md",
+    "body_sha256": "8d63ab0ffbe56d8cf2100fb06c4be7295a192295665407f6faffd28ff356a7e7"
+  },
+  {
+    "source": "files/theory/round4-start-receipt.json.tex",
+    "revision": "1618de830dd9868b8307fb5f3b94a84cbf9aea0edcf755ff78464191a1169df5",
+    "public_path": "native-documents/theory/round4-start-receipt.json",
+    "body_sha256": "452075b3fe1034000474f8a6ded35a10264fad4bd8d30cb7a5db3879f153425d"
+  },
+  {
+    "source": "files/theory/round4-theory-process-index.zh.md.tex",
+    "revision": "7ad6e03374aacd004561b492c8e1645f20ec6440006a3205d28e6943d020c37e",
+    "public_path": "native-documents/theory/round4-theory-process-index.zh.md",
+    "body_sha256": "023091f3ae4549ba7158fb5139a92febb0243ea78534ad67874f5c7119f9961e"
+  },
+  {
+    "source": "files/application/round4-cli-local.json.tex",
+    "revision": "ea53ed4ef372f6d04c991a2fd80531fba05d37d4f9af03a8d1f3c2c785c5a8f2",
+    "public_path": "native-documents/application/round4-cli-local.json",
+    "body_sha256": "8e1eff012c17f016781d2933a5291839d65193823fc0a315deb9ed0c1eee2d54"
+  },
+  {
+    "source": "files/application/round4-evidence.json.tex",
+    "revision": "9d4196b1d550149703e9d628b29175409d096e6953a5ba959327c2eef082a435",
+    "public_path": "native-documents/application/round4-evidence.json",
+    "body_sha256": "c295933cd766e364ce397bccf54ce7af9744f12cb41122539936497cdc99b615"
+  },
+  {
+    "source": "files/application/round4-literature-reading.zh.md.tex",
+    "revision": "e880545bec8347723fd67f22ea3e085e687649759fce967436f7ac848fc1c839",
+    "public_path": "native-documents/application/round4-literature-reading.zh.md",
+    "body_sha256": "61167e338c7ed69fac491c1b380f5f6d05a42318f04da76b2cbf23fe0e2380e3"
+  },
+  {
+    "source": "files/application/round4-process.zh.md.tex",
+    "revision": "15b91ac23a0c8940e2bb29abcf2e745b121bb3fd0fce791af8b724e36e325e96",
+    "public_path": "native-documents/application/round4-process.zh.md",
+    "body_sha256": "fa002475bbb3f5cbc5456ba0385e89dd15cfa6ecac54f8978fd5ca3cd6da3294"
+  },
+  {
+    "source": "files/application/round4-protocol.json.tex",
+    "revision": "d2b2554a56d7eab4559b91dfdb8dfaecb394299ed01a43513eb77ca576c21551",
+    "public_path": "native-documents/application/round4-protocol.json",
+    "body_sha256": "80f6bc4f5c06cc9a4076fe103cc9c7b1d1a1e55f321119f8a78b509404812a46"
+  },
+  {
+    "source": "files/application/round4-public.zh.md.tex",
+    "revision": "a2720d85c028e311c1bf3b137aa82e316148c7f719887a9756bdf80bf9401d4c",
+    "public_path": "native-documents/application/round4-public.zh.md",
+    "body_sha256": "6d67f19092406514c4823262a8ff6a36e1b2075521705cb1bd8551f2da824ca8"
+  },
+  {
+    "source": "files/application/round4-submission-local.txt.tex",
+    "revision": "4779d5002240bf6c0ef04ac0b004400535642886eb93fc04b9b888e433196792",
+    "public_path": "native-documents/application/round4-submission-local.txt",
+    "body_sha256": "f82d435bd4cde897fed72f188b2f241b79e93dafd3871c47d1c81828b87738dc"
+  },
+  {
+    "source": "files/application/round4-window-search.py.tex",
+    "revision": "9245544b39507cb48430c9f2e53877c96ff4c9e371bb7975a563c73858be382c",
+    "public_path": "native-documents/application/round4-window-search.py",
+    "body_sha256": "7b566c75cba2e814c89fd142e5733f6047496b85389a74847c4b16a2f5d4517d"
+  }
+]

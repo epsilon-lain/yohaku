@@ -1,0 +1,16 @@
+{
+  "at": 1794896945.1770794,
+  "identity": {
+    "pid": 401226,
+    "start": "5126208",
+    "state": "T"
+  },
+  "held_locks": [
+    "6: FLOCK  ADVISORY  WRITE 401226 08:30:1578232 0 EOF"
+  ],
+  "same_original_observer": true,
+  "model_workers_signalled": [],
+  "all_model_tasks_terminal_and_clean": true,
+  "shared_stop_preserved": true,
+  "new_authority": false
+}

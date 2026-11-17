@@ -1,0 +1,238 @@
+[
+  {
+    "event_seq": 2875,
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+    "task_id": "model-task-d1bc98e338842bb8ab774ca582b3e06d",
+    "id": "external/mochizuki/PANO/p011",
+    "revision": 1,
+    "artifact": "files/theory/round4-root-magnitude-core.zh.md.tex",
+    "explanation": "Actual original-page read; used only as a clearly labelled question/inspiration about preserved structures, compatibility and ambiguity. The finite signed-magnitude theorem has a separate elementary proof and does not invoke IUT, unreadable glyphs or any speed statement. No full page text reproduced.",
+    "preceding_full_read_events": [
+      2614
+    ],
+    "artifact_revision": "ed0dd0f10d6a42ce5bac91e1ef93323f490660a57b07b4f531ed019bcc100ca0",
+    "artifact_body_sha256": "8d63ab0ffbe56d8cf2100fb06c4be7295a192295665407f6faffd28ff356a7e7",
+    "literal_entry_id_in_artifact": false,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2877,
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+    "task_id": "model-task-d1bc98e338842bb8ab774ca582b3e06d",
+    "id": "external/mochizuki/PANO/p028",
+    "revision": 1,
+    "artifact": "files/theory/round4-root-magnitude-core.zh.md.tex",
+    "explanation": "Actual original-page read; used only as a clearly labelled question/inspiration about preserved structures, compatibility and ambiguity. The finite signed-magnitude theorem has a separate elementary proof and does not invoke IUT, unreadable glyphs or any speed statement. No full page text reproduced.",
+    "preceding_full_read_events": [
+      2616
+    ],
+    "artifact_revision": "ed0dd0f10d6a42ce5bac91e1ef93323f490660a57b07b4f531ed019bcc100ca0",
+    "artifact_body_sha256": "8d63ab0ffbe56d8cf2100fb06c4be7295a192295665407f6faffd28ff356a7e7",
+    "literal_entry_id_in_artifact": false,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2879,
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+    "task_id": "model-task-d1bc98e338842bb8ab774ca582b3e06d",
+    "id": "external/mochizuki/PANO/p029",
+    "revision": 1,
+    "artifact": "files/theory/round4-root-magnitude-core.zh.md.tex",
+    "explanation": "Actual original-page read; used only as a clearly labelled question/inspiration about preserved structures, compatibility and ambiguity. The finite signed-magnitude theorem has a separate elementary proof and does not invoke IUT, unreadable glyphs or any speed statement. No full page text reproduced.",
+    "preceding_full_read_events": [
+      2618
+    ],
+    "artifact_revision": "ed0dd0f10d6a42ce5bac91e1ef93323f490660a57b07b4f531ed019bcc100ca0",
+    "artifact_body_sha256": "8d63ab0ffbe56d8cf2100fb06c4be7295a192295665407f6faffd28ff356a7e7",
+    "literal_entry_id_in_artifact": false,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2882,
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+    "task_id": "model-task-9a68d4a32ccc7f6a6339c7d1ad70f5ef",
+    "id": "external/operation-universes-20261117-seed",
+    "revision": 1,
+    "artifact": "files/application/round4-protocol.json.tex",
+    "explanation": "仅采用双射搬运不自动减费及转换/执行/搜索分列的外部建模约束；本地交换恒等式另证，非外部实验或IUT数值定理。",
+    "preceding_full_read_events": [
+      2813
+    ],
+    "artifact_revision": "d2b2554a56d7eab4559b91dfdb8dfaecb394299ed01a43513eb77ca576c21551",
+    "artifact_body_sha256": "80f6bc4f5c06cc9a4076fe103cc9c7b1d1a1e55f321119f8a78b509404812a46",
+    "literal_entry_id_in_artifact": false,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2893,
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+    "task_id": "model-task-9a68d4a32ccc7f6a6339c7d1ad70f5ef",
+    "id": "external/mochizuki/PANO/p038",
+    "revision": 1,
+    "artifact": "files/application/round4-literature-reading.zh.md.tex",
+    "explanation": "仅借可读散文中的结构/标记及坐标比较警戒形成研究问题；公式未认证保持未辨。应用桥梁群字恒等式独立证明，不把IUT作为机器门数或速度定理。",
+    "preceding_full_read_events": [
+      2830
+    ],
+    "artifact_revision": "e880545bec8347723fd67f22ea3e085e687649759fce967436f7ac848fc1c839",
+    "artifact_body_sha256": "61167e338c7ed69fac491c1b380f5f6d05a42318f04da76b2cbf23fe0e2380e3",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2895,
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+    "task_id": "model-task-9a68d4a32ccc7f6a6339c7d1ad70f5ef",
+    "id": "external/mochizuki/PANO/p039",
+    "revision": 1,
+    "artifact": "files/application/round4-literature-reading.zh.md.tex",
+    "explanation": "仅借可读散文中的结构/标记及坐标比较警戒形成研究问题；公式未认证保持未辨。应用桥梁群字恒等式独立证明，不把IUT作为机器门数或速度定理。",
+    "preceding_full_read_events": [
+      2832
+    ],
+    "artifact_revision": "e880545bec8347723fd67f22ea3e085e687649759fce967436f7ac848fc1c839",
+    "artifact_body_sha256": "61167e338c7ed69fac491c1b380f5f6d05a42318f04da76b2cbf23fe0e2380e3",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2897,
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+    "task_id": "model-task-9a68d4a32ccc7f6a6339c7d1ad70f5ef",
+    "id": "external/mochizuki/PANO/p040",
+    "revision": 1,
+    "artifact": "files/application/round4-literature-reading.zh.md.tex",
+    "explanation": "仅借可读散文中的结构/标记及坐标比较警戒形成研究问题；公式未认证保持未辨。应用桥梁群字恒等式独立证明，不把IUT作为机器门数或速度定理。",
+    "preceding_full_read_events": [
+      2834
+    ],
+    "artifact_revision": "e880545bec8347723fd67f22ea3e085e687649759fce967436f7ac848fc1c839",
+    "artifact_body_sha256": "61167e338c7ed69fac491c1b380f5f6d05a42318f04da76b2cbf23fe0e2380e3",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2902,
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+    "id": "M-e3e7a0b3682b081e",
+    "revision": 1,
+    "artifact": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "explanation": "本稿实际呈现精确解析命题和自含证明，非独立验证声明。",
+    "preceding_full_read_events": [],
+    "artifact_revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "artifact_body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2904,
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+    "id": "external/operation-universes-20261117-seed",
+    "revision": 1,
+    "artifact": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "explanation": "实际用于区别外部运算配置/费用约定；没有采用其BFS或精确算术成本作为本机结果。",
+    "preceding_full_read_events": [
+      2820
+    ],
+    "artifact_revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "artifact_body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2906,
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+    "id": "external/mochizuki/IUT1/p001",
+    "revision": 1,
+    "artifact": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "explanation": "本稿文献分账表实际采用此精确页可辨散文，作为建模限制与非推论说明；未采用公式或IUT定理为线性命题证明。",
+    "preceding_full_read_events": [
+      2824
+    ],
+    "artifact_revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "artifact_body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2908,
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+    "id": "external/mochizuki/IUT1/p012",
+    "revision": 1,
+    "artifact": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "explanation": "本稿文献分账表实际采用此精确页可辨散文，作为建模限制与非推论说明；未采用公式或IUT定理为线性命题证明。",
+    "preceding_full_read_events": [
+      2826
+    ],
+    "artifact_revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "artifact_body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2910,
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+    "id": "external/mochizuki/IUT1/p013",
+    "revision": 1,
+    "artifact": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "explanation": "本稿文献分账表实际采用此精确页可辨散文，作为建模限制与非推论说明；未采用公式或IUT定理为线性命题证明。",
+    "preceding_full_read_events": [
+      2836
+    ],
+    "artifact_revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "artifact_body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2912,
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+    "id": "external/mochizuki/IUT1/p014",
+    "revision": 1,
+    "artifact": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "explanation": "本稿文献分账表实际采用此精确页可辨散文，作为建模限制与非推论说明；未采用公式或IUT定理为线性命题证明。",
+    "preceding_full_read_events": [
+      2838
+    ],
+    "artifact_revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "artifact_body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2914,
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+    "id": "external/mochizuki/IUT1/p015",
+    "revision": 1,
+    "artifact": "files/theory/round4-linear-operation-boundary.zh.md.tex",
+    "explanation": "本稿文献分账表实际采用此精确页可辨散文，作为建模限制与非推论说明；未采用公式或IUT定理为线性命题证明。",
+    "preceding_full_read_events": [
+      2840
+    ],
+    "artifact_revision": "f0adb5093c671f7937e2b038d73170a65738ba309f7f680060a14a78e5b07be2",
+    "artifact_body_sha256": "12a5bf1f76626647557cb4d489668c5dabbad85b87f422e640e375ae76ff83e2",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  },
+  {
+    "event_seq": 2928,
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+    "task_id": "model-task-d1bc98e338842bb8ab774ca582b3e06d",
+    "id": "M-2149d7062a0719a3",
+    "revision": 1,
+    "artifact": "files/theory/round4-progress.zh.md.tex",
+    "explanation": "New self-written progress note reports the exact signed-magnitude information theorem, with encoder knowledge and cost ledgers explicit; no IUT premise, independent review or computational gain inferred.",
+    "preceding_full_read_events": [],
+    "artifact_revision": "eab4b55a681bbd657f806a485ca8ea263bf6098d699b97794a8464d29d897dc7",
+    "artifact_body_sha256": "52077398a8fc7a80b656c79e60610373da00f7977c23a09d1b2f51b953838800",
+    "literal_entry_id_in_artifact": true,
+    "dependency_scope": "literature: model question/caveat only; independent proofs do not invoke IUT; external seed credited separately"
+  }
+]

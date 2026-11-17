@@ -1,0 +1,155 @@
+{
+  "kind": "private-literature-staging-only",
+  "status": "ready",
+  "sources": [
+    {
+      "id": "PANO",
+      "url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "pdf_filename": "mochizuki-panoramic-overview.pdf",
+      "sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "bytes": 372426,
+      "pdf_pages_verified": 45,
+      "source_bytes_verified": true,
+      "extraction": {
+        "status": "extracted_to_private_staging",
+        "engine": "bundled pypdf",
+        "pages": [
+          {
+            "pdf_index_zero_based": 10,
+            "printed_page": 11,
+            "filename": "PANO-page-011.txt",
+            "sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+            "text_characters": 2474,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 27,
+            "printed_page": 28,
+            "filename": "PANO-page-028.txt",
+            "sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698",
+            "text_characters": 2634,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 28,
+            "printed_page": 29,
+            "filename": "PANO-page-029.txt",
+            "sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03",
+            "text_characters": 2316,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 37,
+            "printed_page": 38,
+            "filename": "PANO-page-038.txt",
+            "sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea",
+            "text_characters": 2892,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 38,
+            "printed_page": 39,
+            "filename": "PANO-page-039.txt",
+            "sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd",
+            "text_characters": 3251,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 39,
+            "printed_page": 40,
+            "filename": "PANO-page-040.txt",
+            "sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d",
+            "text_characters": 2177,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          }
+        ]
+      },
+      "native_imported": false,
+      "native_read_verified": false
+    },
+    {
+      "id": "IUT1",
+      "url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20I.pdf",
+      "pdf_filename": "mochizuki-iut1.pdf",
+      "sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "bytes": 1280589,
+      "pdf_pages_verified": 186,
+      "source_bytes_verified": true,
+      "extraction": {
+        "status": "extracted_to_private_staging",
+        "engine": "bundled pypdf",
+        "pages": [
+          {
+            "pdf_index_zero_based": 0,
+            "printed_page": 1,
+            "filename": "IUT1-page-001.txt",
+            "sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a",
+            "text_characters": 2929,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 11,
+            "printed_page": 12,
+            "filename": "IUT1-page-012.txt",
+            "sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+            "text_characters": 2622,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 12,
+            "printed_page": 13,
+            "filename": "IUT1-page-013.txt",
+            "sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3",
+            "text_characters": 1828,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 13,
+            "printed_page": 14,
+            "filename": "IUT1-page-014.txt",
+            "sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0",
+            "text_characters": 2855,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          },
+          {
+            "pdf_index_zero_based": 14,
+            "printed_page": 15,
+            "filename": "IUT1-page-015.txt",
+            "sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306",
+            "text_characters": 2951,
+            "replacement_glyphs": 0,
+            "formula_quality": "not certified; original image review required for mathematical glyphs",
+            "extraction_engine": "bundled pypdf"
+          }
+        ]
+      },
+      "native_imported": false,
+      "native_read_verified": false
+    }
+  ],
+  "native_dispatch": false,
+  "native_imported": false,
+  "dependency_installed": false,
+  "prior_extractor_failures_retained": true,
+  "at": 1794895556.7694333
+}

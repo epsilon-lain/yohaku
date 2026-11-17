@@ -1,0 +1,60 @@
+{
+  "before": {
+    "experiment_id": "native-concept-transformations-sol-20261117-03",
+    "phase": "open",
+    "shared_stop": null,
+    "leaders": {
+      "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "application": "ai-node-0299a356d74db83b9ab4ebc7"
+    },
+    "members": [
+      "ai-node-60ce43c0fdb954913d5cf32f",
+      "ai-node-b912b62d9e95d94ddb26bfd6",
+      "ai-node-0299a356d74db83b9ab4ebc7"
+    ],
+    "native_turns_reserved": 3,
+    "native_turns_remaining": 3,
+    "remaining_seconds": 1398.2114164829254,
+    "provider_identity": "unknown; requested/native thread configuration separately recorded",
+    "provider_cost": "unknown",
+    "adaption_authority_used": false
+  },
+  "after": {
+    "experiment_id": "native-concept-transformations-sol-20261117-03",
+    "phase": "open",
+    "shared_stop": {
+      "reason": "Original native task failed; inspect before new admission",
+      "task_id": "model-task-d1bc98e338842bb8ab774ca582b3e06d",
+      "at": 1794896476.660932,
+      "new_dispatch_allowed": false
+    },
+    "leaders": {
+      "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "application": "ai-node-0299a356d74db83b9ab4ebc7"
+    },
+    "members": [
+      "ai-node-60ce43c0fdb954913d5cf32f",
+      "ai-node-b912b62d9e95d94ddb26bfd6",
+      "ai-node-0299a356d74db83b9ab4ebc7"
+    ],
+    "native_turns_reserved": 6,
+    "native_turns_remaining": 0,
+    "remaining_seconds": 228.5285460948944,
+    "provider_identity": "unknown; requested/native thread configuration separately recorded",
+    "provider_cost": "unknown",
+    "adaption_authority_used": false
+  },
+  "pending_queue": 0,
+  "previous_authority_reserved": 9,
+  "new_reserved": 3,
+  "total_reserved": 12,
+  "total_ceiling": 12,
+  "absolute_deadline_asia_shanghai": "2026-11-17 14:32:49",
+  "policy_sha256": "7a7f84933a045f52498951c5d2fdee623de08e28de58f2fc03f5ec6f1a5e9b31",
+  "policy_unchanged": true,
+  "new_phase_created": false,
+  "deadline_extended": false,
+  "old_liabilities_reset": false,
+  "new_inference_authority_required": true,
+  "missing_authority": "Any further native inference needs an explicitly authorized positive number of turns; after original deadline also a new numeric time window. This request grants neither."
+}

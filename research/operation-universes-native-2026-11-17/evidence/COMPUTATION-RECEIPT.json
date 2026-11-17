@@ -1,0 +1,100 @@
+{
+  "format": "yohaku-task/1",
+  "version": "yohaku-project-task/1",
+  "task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+  "request_id": "app-r4-07445-guarded-window-v1",
+  "project_id": "native-application",
+  "action": "round4-window-search",
+  "status": "done",
+  "state": "succeeded",
+  "status_source": "Rust chat object",
+  "event_seq": 402655158,
+  "ledger_version": 3,
+  "stdout_bytes": 1971,
+  "stderr_bytes": 0,
+  "phase": "validating fixed snapshot and sandbox",
+  "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+  "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+  "exit_code": 0,
+  "error": null,
+  "cancel": {
+    "at_ms": null,
+    "by": null,
+    "requested": false,
+    "result": null
+  },
+  "cancel_confirmed": false,
+  "execution": "ended",
+  "receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794896311.080269,
+    "output_complete": true,
+    "output_truncated": false,
+    "process": {
+      "pid": 478179,
+      "start": "5866518",
+      "state": "R"
+    }
+  },
+  "artifacts": [
+    {
+      "bytes": 21374,
+      "executable": false,
+      "id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb:round4-results.json",
+      "path": "round4-results.json",
+      "producer_task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+      "sha256": "59e9f7db0fccc4ddf30aff4b1c35ac2d944d17255328bea2c38532934d1be652",
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee"
+    },
+    {
+      "bytes": 11911,
+      "executable": false,
+      "id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb:round4-checkpoint.json",
+      "path": "round4-checkpoint.json",
+      "producer_task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+      "sha256": "8c597baa22ef74db892dcd4018dda3ea70118edda19a187364fab37566e97f78",
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee"
+    },
+    {
+      "bytes": 177,
+      "executable": false,
+      "id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb:round4-candidate.json",
+      "path": "round4-candidate.json",
+      "producer_task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+      "sha256": "5c0aa86250d7e42aeb7e50d62c171233ded1b798ee3ca619c0512c0a0214341c",
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee"
+    },
+    {
+      "bytes": 196,
+      "executable": false,
+      "id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb:round4-submission.txt",
+      "path": "round4-submission.txt",
+      "producer_task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+      "sha256": "f82d435bd4cde897fed72f188b2f241b79e93dafd3871c47d1c81828b87738dc",
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee"
+    },
+    {
+      "bytes": 1004,
+      "executable": false,
+      "id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb:round4-cli.json",
+      "path": "round4-cli.json",
+      "producer_task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+      "sha256": "8e1eff012c17f016781d2933a5291839d65193823fc0a315deb9ed0c1eee2d54",
+      "snapshot_id": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee",
+      "source_set": "00f15223d9906cb64ab18e730709c7e13c5c6b99f680ceec687849cd9c2a93ee"
+    }
+  ],
+  "output": {
+    "stdout": 1971,
+    "stderr": 0
+  },
+  "replay_allowed": false
+}

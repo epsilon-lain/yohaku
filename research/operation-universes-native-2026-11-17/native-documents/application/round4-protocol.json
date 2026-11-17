@@ -1,0 +1,48 @@
+{
+  "format": "round4-window-transform/1",
+  "user_event": 2411,
+  "challenge": "sac-07445",
+  "baseline": [
+    6,
+    4,
+    12,
+    1,
+    3,
+    6,
+    12,
+    2,
+    5,
+    6,
+    4,
+    2,
+    4,
+    16,
+    15
+  ],
+  "rank_cap": 3,
+  "window_lengths": [
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "bfs_radius": 3,
+  "max_states_per_entry": 15000,
+  "max_wrapper_calls": 400000,
+  "wall_seconds": 35,
+  "units": "expanded official primitive moves; search/restore/validation separately recorded",
+  "conversion": {
+    "offset": 2,
+    "old": [
+      12,
+      1
+    ],
+    "replacement": [
+      1,
+      12
+    ]
+  },
+  "scope": "single frozen development path; rank-capped radius3 endpoint replacements, not all shorter Stable paths",
+  "literature_in_snapshot": false
+}
