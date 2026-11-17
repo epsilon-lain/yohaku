@@ -1,0 +1,109 @@
+{
+  "attempts": [
+    {
+      "id": "1794913563765502321",
+      "command": "selfcheck",
+      "started": "2026-11-17T11:06:03.765509+00:00",
+      "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+      "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+      "before_counters": {},
+      "status": "completed",
+      "finished": "2026-11-17T11:06:03.815900+00:00",
+      "after_counters": {
+        "diagnostic_search_apply": 12717,
+        "diagnostic_verification_calls": 519,
+        "diagnostic_verification_apply": 3907
+      },
+      "consumed_counters": {
+        "diagnostic_search_apply": 12717,
+        "diagnostic_verification_calls": 519,
+        "diagnostic_verification_apply": 3907
+      }
+    },
+    {
+      "id": "1794913589711140867",
+      "command": "development",
+      "started": "2026-11-17T11:06:29.711148+00:00",
+      "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+      "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+      "before_counters": {
+        "diagnostic_search_apply": 12717,
+        "diagnostic_verification_calls": 519,
+        "diagnostic_verification_apply": 3907
+      },
+      "status": "completed",
+      "finished": "2026-11-17T11:06:30.035294+00:00",
+      "after_counters": {
+        "diagnostic_search_apply": 12717,
+        "diagnostic_verification_calls": 519,
+        "diagnostic_verification_apply": 3907,
+        "development_verification_calls": 24,
+        "development_verification_apply": 326,
+        "development_search_apply": 71542
+      },
+      "consumed_counters": {
+        "development_verification_calls": 24,
+        "development_verification_apply": 326,
+        "development_search_apply": 71542
+      }
+    }
+  ],
+  "counters": {
+    "diagnostic_search_apply": 12717,
+    "diagnostic_verification_calls": 519,
+    "diagnostic_verification_apply": 3907,
+    "development_verification_calls": 24,
+    "development_verification_apply": 326,
+    "development_search_apply": 71542
+  },
+  "armcase_consumption": {
+    "diagnostic:synthetic-12-to-4:baseline": {
+      "search_apply_calls": 2839,
+      "wall_seconds": 0.0041775999998208135
+    },
+    "diagnostic:synthetic-12-to-4:whole_object": {
+      "search_apply_calls": 5974,
+      "wall_seconds": 0.014177627999742981
+    },
+    "development:ms-train-0379:baseline": {
+      "search_apply_calls": 6968,
+      "wall_seconds": 0.009854948999418411
+    },
+    "development:ms-train-0379:whole_object": {
+      "search_apply_calls": 14204,
+      "wall_seconds": 0.04873791900172364
+    },
+    "development:ms-train-0160:baseline": {
+      "search_apply_calls": 2065,
+      "wall_seconds": 0.0026313510024920106
+    },
+    "development:ms-train-0160:whole_object": {
+      "search_apply_calls": 2889,
+      "wall_seconds": 0.00501120099943364
+    },
+    "development:ms-train-0013:baseline": {
+      "search_apply_calls": 7484,
+      "wall_seconds": 0.00918888100568438
+    },
+    "development:ms-train-0013:whole_object": {
+      "search_apply_calls": 15736,
+      "wall_seconds": 0.031717339996248484
+    },
+    "development:ms-train-0015:baseline": {
+      "search_apply_calls": 3613,
+      "wall_seconds": 0.004382409002573695
+    },
+    "development:ms-train-0015:whole_object": {
+      "search_apply_calls": 7485,
+      "wall_seconds": 0.014838957999018021
+    },
+    "development:sac-07445:baseline": {
+      "search_apply_calls": 3613,
+      "wall_seconds": 0.004618196995579638
+    },
+    "development:sac-07445:whole_object": {
+      "search_apply_calls": 7485,
+      "wall_seconds": 0.014557472000888083
+    }
+  }
+}

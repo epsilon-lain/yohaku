@@ -1,0 +1,1234 @@
+[
+  {
+    "case_id": "ms-train-0379",
+    "group": "development",
+    "arm": "baseline",
+    "original_moves": [
+      6,
+      4,
+      11,
+      4,
+      11,
+      2,
+      9,
+      0,
+      2,
+      4,
+      0,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "original_length": 17,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 6968,
+    "verification_apply_calls": 41,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [
+      {
+        "start": 10,
+        "end_exclusive": 16,
+        "removed_moves": [
+          0,
+          2,
+          5,
+          2,
+          8,
+          16
+        ],
+        "replacement_moves": [
+          15
+        ],
+        "family": "primitive",
+        "parameters": {
+          "move": 15
+        },
+        "predicted_length": 12,
+        "predicted_work": 87,
+        "predicted_peak": 13,
+        "endpoint": [
+          [
+            1
+          ]
+        ],
+        "new_moves": [
+          6,
+          4,
+          11,
+          4,
+          11,
+          2,
+          9,
+          0,
+          2,
+          4,
+          15,
+          15
+        ],
+        "official_verdict": {
+          "ok": true,
+          "length": 12,
+          "peak_total_relator_length": 13,
+          "work": 87,
+          "certificate_hash": "sha256:a3def9214bafc57e18c44060b33e16c508e6088101fe05275bfaf6f80694bd59"
+        },
+        "selection_scope": "globally best feasible enumerated candidate; full configured library exhausted"
+      }
+    ],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 17,
+        "candidate_routes_started": 4112,
+        "candidate_routes_completed": 245,
+        "inapplicable": {
+          "destabilize_precondition": 27,
+          "relator_out_of_rank": 3456,
+          "generator_out_of_rank": 384
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 2,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 2,
+        "exhaustive": true
+      },
+      {
+        "iteration": 1,
+        "starting_length": 12,
+        "candidate_routes_started": 2827,
+        "candidate_routes_completed": 167,
+        "inapplicable": {
+          "destabilize_precondition": 20,
+          "relator_out_of_rank": 2376,
+          "generator_out_of_rank": 264
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 17,
+      "peak_total_relator_length": 13,
+      "work": 101,
+      "certificate_hash": "sha256:9b2c8b952a18ddc6d37b352115a8dc44058fd1989a5b9ecbf70052a6ebb7696e"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      4,
+      11,
+      4,
+      11,
+      2,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 13,
+      "work": 87,
+      "certificate_hash": "sha256:a3def9214bafc57e18c44060b33e16c508e6088101fe05275bfaf6f80694bd59"
+    },
+    "final_length": 12,
+    "primitive_length_saved": 5,
+    "work_saved": 14,
+    "status": "completed",
+    "wall_seconds": 0.009854948999418411,
+    "cumulative_search_apply_calls": 6968,
+    "cumulative_wall_seconds": 0.009854948999418411
+  },
+  {
+    "case_id": "ms-train-0379",
+    "group": "development",
+    "arm": "whole_object",
+    "original_moves": [
+      6,
+      4,
+      11,
+      4,
+      11,
+      2,
+      9,
+      0,
+      2,
+      4,
+      0,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "original_length": 17,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 14204,
+    "verification_apply_calls": 41,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [
+      {
+        "start": 10,
+        "end_exclusive": 16,
+        "removed_moves": [
+          0,
+          2,
+          5,
+          2,
+          8,
+          16
+        ],
+        "replacement_moves": [
+          15
+        ],
+        "family": "primitive",
+        "parameters": {
+          "move": 15
+        },
+        "predicted_length": 12,
+        "predicted_work": 87,
+        "predicted_peak": 13,
+        "endpoint": [
+          [
+            1
+          ]
+        ],
+        "new_moves": [
+          6,
+          4,
+          11,
+          4,
+          11,
+          2,
+          9,
+          0,
+          2,
+          4,
+          15,
+          15
+        ],
+        "official_verdict": {
+          "ok": true,
+          "length": 12,
+          "peak_total_relator_length": 13,
+          "work": 87,
+          "certificate_hash": "sha256:a3def9214bafc57e18c44060b33e16c508e6088101fe05275bfaf6f80694bd59"
+        },
+        "selection_scope": "globally best feasible enumerated candidate; full configured library exhausted"
+      }
+    ],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 17,
+        "candidate_routes_started": 4828,
+        "candidate_routes_completed": 961,
+        "inapplicable": {
+          "destabilize_precondition": 27,
+          "relator_out_of_rank": 3456,
+          "generator_out_of_rank": 384
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 2,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 2,
+        "exhaustive": true
+      },
+      {
+        "iteration": 1,
+        "starting_length": 12,
+        "candidate_routes_started": 3183,
+        "candidate_routes_completed": 523,
+        "inapplicable": {
+          "destabilize_precondition": 20,
+          "relator_out_of_rank": 2376,
+          "generator_out_of_rank": 264
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 17,
+      "peak_total_relator_length": 13,
+      "work": 101,
+      "certificate_hash": "sha256:9b2c8b952a18ddc6d37b352115a8dc44058fd1989a5b9ecbf70052a6ebb7696e"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      4,
+      11,
+      4,
+      11,
+      2,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 13,
+      "work": 87,
+      "certificate_hash": "sha256:a3def9214bafc57e18c44060b33e16c508e6088101fe05275bfaf6f80694bd59"
+    },
+    "final_length": 12,
+    "primitive_length_saved": 5,
+    "work_saved": 14,
+    "status": "completed",
+    "wall_seconds": 0.04873791900172364,
+    "cumulative_search_apply_calls": 14204,
+    "cumulative_wall_seconds": 0.04873791900172364
+  },
+  {
+    "case_id": "ms-train-0160",
+    "group": "development",
+    "arm": "baseline",
+    "original_moves": [
+      6,
+      4,
+      2,
+      9,
+      1,
+      4,
+      1,
+      16,
+      15
+    ],
+    "original_length": 9,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 2065,
+    "verification_apply_calls": 18,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 9,
+        "candidate_routes_started": 2056,
+        "candidate_routes_completed": 123,
+        "inapplicable": {
+          "destabilize_precondition": 13,
+          "relator_out_of_rank": 1728,
+          "generator_out_of_rank": 192
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 9,
+      "peak_total_relator_length": 12,
+      "work": 47,
+      "certificate_hash": "sha256:c35c8f0f3a47f2cf01ec5f629a29a5e85d0f2bc192055d6bdeb9be8c744017f7"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      4,
+      2,
+      9,
+      1,
+      4,
+      1,
+      16,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 9,
+      "peak_total_relator_length": 12,
+      "work": 47,
+      "certificate_hash": "sha256:c35c8f0f3a47f2cf01ec5f629a29a5e85d0f2bc192055d6bdeb9be8c744017f7"
+    },
+    "final_length": 9,
+    "primitive_length_saved": 0,
+    "work_saved": 0,
+    "status": "completed",
+    "wall_seconds": 0.0026313510024920106,
+    "cumulative_search_apply_calls": 2065,
+    "cumulative_wall_seconds": 0.0026313510024920106
+  },
+  {
+    "case_id": "ms-train-0160",
+    "group": "development",
+    "arm": "whole_object",
+    "original_moves": [
+      6,
+      4,
+      2,
+      9,
+      1,
+      4,
+      1,
+      16,
+      15
+    ],
+    "original_length": 9,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 2889,
+    "verification_apply_calls": 18,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 9,
+        "candidate_routes_started": 2196,
+        "candidate_routes_completed": 263,
+        "inapplicable": {
+          "destabilize_precondition": 13,
+          "relator_out_of_rank": 1728,
+          "generator_out_of_rank": 192
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 9,
+      "peak_total_relator_length": 12,
+      "work": 47,
+      "certificate_hash": "sha256:c35c8f0f3a47f2cf01ec5f629a29a5e85d0f2bc192055d6bdeb9be8c744017f7"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      4,
+      2,
+      9,
+      1,
+      4,
+      1,
+      16,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 9,
+      "peak_total_relator_length": 12,
+      "work": 47,
+      "certificate_hash": "sha256:c35c8f0f3a47f2cf01ec5f629a29a5e85d0f2bc192055d6bdeb9be8c744017f7"
+    },
+    "final_length": 9,
+    "primitive_length_saved": 0,
+    "work_saved": 0,
+    "status": "completed",
+    "wall_seconds": 0.00501120099943364,
+    "cumulative_search_apply_calls": 2889,
+    "cumulative_wall_seconds": 0.00501120099943364
+  },
+  {
+    "case_id": "ms-train-0013",
+    "group": "development",
+    "arm": "baseline",
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      0,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "original_length": 18,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 7484,
+    "verification_apply_calls": 44,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [
+      {
+        "start": 11,
+        "end_exclusive": 17,
+        "removed_moves": [
+          0,
+          2,
+          5,
+          2,
+          8,
+          16
+        ],
+        "replacement_moves": [
+          15
+        ],
+        "family": "primitive",
+        "parameters": {
+          "move": 15
+        },
+        "predicted_length": 13,
+        "predicted_work": 122,
+        "predicted_peak": 17,
+        "endpoint": [
+          [
+            1
+          ]
+        ],
+        "new_moves": [
+          6,
+          2,
+          9,
+          9,
+          9,
+          9,
+          9,
+          9,
+          0,
+          2,
+          4,
+          15,
+          15
+        ],
+        "official_verdict": {
+          "ok": true,
+          "length": 13,
+          "peak_total_relator_length": 17,
+          "work": 122,
+          "certificate_hash": "sha256:3a2e4fb293ce0285e42138d975ee44710a2aeabe805a5dcc258155938638d687"
+        },
+        "selection_scope": "globally best feasible enumerated candidate; full configured library exhausted"
+      }
+    ],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 18,
+        "candidate_routes_started": 4369,
+        "candidate_routes_completed": 260,
+        "inapplicable": {
+          "destabilize_precondition": 29,
+          "relator_out_of_rank": 3672,
+          "generator_out_of_rank": 408
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 2,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 2,
+        "exhaustive": true
+      },
+      {
+        "iteration": 1,
+        "starting_length": 13,
+        "candidate_routes_started": 3084,
+        "candidate_routes_completed": 182,
+        "inapplicable": {
+          "destabilize_precondition": 22,
+          "relator_out_of_rank": 2592,
+          "generator_out_of_rank": 288
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 18,
+      "peak_total_relator_length": 17,
+      "work": 136,
+      "certificate_hash": "sha256:47e1a01f0b76416c9750341d0669a2e075cac79961a4afb3770b6b87348dadcf"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 17,
+      "work": 122,
+      "certificate_hash": "sha256:3a2e4fb293ce0285e42138d975ee44710a2aeabe805a5dcc258155938638d687"
+    },
+    "final_length": 13,
+    "primitive_length_saved": 5,
+    "work_saved": 14,
+    "status": "completed",
+    "wall_seconds": 0.00918888100568438,
+    "cumulative_search_apply_calls": 7484,
+    "cumulative_wall_seconds": 0.00918888100568438
+  },
+  {
+    "case_id": "ms-train-0013",
+    "group": "development",
+    "arm": "whole_object",
+    "original_moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      0,
+      2,
+      5,
+      2,
+      8,
+      16,
+      15
+    ],
+    "original_length": 18,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 15736,
+    "verification_apply_calls": 44,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [
+      {
+        "start": 11,
+        "end_exclusive": 17,
+        "removed_moves": [
+          0,
+          2,
+          5,
+          2,
+          8,
+          16
+        ],
+        "replacement_moves": [
+          15
+        ],
+        "family": "primitive",
+        "parameters": {
+          "move": 15
+        },
+        "predicted_length": 13,
+        "predicted_work": 122,
+        "predicted_peak": 17,
+        "endpoint": [
+          [
+            1
+          ]
+        ],
+        "new_moves": [
+          6,
+          2,
+          9,
+          9,
+          9,
+          9,
+          9,
+          9,
+          0,
+          2,
+          4,
+          15,
+          15
+        ],
+        "official_verdict": {
+          "ok": true,
+          "length": 13,
+          "peak_total_relator_length": 17,
+          "work": 122,
+          "certificate_hash": "sha256:3a2e4fb293ce0285e42138d975ee44710a2aeabe805a5dcc258155938638d687"
+        },
+        "selection_scope": "globally best feasible enumerated candidate; full configured library exhausted"
+      }
+    ],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 18,
+        "candidate_routes_started": 5157,
+        "candidate_routes_completed": 1048,
+        "inapplicable": {
+          "destabilize_precondition": 29,
+          "relator_out_of_rank": 3672,
+          "generator_out_of_rank": 408
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 2,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 2,
+        "exhaustive": true
+      },
+      {
+        "iteration": 1,
+        "starting_length": 13,
+        "candidate_routes_started": 3512,
+        "candidate_routes_completed": 610,
+        "inapplicable": {
+          "destabilize_precondition": 22,
+          "relator_out_of_rank": 2592,
+          "generator_out_of_rank": 288
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 18,
+      "peak_total_relator_length": 17,
+      "work": 136,
+      "certificate_hash": "sha256:47e1a01f0b76416c9750341d0669a2e075cac79961a4afb3770b6b87348dadcf"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 17,
+      "work": 122,
+      "certificate_hash": "sha256:3a2e4fb293ce0285e42138d975ee44710a2aeabe805a5dcc258155938638d687"
+    },
+    "final_length": 13,
+    "primitive_length_saved": 5,
+    "work_saved": 14,
+    "status": "completed",
+    "wall_seconds": 0.031717339996248484,
+    "cumulative_search_apply_calls": 15736,
+    "cumulative_wall_seconds": 0.031717339996248484
+  },
+  {
+    "case_id": "ms-train-0015",
+    "group": "development",
+    "arm": "baseline",
+    "original_moves": [
+      0,
+      4,
+      1,
+      2,
+      0,
+      9,
+      4,
+      0,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "original_length": 15,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 3613,
+    "verification_apply_calls": 30,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 15,
+        "candidate_routes_started": 3598,
+        "candidate_routes_completed": 213,
+        "inapplicable": {
+          "destabilize_precondition": 25,
+          "relator_out_of_rank": 3024,
+          "generator_out_of_rank": 336
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 8,
+      "work": 66,
+      "certificate_hash": "sha256:0f7b85edb244a60e83643c44d07f208b16e04f17aa33326dba95bdfaf045d648"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      0,
+      4,
+      1,
+      2,
+      0,
+      9,
+      4,
+      0,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 8,
+      "work": 66,
+      "certificate_hash": "sha256:0f7b85edb244a60e83643c44d07f208b16e04f17aa33326dba95bdfaf045d648"
+    },
+    "final_length": 15,
+    "primitive_length_saved": 0,
+    "work_saved": 0,
+    "status": "completed",
+    "wall_seconds": 0.004382409002573695,
+    "cumulative_search_apply_calls": 3613,
+    "cumulative_wall_seconds": 0.004382409002573695
+  },
+  {
+    "case_id": "ms-train-0015",
+    "group": "development",
+    "arm": "whole_object",
+    "original_moves": [
+      0,
+      4,
+      1,
+      2,
+      0,
+      9,
+      4,
+      0,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "original_length": 15,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 7485,
+    "verification_apply_calls": 30,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 15,
+        "candidate_routes_started": 4170,
+        "candidate_routes_completed": 785,
+        "inapplicable": {
+          "destabilize_precondition": 25,
+          "relator_out_of_rank": 3024,
+          "generator_out_of_rank": 336
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 8,
+      "work": 66,
+      "certificate_hash": "sha256:0f7b85edb244a60e83643c44d07f208b16e04f17aa33326dba95bdfaf045d648"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      0,
+      4,
+      1,
+      2,
+      0,
+      9,
+      4,
+      0,
+      2,
+      7,
+      2,
+      0,
+      1,
+      16,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 8,
+      "work": 66,
+      "certificate_hash": "sha256:0f7b85edb244a60e83643c44d07f208b16e04f17aa33326dba95bdfaf045d648"
+    },
+    "final_length": 15,
+    "primitive_length_saved": 0,
+    "work_saved": 0,
+    "status": "completed",
+    "wall_seconds": 0.014838957999018021,
+    "cumulative_search_apply_calls": 7485,
+    "cumulative_wall_seconds": 0.014838957999018021
+  },
+  {
+    "case_id": "sac-07445",
+    "group": "development",
+    "arm": "baseline",
+    "original_moves": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "original_length": 15,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 3613,
+    "verification_apply_calls": 30,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 15,
+        "candidate_routes_started": 3598,
+        "candidate_routes_completed": 212,
+        "inapplicable": {
+          "destabilize_precondition": 26,
+          "relator_out_of_rank": 3024,
+          "generator_out_of_rank": 336
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+    },
+    "final_length": 15,
+    "primitive_length_saved": 0,
+    "work_saved": 0,
+    "status": "completed",
+    "wall_seconds": 0.004618196995579638,
+    "cumulative_search_apply_calls": 3613,
+    "cumulative_wall_seconds": 0.004618196995579638
+  },
+  {
+    "case_id": "sac-07445",
+    "group": "development",
+    "arm": "whole_object",
+    "original_moves": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "original_length": 15,
+    "script_sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3",
+    "config_sha256": "42a2fea46dec90880ff5e10c4d9cc55fc67516d78a74074146beb5667d42cd92",
+    "search_apply_calls": 7485,
+    "verification_apply_calls": 30,
+    "remaining_apply_budget": 50000,
+    "remaining_wall_budget": 15.0,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 0,
+      "wall_seconds": 0.0
+    },
+    "accepted": [],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 15,
+        "candidate_routes_started": 4170,
+        "candidate_routes_completed": 784,
+        "inapplicable": {
+          "destabilize_precondition": 26,
+          "relator_out_of_rank": 3024,
+          "generator_out_of_rank": 336
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 0,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+    },
+    "final_length": 15,
+    "primitive_length_saved": 0,
+    "work_saved": 0,
+    "status": "completed",
+    "wall_seconds": 0.014557472000888083,
+    "cumulative_search_apply_calls": 7485,
+    "cumulative_wall_seconds": 0.014557472000888083
+  }
+]

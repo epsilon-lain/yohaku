@@ -1,0 +1,374 @@
+[
+  {
+    "challenge_id": "sac-train-0379",
+    "group": "development",
+    "arm": "baseline",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      4,
+      11,
+      4,
+      11,
+      2,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 13,
+      "work": 87,
+      "certificate_hash": "sha256:cafe3e11171e21cc595114671017d7a3172085e36571b12073fb831c2b71712d"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0379",
+    "group": "development",
+    "arm": "whole_object",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      4,
+      11,
+      4,
+      11,
+      2,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 13,
+      "work": 87,
+      "certificate_hash": "sha256:cafe3e11171e21cc595114671017d7a3172085e36571b12073fb831c2b71712d"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0013",
+    "group": "development",
+    "arm": "baseline",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 17,
+      "work": 122,
+      "certificate_hash": "sha256:9bb11fdb1309237daf923e17ead9a043276d8c57d2ac05ce41dc247af150e0ea"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0013",
+    "group": "development",
+    "arm": "whole_object",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 17,
+      "work": 122,
+      "certificate_hash": "sha256:9bb11fdb1309237daf923e17ead9a043276d8c57d2ac05ce41dc247af150e0ea"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0014",
+    "group": "test",
+    "arm": "baseline",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 14,
+      "peak_total_relator_length": 19,
+      "work": 145,
+      "certificate_hash": "sha256:40dceef7e91abd9f2c6dc1ce08ca93cf2348b1bd6a969446bac08e4747924864"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0014",
+    "group": "test",
+    "arm": "whole_object",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 14,
+      "peak_total_relator_length": 19,
+      "work": 145,
+      "certificate_hash": "sha256:40dceef7e91abd9f2c6dc1ce08ca93cf2348b1bd6a969446bac08e4747924864"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0081",
+    "group": "test",
+    "arm": "baseline",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      4,
+      2,
+      9,
+      0,
+      2,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 11,
+      "work": 42,
+      "certificate_hash": "sha256:26cfd567712f5669890c9ecfd1ef30da2e71fb5ba616b455511750d97c49e1d8"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0081",
+    "group": "test",
+    "arm": "whole_object",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      4,
+      2,
+      9,
+      0,
+      2,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 8,
+      "peak_total_relator_length": 11,
+      "work": 42,
+      "certificate_hash": "sha256:26cfd567712f5669890c9ecfd1ef30da2e71fb5ba616b455511750d97c49e1d8"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0235",
+    "group": "test",
+    "arm": "baseline",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      0,
+      9,
+      4,
+      1,
+      8,
+      2,
+      9,
+      9,
+      1,
+      2,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 15,
+      "work": 90,
+      "certificate_hash": "sha256:a071ef868b41c85cf36ec5ace20715b7c2a3eab2f05c5a6c47bcfe7bcad6d220"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0235",
+    "group": "test",
+    "arm": "whole_object",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      0,
+      9,
+      4,
+      1,
+      8,
+      2,
+      9,
+      9,
+      1,
+      2,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 15,
+      "work": 90,
+      "certificate_hash": "sha256:a071ef868b41c85cf36ec5ace20715b7c2a3eab2f05c5a6c47bcfe7bcad6d220"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0031",
+    "group": "test",
+    "arm": "baseline",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      1,
+      2,
+      0,
+      6,
+      2,
+      7,
+      7,
+      1,
+      4,
+      4,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 13,
+      "work": 95,
+      "certificate_hash": "sha256:30e7f5b1d6e02f34e1587a45d677d22c9602c11eb96669a434b72a9857ffbb06"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0031",
+    "group": "test",
+    "arm": "whole_object",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      1,
+      2,
+      0,
+      6,
+      2,
+      7,
+      7,
+      1,
+      4,
+      4,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 13,
+      "peak_total_relator_length": 13,
+      "work": 95,
+      "certificate_hash": "sha256:30e7f5b1d6e02f34e1587a45d677d22c9602c11eb96669a434b72a9857ffbb06"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0009",
+    "group": "test",
+    "arm": "baseline",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 9,
+      "peak_total_relator_length": 9,
+      "work": 50,
+      "certificate_hash": "sha256:f8334761405e349a051cb0525c4aba3313d1932ab685b71c55f53cd7faf49e0e"
+    }
+  },
+  {
+    "challenge_id": "sac-train-0009",
+    "group": "test",
+    "arm": "whole_object",
+    "move_spec_version": "sac-r8-v1",
+    "moves": [
+      6,
+      2,
+      9,
+      9,
+      0,
+      2,
+      4,
+      15,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 9,
+      "peak_total_relator_length": 9,
+      "work": 50,
+      "certificate_hash": "sha256:f8334761405e349a051cb0525c4aba3313d1932ab685b71c55f53cd7faf49e0e"
+    }
+  }
+]

@@ -1,0 +1,73 @@
+{
+  "created": "2026-11-17T11:09:29.842623+00:00",
+  "execution": "cloud auxiliary application study",
+  "native_yohaku_session_connected": false,
+  "native_team_started": false,
+  "official_commit_asserted_by_fixed_protocol": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "source_checkout_has_git_metadata": false,
+  "source_checks": {
+    "competition/examples/stable_training_424.json": {
+      "git_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235",
+      "sha256": "6fb92c5a8224d0f227fb4fb78bacea6a2d5716272bd5d1ea40ee5eacf037f6c0"
+    },
+    "competition/tools/verifier/core.py": {
+      "git_blob": "0a5da5fe6e3e42c96877734dad46b155a69c02b2",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+    },
+    "competition/tools/verifier/stable_core.py": {
+      "git_blob": "af48e32f766dbcd0cad0becd8c1c4edb4358efac",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+    },
+    "competition/tools/verifier/canon.py": {
+      "git_blob": "93175152acd876566ff60bbfaf7cd90cd8cd2fa9",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+    },
+    "competition/tools/verifier/data/manifest.json": {
+      "git_blob": "accdb626ee08a06beea3f88dc7f351514c99eb27",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+    },
+    "competition/examples/training_manifest.json": {
+      "git_blob": "3f2fba9fc7ca1c6136b33d0941d18adab40aa94f",
+      "sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c"
+    }
+  },
+  "loader": "minimal types.ModuleType package: canon, core, stable_core; exec(compile(exact hash-checked bytes)) without verifier.__init__ or pyc loading",
+  "API_accounting": "stable_core.apply_move wrapped once; verify internal apply calls use the same wrapper under a separate phase; core.apply_move is not wrapped, and is not called by stable_core.apply_move",
+  "source_route": "preexisting cloud cache under ac_official; no source fetched and no host filesystem/session accessed",
+  "permissions": "parent-directed, user-authorized fixed public certificate postprocessing; no platform/leaderboard access, no submission, no direct GitHub writes",
+  "limits": {
+    "max_path_length": 100000,
+    "max_total_relator_length": 10000,
+    "max_work": 5000000
+  },
+  "config": {
+    "version": "proof-reconstruction-cloud-r2-v1",
+    "implementation_revision": 2,
+    "selection_salt": "proof_reconstruction_cloud_r2_v1",
+    "search_apply_cap_per_arm_case": 50000,
+    "search_wall_seconds_per_arm_case": 15,
+    "total_armcase_search_apply_cap": 2100000,
+    "total_verification_apply_cap_including_diagnostics": 30000,
+    "application_verification_apply_cap_including_diagnostics": 25000,
+    "external_verification_apply_reservations": {
+      "theory": 2000,
+      "root_independent_recheck": 3000
+    },
+    "maximum_accepted_rewrites": 3,
+    "max_h_length": 2,
+    "test_count": 16,
+    "maximum_test_original_length": 20,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "official_max_rank": 8,
+    "candidate_order": "start index; loops; primitive move id; left(target,donor,sign); conjugated_donor(h length, h lexical, target,donor,sign)",
+    "choice_key": "full resulting primitive length, full work, full peak, start, end-exclusive, full expanded move list",
+    "primitive_prefilter": "none: all 257 ids attempted where a one-step strict shortening is possible; official inapplicability counted",
+    "macro_expansion": "every candidate primitive is individually passed to official apply_move; no prefix memoization or uncharged algebraic endpoint",
+    "scope": "fixed known-certificate compression, not a from-scratch solver or original-v1-solver comparison"
+  },
+  "source_access_boundary": "full public JSON may be decoded; excluded prior-evaluation move arrays are never indexed, printed, replayed, or analyzed; no structure_discovery_next_20261117 files opened"
+}

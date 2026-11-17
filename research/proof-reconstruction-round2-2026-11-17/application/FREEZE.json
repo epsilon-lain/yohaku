@@ -1,0 +1,168 @@
+{
+  "frozen_at": "2026-11-17T11:09:21.970800+00:00",
+  "version": "proof-reconstruction-cloud-r2-v1",
+  "script_sha256": "27deee0cbf455525abdeb7b7e513e54f2a148ebc5667f38c5b0383826c2a5500",
+  "config_sha256": "45cd5ff906096591416665ca968e0306f3fb6585a2b7a6b46e79ccba7991fa2f",
+  "config": {
+    "version": "proof-reconstruction-cloud-r2-v1",
+    "implementation_revision": 2,
+    "selection_salt": "proof_reconstruction_cloud_r2_v1",
+    "search_apply_cap_per_arm_case": 50000,
+    "search_wall_seconds_per_arm_case": 15,
+    "total_armcase_search_apply_cap": 2100000,
+    "total_verification_apply_cap_including_diagnostics": 30000,
+    "application_verification_apply_cap_including_diagnostics": 25000,
+    "external_verification_apply_reservations": {
+      "theory": 2000,
+      "root_independent_recheck": 3000
+    },
+    "maximum_accepted_rewrites": 3,
+    "max_h_length": 2,
+    "test_count": 16,
+    "maximum_test_original_length": 20,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "official_max_rank": 8,
+    "candidate_order": "start index; loops; primitive move id; left(target,donor,sign); conjugated_donor(h length, h lexical, target,donor,sign)",
+    "choice_key": "full resulting primitive length, full work, full peak, start, end-exclusive, full expanded move list",
+    "primitive_prefilter": "none: all 257 ids attempted where a one-step strict shortening is possible; official inapplicability counted",
+    "macro_expansion": "every candidate primitive is individually passed to official apply_move; no prefix memoization or uncharged algebraic endpoint",
+    "scope": "fixed known-certificate compression, not a from-scratch solver or original-v1-solver comparison"
+  },
+  "protocol_sha256": "bdf38147497892b6891c6171232e03011c037d56628e9a057c9f65c6bc03f8ba",
+  "source_hashes": {
+    "competition/examples/stable_training_424.json": {
+      "git_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235",
+      "sha256": "6fb92c5a8224d0f227fb4fb78bacea6a2d5716272bd5d1ea40ee5eacf037f6c0"
+    },
+    "competition/tools/verifier/core.py": {
+      "git_blob": "0a5da5fe6e3e42c96877734dad46b155a69c02b2",
+      "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+    },
+    "competition/tools/verifier/stable_core.py": {
+      "git_blob": "af48e32f766dbcd0cad0becd8c1c4edb4358efac",
+      "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+    },
+    "competition/tools/verifier/canon.py": {
+      "git_blob": "93175152acd876566ff60bbfaf7cd90cd8cd2fa9",
+      "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+    },
+    "competition/tools/verifier/data/manifest.json": {
+      "git_blob": "accdb626ee08a06beea3f88dc7f351514c99eb27",
+      "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+    },
+    "competition/examples/training_manifest.json": {
+      "git_blob": "3f2fba9fc7ca1c6136b33d0941d18adab40aa94f",
+      "sha256": "a4ed3ecc7df5e5c3d8dbc5b001597d0bec4010f09398cf501e524e5e99b3163c"
+    }
+  },
+  "selected_public_training_tests": [
+    {
+      "training_id": "ms-train-0108",
+      "selection_sha256": "023eae300fc72ac2578e75c243d54a04675e1110a6a020d711dd92811b86d524",
+      "declared_length": 19
+    },
+    {
+      "training_id": "ms-train-0014",
+      "selection_sha256": "02f925fd52ca7c37f29d0bde85e0b56092dd68b298224d3e434aa67c2223b9f3",
+      "declared_length": 19
+    },
+    {
+      "training_id": "ms-train-0099",
+      "selection_sha256": "093f3ecbc36dc08e5f31162e37950c095847e54d9e1714df17c974414f83a0c3",
+      "declared_length": 17
+    },
+    {
+      "training_id": "ms-train-0081",
+      "selection_sha256": "0a769ff870139d099d7303f9236f8cad7ac28dcb32e3793725e26ea2bec25de7",
+      "declared_length": 13
+    },
+    {
+      "training_id": "ms-train-0235",
+      "selection_sha256": "0d348275a35ca47d018826bfe895397823d9fa2fe9b852ed9758c7ae64daa067",
+      "declared_length": 17
+    },
+    {
+      "training_id": "ms-train-0231",
+      "selection_sha256": "0fa49aa0963631dff114f9ce61f6788fc9201dc5fc6ff69d78fb7cc8b031076e",
+      "declared_length": 18
+    },
+    {
+      "training_id": "ms-train-0062",
+      "selection_sha256": "10f3e676f6ff18ee078cdb6ff97d01b4290140e79e71a207fe489fdfef2486e9",
+      "declared_length": 20
+    },
+    {
+      "training_id": "ms-train-0033",
+      "selection_sha256": "151f6afe6dec61160d5950e99ab5272430da37551af51175cc9b0e8977032a89",
+      "declared_length": 19
+    },
+    {
+      "training_id": "ms-train-0031",
+      "selection_sha256": "1856938da640a10e30a634c6704bb33a7d67885fcbf6682779b77b915744c86d",
+      "declared_length": 18
+    },
+    {
+      "training_id": "ms-train-0373",
+      "selection_sha256": "1fdd879205678157fc55a2498d75d26aed741aeac66fec446ff9a341f12bfaf9",
+      "declared_length": 15
+    },
+    {
+      "training_id": "ms-train-0258",
+      "selection_sha256": "20da51e2d2d051ca77b5d2167a871f5113adb23a71dc477ba48fb5a80c673675",
+      "declared_length": 13
+    },
+    {
+      "training_id": "ms-train-0286",
+      "selection_sha256": "218e626ac77a88793f51d4167f211dbddee0208e36b499e84296a0b9c84864f1",
+      "declared_length": 15
+    },
+    {
+      "training_id": "ms-train-0201",
+      "selection_sha256": "25c28df3293c1a41961c21f0a3cc402f35c35bba52a9eb4a017c217fe7750a48",
+      "declared_length": 20
+    },
+    {
+      "training_id": "ms-train-0380",
+      "selection_sha256": "26151ff0c371df50ba29198e4f9dc8c95a1454e710f2b0edb7c4bb250b70883e",
+      "declared_length": 16
+    },
+    {
+      "training_id": "ms-train-0009",
+      "selection_sha256": "28e920b65128a1f2c1041525e5ac8f6f7cab596eb4643d6bdafa21f9ad90d79e",
+      "declared_length": 14
+    },
+    {
+      "training_id": "ms-train-0218",
+      "selection_sha256": "295b9406541166aa7e811f300615debc0a21c961985206df482d05d9f3d57335",
+      "declared_length": 18
+    }
+  ],
+  "development_ids": [
+    "ms-train-0379",
+    "ms-train-0160",
+    "ms-train-0013",
+    "ms-train-0015"
+  ],
+  "reserved_prior_evaluation_ids_excluded": [
+    "ms-train-0234",
+    "ms-train-0316",
+    "ms-train-0154",
+    "ms-train-0107"
+  ],
+  "development_results_sha256": "540d72fe5b0514192ed719298182caa404742013856938194a2abc696c8e78fa",
+  "selfcheck_sha256": "ef499ea2b45498f59ae853cbd77c643e555f52f909824a4dfee290d2559e4113",
+  "declaration": "selected test move arrays have not been indexed, inspected, replayed, or analyzed by this application before this freeze; metadata selection only",
+  "selection_pool_count": 126,
+  "counter_snapshot": {
+    "diagnostic_search_apply": 25434,
+    "diagnostic_verification_calls": 1038,
+    "diagnostic_verification_apply": 7814,
+    "development_verification_calls": 48,
+    "development_verification_apply": 652,
+    "development_search_apply": 143084
+  }
+}

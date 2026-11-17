@@ -1,0 +1,292 @@
+[
+  {
+    "case_id": "synthetic-12-to-4",
+    "group": "diagnostic",
+    "arm": "baseline",
+    "source_training_id": null,
+    "budget_identity": "synthetic-12-to-4",
+    "original_moves": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "original_length": 12,
+    "script_sha256": "27deee0cbf455525abdeb7b7e513e54f2a148ebc5667f38c5b0383826c2a5500",
+    "config_sha256": "45cd5ff906096591416665ca968e0306f3fb6585a2b7a6b46e79ccba7991fa2f",
+    "search_apply_calls": 2839,
+    "verification_apply_calls": 24,
+    "remaining_apply_budget": 47161,
+    "remaining_wall_budget": 14.99582240000018,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 2839,
+      "wall_seconds": 0.0041775999998208135
+    },
+    "accepted": [],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 12,
+        "candidate_routes_started": 2827,
+        "candidate_routes_completed": 166,
+        "inapplicable": {
+          "destabilize_precondition": 21,
+          "relator_out_of_rank": 2376,
+          "generator_out_of_rank": 264
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 2,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 37,
+      "work": 325,
+      "certificate_hash": "sha256:b458be38e20a4bd3d2ca2e567ad51db1df9ba868ea59957caa1a993228956076"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 37,
+      "work": 325,
+      "certificate_hash": "sha256:b458be38e20a4bd3d2ca2e567ad51db1df9ba868ea59957caa1a993228956076"
+    },
+    "final_length": 12,
+    "primitive_length_saved": 0,
+    "work_saved": 0,
+    "status": "completed",
+    "wall_seconds": 0.007291524001630023,
+    "cumulative_search_apply_calls": 5678,
+    "cumulative_wall_seconds": 0.011469124001450837
+  },
+  {
+    "case_id": "synthetic-12-to-4",
+    "group": "diagnostic",
+    "arm": "whole_object",
+    "source_training_id": null,
+    "budget_identity": "synthetic-12-to-4",
+    "original_moves": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "original_length": 12,
+    "script_sha256": "27deee0cbf455525abdeb7b7e513e54f2a148ebc5667f38c5b0383826c2a5500",
+    "config_sha256": "45cd5ff906096591416665ca968e0306f3fb6585a2b7a6b46e79ccba7991fa2f",
+    "search_apply_calls": 5974,
+    "verification_apply_calls": 20,
+    "remaining_apply_budget": 44026,
+    "remaining_wall_budget": 14.985822372000257,
+    "prior_attempt_consumption": {
+      "search_apply_calls": 5974,
+      "wall_seconds": 0.014177627999742981
+    },
+    "accepted": [
+      {
+        "start": 0,
+        "end_exclusive": 12,
+        "removed_moves": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "replacement_moves": [
+          0,
+          3,
+          0,
+          3
+        ],
+        "family": "donor_conjugation",
+        "parameters": {
+          "target": 0,
+          "donor": 1,
+          "sign": 1,
+          "h": []
+        },
+        "predicted_length": 4,
+        "predicted_work": 113,
+        "predicted_peak": 37,
+        "endpoint": [
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            2,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        ],
+        "new_moves": [
+          0,
+          3,
+          0,
+          3
+        ],
+        "official_verdict": {
+          "ok": true,
+          "length": 4,
+          "peak_total_relator_length": 37,
+          "work": 113,
+          "certificate_hash": "sha256:9113ab3f50a2852ce386fad86ed1f36eee19c149a0838f60bb2463358bdd3dc3"
+        },
+        "selection_scope": "globally best feasible enumerated candidate; full configured library exhausted"
+      }
+    ],
+    "rounds": [
+      {
+        "iteration": 0,
+        "starting_length": 12,
+        "candidate_routes_started": 3183,
+        "candidate_routes_completed": 522,
+        "inapplicable": {
+          "destabilize_precondition": 21,
+          "relator_out_of_rank": 2376,
+          "generator_out_of_rank": 264
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 5,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 5,
+        "exhaustive": true
+      },
+      {
+        "iteration": 1,
+        "starting_length": 4,
+        "candidate_routes_started": 775,
+        "candidate_routes_completed": 50,
+        "inapplicable": {
+          "destabilize_precondition": 5,
+          "relator_out_of_rank": 648,
+          "generator_out_of_rank": 72
+        },
+        "route_length_limit_rejections": 0,
+        "exact_endpoint_matches": 0,
+        "resource_filtered_matches": 0,
+        "distinct_feasible_new_paths": 0,
+        "exhaustive": true
+      }
+    ],
+    "verification_failures": [],
+    "terminal_rank": 2,
+    "limits": {
+      "max_path_length": 100000,
+      "max_total_relator_length": 10000,
+      "max_work": 5000000
+    },
+    "cap_status": [],
+    "original_verdict": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 37,
+      "work": 325,
+      "certificate_hash": "sha256:b458be38e20a4bd3d2ca2e567ad51db1df9ba868ea59957caa1a993228956076"
+    },
+    "stop_reason": "no_strict_shortening",
+    "final_moves": [
+      0,
+      3,
+      0,
+      3
+    ],
+    "final_verdict": {
+      "ok": true,
+      "length": 4,
+      "peak_total_relator_length": 37,
+      "work": 113,
+      "certificate_hash": "sha256:9113ab3f50a2852ce386fad86ed1f36eee19c149a0838f60bb2463358bdd3dc3"
+    },
+    "final_length": 4,
+    "primitive_length_saved": 8,
+    "work_saved": 212,
+    "status": "completed",
+    "wall_seconds": 0.017963676997169387,
+    "cumulative_search_apply_calls": 11948,
+    "cumulative_wall_seconds": 0.03214130499691237
+  }
+]

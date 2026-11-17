@@ -1,0 +1,584 @@
+{
+  "status": "passed",
+  "scope": "Independent final-certificate replay and metric check; no independent optimizer/search replication.",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "code_sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959",
+  "input_sha256": "1c291bd1917ebc274e7f58c71f3a38c6cf3e15daff590a3e48a12b0336f9cf90",
+  "cases": 21,
+  "routes": 63,
+  "counts": {
+    "own_apply": 965,
+    "official_apply": 1930,
+    "official_verify": 63
+  },
+  "results": [
+    {
+      "challenge_id": "sac-train-0379",
+      "label": "original",
+      "length": 17,
+      "work": 101,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:d73aa8c1574190b1cf6144e130384b3ecc7250c3ae484431cb40ac84797157c2",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0379",
+      "label": "baseline",
+      "length": 12,
+      "work": 87,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:cafe3e11171e21cc595114671017d7a3172085e36571b12073fb831c2b71712d",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0379",
+      "label": "whole_object",
+      "length": 12,
+      "work": 87,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:cafe3e11171e21cc595114671017d7a3172085e36571b12073fb831c2b71712d",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0160",
+      "label": "original",
+      "length": 9,
+      "work": 47,
+      "peak_total_relator_length": 12,
+      "certificate_hash": "sha256:e94492471688db5cb52971611a3617e75c165d89e3ed51cea9a3f5d96ccbb77e",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0160",
+      "label": "baseline",
+      "length": 9,
+      "work": 47,
+      "peak_total_relator_length": 12,
+      "certificate_hash": "sha256:e94492471688db5cb52971611a3617e75c165d89e3ed51cea9a3f5d96ccbb77e",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0160",
+      "label": "whole_object",
+      "length": 9,
+      "work": 47,
+      "peak_total_relator_length": 12,
+      "certificate_hash": "sha256:e94492471688db5cb52971611a3617e75c165d89e3ed51cea9a3f5d96ccbb77e",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0013",
+      "label": "original",
+      "length": 18,
+      "work": 136,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:4b3366860085d2e4e8909ce243d92b55811d32553e01e5522026d0f72279dd07",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0013",
+      "label": "baseline",
+      "length": 13,
+      "work": 122,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:9bb11fdb1309237daf923e17ead9a043276d8c57d2ac05ce41dc247af150e0ea",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0013",
+      "label": "whole_object",
+      "length": 13,
+      "work": 122,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:9bb11fdb1309237daf923e17ead9a043276d8c57d2ac05ce41dc247af150e0ea",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0015",
+      "label": "original",
+      "length": 15,
+      "work": 66,
+      "peak_total_relator_length": 8,
+      "certificate_hash": "sha256:c54cbde51678dae875bfdfacc7feb49ac21c6fb533fc24456b7cea7dd8f6a97d",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0015",
+      "label": "baseline",
+      "length": 15,
+      "work": 66,
+      "peak_total_relator_length": 8,
+      "certificate_hash": "sha256:c54cbde51678dae875bfdfacc7feb49ac21c6fb533fc24456b7cea7dd8f6a97d",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0015",
+      "label": "whole_object",
+      "length": 15,
+      "work": 66,
+      "peak_total_relator_length": 8,
+      "certificate_hash": "sha256:c54cbde51678dae875bfdfacc7feb49ac21c6fb533fc24456b7cea7dd8f6a97d",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-07445",
+      "label": "original",
+      "length": 15,
+      "work": 128,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-07445",
+      "label": "baseline",
+      "length": 15,
+      "work": 128,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-07445",
+      "label": "whole_object",
+      "length": 15,
+      "work": 128,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0108",
+      "label": "original",
+      "length": 19,
+      "work": 150,
+      "peak_total_relator_length": 21,
+      "certificate_hash": "sha256:fd782e658945dec27efeeb3f2f4d4640bd6705363c2a7556bd3715da53978aed",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0108",
+      "label": "baseline",
+      "length": 19,
+      "work": 150,
+      "peak_total_relator_length": 21,
+      "certificate_hash": "sha256:fd782e658945dec27efeeb3f2f4d4640bd6705363c2a7556bd3715da53978aed",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0108",
+      "label": "whole_object",
+      "length": 19,
+      "work": 150,
+      "peak_total_relator_length": 21,
+      "certificate_hash": "sha256:fd782e658945dec27efeeb3f2f4d4640bd6705363c2a7556bd3715da53978aed",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0014",
+      "label": "original",
+      "length": 19,
+      "work": 159,
+      "peak_total_relator_length": 19,
+      "certificate_hash": "sha256:2414f78259b1ae1472b7b1e22e5733888352ad41ba57a37fe61ec569a09e016c",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0014",
+      "label": "baseline",
+      "length": 14,
+      "work": 145,
+      "peak_total_relator_length": 19,
+      "certificate_hash": "sha256:40dceef7e91abd9f2c6dc1ce08ca93cf2348b1bd6a969446bac08e4747924864",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0014",
+      "label": "whole_object",
+      "length": 14,
+      "work": 145,
+      "peak_total_relator_length": 19,
+      "certificate_hash": "sha256:40dceef7e91abd9f2c6dc1ce08ca93cf2348b1bd6a969446bac08e4747924864",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0099",
+      "label": "original",
+      "length": 17,
+      "work": 131,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:424d22049f69c8ea62bb4f0e89f32e5789a0e1a2bdc6dd46380c81a59c8251a2",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0099",
+      "label": "baseline",
+      "length": 17,
+      "work": 131,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:424d22049f69c8ea62bb4f0e89f32e5789a0e1a2bdc6dd46380c81a59c8251a2",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0099",
+      "label": "whole_object",
+      "length": 17,
+      "work": 131,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:424d22049f69c8ea62bb4f0e89f32e5789a0e1a2bdc6dd46380c81a59c8251a2",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0081",
+      "label": "original",
+      "length": 13,
+      "work": 56,
+      "peak_total_relator_length": 11,
+      "certificate_hash": "sha256:7961a827fd5783f4b949f1a6bff2d116974815bebaee6f90f376759abbdbf022",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0081",
+      "label": "baseline",
+      "length": 8,
+      "work": 42,
+      "peak_total_relator_length": 11,
+      "certificate_hash": "sha256:26cfd567712f5669890c9ecfd1ef30da2e71fb5ba616b455511750d97c49e1d8",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0081",
+      "label": "whole_object",
+      "length": 8,
+      "work": 42,
+      "peak_total_relator_length": 11,
+      "certificate_hash": "sha256:26cfd567712f5669890c9ecfd1ef30da2e71fb5ba616b455511750d97c49e1d8",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0235",
+      "label": "original",
+      "length": 17,
+      "work": 104,
+      "peak_total_relator_length": 15,
+      "certificate_hash": "sha256:1e714490c3ca1880bbdc095e4ae77951f59623606df8395874e234b629c0c0f1",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0235",
+      "label": "baseline",
+      "length": 12,
+      "work": 90,
+      "peak_total_relator_length": 15,
+      "certificate_hash": "sha256:a071ef868b41c85cf36ec5ace20715b7c2a3eab2f05c5a6c47bcfe7bcad6d220",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0235",
+      "label": "whole_object",
+      "length": 12,
+      "work": 90,
+      "peak_total_relator_length": 15,
+      "certificate_hash": "sha256:a071ef868b41c85cf36ec5ace20715b7c2a3eab2f05c5a6c47bcfe7bcad6d220",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0231",
+      "label": "original",
+      "length": 18,
+      "work": 148,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:2819897d6092df5d10dbfcf2862ae7b6b6a6d36374b782666d4eab1ef72b5ea1",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0231",
+      "label": "baseline",
+      "length": 18,
+      "work": 148,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:2819897d6092df5d10dbfcf2862ae7b6b6a6d36374b782666d4eab1ef72b5ea1",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0231",
+      "label": "whole_object",
+      "length": 18,
+      "work": 148,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:2819897d6092df5d10dbfcf2862ae7b6b6a6d36374b782666d4eab1ef72b5ea1",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0062",
+      "label": "original",
+      "length": 20,
+      "work": 194,
+      "peak_total_relator_length": 22,
+      "certificate_hash": "sha256:5d546d96dc637d02a85405df4006af818598a84e388db39e0ecc7ffef9bc493a",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0062",
+      "label": "baseline",
+      "length": 20,
+      "work": 194,
+      "peak_total_relator_length": 22,
+      "certificate_hash": "sha256:5d546d96dc637d02a85405df4006af818598a84e388db39e0ecc7ffef9bc493a",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0062",
+      "label": "whole_object",
+      "length": 20,
+      "work": 194,
+      "peak_total_relator_length": 22,
+      "certificate_hash": "sha256:5d546d96dc637d02a85405df4006af818598a84e388db39e0ecc7ffef9bc493a",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0033",
+      "label": "original",
+      "length": 19,
+      "work": 152,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:69659fae6a97ff8f3c0bc3836099f357734d55ab94954d405d980415b96ba148",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0033",
+      "label": "baseline",
+      "length": 19,
+      "work": 152,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:69659fae6a97ff8f3c0bc3836099f357734d55ab94954d405d980415b96ba148",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0033",
+      "label": "whole_object",
+      "length": 19,
+      "work": 152,
+      "peak_total_relator_length": 17,
+      "certificate_hash": "sha256:69659fae6a97ff8f3c0bc3836099f357734d55ab94954d405d980415b96ba148",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0031",
+      "label": "original",
+      "length": 18,
+      "work": 109,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:b173ede6ddef04dc656bd7955af36f559e004c7d23eb4e88e139e74cb5b59464",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0031",
+      "label": "baseline",
+      "length": 13,
+      "work": 95,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:30e7f5b1d6e02f34e1587a45d677d22c9602c11eb96669a434b72a9857ffbb06",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0031",
+      "label": "whole_object",
+      "length": 13,
+      "work": 95,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:30e7f5b1d6e02f34e1587a45d677d22c9602c11eb96669a434b72a9857ffbb06",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0373",
+      "label": "original",
+      "length": 15,
+      "work": 115,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:99890b57683937fb2375708255729b61dbead25ea5914c422e572abd8a22eb8b",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0373",
+      "label": "baseline",
+      "length": 15,
+      "work": 115,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:99890b57683937fb2375708255729b61dbead25ea5914c422e572abd8a22eb8b",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0373",
+      "label": "whole_object",
+      "length": 15,
+      "work": 115,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:99890b57683937fb2375708255729b61dbead25ea5914c422e572abd8a22eb8b",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0258",
+      "label": "original",
+      "length": 13,
+      "work": 97,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:7a3d78e84af061f410d4c2a2c2d77246d4307cf5acfd1855f6d913adb0ab8656",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0258",
+      "label": "baseline",
+      "length": 13,
+      "work": 97,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:7a3d78e84af061f410d4c2a2c2d77246d4307cf5acfd1855f6d913adb0ab8656",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0258",
+      "label": "whole_object",
+      "length": 13,
+      "work": 97,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:7a3d78e84af061f410d4c2a2c2d77246d4307cf5acfd1855f6d913adb0ab8656",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0286",
+      "label": "original",
+      "length": 15,
+      "work": 119,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:92f9e80fd884c7fcaa7032f2deeac52bd3c0d36b44113dd819ec023e0a883893",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0286",
+      "label": "baseline",
+      "length": 15,
+      "work": 119,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:92f9e80fd884c7fcaa7032f2deeac52bd3c0d36b44113dd819ec023e0a883893",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0286",
+      "label": "whole_object",
+      "length": 15,
+      "work": 119,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:92f9e80fd884c7fcaa7032f2deeac52bd3c0d36b44113dd819ec023e0a883893",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0201",
+      "label": "original",
+      "length": 20,
+      "work": 175,
+      "peak_total_relator_length": 24,
+      "certificate_hash": "sha256:5fcab288504e76423358c301bd94c1eb71d6bdd4e3255ede2fdbeff3ea0fd65c",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0201",
+      "label": "baseline",
+      "length": 20,
+      "work": 175,
+      "peak_total_relator_length": 24,
+      "certificate_hash": "sha256:5fcab288504e76423358c301bd94c1eb71d6bdd4e3255ede2fdbeff3ea0fd65c",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0201",
+      "label": "whole_object",
+      "length": 20,
+      "work": 175,
+      "peak_total_relator_length": 24,
+      "certificate_hash": "sha256:5fcab288504e76423358c301bd94c1eb71d6bdd4e3255ede2fdbeff3ea0fd65c",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0380",
+      "label": "original",
+      "length": 16,
+      "work": 85,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:c816db899f6352ecbaf10da465f47af5124620dda82b7db990af985ec8ada717",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0380",
+      "label": "baseline",
+      "length": 16,
+      "work": 85,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:c816db899f6352ecbaf10da465f47af5124620dda82b7db990af985ec8ada717",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0380",
+      "label": "whole_object",
+      "length": 16,
+      "work": 85,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:c816db899f6352ecbaf10da465f47af5124620dda82b7db990af985ec8ada717",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0009",
+      "label": "original",
+      "length": 14,
+      "work": 64,
+      "peak_total_relator_length": 9,
+      "certificate_hash": "sha256:448bcedbf5e07b426a4a51cd79a0d8a132c69084d155168d12caa8bb00ec1b5c",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0009",
+      "label": "baseline",
+      "length": 9,
+      "work": 50,
+      "peak_total_relator_length": 9,
+      "certificate_hash": "sha256:f8334761405e349a051cb0525c4aba3313d1932ab685b71c55f53cd7faf49e0e",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0009",
+      "label": "whole_object",
+      "length": 9,
+      "work": 50,
+      "peak_total_relator_length": 9,
+      "certificate_hash": "sha256:f8334761405e349a051cb0525c4aba3313d1932ab685b71c55f53cd7faf49e0e",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0218",
+      "label": "original",
+      "length": 18,
+      "work": 114,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:321fae90a3c34acc759589ed74330148aa1121e0d0274cd6eb63e6de99e34620",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0218",
+      "label": "baseline",
+      "length": 18,
+      "work": 114,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:321fae90a3c34acc759589ed74330148aa1121e0d0274cd6eb63e6de99e34620",
+      "all_intermediate_states_match": true
+    },
+    {
+      "challenge_id": "sac-train-0218",
+      "label": "whole_object",
+      "length": 18,
+      "work": 114,
+      "peak_total_relator_length": 13,
+      "certificate_hash": "sha256:321fae90a3c34acc759589ed74330148aa1121e0d0274cd6eb63e6de99e34620",
+      "all_intermediate_states_match": true
+    }
+  ],
+  "interpreter_provenance": "Adapted from previously published round2_stable_audit/independent_stable_verifier.py; no optimizer imports."
+}

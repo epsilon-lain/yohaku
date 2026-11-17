@@ -1,0 +1,22 @@
+{
+  "version": "proof-reconstruction-cloud-r2-v1",
+  "purpose": "Compare certified whole-object proof rewrites against elementary path cleanup on fixed public Stable AC certificates.",
+  "execution": "Cloud auxiliary study; not a native Yohaku continuation and no access to host memories or native budget.",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "training_source": "competition/examples/stable_training_424.json",
+  "training_git_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235",
+  "development_ids": ["ms-train-0379", "ms-train-0160", "ms-train-0013", "ms-train-0015"],
+  "reserved_prior_evaluation_ids_excluded": ["ms-train-0234", "ms-train-0316", "ms-train-0154", "ms-train-0107"],
+  "new_frozen_test_selection": "Among remaining public training records with length <=20, sort SHA256(official_commit|training_id|proof_reconstruction_cloud_r2_v1), take first16. Freeze IDs and solver SHA before replaying their move lists. This is public certificate postprocessing, not a blind from-scratch solver test.",
+  "scored_incumbent_case": {"challenge_id": "sac-07445", "moves": [6,4,12,1,3,6,12,2,5,6,4,2,4,16,15], "claimed_length": 15, "claimed_work": 128},
+  "arms": {
+    "baseline": "Exact repeated-state loop deletion plus replacement by one applicable official primitive.",
+    "whole_object": "Same cleanup plus left multiplication (3 primitives), unchanged-donor conjugation (4 primitives), and conjugation by h*v^(+-1)*h^-1 (2|h|+4 primitives), for freely reduced h of length<=2 over the current generators. Both targets and signs; no macro counted as a single scored step."
+  },
+  "rewrite_matching": "Compare exact ordered freely reduced full endpoint to every later state on the supplied current certificate, including rank. Accept only strict primitive-length reduction and full official feasibility. Choose globally minimum resulting primitive length, then full work, peak, start/end indices, expanded move list. Restart after acceptance, maximum three accepted rewrites per arm.",
+  "bounds": {"search_official_apply_calls_per_arm_case": 50000, "search_wall_seconds_per_arm_case": 15, "arm_cases": 42, "total_search_official_apply_call_cap": 2100000, "total_verification_apply_call_cap": 30000},
+  "limits": {"max_path_length": 100000, "max_total_relator_length": 10000, "max_work": 5000000, "max_rank": 8},
+  "cost_reporting": ["expanded primitive length", "full official work including initial state", "peak total word length", "search apply calls", "verification apply calls", "cap status", "wall time descriptive only"],
+  "freeze": "Implementation/configuration hashes and selected IDs saved before new test path processing. Development runs may expose implementation bugs; every attempt and consumed calls retained. A bug fix after new test access creates a new version and discloses access, never silently restarts the same test.",
+  "upload": "Publish research/evidence to the authorized GitHub repositories; no competition-platform submission or leaderboard access."
+}

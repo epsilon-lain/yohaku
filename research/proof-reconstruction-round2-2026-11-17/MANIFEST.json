@@ -1,0 +1,191 @@
+{
+  "scope": "Complete text research package; bytecode and duplicate binary archive excluded.",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "files": [
+    {
+      "path": "CLI-ACCEPTANCE.json",
+      "bytes": 2921,
+      "sha256": "a45dcc5919dc998f9d85b9d13981cdc79a301b0fd7e4db2e255e9ff7bc8a7df4"
+    },
+    {
+      "path": "GOAL-STRUCTURE-NOTE.zh.md",
+      "bytes": 2930,
+      "sha256": "5b615175d4db7658c474cbe1b92358ed853241421da5d1a03a3fd809b1f09205"
+    },
+    {
+      "path": "INDEPENDENT-REVIEW.json",
+      "bytes": 19780,
+      "sha256": "fb9ea9708f8ee5dd0a38a2a42578c90bbabdc6f1e754670c8453c982662ca555"
+    },
+    {
+      "path": "OFFICIAL-SOURCE-LOCK.json",
+      "bytes": 6463,
+      "sha256": "7c0528c3f6a7838a762c2439497b980a405399e286ea90a10199e3d746dbfd76"
+    },
+    {
+      "path": "PROTOCOL.json",
+      "bytes": 3019,
+      "sha256": "bdf38147497892b6891c6171232e03011c037d56628e9a057c9f65c6bc03f8ba"
+    },
+    {
+      "path": "README.zh.md",
+      "bytes": 5016,
+      "sha256": "253925b3137f09ae4eb1d1f67c68ee678a1f5acc2dd6f16999445952e13b883b"
+    },
+    {
+      "path": "WORKFLOW.json",
+      "bytes": 2471,
+      "sha256": "eaf0dcceaad10b499bea9a52a72eb3bebdb6a7fddce60daa664ed09a2005d840"
+    },
+    {
+      "path": "application/FREEZE.json",
+      "bytes": 6820,
+      "sha256": "65d91f66dbc47915e68c06f4587729bc8bf4ad68963cb5a3e697435758026e6e"
+    },
+    {
+      "path": "application/METHOD-LOG.md",
+      "bytes": 4559,
+      "sha256": "f152999f58758a3d0ba1dd33398b8be4d4ffd402663a91fb540db48054ea8e66"
+    },
+    {
+      "path": "application/PROVENANCE.json",
+      "bytes": 4020,
+      "sha256": "085fcbaa6121e7fdc18d16009f5443352998e7024f3c6bceb4818aafbc25e51a"
+    },
+    {
+      "path": "application/README.zh.md",
+      "bytes": 7396,
+      "sha256": "0de00207a87d7828d9e6d789385137d3fb8951b409482522a5e8f8577771dd25"
+    },
+    {
+      "path": "application/REVISION-1-PRESERVED.json",
+      "bytes": 671,
+      "sha256": "369f02cc2930d8f35bfb952420785e6ee952d4586c44165089d07cb24e590640"
+    },
+    {
+      "path": "application/TEST-ACCESS.json",
+      "bytes": 596,
+      "sha256": "f8ba107ec0a6b5e021cba3148d2e6d6b828b3ae866d8eae50bc658e5fbfcc72d"
+    },
+    {
+      "path": "application/attempt-ledger.json",
+      "bytes": 13679,
+      "sha256": "313f762d8cb3c11cc89ca8ca59306f6eab219a291b0e7f9c1d57c0a1d9ff4cf1"
+    },
+    {
+      "path": "application/development-results.json",
+      "bytes": 30728,
+      "sha256": "540d72fe5b0514192ed719298182caa404742013856938194a2abc696c8e78fa"
+    },
+    {
+      "path": "application/diagnostic-arm-results.json",
+      "bytes": 6955,
+      "sha256": "e02173e838a9b80c5c7d7e1187856c170c68d162362bdb3c52c0ce3ec7cc6c94"
+    },
+    {
+      "path": "application/export_training_submission.py",
+      "bytes": 1121,
+      "sha256": "7ea5afe44ed19c4715c6b1bccec61e5747059ec49812dcf9ded08891c4c1ad91"
+    },
+    {
+      "path": "application/improved-certificates.json",
+      "bytes": 6825,
+      "sha256": "ecc3d3d09cc4fdc9bd5a63bf1557d9ef1eb5e2a2bd265bc3c8f7d46847398c0c"
+    },
+    {
+      "path": "application/improved-training-submission.txt",
+      "bytes": 378,
+      "sha256": "24ce5f145d9aeaaf4e59be87f7c2866340ad6daa12677a1d40e03b313ebe794f"
+    },
+    {
+      "path": "application/raw-v1/attempt-ledger.json",
+      "bytes": 3690,
+      "sha256": "a0fbe313f0b7f40565747bfc02ebad32e33ccaffd5a0dab15bd7da331cff3559"
+    },
+    {
+      "path": "application/raw-v1/development-results.json",
+      "bytes": 29584,
+      "sha256": "06c42d0afe3dd8e4da34b0bd8836bd821501e3629b4e1d7ce36cd16105f958b7"
+    },
+    {
+      "path": "application/raw-v1/diagnostic-arm-results.json",
+      "bytes": 6737,
+      "sha256": "250dd51ca62e12299ea4d13b15856703751b0b718f7df21ace1abc68f9b9b058"
+    },
+    {
+      "path": "application/raw-v1/run_experiment.py",
+      "bytes": 35939,
+      "sha256": "f05dc040adb840a3885a0e65f3d31f469ecf6126d0348e8a0c69d6a44cc4f2b3"
+    },
+    {
+      "path": "application/raw-v1/selfcheck.json",
+      "bytes": 1454,
+      "sha256": "480df01e593130962360b2f08411fbe20c2be05c5bc3da34fc9dbb21921d31ab"
+    },
+    {
+      "path": "application/results.json",
+      "bytes": 97793,
+      "sha256": "206026d4906a91b7ddce4ea52da902642a82a81bed50c76b07598033f8f6b559"
+    },
+    {
+      "path": "application/run_experiment.py",
+      "bytes": 37738,
+      "sha256": "27deee0cbf455525abdeb7b7e513e54f2a148ebc5667f38c5b0383826c2a5500"
+    },
+    {
+      "path": "application/selfcheck.json",
+      "bytes": 1454,
+      "sha256": "ef499ea2b45498f59ae853cbd77c643e555f52f909824a4dfee290d2559e4113"
+    },
+    {
+      "path": "application/test-results.json",
+      "bytes": 63874,
+      "sha256": "c77607b1e0c6eab03e42595857eaf3e1c6bf9d363f94da13d233429c50eeaff5"
+    },
+    {
+      "path": "cli_acceptance.py",
+      "bytes": 2976,
+      "sha256": "3a77e01c0118d9df142918ba5cff06ed202be0a46e14a93005f62f04013c2dce"
+    },
+    {
+      "path": "incumbent-submission.txt",
+      "bytes": 61,
+      "sha256": "eb447f019f9b6cc6299e8f12e2d7ba47511f777d3889accad1a9f8de965fd606"
+    },
+    {
+      "path": "independent_review.py",
+      "bytes": 7933,
+      "sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959"
+    },
+    {
+      "path": "review-input.json",
+      "bytes": 27098,
+      "sha256": "1c291bd1917ebc274e7f58c71f3a38c6cf3e15daff590a3e48a12b0336f9cf90"
+    },
+    {
+      "path": "theory/METHOD-LOG.md",
+      "bytes": 4473,
+      "sha256": "cd82522860575b8c475921d073ec90e1d7a13185413cc2e55efb936b87874a6a"
+    },
+    {
+      "path": "theory/README.zh.md",
+      "bytes": 11021,
+      "sha256": "145b7163f92910f34427768d5e824bdb29f8d097b5d19ef409b2b4ad7b4de98e"
+    },
+    {
+      "path": "theory/check_theory.py",
+      "bytes": 15127,
+      "sha256": "bcee7278cef1730e3b1f04ec50997d0b51ea2ec473efa3d6c9a21f09e8055ae0"
+    },
+    {
+      "path": "theory/checks.json",
+      "bytes": 71161,
+      "sha256": "9a287b6c813e1d85a707361cdac5aacc8f603a0bfaff6dc8483c28e3775922aa"
+    },
+    {
+      "path": "training-submission.txt",
+      "bytes": 378,
+      "sha256": "348f4c63dc45e9c1f7bebfa6789d0a1553279872615fc22402b0813e2b4bb7d8"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "scope": "Official cli.main entry point, source-locked 30-file checkout; no platform upload.",
+  "official_apply_calls": 96,
+  "reports": [
+    {
+      "submission": "training-submission.txt",
+      "manifest": "competition/examples/training_manifest.json",
+      "returncode": 0,
+      "official_apply_calls": 81,
+      "stdout": "{\n  \"accepted\": true,\n  \"results\": [\n    {\n      \"certificate_hash\": \"sha256:cafe3e11171e21cc595114671017d7a3172085e36571b12073fb831c2b71712d\",\n      \"challenge_id\": \"sac-train-0379\",\n      \"length\": 12,\n      \"ok\": true,\n      \"work\": 87\n    },\n    {\n      \"certificate_hash\": \"sha256:9bb11fdb1309237daf923e17ead9a043276d8c57d2ac05ce41dc247af150e0ea\",\n      \"challenge_id\": \"sac-train-0013\",\n      \"length\": 13,\n      \"ok\": true,\n      \"work\": 122\n    },\n    {\n      \"certificate_hash\": \"sha256:40dceef7e91abd9f2c6dc1ce08ca93cf2348b1bd6a969446bac08e4747924864\",\n      \"challenge_id\": \"sac-train-0014\",\n      \"length\": 14,\n      \"ok\": true,\n      \"work\": 145\n    },\n    {\n      \"certificate_hash\": \"sha256:26cfd567712f5669890c9ecfd1ef30da2e71fb5ba616b455511750d97c49e1d8\",\n      \"challenge_id\": \"sac-train-0081\",\n      \"length\": 8,\n      \"ok\": true,\n      \"work\": 42\n    },\n    {\n      \"certificate_hash\": \"sha256:a071ef868b41c85cf36ec5ace20715b7c2a3eab2f05c5a6c47bcfe7bcad6d220\",\n      \"challenge_id\": \"sac-train-0235\",\n      \"length\": 12,\n      \"ok\": true,\n      \"work\": 90\n    },\n    {\n      \"certificate_hash\": \"sha256:30e7f5b1d6e02f34e1587a45d677d22c9602c11eb96669a434b72a9857ffbb06\",\n      \"challenge_id\": \"sac-train-0031\",\n      \"length\": 13,\n      \"ok\": true,\n      \"work\": 95\n    },\n    {\n      \"certificate_hash\": \"sha256:f8334761405e349a051cb0525c4aba3313d1932ab685b71c55f53cd7faf49e0e\",\n      \"challenge_id\": \"sac-train-0009\",\n      \"length\": 9,\n      \"ok\": true,\n      \"work\": 50\n    }\n  ]\n}\n",
+      "stderr": "",
+      "submission_sha256": "348f4c63dc45e9c1f7bebfa6789d0a1553279872615fc22402b0813e2b4bb7d8"
+    },
+    {
+      "submission": "incumbent-submission.txt",
+      "manifest": "competition/tools/verifier/data/manifest.json",
+      "returncode": 0,
+      "official_apply_calls": 15,
+      "stdout": "{\n  \"accepted\": true,\n  \"results\": [\n    {\n      \"certificate_hash\": \"sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b\",\n      \"challenge_id\": \"sac-07445\",\n      \"length\": 15,\n      \"ok\": true,\n      \"work\": 128\n    }\n  ]\n}\n",
+      "stderr": "",
+      "submission_sha256": "eb447f019f9b6cc6299e8f12e2d7ba47511f777d3889accad1a9f8de965fd606"
+    }
+  ],
+  "source_lock_sha256": "7c0528c3f6a7838a762c2439497b980a405399e286ea90a10199e3d746dbfd76",
+  "code_sha256": "3a77e01c0118d9df142918ba5cff06ed202be0a46e14a93005f62f04013c2dce"
+}

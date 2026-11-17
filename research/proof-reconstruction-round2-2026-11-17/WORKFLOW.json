@@ -1,0 +1,69 @@
+{
+  "captured_at": "2026-11-17T11:14:54.610999+00:00",
+  "execution": "cloud-two-direction auxiliary study",
+  "native_yohaku_connected": false,
+  "native_tasks_dispatched": 0,
+  "native_budget_modified": false,
+  "root": "/root",
+  "participants": [
+    {
+      "task": "/root/reconstruction_theory",
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "max",
+      "status": "completed"
+    },
+    {
+      "task": "/root/reconstruction_application",
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "max",
+      "status": "completed"
+    }
+  ],
+  "organization": "Two leads assigned by root; peer communication observed; not a controlled workflow-evolution or immune/autonomous A/B study.",
+  "observed_shared_knowledge": [
+    {
+      "from": "theory",
+      "to": "application",
+      "item": "h-donor chronological compilation and three-step left multiplication",
+      "evidence": "Both METHOD-LOG.md files explicitly record sending and adoption."
+    },
+    {
+      "from": "theory",
+      "to": "application",
+      "item": "Exact endpoint/rank and full-certificate cost formula",
+      "evidence": "Theory sent conditions; root audited formulas and application implementation. No claim of exclusive source dependence."
+    },
+    {
+      "from": "root",
+      "to": "application",
+      "item": "Four pre-test implementation repairs",
+      "evidence": "raw-v1 retained; revision2 code freeze; development retries accumulated under source identity."
+    },
+    {
+      "from": "root",
+      "to": "application",
+      "item": "Post-hoc (y,x) redundant intermediate target explanation",
+      "evidence": "Added only to prose after frozen tests; no optimizer or sample changes."
+    }
+  ],
+  "code_freeze_at": "2026-11-17T11:09:21.970800+00:00",
+  "test_access_at": "2026-11-17T11:09:25.315285+00:00",
+  "budget": {
+    "search_apply": 413864,
+    "search_cap": 2100000,
+    "verification_apply": 13354,
+    "verification_cap": 30000,
+    "all_official_apply": 427218,
+    "own_interpreter_apply": 965
+  },
+  "results": {
+    "paired_cases": 21,
+    "armcases": 42,
+    "final_routes_identical": true,
+    "training_paths_improved": 7,
+    "whole_object_extra_length_saved": 0,
+    "scored_incumbent_length": 15,
+    "scored_incumbent_work": 128
+  },
+  "limits": "No platform upload; no leaderboard access; public certificate postprocessing, not blind from-scratch search; no measured token cost or workflow causal effect."
+}

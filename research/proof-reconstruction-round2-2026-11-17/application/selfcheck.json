@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "identity_instances": 512,
+  "coverage": [
+    {
+      "rank": 2,
+      "all_h_length_at_most_2": true,
+      "all_ordered_target_donor_pairs": true,
+      "both_signs": true
+    },
+    {
+      "rank": 3,
+      "all_h_length_at_most_2": true,
+      "all_ordered_target_donor_pairs": true,
+      "both_signs": true
+    }
+  ],
+  "script_sha256": "27deee0cbf455525abdeb7b7e513e54f2a148ebc5667f38c5b0383826c2a5500",
+  "config_sha256": "45cd5ff906096591416665ca968e0306f3fb6585a2b7a6b46e79ccba7991fa2f",
+  "synthetic_12_to_4": {
+    "baseline": {
+      "ok": true,
+      "length": 12,
+      "peak_total_relator_length": 37,
+      "work": 325,
+      "certificate_hash": "sha256:b458be38e20a4bd3d2ca2e567ad51db1df9ba868ea59957caa1a993228956076"
+    },
+    "whole_object": {
+      "ok": true,
+      "length": 4,
+      "peak_total_relator_length": 37,
+      "work": 113,
+      "certificate_hash": "sha256:9113ab3f50a2852ce386fad86ed1f36eee19c149a0838f60bb2463358bdd3dc3"
+    }
+  },
+  "resource_guard": {
+    "literal": {
+      "ok": true,
+      "length": 5,
+      "peak_total_relator_length": 9997,
+      "work": 59982,
+      "certificate_hash": "sha256:1c4614ff00f5d5e09464aac12dfe1d72f60d2c9bd3fa3fc5fdbea71aa822d609"
+    },
+    "compiled": {
+      "ok": false,
+      "code": "E_LENGTH_LIMIT",
+      "move_index": 1,
+      "total_relator_length": 10002,
+      "max_total_relator_length": 10000
+    }
+  },
+  "unexpected_failures": []
+}
