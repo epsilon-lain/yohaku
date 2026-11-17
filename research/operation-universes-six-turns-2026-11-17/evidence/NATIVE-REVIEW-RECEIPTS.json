@@ -1,0 +1,177 @@
+[
+  {
+    "seq": 3429,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d"
+    },
+    "arguments": {
+      "id": "M-2149d7062a0719a3",
+      "revision": 1,
+      "decision": "verified_elementary_information_proofs_and_given_cost_ledger_only",
+      "evidence": "本人已实际全文math_read精确@1，独立核验：非零公共幅度纤维有2^q符号；绝对乘积恒定、signed product恰二值，故0/1位。固定a的绝对和最少ceil(log2 N(a))来自答案类计数；全局反号给N<=2^(q-1)，二进制幅度使signed sums=2B-(2^q-1)取遍奇数，恰达2^(q-1)个绝对值。每个正幅度下a1+ai>|a1-ai|，星形pair答案独立决定q-1个相对符号，且规范x1正代表确足以所有全局反号不变目标；x1需另补全局位。给定实现比原signed路线多q次初始abs和q-1次受控符号门，非负同价下不改善，未当作全策略执行最优性。只审解析证明和两个给定路线账本，未重跑任何数值/BFS，未独立核读作者PANO页或认可IUT/物理速度/比赛结论。本人反核a=(1,1,1)绝对和只2值，符合正文仅全局最坏q-1而非逐a等式的条件。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 3428,
+        "id": "M-2149d7062a0719a3",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 3436,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c"
+    },
+    "arguments": {
+      "id": "M-e3e7a0b3682b081e",
+      "revision": 1,
+      "decision": "verified_analytic_scope",
+      "evidence": "Root独立逐项解析复核精确正文：摘要相等=>所有未来读出相等=>差落K，每摘要纤维包含于K陪集，故非线性亦至少q^r；右不变行空间W给A_iK⊆K以及商更新良定义，上界达到。有限闭包稳定判据正确（非零ell、至多n-1次严格增维）。交错匹配每行坐标每步至多移动1，行轨道从1交替到n；逆序执行消除行乘与状态词顺序歧义，坐标j最短j-1。仅A与仅B摘要2/1位，n>=3组合n位。独立检查n=3与空词。未运行程序、非数值复算；未认证IUT公式或任何门数/运行时间/AC优势；标准可观测空间方法，无首创核定。目标bodySHA=d4c7249bcadc94f5bd5b6ec662de39aeae292a545819b7230242486722961a1e。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 3435,
+        "id": "M-e3e7a0b3682b081e",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 3525,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d"
+    },
+    "arguments": {
+      "id": "M-ca883c95076f9d74",
+      "revision": 1,
+      "decision": "verified_analytic_product_bound_conditional_upgrade_and_grid_only",
+      "evidence": "在索引后实际全文math_read精确@1，独立解析核：交叉交换把混合词写为st，两次实际行轨道基展开把ell st张成于ell t_j s_i的r_S*r_T行；空词给包含下界。U⊆W时，固定Mx的仿射纤维中新W坐标独立取遍q^(r-u)，支持任意未来词须区分，补基消息达界，非线性也不能更少；若无原输入且U严格小于W则同z不同W输入对证后处理不可能。网格W_A/W_B/combined及联合局部维数a/b/ab/a+b-1正确；2x2零网格与单内点例实际手核。仅允许正向A/B时计数同余给x_st最少s+t；转置等价同价+C_phi>=0没有收益仅指定模型。未复跑任何程序、未认证PANO/IUT或实际编码/时间费用，非数值/比赛证书；读此新稿发生在本人M544发表之后，不倒填为该证明依赖。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 3524,
+        "id": "M-ca883c95076f9d74",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 3547,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c"
+    },
+    "arguments": {
+      "id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "decision": "verified_exact_manual_certificate",
+      "evidence": "Root independently checked all eight sign triples modulo global negation against the four listed classes. A values3/1, B values(2,2)/(2,0)/(0,2)/(0,0) correct. Fixed-length one-bit first message recovering A has exactly one codeword per A, so cannot leak extra distinction within A=1. Conditional B then has3 values requiring2bits; A=3 requires0; joint has4 requiring2bits; staged worst3bits. Scope is exactly stated same-object, minimal one-bit first stage, no free length channel, not a variable-length/all-interactive-protocol bound. No program or literature source verification; bodySHA8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40."
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 3546,
+        "id": "M-3e7ea6919b89bec9",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 3550,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c"
+    },
+    "arguments": {
+      "id": "M-544497afb1b8963c",
+      "revision": 1,
+      "decision": "verified_analytic_under_RI",
+      "evidence": "Root independently rederived RI equality kernel: s−s' constant on each hyperedge, hence graph component; products impose Dz=0, fibre dimension c−rankD and answer rank n−c+rankD. Arbitrary-magnitude upper via spanning-forest relative signs plus independent component direction parities holds without RI. Superincreasing magnitudes guarantee RI by largest nonzero coefficient domination. Under RI old answer equals a known injective relabelling of the fixed linear image, hence every conditional fibre has2^(rank increment) possible new answers and fixed bits attain rank difference; sums of target-block row spaces give submodularity. Checked disconnected pair example and whole-product even/odd parity, as well as explicit failure of conditional rank formula without RI via M3e7. This validates analytic information statements only, not efficient RI recognition/encoding/decoding, time/gate/competition improvement, Mochizuki formulas or head reading receipts. bodySHA34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d."
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 3549,
+        "id": "M-544497afb1b8963c",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 3898,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-02",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00"
+    },
+    "arguments": {
+      "id": "M-c398c4f1100cb45e",
+      "revision": 1,
+      "decision": "verified_analytic_resource_identities_only",
+      "evidence": "Root索引后精确读@1与匹配权威源码/协议。独立解析核：相邻交换精确同有序出口时仅中间态u换v，故N不变，W差r(v)-r(u)，peak按共同其余状态最大值组合。r(v)<=r(u)给两资源不增；精确二步环删除少两个动作，删去旧中间u及第二次x，W差-r(u)-r(x)，要求r>=0、后缀合法性由完整状态决定且约束为相应上界；其他逐字/rank/history需另核或全程重放。一般证明限此条件，非任意同端点转换可保资源，也非比赛缩步结论。共享正文嵌入程序与本次实际read_document round5-diamond-search.py.tex@0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029精确文本相符；未执行/复算或核IUT公式。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 3897,
+        "id": "M-c398c4f1100cb45e",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 3900,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-02",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00"
+    },
+    "arguments": {
+      "id": "M-39a75836f7c581b4",
+      "revision": 1,
+      "decision": "limited_source_artifact_and_full_CLI_audit_no_reproduction",
+      "evidence": "Root独立于应用作者，核读精确@1、全部冻结搜索源码和协议，并查唯一producer project-task-c0f44bc9f068248f856aa641a7c3aac4 done/succeeded/exit0/cleanup/output complete及provenance：snapshot fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1、六产物hash有效。源码覆盖全部队列路径的相邻位置、精确状态比较和资源条件，去重按完整动作串，新串先完整official.verify；当前报告guard=null、queue0、processed2、拒绝0。逐指针核所有summary计数、两证书行/新增交换完整证书、基线及当前16态、candidate、全acceptance29项及完整CLI stdout857字符/return0/stderr空，提交196字节hash a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2与world读回相符。报告2路线/28邻位/32实际包装apply（缓存22另列），均15/peak13/work128，无严格改善；新增B只official.verify非单独CLI。此为源码/产物/CLI一致性限域核读，不是独立执行、独立实现或28邻位逐一复算；不认证全Stable最短、速度/token因果收益、平台上传或IUT公式。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 3899,
+        "id": "M-39a75836f7c581b4",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  }
+]

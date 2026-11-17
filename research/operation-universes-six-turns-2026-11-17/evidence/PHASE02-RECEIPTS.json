@@ -1,0 +1,251 @@
+{
+  "observed_at": 1794906995.2924094,
+  "observed_at_asia_shanghai": "2026-11-17T17:16:35.292417+08:00",
+  "phase": "operation-universes-native-sol-20261117-02",
+  "knowledge_prefix": 3931,
+  "tasks": [
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "role": "原生研究总负责人",
+      "node_request_id": "continue-59242046d4829b9bfa3368b4c62768c4",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "submitted_by": "main",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": true,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "thread_id": "01a1e8bc-9f7f-71d2-98c5-a3cc44f4d1d6",
+      "turn_id": "01a1e8bc-a1cb-7253-b6d4-e61971e8326b",
+      "native_state": "completed",
+      "wire_write_completed": true,
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 1373199,
+            "inputTokens": 1356991,
+            "cachedInputTokens": 1249792,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 16208,
+            "reasoningOutputTokens": 4767
+          },
+          "last": {
+            "totalTokens": 133670,
+            "inputTokens": 133588,
+            "cachedInputTokens": 133376,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 82,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 475000
+        },
+        "turn_id": "01a1e8bc-a1cb-7253-b6d4-e61971e8326b",
+        "baseline": {},
+        "input_tokens": 1356991,
+        "output_tokens": 16208,
+        "total_tokens": 1373199,
+        "cached_input_tokens": 1249792,
+        "reasoning_output_tokens": 4767
+      },
+      "error": null
+    }
+  ],
+  "new_grant_limits": {
+    "turns": 3,
+    "nodes": 32,
+    "concurrent": 3,
+    "seconds": 5400,
+    "task_seconds": 900,
+    "task_tools": 96
+  },
+  "gate_status": {
+    "experiment_id": "operation-universes-native-sol-20261117-02",
+    "phase": "open",
+    "shared_stop": null,
+    "leaders": {
+      "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "application": "ai-node-0299a356d74db83b9ab4ebc7"
+    },
+    "members": [
+      "ai-node-60ce43c0fdb954913d5cf32f",
+      "ai-node-b912b62d9e95d94ddb26bfd6",
+      "ai-node-0299a356d74db83b9ab4ebc7"
+    ],
+    "native_turns_reserved": 1,
+    "native_turns_remaining": 2,
+    "remaining_seconds": 2899.114140510559,
+    "provider_identity": "unknown; requested/native thread configuration separately recorded",
+    "provider_cost": "unknown",
+    "adaption_authority_used": false
+  },
+  "first_admission_at": 1794904494.1817183,
+  "exact_deadline": 1794909894.1817183,
+  "parent_authorities_unchanged": true,
+  "old_stops_and_liabilities_retained": true,
+  "actual_reads": [
+    {
+      "event_seq": 3845,
+      "tool_event_seq": 3846,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-c398c4f1100cb45e",
+      "revision": 1,
+      "body_sha256": "059198a3956ec8cd00c7f735bbcda4e9c03dcb86b94377194aa710cfbbb15531",
+      "returned_body_characters": 9992,
+      "returned_body_sha256": "059198a3956ec8cd00c7f735bbcda4e9c03dcb86b94377194aa710cfbbb15531",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3847,
+      "tool_event_seq": 3848,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-39a75836f7c581b4",
+      "revision": 1,
+      "body_sha256": "b9c20f978a3026fa7c8ab35d0acec781e5817430587f2da5328f599a1b740947",
+      "returned_body_characters": 2253,
+      "returned_body_sha256": "b9c20f978a3026fa7c8ab35d0acec781e5817430587f2da5328f599a1b740947",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3889,
+      "tool_event_seq": 3890,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-ca883c95076f9d74",
+      "revision": 1,
+      "body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "returned_body_characters": 3475,
+      "returned_body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3891,
+      "tool_event_seq": 3892,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "returned_body_characters": 691,
+      "returned_body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3893,
+      "tool_event_seq": 3894,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-544497afb1b8963c",
+      "revision": 1,
+      "body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "returned_body_characters": 3344,
+      "returned_body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    }
+  ],
+  "adoption_events": [
+    {
+      "seq": 3904,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-ca883c95076f9d74",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3906,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3908,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-544497afb1b8963c",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3910,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-c398c4f1100cb45e",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3912,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-39a75836f7c581b4",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    }
+  ],
+  "native_math_versions": [],
+  "computations": [],
+  "pending_queue": [],
+  "tool_failures": [
+    {
+      "seq": 3835,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "tool": "read_document",
+      "error": "This file is not registered in Yohaku"
+    },
+    {
+      "seq": 3839,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "tool": "read_document",
+      "error": "This file is not registered in Yohaku"
+    },
+    {
+      "seq": 3856,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "tool": "task_result_index",
+      "error": "Invalid value for limit"
+    }
+  ],
+  "full_original_literature_or_private_chat_published": false
+}

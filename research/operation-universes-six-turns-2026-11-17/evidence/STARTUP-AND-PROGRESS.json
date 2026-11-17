@@ -1,0 +1,890 @@
+{
+  "captured_at": 1794907030.304654,
+  "phase01_observed_at": "2026-11-17T17:17:08.620101+08:00",
+  "phase02_observed_at": "2026-11-17T17:16:35.292417+08:00",
+  "user_event": 2974,
+  "task_commit": "7f41a0ef8008a7ced950e93be3730c74608e7abc",
+  "grant": {
+    "original_ceiling": 6,
+    "original_first_admission_at": 1794904494.1817183,
+    "exact_deadline": 1794909894.1817183,
+    "seconds_from_first_admission": 5400,
+    "reserved_native_turns": 4,
+    "remaining_native_turns": 2,
+    "remaining_seconds": 2863.877077102661,
+    "phase01_reserved": 3,
+    "recovery02_reserved": 1,
+    "phase02_capacity_is_remaining_not_additional": true,
+    "new_time_or_turns_added_by_recovery": false,
+    "phase01_stop_retained": {
+      "reason": "Original native task failed; inspect before new admission",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "at": 1794905509.3301642,
+      "new_dispatch_allowed": false
+    },
+    "current_phase02_stop": null
+  },
+  "tasks": [
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "role": "原生研究总负责人",
+      "node_request_id": "user-operation-universes-six-turns-20261117-v1",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "submitted_by": "main",
+      "status": "error",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": false,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "thread_id": "01a1e8a5-45f0-7223-b179-24f4881ead00",
+      "turn_id": "01a1e8a5-4825-7cb1-8441-8b0544150732",
+      "native_state": "unknown",
+      "wire_write_completed": true,
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 1416439,
+            "inputTokens": 1392314,
+            "cachedInputTokens": 1292416,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 24125,
+            "reasoningOutputTokens": 8015
+          },
+          "last": {
+            "totalTokens": 121657,
+            "inputTokens": 118951,
+            "cachedInputTokens": 118784,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 2706,
+            "reasoningOutputTokens": 500
+          },
+          "modelContextWindow": 475000
+        },
+        "turn_id": "01a1e8a5-4825-7cb1-8441-8b0544150732",
+        "baseline": {},
+        "input_tokens": 1392314,
+        "output_tokens": 24125,
+        "total_tokens": 1416439,
+        "cached_input_tokens": 1292416,
+        "reasoning_output_tokens": 8015
+      },
+      "error": "Codex turn exceeded 900 seconds; completed file changes remain; diagnostic: /root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/home/.local/state/yohaku/codex-diagnostics/8726ad1358274677988cb53c444f559a.json",
+      "server_turn_status_verified_by_original_id": "interrupted"
+    },
+    {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "role": "理论方向负责人",
+      "node_request_id": "round5-theory-user-event2974-boundary-review-v1",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "submitted_by": "ai-node-60ce43c0fdb954913d5cf32f",
+      "status": "error",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": false,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "thread_id": "01a1e475-9e78-7e82-b806-e6843a7ff4f9",
+      "turn_id": "01a1e8a6-ceb2-77f1-bb4d-a0529fc2dfc9",
+      "native_state": "unknown",
+      "wire_write_completed": true,
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 11397874,
+            "inputTokens": 11250481,
+            "cachedInputTokens": 10494592,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 147393,
+            "reasoningOutputTokens": 65689
+          },
+          "last": {
+            "totalTokens": 168534,
+            "inputTokens": 167792,
+            "cachedInputTokens": 167040,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 742,
+            "reasoningOutputTokens": 412
+          },
+          "modelContextWindow": 258400
+        },
+        "turn_id": "01a1e8a6-ceb2-77f1-bb4d-a0529fc2dfc9",
+        "baseline": {
+          "totalTokens": 9889036,
+          "inputTokens": 9760447,
+          "cachedInputTokens": 9155712,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 128589,
+          "reasoningOutputTokens": 57333
+        },
+        "input_tokens": 1490034,
+        "output_tokens": 18804,
+        "total_tokens": 1508838,
+        "cached_input_tokens": 1338880,
+        "reasoning_output_tokens": 8356
+      },
+      "error": "Codex turn exceeded 900 seconds; completed file changes remain; diagnostic: /root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/home/.local/state/yohaku/codex-diagnostics/7c9bd5999d384defbcfa9c221aae9fd1.json",
+      "server_turn_status_verified_by_original_id": "interrupted"
+    },
+    {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "role": "应用方向负责人",
+      "node_request_id": "round5-application-user-event2974-recoverable-chain-v1",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "submitted_by": "ai-node-60ce43c0fdb954913d5cf32f",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": true,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "thread_id": "01a1e475-a5fd-75c2-9163-66b3f1b347a9",
+      "turn_id": "01a1e8a6-e728-7f83-9f02-6877f1d963fd",
+      "native_state": "completed",
+      "wire_write_completed": true,
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 12941285,
+            "inputTokens": 12787220,
+            "cachedInputTokens": 11879040,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 154065,
+            "reasoningOutputTokens": 55120
+          },
+          "last": {
+            "totalTokens": 117147,
+            "inputTokens": 116734,
+            "cachedInputTokens": 115840,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 413,
+            "reasoningOutputTokens": 250
+          },
+          "modelContextWindow": 258400
+        },
+        "turn_id": "01a1e8a6-e728-7f83-9f02-6877f1d963fd",
+        "baseline": {
+          "totalTokens": 11674906,
+          "inputTokens": 11539559,
+          "cachedInputTokens": 10919552,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 135347,
+          "reasoningOutputTokens": 49768
+        },
+        "input_tokens": 1247661,
+        "output_tokens": 18718,
+        "total_tokens": 1266379,
+        "cached_input_tokens": 959488,
+        "reasoning_output_tokens": 5352
+      },
+      "error": null
+    },
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "role": "原生研究总负责人",
+      "node_request_id": "continue-59242046d4829b9bfa3368b4c62768c4",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "submitted_by": "main",
+      "status": "done",
+      "output_complete": true,
+      "commit_confirmed": true,
+      "native_cleanup_complete": true,
+      "completed_real_research_receipt": true,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "thread_id": "01a1e8bc-9f7f-71d2-98c5-a3cc44f4d1d6",
+      "turn_id": "01a1e8bc-a1cb-7253-b6d4-e61971e8326b",
+      "native_state": "completed",
+      "wire_write_completed": true,
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 1373199,
+            "inputTokens": 1356991,
+            "cachedInputTokens": 1249792,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 16208,
+            "reasoningOutputTokens": 4767
+          },
+          "last": {
+            "totalTokens": 133670,
+            "inputTokens": 133588,
+            "cachedInputTokens": 133376,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 82,
+            "reasoningOutputTokens": 0
+          },
+          "modelContextWindow": 475000
+        },
+        "turn_id": "01a1e8bc-a1cb-7253-b6d4-e61971e8326b",
+        "baseline": {},
+        "input_tokens": 1356991,
+        "output_tokens": 16208,
+        "total_tokens": 1373199,
+        "cached_input_tokens": 1249792,
+        "reasoning_output_tokens": 4767
+      },
+      "error": null
+    }
+  ],
+  "actual_reads": [
+    {
+      "event_seq": 3187,
+      "tool_event_seq": 3188,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "entry_id": "external/operation-universes-20261117-resources",
+      "revision": 1,
+      "body_sha256": "8046f7ccfaa71fe012baad7c125d687d090a7ae352a24b41bc46373155eb5f21",
+      "returned_body_characters": 27459,
+      "returned_body_sha256": "8046f7ccfaa71fe012baad7c125d687d090a7ae352a24b41bc46373155eb5f21",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3189,
+      "tool_event_seq": 3190,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "entry_id": "M-e3e7a0b3682b081e",
+      "revision": 1,
+      "body_sha256": "d4c7249bcadc94f5bd5b6ec662de39aeae292a545819b7230242486722961a1e",
+      "returned_body_characters": 2621,
+      "returned_body_sha256": "d4c7249bcadc94f5bd5b6ec662de39aeae292a545819b7230242486722961a1e",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3194,
+      "tool_event_seq": 3195,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "entry_id": "external/mochizuki/PANO/p011",
+      "revision": 1,
+      "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+      "returned_body_characters": 2879,
+      "returned_body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": true
+    },
+    {
+      "event_seq": 3404,
+      "tool_event_seq": 3405,
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "entry_id": "M-c772d35d33d375d7",
+      "revision": 1,
+      "body_sha256": "fa8fc404f0ed06c9a7777a6c9a0bd48c1b01e7a17f289e7c2c460854c66fa9db",
+      "returned_body_characters": 11341,
+      "returned_body_sha256": "fa8fc404f0ed06c9a7777a6c9a0bd48c1b01e7a17f289e7c2c460854c66fa9db",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3406,
+      "tool_event_seq": 3407,
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "entry_id": "M-1729534495821452",
+      "revision": 1,
+      "body_sha256": "dee77c68a2c7f6e3f85fac328bd73ee162203101bcf27ccbfbf632435c3b75cf",
+      "returned_body_characters": 7264,
+      "returned_body_sha256": "dee77c68a2c7f6e3f85fac328bd73ee162203101bcf27ccbfbf632435c3b75cf",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3408,
+      "tool_event_seq": 3409,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "entry_id": "M-2149d7062a0719a3",
+      "revision": 1,
+      "body_sha256": "8d63ab0ffbe56d8cf2100fb06c4be7295a192295665407f6faffd28ff356a7e7",
+      "returned_body_characters": 2117,
+      "returned_body_sha256": "8d63ab0ffbe56d8cf2100fb06c4be7295a192295665407f6faffd28ff356a7e7",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3410,
+      "tool_event_seq": 3411,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "entry_id": "external/operation-universes-20261117-resources",
+      "revision": 1,
+      "body_sha256": "8046f7ccfaa71fe012baad7c125d687d090a7ae352a24b41bc46373155eb5f21",
+      "returned_body_characters": 27459,
+      "returned_body_sha256": "8046f7ccfaa71fe012baad7c125d687d090a7ae352a24b41bc46373155eb5f21",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3414,
+      "tool_event_seq": 3415,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "entry_id": "external/mochizuki/IUT1/p012",
+      "revision": 1,
+      "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+      "returned_body_characters": 3003,
+      "returned_body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": true
+    },
+    {
+      "event_seq": 3439,
+      "tool_event_seq": 3440,
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "entry_id": "M-5606eba96406db45",
+      "revision": 1,
+      "body_sha256": "cedfe6c82fc97d6170f2bd160691d84d1ea7d826388cc56e8c3b3b4b95bbf6ec",
+      "returned_body_characters": 8034,
+      "returned_body_sha256": "cedfe6c82fc97d6170f2bd160691d84d1ea7d826388cc56e8c3b3b4b95bbf6ec",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3508,
+      "tool_event_seq": 3509,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "entry_id": "M-ca883c95076f9d74",
+      "revision": 1,
+      "body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "returned_body_characters": 3475,
+      "returned_body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3511,
+      "tool_event_seq": 3512,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "entry_id": "M-e3e7a0b3682b081e",
+      "revision": 1,
+      "body_sha256": "d4c7249bcadc94f5bd5b6ec662de39aeae292a545819b7230242486722961a1e",
+      "returned_body_characters": 2621,
+      "returned_body_sha256": "d4c7249bcadc94f5bd5b6ec662de39aeae292a545819b7230242486722961a1e",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3520,
+      "tool_event_seq": 3521,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "entry_id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "returned_body_characters": 691,
+      "returned_body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3522,
+      "tool_event_seq": 3523,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "entry_id": "M-544497afb1b8963c",
+      "revision": 1,
+      "body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "returned_body_characters": 3344,
+      "returned_body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3575,
+      "tool_event_seq": 3576,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "entry_id": "M-ca883c95076f9d74",
+      "revision": 1,
+      "body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "returned_body_characters": 3475,
+      "returned_body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3592,
+      "tool_event_seq": 3593,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "entry_id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "returned_body_characters": 691,
+      "returned_body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3594,
+      "tool_event_seq": 3595,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "entry_id": "M-544497afb1b8963c",
+      "revision": 1,
+      "body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "returned_body_characters": 3344,
+      "returned_body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3845,
+      "tool_event_seq": 3846,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-c398c4f1100cb45e",
+      "revision": 1,
+      "body_sha256": "059198a3956ec8cd00c7f735bbcda4e9c03dcb86b94377194aa710cfbbb15531",
+      "returned_body_characters": 9992,
+      "returned_body_sha256": "059198a3956ec8cd00c7f735bbcda4e9c03dcb86b94377194aa710cfbbb15531",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3847,
+      "tool_event_seq": 3848,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-39a75836f7c581b4",
+      "revision": 1,
+      "body_sha256": "b9c20f978a3026fa7c8ab35d0acec781e5817430587f2da5328f599a1b740947",
+      "returned_body_characters": 2253,
+      "returned_body_sha256": "b9c20f978a3026fa7c8ab35d0acec781e5817430587f2da5328f599a1b740947",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3889,
+      "tool_event_seq": 3890,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-ca883c95076f9d74",
+      "revision": 1,
+      "body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "returned_body_characters": 3475,
+      "returned_body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3891,
+      "tool_event_seq": 3892,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "returned_body_characters": 691,
+      "returned_body_sha256": "8e0b837009f56c6c465dc15267e6b7049b74fc04f57656e8a995c7b072eb0a40",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 3893,
+      "tool_event_seq": 3894,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "entry_id": "M-544497afb1b8963c",
+      "revision": 1,
+      "body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "returned_body_characters": 3344,
+      "returned_body_sha256": "34a9d9e82fea8bafc830507e08d17388a8ae12f270ebee86b0d072e87a194e0d",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    }
+  ],
+  "computations": [
+    {
+      "native_submit": {
+        "request_id": "app-r5-07445-monotone-diamond-v1",
+        "model_task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+        "node_id": "ai-node-0299a356d74db83b9ab4ebc7"
+      },
+      "status": {
+        "format": "yohaku-task/1",
+        "version": "yohaku-project-task/1",
+        "task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+        "request_id": "app-r5-07445-monotone-diamond-v1",
+        "project_id": "native-application",
+        "action": "round5-diamond-search",
+        "status": "done",
+        "state": "succeeded",
+        "status_source": "Rust chat object",
+        "event_seq": 402655064,
+        "ledger_version": 3,
+        "stdout_bytes": 1877,
+        "stderr_bytes": 0,
+        "phase": "validating fixed snapshot and sandbox",
+        "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+        "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+        "exit_code": 0,
+        "error": null,
+        "cancel": {
+          "at_ms": null,
+          "by": null,
+          "requested": false,
+          "result": null
+        },
+        "cancel_confirmed": false,
+        "execution": "ended",
+        "receipt": {
+          "adapter": "linux-bubblewrap",
+          "cancel_observed": false,
+          "cleanup_confirmed": true,
+          "error": null,
+          "exit_code": 0,
+          "finished": 1794905043.102539,
+          "output_complete": true,
+          "output_truncated": false,
+          "process": {
+            "pid": 526396,
+            "start": "6393607",
+            "state": "R"
+          }
+        },
+        "artifacts": [
+          {
+            "bytes": 13623,
+            "executable": false,
+            "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-results.json",
+            "path": "round5-results.json",
+            "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+            "sha256": "ee1376b9035c9b59caeec9192dd67c06ec337740f368d03509772f1d9a442d84",
+            "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+            "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+          },
+          {
+            "bytes": 914,
+            "executable": false,
+            "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-checkpoint.json",
+            "path": "round5-checkpoint.json",
+            "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+            "sha256": "2b914d661e3c844832be541f0290949332c0f51d9d55e24fe5c647a730bb6927",
+            "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+            "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+          },
+          {
+            "bytes": 1941,
+            "executable": false,
+            "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-certificates.json",
+            "path": "round5-certificates.json",
+            "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+            "sha256": "518802d470c1da4cd6e5f9912d2766fa2e2a96e637b66a1dfd4b680316d2fd64",
+            "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+            "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+          },
+          {
+            "bytes": 177,
+            "executable": false,
+            "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-candidate.json",
+            "path": "round5-candidate.json",
+            "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+            "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+            "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+            "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+          },
+          {
+            "bytes": 196,
+            "executable": false,
+            "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-submission.txt",
+            "path": "round5-submission.txt",
+            "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+            "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+            "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+            "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+          },
+          {
+            "bytes": 1004,
+            "executable": false,
+            "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-cli.json",
+            "path": "round5-cli.json",
+            "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+            "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+            "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+            "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+          }
+        ],
+        "output": {
+          "stdout": 1877,
+          "stderr": 0
+        },
+        "replay_allowed": false
+      }
+    }
+  ],
+  "adoption_events": [
+    {
+      "seq": 3466,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "id": "M-e3e7a0b3682b081e",
+      "revision": 1,
+      "artifact": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+      "explanation": "本稿命题A/B采用精确版本的可观测行空间最小在线摘要定理；本轮逐段独立解析复核review3435。新乘积界/升级界自给证明，不倒填到旧代码。"
+    },
+    {
+      "seq": 3469,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "id": "external/mochizuki/PANO/p011",
+      "revision": 1,
+      "artifact": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+      "explanation": "本稿第6节采用本轮真实读取的可辨散文作提出结构保留问题的启发，仅自写总结；非命题证明前提，未采用公式或IUT定理。"
+    },
+    {
+      "seq": 3478,
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "id": "M-5606eba96406db45",
+      "revision": 1,
+      "artifact": "files/application/round5-diamond-search.py.tex@0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+      "explanation": "采用精确资源签名与拼接约定作本轮中间态差公式的前提；正文已本轮实际读取。代码实际按sum/max逐态复算并和official字段断言，不宣称旧任务依赖此新采用。"
+    },
+    {
+      "seq": 3480,
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "id": "M-c772d35d33d375d7",
+      "revision": 1,
+      "artifact": "files/application/round5-diamond-search.py.tex@0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+      "explanation": "采用旧反例来选择并冻结新work单调guard；旧51301/radius3数据不作本轮计算，不重跑。新代码不是外部种子冒名。"
+    },
+    {
+      "seq": 3530,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "id": "M-2149d7062a0719a3",
+      "revision": 1,
+      "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+      "explanation": "实际采用公共幅度纤维、相对符号与费用模型，作为新多目标条件命题的出发点；解析review3428另证，不冒称执行最优或数值复算。"
+    },
+    {
+      "seq": 3532,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+      "explanation": "实际纳入完整四类有限反例及阶段条件0/2位证明；发布与独立核验不同。"
+    },
+    {
+      "seq": 3534,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "id": "M-544497afb1b8963c",
+      "revision": 1,
+      "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+      "explanation": "实际呈现联合秩、RI条件、增量证明与反例；自写证明不是独立同伴审阅。"
+    },
+    {
+      "seq": 3536,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "id": "external/mochizuki/IUT1/p012",
+      "revision": 1,
+      "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+      "explanation": "本轮实际重读可辨散文并用于共同核心/重建能力问题的结构启发，未采用公式/IUT定理，不存在复杂度桥梁。"
+    },
+    {
+      "seq": 3538,
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "id": "external/operation-universes-20261117-resources",
+      "revision": 1,
+      "artifact": "files/theory/round5-theory-process-index.zh.md.tex",
+      "explanation": "实际用于页级来源锁/权威映射与质量限制记录；工程索引不是研究发现或公式认证。"
+    },
+    {
+      "seq": 3611,
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "id": "M-c398c4f1100cb45e",
+      "revision": 1,
+      "artifact": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-results.json@ee1376b9035c9b59caeec9192dd67c06ec337740f368d03509772f1d9a442d84",
+      "explanation": "作者申明本轮真实产物采用已预先发表的精确菱形中间态差与二步环条件；冻结源直接执行对应谓词，逐候选断言sum/max签名与完整official一致。发布、此采用声明、实际snapshot/产物hash、独立复核为不同证据；无独立复核或重跑。"
+    },
+    {
+      "seq": 3904,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-ca883c95076f9d74",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3906,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-3e7ea6919b89bec9",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3908,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-544497afb1b8963c",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3910,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-c398c4f1100cb45e",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    },
+    {
+      "seq": 3912,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "id": "M-39a75836f7c581b4",
+      "revision": 1,
+      "artifact": "files/theory/round5-final.zh.md.tex",
+      "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。"
+    }
+  ],
+  "tool_failures": [
+    {
+      "seq": 3489,
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "tool": "task_result_index",
+      "error": "Invalid value for limit"
+    },
+    {
+      "seq": 3835,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "tool": "read_document",
+      "error": "This file is not registered in Yohaku"
+    },
+    {
+      "seq": 3839,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "tool": "read_document",
+      "error": "This file is not registered in Yohaku"
+    },
+    {
+      "seq": 3856,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+      "tool": "task_result_index",
+      "error": "Invalid value for limit"
+    }
+  ],
+  "pending_queue": [],
+  "parent_authorities_stops_failures_memories_preserved": true,
+  "original_full_text_remains_private": true
+}

@@ -1,0 +1,48 @@
+{
+  "format": "round5-resource-monotone-diamonds/1",
+  "user_event": 2974,
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "challenge": "sac-07445",
+  "baseline": [
+    6,
+    4,
+    12,
+    1,
+    3,
+    6,
+    12,
+    2,
+    5,
+    6,
+    4,
+    2,
+    4,
+    16,
+    15
+  ],
+  "baseline_signature": {
+    "length": 15,
+    "peak_total_relator_length": 13,
+    "work": 128
+  },
+  "transformations": [
+    "swap adjacent IDs only when both reordered primitive moves are legal, exact ordered exit agrees, and reordered middle total length is no larger",
+    "delete a two-move exact cycle; no insertion, relabeling, quotient or other substitutions"
+  ],
+  "order": "BFS over full primitive action sequences; positions ascending; delete then swap; duplicate sequence dedup",
+  "guard": {
+    "max_paths": 2048,
+    "max_search_apply_calls": 100000,
+    "search_wall_seconds": 15
+  },
+  "per_candidate": "full pinned official verify before enqueue; candidate chosen by (primitive length,peak,work,sequence)",
+  "units": "primitive expanded IDs only; work includes initial and every post-state total relator length",
+  "claim_scope": "one development baseline's directed nonincreasing-work adjacent-commutation-and-cycle-deletion closure, complete only if queue drained without guard; not all Stable paths or causal search advantage",
+  "control_comparison": false,
+  "training_test_split": false,
+  "macro_dictionary": [],
+  "literature_in_snapshot": false,
+  "old_computations_not_rerun": "round4 radius3/60 windows/51301 calls and round3 target beam",
+  "artifact_prefix": "round5",
+  "platform_upload": false
+}

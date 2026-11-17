@@ -1,0 +1,499 @@
+{
+  "at": 1794904474.2085507,
+  "user_event": 2974,
+  "request_id": "user-operation-universes-six-turns-20261117-v1",
+  "task_commit": "7f41a0ef8008a7ced950e93be3730c74608e7abc",
+  "task_sha256": "d17e9631911144e3dcfc89734635a021a1492a1b333c54f97c36cb9d098eab8a",
+  "verified_retained_documents": 46,
+  "retained_exact_page_versions": [
+    {
+      "id": "external/mochizuki/PANO/p011",
+      "revision": 1,
+      "source_id": "PANO",
+      "page": 11,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-838309943754383d",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-011.txt.tex",
+          "source_revision": "12078de74d369a0c4aff0ce48c0a0ac8f71b7196957bb5e9e17df7888e3f9d9a",
+          "generated": "files/theory/round4-inputs/private-literature/PANO-page-011.txt",
+          "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-838309943754383d",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-011.txt.tex",
+          "source_revision": "b615bd89986f96ccd11df097fdef091052bed0daef314a93d68f11301e8c9c11",
+          "generated": "files/application/round4-inputs/private-literature/PANO-page-011.txt",
+          "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/PANO/p028",
+      "revision": 1,
+      "source_id": "PANO",
+      "page": 28,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "body_sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-05850d111687606c",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-028.txt.tex",
+          "source_revision": "485328984320d3d3c30e750236f562c1784e80c0471fa42b3dfb380675ff5167",
+          "generated": "files/theory/round4-inputs/private-literature/PANO-page-028.txt",
+          "body_sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-05850d111687606c",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-028.txt.tex",
+          "source_revision": "94303e86ae7462825e0b938212bc2d5ad8d23b1a3a4411c653a99fad26415685",
+          "generated": "files/application/round4-inputs/private-literature/PANO-page-028.txt",
+          "body_sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/PANO/p029",
+      "revision": 1,
+      "source_id": "PANO",
+      "page": 29,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "body_sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-25b37a0069f80e65",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-029.txt.tex",
+          "source_revision": "7344209f9846cab41c7c035cba72086c862d7526d10184e35a5032a2e0d25e1b",
+          "generated": "files/theory/round4-inputs/private-literature/PANO-page-029.txt",
+          "body_sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-25b37a0069f80e65",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-029.txt.tex",
+          "source_revision": "cccba49b2f611d28570151bf8f0d853f744c7299c1a084e3844bc40e95019d0b",
+          "generated": "files/application/round4-inputs/private-literature/PANO-page-029.txt",
+          "body_sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/PANO/p038",
+      "revision": 1,
+      "source_id": "PANO",
+      "page": 38,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-9721f53637ec9bf0",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-038.txt.tex",
+          "source_revision": "acfada1d932f8a3af84f08ec1fbe020008a7e767a0fd51f367b4cbca8d75ca62",
+          "generated": "files/theory/round4-inputs/private-literature/PANO-page-038.txt",
+          "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-9721f53637ec9bf0",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-038.txt.tex",
+          "source_revision": "730e43c3b658f4d839fb835b4b970f25dcdd5c75f1c8a7be1819be7c096d44f9",
+          "generated": "files/application/round4-inputs/private-literature/PANO-page-038.txt",
+          "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/PANO/p039",
+      "revision": 1,
+      "source_id": "PANO",
+      "page": 39,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-d4f9c8829c35b25b",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-039.txt.tex",
+          "source_revision": "aa6819ed60ea8e9a634c55c7e2321c7f496c54fdb0a39f8497fcc91ead4c5d45",
+          "generated": "files/theory/round4-inputs/private-literature/PANO-page-039.txt",
+          "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-d4f9c8829c35b25b",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-039.txt.tex",
+          "source_revision": "754fd0e5ab81b70272b21162d8b68d0b0d4bd0cf952de12edbf50b756a5f5379",
+          "generated": "files/application/round4-inputs/private-literature/PANO-page-039.txt",
+          "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/PANO/p040",
+      "revision": 1,
+      "source_id": "PANO",
+      "page": 40,
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-f991780f24be3a0f",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-040.txt.tex",
+          "source_revision": "a09d34a4fcd153956e279a7a71d35b3cf0bca6569a42b13950d2975337a30218",
+          "generated": "files/theory/round4-inputs/private-literature/PANO-page-040.txt",
+          "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-f991780f24be3a0f",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-040.txt.tex",
+          "source_revision": "19ede447be4599440d10633dc475419cfef944395468bd1356260f85a4a9f372",
+          "generated": "files/application/round4-inputs/private-literature/PANO-page-040.txt",
+          "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/IUT1/p001",
+      "revision": 1,
+      "source_id": "IUT1",
+      "page": 1,
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "body_sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-1372b790ccad2cc5",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-001.txt.tex",
+          "source_revision": "7488bee287a567dcb92d36feefd5f08afd9a06c6c6932050fc28e504236cd70f",
+          "generated": "files/theory/round4-inputs/private-literature/IUT1-page-001.txt",
+          "body_sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-1372b790ccad2cc5",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-001.txt.tex",
+          "source_revision": "98466f389350ee040804fdc7f6ac7467ce0c7b943498655f49ef435772152d56",
+          "generated": "files/application/round4-inputs/private-literature/IUT1-page-001.txt",
+          "body_sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/IUT1/p012",
+      "revision": 1,
+      "source_id": "IUT1",
+      "page": 12,
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-b001f0ff3366b4cc",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-012.txt.tex",
+          "source_revision": "7c81752013767ce9cb66171d3ef5fad36c5bd679d56ce144960e87f7f9f0328c",
+          "generated": "files/theory/round4-inputs/private-literature/IUT1-page-012.txt",
+          "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-b001f0ff3366b4cc",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-012.txt.tex",
+          "source_revision": "48d91d6877dcb570446d59cbf5dcd8d0d43765ec2fecc489d8f6ecc5539343c8",
+          "generated": "files/application/round4-inputs/private-literature/IUT1-page-012.txt",
+          "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/IUT1/p013",
+      "revision": 1,
+      "source_id": "IUT1",
+      "page": 13,
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "body_sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-b01db2b1db1161f2",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-013.txt.tex",
+          "source_revision": "2b2d597215262acffa86c69ad9def6b3c31a46f756ef1bfa1e339e1be7235d1b",
+          "generated": "files/theory/round4-inputs/private-literature/IUT1-page-013.txt",
+          "body_sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-b01db2b1db1161f2",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-013.txt.tex",
+          "source_revision": "bd72a96ebd3447e423497ac6b457556c4de1f2589c8f916d742de6de985177d4",
+          "generated": "files/application/round4-inputs/private-literature/IUT1-page-013.txt",
+          "body_sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/IUT1/p014",
+      "revision": 1,
+      "source_id": "IUT1",
+      "page": 14,
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "body_sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-ed76f07e70d9661b",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-014.txt.tex",
+          "source_revision": "c8559fd5116af495a27ed93f72b80b68f6d7f8d7e6a114138f8a87088243e69d",
+          "generated": "files/theory/round4-inputs/private-literature/IUT1-page-014.txt",
+          "body_sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-ed76f07e70d9661b",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-014.txt.tex",
+          "source_revision": "f5ab84417fc16dc54817dd4fa6e069b4e166cf61c302faec593b4059698cc483",
+          "generated": "files/application/round4-inputs/private-literature/IUT1-page-014.txt",
+          "body_sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "external/mochizuki/IUT1/p015",
+      "revision": 1,
+      "source_id": "IUT1",
+      "page": 15,
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "body_sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306",
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "id": "op4-theory-25e312f3c778ac44",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-015.txt.tex",
+          "source_revision": "dac4d8b35da9ef0a968c39ad52f7d1ffe6c330ac77212fa7efe0d4354e883b17",
+          "generated": "files/theory/round4-inputs/private-literature/IUT1-page-015.txt",
+          "body_sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        },
+        {
+          "team": "application",
+          "id": "op4-application-25e312f3c778ac44",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-015.txt.tex",
+          "source_revision": "a66ab6279cb5e696be024e0eabe83ca7559202747b93dc341213b88b29f55136",
+          "generated": "files/application/round4-inputs/private-literature/IUT1-page-015.txt",
+          "body_sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306",
+          "kind": "PRIVATE original page extract; do not publish",
+          "mapping_verified": true,
+          "metadata_keys": [
+            "body",
+            "source",
+            "text",
+            "valid",
+            "revision"
+          ]
+        }
+      ]
+    }
+  ],
+  "literature_index": "external/operation-universes-20261117-resources@1",
+  "old_read_receipts_preserved": true,
+  "actual_new_reads_prefilled": false,
+  "actual_adoptions_prefilled": false,
+  "model_requests": 0
+}

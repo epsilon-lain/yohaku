@@ -1,0 +1,250 @@
+{
+  "full_original_literature_included": false,
+  "files": [
+    {
+      "path": "README.zh.md",
+      "bytes": 7951,
+      "sha256": "7424a4d918062e8196684aaa352673083ca93bf8fc06165f228cb38d03e48175"
+    },
+    {
+      "path": "implementation/aggregate_public.py",
+      "bytes": 13861,
+      "sha256": "1c5f4830e357327f5528a11cb4aed0d05decdb683cc1687c2ad0dc4afc2e08e9"
+    },
+    {
+      "path": "implementation/continuation.py",
+      "bytes": 15327,
+      "sha256": "08e8b22f2281593ce68b2c2c3faab0c41a26b3038ca18a85244e87efc32161f9"
+    },
+    {
+      "path": "implementation/curate.py",
+      "bytes": 12817,
+      "sha256": "5623937ed5494aedd5695b7e952c7a79765a7a598f3b955b413a93232be6e077"
+    },
+    {
+      "path": "implementation/observer.py",
+      "bytes": 9486,
+      "sha256": "528d081fd78721bc057475ea0098b5d9351351c3a3c735285dfda64e70325090"
+    },
+    {
+      "path": "implementation/validate_authority.py",
+      "bytes": 2724,
+      "sha256": "b8c57ab71a92bd11f244a6e650491e994073696bac6040c2b878b4e8c246928f"
+    },
+    {
+      "path": "implementation/recovery02/continuation.py",
+      "bytes": 9203,
+      "sha256": "183221e714b7131ada75945d7552e66cd01be114d65d9f2e3b4736b93062aed5"
+    },
+    {
+      "path": "implementation/recovery02/observer.py",
+      "bytes": 9486,
+      "sha256": "528d081fd78721bc057475ea0098b5d9351351c3a3c735285dfda64e70325090"
+    },
+    {
+      "path": "native-documents/application/round5-cli-local.json",
+      "bytes": 1004,
+      "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925"
+    },
+    {
+      "path": "native-documents/application/round5-diamond-search.py",
+      "bytes": 8540,
+      "sha256": "4c08844589744d61dda6a97fa035a58713f38048923d0ee3a2242a12e2d28b69"
+    },
+    {
+      "path": "native-documents/application/round5-evidence.json",
+      "bytes": 13485,
+      "sha256": "5099bee7459c3686c3a04bcb505efa818b4c9772c49c56256318df886afeae4a"
+    },
+    {
+      "path": "native-documents/application/round5-freeze.json",
+      "bytes": 3232,
+      "sha256": "c6f2570c983e2b2648cc2b0bf2bbaaca7da35d1457b3724c3b5ac92b10e46a79"
+    },
+    {
+      "path": "native-documents/application/round5-process.zh.md",
+      "bytes": 4716,
+      "sha256": "8c7a71571ad94f15c22eb84567495fb69452bd80271456bf09ff63aa7fc099a5"
+    },
+    {
+      "path": "native-documents/application/round5-protocol.json",
+      "bytes": 1631,
+      "sha256": "93c8870900bb4ec101738d0804b3a39402cd3675f15ea35e596f9c4853d981f8"
+    },
+    {
+      "path": "native-documents/application/round5-public.zh.md",
+      "bytes": 2451,
+      "sha256": "a544ef02436c129c9ebfeb952f68d93712abc44987b83a658ba7612e2fddb09f"
+    },
+    {
+      "path": "native-documents/application/round5-submission-local.txt",
+      "bytes": 196,
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2"
+    },
+    {
+      "path": "native-documents/theory/round5-final.zh.md",
+      "bytes": 8212,
+      "sha256": "75e77634208839ccb609172a1cc09b61039db546ec7652aa1f9121caac2e236f"
+    },
+    {
+      "path": "native-documents/theory/round5-joint-amplitude-targets.zh.md",
+      "bytes": 9917,
+      "sha256": "960fbb5979c12d377d94af7a62806d4d5ebd5c7f76a13da7c4b4c7fe464c228a"
+    },
+    {
+      "path": "native-documents/theory/round5-literature-receipts.json",
+      "bytes": 17584,
+      "sha256": "78809339b553e60569eaafece7ebb097be14192af36baaf9d2ec5a8e587f8d72"
+    },
+    {
+      "path": "native-documents/theory/round5-process-index.json",
+      "bytes": 15390,
+      "sha256": "b78821a8f46138273ec0dc8ca862732d3519c0324fc3040d02cd26f01defe357"
+    },
+    {
+      "path": "native-documents/theory/round5-progress.zh.md",
+      "bytes": 5780,
+      "sha256": "903078545f2f062131d3f75b04b86379283172ec7fcdbdca6e3eb4a1e8a802ce"
+    },
+    {
+      "path": "native-documents/theory/round5-root-commuting-upgrade.zh.md",
+      "bytes": 7842,
+      "sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf"
+    },
+    {
+      "path": "native-documents/theory/round5-start-receipt.json",
+      "bytes": 12500,
+      "sha256": "9ffbc129ed8d91fa6dcdc35ef292121bb9a83d9aa80400da548ac3837ecc32b7"
+    },
+    {
+      "path": "native-documents/theory/round5-theory-early-checkpoint.zh.md",
+      "bytes": 1794,
+      "sha256": "05c3372f72390a30990289d7357f0cba9fe47c361dcc1b22638de6423f64bd00"
+    },
+    {
+      "path": "native-documents/theory/round5-theory-process-index.zh.md",
+      "bytes": 8263,
+      "sha256": "1623089b6c89b10a2b93e24614906e09103959ce78d7342b92c42ab5f5c69dd4"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/immutable-inputs.zip",
+      "bytes": 2790844,
+      "sha256": "36369ad1c25cc57acc1c471a2a151ca07d9073ff963b2ae0307001e10854bf98"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/RECEIPT.json",
+      "bytes": 4382,
+      "sha256": "3fdddad5b8e404c9b99b9a1f050b49ef55e849b9348ee0a0756dadcecafcea2b"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/SNAPSHOT-MANIFEST.json",
+      "bytes": 59845,
+      "sha256": "d7ef9d8a0454756c53ab500217bd45d5cacd4afb1582e4f5f8aa8b58a223a08a"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/artifacts/round5-candidate.json",
+      "bytes": 177,
+      "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/artifacts/round5-certificates.json",
+      "bytes": 1941,
+      "sha256": "518802d470c1da4cd6e5f9912d2766fa2e2a96e637b66a1dfd4b680316d2fd64"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/artifacts/round5-checkpoint.json",
+      "bytes": 914,
+      "sha256": "2b914d661e3c844832be541f0290949332c0f51d9d55e24fe5c647a730bb6927"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/artifacts/round5-cli.json",
+      "bytes": 1004,
+      "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/artifacts/round5-results.json",
+      "bytes": 13623,
+      "sha256": "ee1376b9035c9b59caeec9192dd67c06ec337740f368d03509772f1d9a442d84"
+    },
+    {
+      "path": "experiments/project-task-c0f44bc9f068248f856aa641a7c3aac4/artifacts/round5-submission.txt",
+      "bytes": 196,
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2"
+    },
+    {
+      "path": "evidence/ADOPTION-DEPENDENCIES.json",
+      "bytes": 16172,
+      "sha256": "96f532e6f726f1d3e5f313e24999a7cc913cf5f0da17cb970faff5baea47df02"
+    },
+    {
+      "path": "evidence/AUTHORITY-LINEAGE.json",
+      "bytes": 2908,
+      "sha256": "ba40c6afa26d662443e2b2517229693978d8f1cb6b0f82e4bb286ef33dabc30f"
+    },
+    {
+      "path": "evidence/COMPUTATIONS.json",
+      "bytes": 3742,
+      "sha256": "1bd1049290b0242d8e28e30f852c2019b159401af63bd2db59c56101af9ab03e"
+    },
+    {
+      "path": "evidence/ENGINEERING-VALIDATION.json",
+      "bytes": 481,
+      "sha256": "c5bf294d798dcba4718aa80421240c2dc103f0ae4be457a5d46239a6b098a3e1"
+    },
+    {
+      "path": "evidence/EVENT-METADATA.json",
+      "bytes": 398912,
+      "sha256": "be51d9b0b375273c44b7acff4d04c5f4b10725b37c67d568e4a8656b7f5c6823"
+    },
+    {
+      "path": "evidence/FAILED-TURN-QUERIES.json",
+      "bytes": 859,
+      "sha256": "369d2da2bb2e0f26f9eaeb7a5ac8058a069060c35c7f92130bf94ba975387d45"
+    },
+    {
+      "path": "evidence/GOAL-RECEIPT.json",
+      "bytes": 20268,
+      "sha256": "a816032ded8a6e4f6aae3e5cd704513b79bcb087d69c4da45c0db6d65984c102"
+    },
+    {
+      "path": "evidence/NATIVE-DOCUMENTS.json",
+      "bytes": 4110,
+      "sha256": "9a16e5cfd09f5803371105b4a8552f6d24beb15c60440e21d23dd8f1aa25b205"
+    },
+    {
+      "path": "evidence/NATIVE-REVIEW-RECEIPTS.json",
+      "bytes": 10885,
+      "sha256": "c9078d02937174ea61afa4d0f508af9f773b3bd78beeb3d8868a4bc82d9f99fb"
+    },
+    {
+      "path": "evidence/OFFICIAL-MAIN-CHECK.json",
+      "bytes": 420,
+      "sha256": "05c9219920105f877d5b9e31f71e5dab52eafe101274d0008f511eb3d58e7839"
+    },
+    {
+      "path": "evidence/PHASE01-RECEIPTS.json",
+      "bytes": 32041,
+      "sha256": "0408fd8276d4d0e92a37e055d1573a791cb01cb1c241a367e36b312b86a870ce"
+    },
+    {
+      "path": "evidence/PHASE02-RECEIPTS.json",
+      "bytes": 9830,
+      "sha256": "26f3c05aa019488618317340d632e9c673d07daffadc69827762d359da4c5a4c"
+    },
+    {
+      "path": "evidence/RECOVERY-CONSUMPTION.json",
+      "bytes": 2877,
+      "sha256": "a9c22ea8f1dce2f9792e111a2534dcf28d9f3d3f1dfb09b9a061fe38ef005d8c"
+    },
+    {
+      "path": "evidence/STARTUP-AND-PROGRESS.json",
+      "bytes": 36852,
+      "sha256": "7541dc4abbd75a2b4fa1930e647e1cc446d9fd1ed0699ca253e85e5515f17fa8"
+    },
+    {
+      "path": "evidence/TASK-TARGET-CONFIRMED.json",
+      "bytes": 392,
+      "sha256": "2c5171a2f422f93269a6d8697fa3f41a16496fc8b81495530542d914c7087ec0"
+    }
+  ]
+}

@@ -1,0 +1,358 @@
+{
+  "schema": "round5-literature-receipts-v1",
+  "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+  "model_task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+  "historical_import_not_reexecuted": true,
+  "index": {
+    "id": "external/operation-universes-20261117-resources",
+    "revision": 1,
+    "body_sha256": "8046f7ccfaa71fe012baad7c125d687d090a7ae352a24b41bc46373155eb5f21",
+    "actual_this_task_read": true
+  },
+  "catalog_flag_note": "Original source catalog literal native_imported=false is retained as historical package metadata. Native authoritative-file mappings and later exact math_read/read_document are separate positive evidence, not a retrospective catalog edit.",
+  "page_metadata": [
+    {
+      "id": "external/mochizuki/PANO/p011",
+      "revision": 1,
+      "source_id": "PANO",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 11,
+      "pdf_index_zero_based": 10,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-011.txt.tex",
+          "revision": "12078de74d369a0c4aff0ce48c0a0ac8f71b7196957bb5e9e17df7888e3f9d9a",
+          "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-011.txt.tex",
+          "revision": "b615bd89986f96ccd11df097fdef091052bed0daef314a93d68f11301e8c9c11",
+          "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/PANO/p028",
+      "revision": 1,
+      "source_id": "PANO",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 28,
+      "pdf_index_zero_based": 27,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-028.txt.tex",
+          "revision": "485328984320d3d3c30e750236f562c1784e80c0471fa42b3dfb380675ff5167",
+          "body_sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-028.txt.tex",
+          "revision": "94303e86ae7462825e0b938212bc2d5ad8d23b1a3a4411c653a99fad26415685",
+          "body_sha256": "117c01760eed119c943bc2230340497baea2028d010329ed81dea02007c11698"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/PANO/p029",
+      "revision": 1,
+      "source_id": "PANO",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 29,
+      "pdf_index_zero_based": 28,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-029.txt.tex",
+          "revision": "7344209f9846cab41c7c035cba72086c862d7526d10184e35a5032a2e0d25e1b",
+          "body_sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-029.txt.tex",
+          "revision": "cccba49b2f611d28570151bf8f0d853f744c7299c1a084e3844bc40e95019d0b",
+          "body_sha256": "5739e9810b62abb3955948c20e71d96312826b11fe231cbf9d3525cbcb6ffe03"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/PANO/p038",
+      "revision": 1,
+      "source_id": "PANO",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 38,
+      "pdf_index_zero_based": 37,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-038.txt.tex",
+          "revision": "acfada1d932f8a3af84f08ec1fbe020008a7e767a0fd51f367b4cbca8d75ca62",
+          "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-038.txt.tex",
+          "revision": "730e43c3b658f4d839fb835b4b970f25dcdd5c75f1c8a7be1819be7c096d44f9",
+          "body_sha256": "7e6df1b8377cba0df88491a723e798142a9e0679f033da36b5ffafda570aafea"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/PANO/p039",
+      "revision": 1,
+      "source_id": "PANO",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 39,
+      "pdf_index_zero_based": 38,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-039.txt.tex",
+          "revision": "aa6819ed60ea8e9a634c55c7e2321c7f496c54fdb0a39f8497fcc91ead4c5d45",
+          "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-039.txt.tex",
+          "revision": "754fd0e5ab81b70272b21162d8b68d0b0d4bd0cf952de12edbf50b756a5f5379",
+          "body_sha256": "542738d4dab248aa2ea1b3d5a8e95d0ce1f3cec5c259e5a48ba2a9d94f9ed5cd"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/PANO/p040",
+      "revision": 1,
+      "source_id": "PANO",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Panoramic%20Overview%20of%20Inter-universal%20Teichmuller%20Theory.pdf",
+      "pdf_sha256": "eb42575f73d69d1f28e949eb9e52593dd17d1b85c15cc8b44fdfd12ae86b708b",
+      "printed_page": 40,
+      "pdf_index_zero_based": 39,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/PANO-page-040.txt.tex",
+          "revision": "a09d34a4fcd153956e279a7a71d35b3cf0bca6569a42b13950d2975337a30218",
+          "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/PANO-page-040.txt.tex",
+          "revision": "19ede447be4599440d10633dc475419cfef944395468bd1356260f85a4a9f372",
+          "body_sha256": "c16324990858b2ede92391a3fe6b9809c72050fcd3ce39cc0604883d568afe9d"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/IUT1/p001",
+      "revision": 1,
+      "source_id": "IUT1",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20I.pdf",
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "printed_page": 1,
+      "pdf_index_zero_based": 0,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-001.txt.tex",
+          "revision": "7488bee287a567dcb92d36feefd5f08afd9a06c6c6932050fc28e504236cd70f",
+          "body_sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-001.txt.tex",
+          "revision": "98466f389350ee040804fdc7f6ac7467ce0c7b943498655f49ef435772152d56",
+          "body_sha256": "af9e9df9bc95ea5782b6451573a8af3cc5aecb1c6320cb1dc0232c471945de7a"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/IUT1/p012",
+      "revision": 1,
+      "source_id": "IUT1",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20I.pdf",
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "printed_page": 12,
+      "pdf_index_zero_based": 11,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-012.txt.tex",
+          "revision": "7c81752013767ce9cb66171d3ef5fad36c5bd679d56ce144960e87f7f9f0328c",
+          "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-012.txt.tex",
+          "revision": "48d91d6877dcb570446d59cbf5dcd8d0d43765ec2fecc489d8f6ecc5539343c8",
+          "body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/IUT1/p013",
+      "revision": 1,
+      "source_id": "IUT1",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20I.pdf",
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "printed_page": 13,
+      "pdf_index_zero_based": 12,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-013.txt.tex",
+          "revision": "2b2d597215262acffa86c69ad9def6b3c31a46f756ef1bfa1e339e1be7235d1b",
+          "body_sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-013.txt.tex",
+          "revision": "bd72a96ebd3447e423497ac6b457556c4de1f2589c8f916d742de6de985177d4",
+          "body_sha256": "9073970606ce53a76a1e98416281592d545c97af09c4127ba924347ffb6436c3"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/IUT1/p014",
+      "revision": 1,
+      "source_id": "IUT1",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20I.pdf",
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "printed_page": 14,
+      "pdf_index_zero_based": 13,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-014.txt.tex",
+          "revision": "c8559fd5116af495a27ed93f72b80b68f6d7f8d7e6a114138f8a87088243e69d",
+          "body_sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-014.txt.tex",
+          "revision": "f5ab84417fc16dc54817dd4fa6e069b4e166cf61c302faec593b4059698cc483",
+          "body_sha256": "7bf02c4d01bd394ebf269474fdbced2c4ac6503bbbb6619fcfe3d9f0793afaa0"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    },
+    {
+      "id": "external/mochizuki/IUT1/p015",
+      "revision": 1,
+      "source_id": "IUT1",
+      "official_url": "https://www.kurims.kyoto-u.ac.jp/~motizuki/Inter-universal%20Teichmuller%20Theory%20I.pdf",
+      "pdf_sha256": "7360e3ed27c235b5497a0743d3ed1646fbb97688547d16b7c784fc7f127f1f03",
+      "printed_page": 15,
+      "pdf_index_zero_based": 14,
+      "authoritative_files": [
+        {
+          "team": "theory",
+          "source": "files/theory/round4-inputs/private-literature/IUT1-page-015.txt.tex",
+          "revision": "dac4d8b35da9ef0a968c39ad52f7d1ffe6c330ac77212fa7efe0d4354e883b17",
+          "body_sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306"
+        },
+        {
+          "team": "application",
+          "source": "files/application/round4-inputs/private-literature/IUT1-page-015.txt.tex",
+          "revision": "a66ab6279cb5e696be024e0eabe83ca7559202747b93dc341213b88b29f55136",
+          "body_sha256": "dad08e1386b82d287a4cfd7c5b6fb63631a711b019b53128b432bcca6bd6c306"
+        }
+      ],
+      "quality": "not certified; original image review required for mathematical glyphs",
+      "entry_and_authoritative_mapping": "historical import; this task does not claim to reverify every page"
+    }
+  ],
+  "root_new_reads": [
+    {
+      "id": "external/mochizuki/PANO/p011",
+      "revision": 1,
+      "body_sha256": "44de80ab00dc6907dd19d3770c4db9e5b39cae0fc0a53ab9df1f051d5f16b012",
+      "tool": "math_read",
+      "authoritative_source": "files/theory/round4-inputs/private-literature/PANO-page-011.txt.tex",
+      "source_revision": "12078de74d369a0c4aff0ce48c0a0ac8f71b7196957bb5e9e17df7888e3f9d9a",
+      "source_tool": "read_document",
+      "source_valid": true,
+      "source_body_matches_exact_entry": true,
+      "formula_read_claim": false,
+      "uses": "readable prose as question-generating inspiration only",
+      "adoption_event": 3469,
+      "artifact": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+      "proof_premise": false
+    }
+  ],
+  "head_current_round_reads": {
+    "theory": {
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "process_source": "files/theory/round5-theory-process-index.zh.md.tex",
+      "process_revision": "f3ad959cc3d995c6ebbe3d17d641b1bd2a745b1129c4d2c0cc8c7e012cfdd770",
+      "reported_actual_this_round": [
+        "external/operation-universes-20261117-resources@1",
+        "external/mochizuki/IUT1/p012@1"
+      ],
+      "page_body_sha256": "71fc0a335c84194b95d57eaf81096668728ae961d19c4d6f29c4a4b4ef018721",
+      "reported_adoption_events": [
+        3536,
+        3538
+      ],
+      "scope": "Saved lead process report read by root; root did not reconstruct raw per-tool history or reread page in closeout"
+    },
+    "application": {
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+      "process_source": "files/application/round5-process.zh.md.tex",
+      "process_revision": "4aea440047f87a51ff95ef09e73c903fcf1bf283c1e433d866c60a713dd7eb87",
+      "reported_actual_this_round_pages": [],
+      "historical_only": [
+        "PANO/p038",
+        "PANO/p039",
+        "PANO/p040"
+      ],
+      "scope": "Process explicitly says no new PANO/IUT page reads; old round4 reads are not counted anew"
+    }
+  },
+  "not_fetched_this_task": [
+    "IUT2",
+    "IUT3",
+    "IUT4"
+  ],
+  "public_exclusions": [
+    "full PDFs",
+    "whole-page extracts",
+    "raw chats",
+    "authoritative private memory",
+    "private account/configuration"
+  ],
+  "publication": "Only self-written text, necessary short quotations if any, URL/hash/page metadata and sanitized receipts; host repository publication separately evidenced",
+  "closeout_audit": {
+    "root_task": "model-task-dc03f633f8275d9a505e58c3c2ae9d00",
+    "root_reads_this_turn": "Process reports and existing metadata only; no external full-page body/PDF reread or download",
+    "formula_certification": false,
+    "root_round5_PANO11_read_is_previous_root_task": "model-task-211094b3d3222c097a91830a2c75434c",
+    "historical_events_not_promoted": true,
+    "public_full_pages_copied": false
+  }
+}

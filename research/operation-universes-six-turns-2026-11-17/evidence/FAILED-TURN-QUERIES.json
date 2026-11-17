@@ -1,0 +1,27 @@
+{
+  "at": 1794905819.370885,
+  "results": [
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+      "thread_id": "01a1e8a5-45f0-7223-b179-24f4881ead00",
+      "turn_id": "01a1e8a5-4825-7cb1-8441-8b0544150732",
+      "native_status": "interrupted",
+      "query_ok": true,
+      "model_requests": 0,
+      "replayed": false,
+      "old_stop_or_journal_rewritten": false
+    },
+    {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+      "thread_id": "01a1e475-9e78-7e82-b806-e6843a7ff4f9",
+      "turn_id": "01a1e8a6-ceb2-77f1-bb4d-a0529fc2dfc9",
+      "native_status": "interrupted",
+      "query_ok": true,
+      "model_requests": 0,
+      "replayed": false,
+      "old_stop_or_journal_rewritten": false
+    }
+  ]
+}

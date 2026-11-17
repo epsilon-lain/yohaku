@@ -1,0 +1,337 @@
+[
+  {
+    "seq": 3466,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c"
+    },
+    "id": "M-e3e7a0b3682b081e",
+    "revision": 1,
+    "artifact": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+    "explanation": "本稿命题A/B采用精确版本的可观测行空间最小在线摘要定理；本轮逐段独立解析复核review3435。新乘积界/升级界自给证明，不倒填到旧代码。",
+    "canonical_source": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+    "artifact_revision": "c18943ba2545cc748a921c820c62d813897e37652193e0df433ee04d581b37f0",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3189
+    ]
+  },
+  {
+    "seq": 3469,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-211094b3d3222c097a91830a2c75434c"
+    },
+    "id": "external/mochizuki/PANO/p011",
+    "revision": 1,
+    "artifact": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+    "explanation": "本稿第6节采用本轮真实读取的可辨散文作提出结构保留问题的启发，仅自写总结；非命题证明前提，未采用公式或IUT定理。",
+    "canonical_source": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+    "artifact_revision": "c18943ba2545cc748a921c820c62d813897e37652193e0df433ee04d581b37f0",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3194
+    ]
+  },
+  {
+    "seq": 3478,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90"
+    },
+    "id": "M-5606eba96406db45",
+    "revision": 1,
+    "artifact": "files/application/round5-diamond-search.py.tex@0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+    "explanation": "采用精确资源签名与拼接约定作本轮中间态差公式的前提；正文已本轮实际读取。代码实际按sum/max逐态复算并和official字段断言，不宣称旧任务依赖此新采用。",
+    "canonical_source": "files/application/round5-diamond-search.py.tex",
+    "artifact_revision": "0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+    "pinned_revision": "0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+    "pinned_matches": true,
+    "artifact_body_sha256": "4c08844589744d61dda6a97fa035a58713f38048923d0ee3a2242a12e2d28b69",
+    "literal_entry_id_in_artifact": false,
+    "preceding_full_read_events": [
+      3439
+    ]
+  },
+  {
+    "seq": 3480,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90"
+    },
+    "id": "M-c772d35d33d375d7",
+    "revision": 1,
+    "artifact": "files/application/round5-diamond-search.py.tex@0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+    "explanation": "采用旧反例来选择并冻结新work单调guard；旧51301/radius3数据不作本轮计算，不重跑。新代码不是外部种子冒名。",
+    "canonical_source": "files/application/round5-diamond-search.py.tex",
+    "artifact_revision": "0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+    "pinned_revision": "0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+    "pinned_matches": true,
+    "artifact_body_sha256": "4c08844589744d61dda6a97fa035a58713f38048923d0ee3a2242a12e2d28b69",
+    "literal_entry_id_in_artifact": false,
+    "preceding_full_read_events": [
+      3404
+    ]
+  },
+  {
+    "seq": 3530,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d"
+    },
+    "id": "M-2149d7062a0719a3",
+    "revision": 1,
+    "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "explanation": "实际采用公共幅度纤维、相对符号与费用模型，作为新多目标条件命题的出发点；解析review3428另证，不冒称执行最优或数值复算。",
+    "canonical_source": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "artifact_revision": "821225a54cd0b1b76f5195ad2c6755febf17d1a1b68fc866f5e3ce7431f5d07c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "960fbb5979c12d377d94af7a62806d4d5ebd5c7f76a13da7c4b4c7fe464c228a",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3408
+    ]
+  },
+  {
+    "seq": 3532,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d"
+    },
+    "id": "M-3e7ea6919b89bec9",
+    "revision": 1,
+    "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "explanation": "实际纳入完整四类有限反例及阶段条件0/2位证明；发布与独立核验不同。",
+    "canonical_source": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "artifact_revision": "821225a54cd0b1b76f5195ad2c6755febf17d1a1b68fc866f5e3ce7431f5d07c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "960fbb5979c12d377d94af7a62806d4d5ebd5c7f76a13da7c4b4c7fe464c228a",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": []
+  },
+  {
+    "seq": 3534,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d"
+    },
+    "id": "M-544497afb1b8963c",
+    "revision": 1,
+    "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "explanation": "实际呈现联合秩、RI条件、增量证明与反例；自写证明不是独立同伴审阅。",
+    "canonical_source": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "artifact_revision": "821225a54cd0b1b76f5195ad2c6755febf17d1a1b68fc866f5e3ce7431f5d07c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "960fbb5979c12d377d94af7a62806d4d5ebd5c7f76a13da7c4b4c7fe464c228a",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": []
+  },
+  {
+    "seq": 3536,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d"
+    },
+    "id": "external/mochizuki/IUT1/p012",
+    "revision": 1,
+    "artifact": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "explanation": "本轮实际重读可辨散文并用于共同核心/重建能力问题的结构启发，未采用公式/IUT定理，不存在复杂度桥梁。",
+    "canonical_source": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "artifact_revision": "821225a54cd0b1b76f5195ad2c6755febf17d1a1b68fc866f5e3ce7431f5d07c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "960fbb5979c12d377d94af7a62806d4d5ebd5c7f76a13da7c4b4c7fe464c228a",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3414
+    ]
+  },
+  {
+    "seq": 3538,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-08881865217c057e5161d0032de2b91d"
+    },
+    "id": "external/operation-universes-20261117-resources",
+    "revision": 1,
+    "artifact": "files/theory/round5-theory-process-index.zh.md.tex",
+    "explanation": "实际用于页级来源锁/权威映射与质量限制记录；工程索引不是研究发现或公式认证。",
+    "canonical_source": "files/theory/round5-theory-process-index.zh.md.tex",
+    "artifact_revision": "f3ad959cc3d995c6ebbe3d17d641b1bd2a745b1129c4d2c0cc8c7e012cfdd770",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "1623089b6c89b10a2b93e24614906e09103959ce78d7342b92c42ab5f5c69dd4",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3410
+    ]
+  },
+  {
+    "seq": 3611,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-01",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90"
+    },
+    "id": "M-c398c4f1100cb45e",
+    "revision": 1,
+    "artifact": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-results.json@ee1376b9035c9b59caeec9192dd67c06ec337740f368d03509772f1d9a442d84",
+    "explanation": "作者申明本轮真实产物采用已预先发表的精确菱形中间态差与二步环条件；冻结源直接执行对应谓词，逐候选断言sum/max签名与完整official一致。发布、此采用声明、实际snapshot/产物hash、独立复核为不同证据；无独立复核或重跑。",
+    "unresolved_artifact": "Use a world-relative authoritative files/... .tex source",
+    "dependency_not_certified": true,
+    "preceding_full_read_events": []
+  },
+  {
+    "seq": 3904,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-02",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00"
+    },
+    "id": "M-ca883c95076f9d74",
+    "revision": 1,
+    "artifact": "files/theory/round5-final.zh.md.tex",
+    "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。",
+    "canonical_source": "files/theory/round5-final.zh.md.tex",
+    "artifact_revision": "dc82a6508c2dd708d5ec85164df13af0848b3e44e2d267da919786b7f9cb356c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "75e77634208839ccb609172a1cc09b61039db546ec7652aa1f9121caac2e236f",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3889
+    ]
+  },
+  {
+    "seq": 3906,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-02",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00"
+    },
+    "id": "M-3e7ea6919b89bec9",
+    "revision": 1,
+    "artifact": "files/theory/round5-final.zh.md.tex",
+    "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。",
+    "canonical_source": "files/theory/round5-final.zh.md.tex",
+    "artifact_revision": "dc82a6508c2dd708d5ec85164df13af0848b3e44e2d267da919786b7f9cb356c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "75e77634208839ccb609172a1cc09b61039db546ec7652aa1f9121caac2e236f",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3891
+    ]
+  },
+  {
+    "seq": 3908,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-02",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00"
+    },
+    "id": "M-544497afb1b8963c",
+    "revision": 1,
+    "artifact": "files/theory/round5-final.zh.md.tex",
+    "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。",
+    "canonical_source": "files/theory/round5-final.zh.md.tex",
+    "artifact_revision": "dc82a6508c2dd708d5ec85164df13af0848b3e44e2d267da919786b7f9cb356c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "75e77634208839ccb609172a1cc09b61039db546ec7652aa1f9121caac2e236f",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3893
+    ]
+  },
+  {
+    "seq": 3910,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-02",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00"
+    },
+    "id": "M-c398c4f1100cb45e",
+    "revision": 1,
+    "artifact": "files/theory/round5-final.zh.md.tex",
+    "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。",
+    "canonical_source": "files/theory/round5-final.zh.md.tex",
+    "artifact_revision": "dc82a6508c2dd708d5ec85164df13af0848b3e44e2d267da919786b7f9cb356c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "75e77634208839ccb609172a1cc09b61039db546ec7652aa1f9121caac2e236f",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3845
+    ]
+  },
+  {
+    "seq": 3912,
+    "actor": {
+      "experiment_id": "operation-universes-native-sol-20261117-02",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-dc03f633f8275d9a505e58c3c2ae9d00"
+    },
+    "id": "M-39a75836f7c581b4",
+    "revision": 1,
+    "artifact": "files/theory/round5-final.zh.md.tex",
+    "explanation": "本次已保存的自写最终总结实际概述此精确版本与条件/来源；仅本稿采用，不倒填原代码/旧证明依赖。解析review、源码/产物核读与独立复算分开；应用没有缩步、全局最短或因果加速声明。",
+    "canonical_source": "files/theory/round5-final.zh.md.tex",
+    "artifact_revision": "dc82a6508c2dd708d5ec85164df13af0848b3e44e2d267da919786b7f9cb356c",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "75e77634208839ccb609172a1cc09b61039db546ec7652aa1f9121caac2e236f",
+    "literal_entry_id_in_artifact": true,
+    "preceding_full_read_events": [
+      3847
+    ]
+  }
+]

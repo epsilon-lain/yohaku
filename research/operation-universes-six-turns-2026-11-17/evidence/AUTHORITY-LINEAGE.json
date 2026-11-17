@@ -1,0 +1,73 @@
+{
+  "at": 1794907028.6925154,
+  "new_phase": "operation-universes-native-sol-20261117-01",
+  "limits": {
+    "turns": 6,
+    "nodes": 32,
+    "concurrent": 3,
+    "seconds": 5400,
+    "task_seconds": 900,
+    "task_tools": 96
+  },
+  "first_admission_at": 1794904494.1817183,
+  "exact_deadline": 1794909894.1817183,
+  "authorization": {
+    "kind": "explicit_human_user_new_numeric_authority",
+    "text": "本轮授权新增最多6个原生模型回合、从首个准入起90分钟。请实际执行上述任务包，接续原团队，保留旧成果、失败和停止记录，返回真实启动回执。",
+    "max_native_turns": 6,
+    "seconds_from_first_admission": 5400
+  },
+  "prior_authority_charged": 12,
+  "prior_authority_ceiling": 12,
+  "parent_pins": [
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/POLICY.json",
+      "sha256": "0d5e07fe509bed61b45248c6ff917dc509eae214041e95a955ec7f6beb8f1fd0"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/STATE.json",
+      "sha256": "23c3e5dd9237ed8879c5cb819253f1e9b384a3f613b2ad8ca3881d6804354a36"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-01/POLICY.json",
+      "sha256": "c6e54af1c20b9633f5bfc1d2952431bf4485ac880c93dbd78eb6c77c50a16d9a"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-01/STATE.json",
+      "sha256": "98467daa732fabb4ab98ff5749a66d766b97835c8996cdf3a2eaf4cf0a2dcfc9"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-02/POLICY.json",
+      "sha256": "5eaf05b5289db9446fc804a122a3f7c422ab6e384d99212961e9abbca0bb664b"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-02/STATE.json",
+      "sha256": "3500a7cec90cd9a259e3d5ba73a77d4eeb94ad2c79a107ed640a8d8e3f0eb9fe"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-03/POLICY.json",
+      "sha256": "7a7f84933a045f52498951c5d2fdee623de08e28de58f2fc03f5ec6f1a5e9b31"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-03/STATE.json",
+      "sha256": "a7a73e052ea579bc591b15ff4d57cdd0e2ae6c033971da08aeffe953081633d4"
+    }
+  ],
+  "previous_stop": {
+    "reason": "Original native task failed; inspect before new admission",
+    "task_id": "model-task-d1bc98e338842bb8ab774ca582b3e06d",
+    "at": 1794896476.660932,
+    "new_dispatch_allowed": false
+  },
+  "prior_model_tasks_clean": 19,
+  "prior_compute_tasks_clean": 15,
+  "old_stop_cleared": false,
+  "old_budget_reset": false,
+  "old_memories_and_threads_preserved": true,
+  "old_observer_still_paused": {
+    "pid": 401226,
+    "start": "5126208",
+    "state": "T"
+  },
+  "new_turns_include_all_ai_continuations": true
+}

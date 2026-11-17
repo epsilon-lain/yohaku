@@ -1,0 +1,750 @@
+{
+  "summary": {
+    "paths_discovered": 2,
+    "processed_paths": 2,
+    "queue_pending": 0,
+    "closure_complete": true,
+    "guard": null,
+    "baseline_signature": {
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128
+    },
+    "current_signature": {
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128
+    },
+    "current_path": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "strict_primitive_improvement": false,
+    "best_node": 0,
+    "search_elapsed_seconds": 0.0008496290029142983,
+    "counts": {
+      "positions_checked": 28,
+      "swap_attempts": 28,
+      "swap_first_illegal": 2,
+      "swap_second_illegal": 2,
+      "unequal_exit": 20,
+      "cost_increasing": 2,
+      "endpoint_equal_swaps": 4,
+      "resource_monotone_swaps": 2,
+      "cycle_deletions": 0,
+      "duplicate_paths": 1,
+      "official_rejections": 0,
+      "official_candidate_verifications": 1,
+      "search_apply_calls": 32,
+      "apply_cache_hits": 22,
+      "processed_paths": 2
+    },
+    "platform_upload": false
+  },
+  "protocol": {
+    "format": "round5-resource-monotone-diamonds/1",
+    "user_event": 2974,
+    "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "challenge": "sac-07445",
+    "baseline": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "baseline_signature": {
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128
+    },
+    "transformations": [
+      "swap adjacent IDs only when both reordered primitive moves are legal, exact ordered exit agrees, and reordered middle total length is no larger",
+      "delete a two-move exact cycle; no insertion, relabeling, quotient or other substitutions"
+    ],
+    "order": "BFS over full primitive action sequences; positions ascending; delete then swap; duplicate sequence dedup",
+    "guard": {
+      "max_paths": 2048,
+      "max_search_apply_calls": 100000,
+      "search_wall_seconds": 15
+    },
+    "per_candidate": "full pinned official verify before enqueue; candidate chosen by (primitive length,peak,work,sequence)",
+    "units": "primitive expanded IDs only; work includes initial and every post-state total relator length",
+    "claim_scope": "one development baseline's directed nonincreasing-work adjacent-commutation-and-cycle-deletion closure, complete only if queue drained without guard; not all Stable paths or causal search advantage",
+    "control_comparison": false,
+    "training_test_split": false,
+    "macro_dictionary": [],
+    "literature_in_snapshot": false,
+    "old_computations_not_rerun": "round4 radius3/60 windows/51301 calls and round3 target beam",
+    "artifact_prefix": "round5",
+    "platform_upload": false
+  },
+  "restoration": {
+    "official": "/output/round5-fixed/official",
+    "acceptance": "/output/round5-fixed/acceptance",
+    "archive_sha256": "c8ed06893cf895f1221cae149de5b1c4af1657f713aeaf225618723ced9960d6",
+    "files_verified": 41
+  },
+  "baseline_verdict": {
+    "ok": true,
+    "length": 15,
+    "peak_total_relator_length": 13,
+    "work": 128,
+    "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+  },
+  "current_verdict": {
+    "ok": true,
+    "length": 15,
+    "peak_total_relator_length": 13,
+    "work": 128,
+    "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+  },
+  "baseline_trace": [
+    [
+      [
+        -2,
+        -2,
+        1,
+        2,
+        1
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -1,
+        2,
+        1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1,
+        -2,
+        1
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2,
+        1,
+        -2
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1
+      ],
+      [
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    [
+      [
+        1
+      ]
+    ],
+    []
+  ],
+  "current_trace": [
+    [
+      [
+        -2,
+        -2,
+        1,
+        2,
+        1
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -1,
+        2,
+        1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1,
+        -2,
+        1
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2,
+        1,
+        -2
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1
+      ],
+      [
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    [
+      [
+        1
+      ]
+    ],
+    []
+  ],
+  "advantage_chain": [],
+  "acceptance": {
+    "kind": "external_preflight",
+    "native_receipt": false,
+    "platform_upload": false,
+    "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "candidate_input_sha256": "0e07b08115d9da832fd30a9067316395b4e44ae087874ad877acc118e65f139a",
+    "baseline_registry_sha256": "2b1d3ec4829e6e283afff0172c5af32ab47bcccb64a60d2c95001ca7585e2865",
+    "candidate_input_bytes": 104,
+    "macro_dictionary_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "expanded_moves": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "official_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+    },
+    "lengths": {
+      "input_token_length": 15,
+      "dictionary_token_length": 15,
+      "expanded_primitive_length": 15
+    },
+    "official_source_fingerprints": [
+      {
+        "path": "competition/tools/verifier/canon.py",
+        "sha256": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297"
+      },
+      {
+        "path": "competition/tools/verifier/core.py",
+        "sha256": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5"
+      },
+      {
+        "path": "competition/tools/verifier/stable_core.py",
+        "sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+      },
+      {
+        "path": "competition/tools/verifier/specs.py",
+        "sha256": "181102f058f85b3c793d95127051ac21de793e370a2c4d1f5a9808ae59cb3ed0"
+      },
+      {
+        "path": "competition/tools/verifier/data/move_spec.json",
+        "sha256": "411d5d4e791a005c799ce0963b71ccd12f1dc8626c12478122fa06c621cbf708"
+      },
+      {
+        "path": "competition/tools/verifier/data/stable_move_spec.json",
+        "sha256": "e31c1afd524b731d45a90439a14429ceac305fb87a415bed7f856ca7d08a86a9"
+      },
+      {
+        "path": "competition/tools/verifier/data/manifest.json",
+        "sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37"
+      }
+    ],
+    "challenge_id": "sac-07445",
+    "fixture_only": false,
+    "competition_record_claim": false,
+    "comparison_scope": "our_fixed_archived_paths_not_live_leaderboard",
+    "baseline_entry_sha256": "f0bfa0aa6d2f7b2daec011057041677b701f651974ab1f4de626db1ed934cd1d",
+    "baseline_moves_sha256": "e2f5b4397ececf2676655a06c6e20ff2cd585bb2bce4217eadf6567b5da9e74d",
+    "baseline_expanded_primitive_length": 15,
+    "baseline_official_verdict": {
+      "ok": true,
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128,
+      "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+    },
+    "official_manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+    "official_instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+    "official_move_spec": {
+      "move_spec_version": "sac-r8-v1",
+      "move_spec_hash": "sha256:27ecd0ebd4af39871cbfb23ecbd8be73710e85e04d8be788c1d81117d9f4b2b0",
+      "file": "stable_move_spec.json",
+      "target_relators": [],
+      "max_rank": 8,
+      "id_prefix": "sac-"
+    },
+    "proved_minimum": null,
+    "status": "no_strict_improvement",
+    "accepted_as_strict_improvement": false,
+    "macro_count": 0,
+    "strict_primitive_length_decrease": false,
+    "fixed_archived_baseline_improvement": false
+  },
+  "challenge": {
+    "challenge_id": "sac-07445",
+    "generators": [
+      "x",
+      "y"
+    ],
+    "initial_relators": [
+      [
+        -2,
+        -2,
+        1,
+        2,
+        1
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    "target_relators": [],
+    "move_spec_version": "sac-r8-v1",
+    "scored": true,
+    "base_score": 1,
+    "instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+    "freeze_date": null
+  },
+  "stable_source_sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d",
+  "stable_resource_source_lines": [
+    {
+      "line": 206,
+      "text": "    ``limits`` needs ``max_path_length``, ``max_total_relator_length``,"
+    },
+    {
+      "line": 207,
+      "text": "    ``max_work``."
+    },
+    {
+      "line": 237,
+      "text": "    max_total = limits[\"max_total_relator_length\"]"
+    },
+    {
+      "line": 238,
+      "text": "    max_work = limits[\"max_work\"]"
+    },
+    {
+      "line": 241,
+      "text": "    work = tot"
+    },
+    {
+      "line": 251,
+      "text": "        if tot > max_total:"
+    },
+    {
+      "line": 254,
+      "text": "                        max_total_relator_length=max_total)"
+    },
+    {
+      "line": 257,
+      "text": "        work += tot"
+    },
+    {
+      "line": 258,
+      "text": "        if work > max_work:"
+    },
+    {
+      "line": 259,
+      "text": "            return _err(\"E_WORK_BUDGET\", move_index=k, work=work,"
+    },
+    {
+      "line": 260,
+      "text": "                        max_work=max_work)"
+    },
+    {
+      "line": 270,
+      "text": "        \"peak_total_relator_length\": peak,"
+    },
+    {
+      "line": 271,
+      "text": "        \"work\": work,"
+    }
+  ],
+  "limitations": "Only directed work-monotone adjacent swaps and exact two-cycle deletions from this one path. Same-author implementation, not independent reproduction. Official candidate and CLI replay do not prove search completeness beyond this transformation class. No speed/token benefit or global minimum claim."
+}

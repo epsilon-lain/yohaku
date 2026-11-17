@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "checks": [
+    "six turns / 5400 seconds before first admission; Sol/max allowed",
+    "denied model=gpt-6-astra",
+    "denied reasoning_effort=medium",
+    "host cannot directly dispatch original direction head",
+    "seventh turn admission denied",
+    "admission denied after 5400 seconds"
+  ],
+  "actual_model_requests": 0,
+  "fixture_is_not_research": true,
+  "runtime_unchanged": true,
+  "old_authorities_unchanged": true,
+  "at": 1794904467.3631952
+}

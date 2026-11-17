@@ -1,0 +1,110 @@
+{
+  "format": "yohaku-task/1",
+  "version": "yohaku-project-task/1",
+  "task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+  "request_id": "app-r5-07445-monotone-diamond-v1",
+  "project_id": "native-application",
+  "action": "round5-diamond-search",
+  "status": "done",
+  "state": "succeeded",
+  "status_source": "Rust chat object",
+  "event_seq": 402655064,
+  "ledger_version": 3,
+  "stdout_bytes": 1877,
+  "stderr_bytes": 0,
+  "phase": "validating fixed snapshot and sandbox",
+  "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+  "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+  "exit_code": 0,
+  "error": null,
+  "cancel": {
+    "at_ms": null,
+    "by": null,
+    "requested": false,
+    "result": null
+  },
+  "cancel_confirmed": false,
+  "execution": "ended",
+  "receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794905043.102539,
+    "output_complete": true,
+    "output_truncated": false,
+    "process": {
+      "pid": 526396,
+      "start": "6393607",
+      "state": "R"
+    }
+  },
+  "artifacts": [
+    {
+      "bytes": 13623,
+      "executable": false,
+      "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-results.json",
+      "path": "round5-results.json",
+      "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+      "sha256": "ee1376b9035c9b59caeec9192dd67c06ec337740f368d03509772f1d9a442d84",
+      "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+      "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+    },
+    {
+      "bytes": 914,
+      "executable": false,
+      "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-checkpoint.json",
+      "path": "round5-checkpoint.json",
+      "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+      "sha256": "2b914d661e3c844832be541f0290949332c0f51d9d55e24fe5c647a730bb6927",
+      "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+      "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+    },
+    {
+      "bytes": 1941,
+      "executable": false,
+      "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-certificates.json",
+      "path": "round5-certificates.json",
+      "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+      "sha256": "518802d470c1da4cd6e5f9912d2766fa2e2a96e637b66a1dfd4b680316d2fd64",
+      "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+      "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+    },
+    {
+      "bytes": 177,
+      "executable": false,
+      "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-candidate.json",
+      "path": "round5-candidate.json",
+      "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+      "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+      "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+      "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+    },
+    {
+      "bytes": 196,
+      "executable": false,
+      "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-submission.txt",
+      "path": "round5-submission.txt",
+      "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+      "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+    },
+    {
+      "bytes": 1004,
+      "executable": false,
+      "id": "project-task-c0f44bc9f068248f856aa641a7c3aac4:round5-cli.json",
+      "path": "round5-cli.json",
+      "producer_task_id": "project-task-c0f44bc9f068248f856aa641a7c3aac4",
+      "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+      "snapshot_id": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1",
+      "source_set": "fa80ff558a1cbf299854a57601d3fb42ed0e83321606a2385de1f6e94c3512b1"
+    }
+  ],
+  "output": {
+    "stdout": 1877,
+    "stderr": 0
+  },
+  "replay_allowed": false
+}

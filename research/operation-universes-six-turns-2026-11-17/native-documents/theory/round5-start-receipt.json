@@ -1,0 +1,355 @@
+{
+  "schema": "round5-user-directed-start-v1",
+  "observed_utc": "2026-11-17 08:40:09 UTC",
+  "user_event": "event2974",
+  "user_directed_goal_idempotency_key": "user-operation-universes-six-turns-20261117-v1",
+  "goal": "实际接续原Yohaku两方向：运算宇宙能力/组合/信息代价与AC可还原路线；望月文献只在明确桥梁下使用",
+  "authority": {
+    "new_native_turn_cap": 6,
+    "new_seconds": 5400,
+    "start_is_first_admission": true,
+    "no_deadline_refresh": true,
+    "old_12_turn_stop_and_failures_preserved": true
+  },
+  "binding": {
+    "experiment_id": "operation-universes-native-sol-20261117-01",
+    "group": "native-theory-application-sol-20261116-01",
+    "chat": "ai-chat-7a7abc9f19d2de24731c6b27"
+  },
+  "root": {
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+    "node_request_id": "user-operation-universes-six-turns-20261117-v1",
+    "task_id": "model-task-211094b3d3222c097a91830a2c75434c",
+    "status": "running",
+    "execution": "running",
+    "session_id": "01a1e8a5-45f0-7223-b179-24f4881ead00",
+    "turn_id": "01a1e8a5-4825-7cb1-8441-8b0544150732",
+    "requested_profile": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "budget": {
+        "timeout_seconds": 900,
+        "max_tool_calls": 96
+      }
+    },
+    "actual_model_settings": {
+      "event": "model_settings",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "selection_source": "host private codex-provider.json",
+      "scope": "codex-local only; ordinary AI unchanged",
+      "reasoning_effort": "max"
+    },
+    "actual_turn_seconds": 900,
+    "output_complete": false
+  },
+  "theory": {
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "node_request_id": "round5-theory-user-event2974-boundary-review-v1",
+    "task_id": "model-task-08881865217c057e5161d0032de2b91d",
+    "status": "running",
+    "execution": "running",
+    "session_id": "01a1e475-9e78-7e82-b806-e6843a7ff4f9",
+    "turn_id": "01a1e8a6-ceb2-77f1-bb4d-a0529fc2dfc9",
+    "requested_profile": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "budget": {
+        "timeout_seconds": 900,
+        "max_tool_calls": 96
+      }
+    },
+    "actual_model_settings": {
+      "event": "model_settings",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "selection_source": "host private codex-provider.json",
+      "scope": "codex-local only; ordinary AI unchanged",
+      "reasoning_effort": "max"
+    },
+    "actual_turn_seconds": 900,
+    "output_complete": false,
+    "elapsed_seconds_at_read": 464.690784,
+    "memory_versions_read": [
+      {
+        "source": "files/theory/theory-lead-memory.md.tex",
+        "revision": "52bbd0f1f152e6e22d221d92b854945753d5b6f77013d3d38d6826fc95edaa89",
+        "body_sha256": "86f9c7d1d58329d2c285bc98d7bbcab495075facf213b640107d55255bd48399"
+      }
+    ]
+  },
+  "application": {
+    "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+    "node_request_id": "round5-application-user-event2974-recoverable-chain-v1",
+    "task_id": "model-task-766b2092f70db6957eb4959a1eed5e90",
+    "status": "running",
+    "execution": "running",
+    "session_id": "01a1e475-a5fd-75c2-9163-66b3f1b347a9",
+    "turn_id": "01a1e8a6-e728-7f83-9f02-6877f1d963fd",
+    "requested_profile": {
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max",
+      "budget": {
+        "timeout_seconds": 900,
+        "max_tool_calls": 96
+      }
+    },
+    "actual_model_settings": {
+      "event": "model_settings",
+      "provider": "openai",
+      "model": "gpt-6.1-sol",
+      "selection_source": "host private codex-provider.json",
+      "scope": "codex-local only; ordinary AI unchanged",
+      "reasoning_effort": "max"
+    },
+    "actual_turn_seconds": 900,
+    "output_complete": false,
+    "elapsed_seconds_at_read": 472.313058,
+    "memory_versions_read": [
+      {
+        "source": "files/application/application-lead-memory.md.tex",
+        "revision": "62917116e207a217fe8e474951c779841ee235e36f79ccba81d6122da413190e",
+        "body_sha256": "2876c274688994bcf007655201cf0c49ba92434d15c7de478be54050fe64abd7"
+      }
+    ]
+  },
+  "latest_authoritative_budget": {
+    "experiment_id": "operation-universes-native-sol-20261117-01",
+    "phase": "open",
+    "shared_stop": null,
+    "leaders": {
+      "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "application": "ai-node-0299a356d74db83b9ab4ebc7"
+    },
+    "members": [
+      "ai-node-60ce43c0fdb954913d5cf32f",
+      "ai-node-b912b62d9e95d94ddb26bfd6",
+      "ai-node-0299a356d74db83b9ab4ebc7"
+    ],
+    "native_turns_reserved": 3,
+    "native_turns_remaining": 3,
+    "remaining_seconds": 4784.60107254982,
+    "provider_identity": "unknown; requested/native thread configuration separately recorded",
+    "provider_cost": "unknown",
+    "adaption_authority_used": false
+  },
+  "old_heads_confirmed_terminal": [
+    {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "node_request_id": "user-event2411-round4-theory-operation-universes-v1",
+      "task_id": "model-task-380cdaba53a78d53c5b70698d34ceda4",
+      "status": "done",
+      "execution": "ended",
+      "session_id": "01a1e475-9e78-7e82-b806-e6843a7ff4f9",
+      "turn_id": "01a1e823-878d-7be1-8e8f-b5fced814e8f",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 600,
+          "max_tool_calls": 64
+        }
+      },
+      "actual_model_settings": {
+        "event": "model_settings",
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max"
+      },
+      "actual_turn_seconds": 600,
+      "output_complete": true
+    },
+    {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "node_request_id": "user-event2411-round4-application-advantage-chain-v1",
+      "task_id": "model-task-9a68d4a32ccc7f6a6339c7d1ad70f5ef",
+      "status": "done",
+      "execution": "ended",
+      "session_id": "01a1e475-a5fd-75c2-9163-66b3f1b347a9",
+      "turn_id": "01a1e823-ad54-7bb3-a12c-4ee8954194ad",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 600,
+          "max_tool_calls": 64
+        }
+      },
+      "actual_model_settings": {
+        "event": "model_settings",
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max"
+      },
+      "actual_turn_seconds": 600,
+      "output_complete": true
+    }
+  ],
+  "old_calculation_terminal_audit": [
+    {
+      "project_id": "native-theory",
+      "task_id": "project-task-24e34a0dde1b1bd250763d7a99875d52",
+      "request_id": "round3-root-quotient-delayed-execution-bridge02-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-theory",
+      "task_id": "project-task-8af630bd59010ae18cf545ad37f18415",
+      "request_id": "r3-theory-pair-inverse-v1-20261117",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-theory",
+      "task_id": "project-task-ff723364534a087e5a4c80200f053268",
+      "request_id": "round2-theory-pair-exact-v1-20261116",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-theory",
+      "task_id": "project-task-b7affeb525ea8affa1d2f20777fcba39",
+      "request_id": "root-independent-certificate-spectrum-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-theory",
+      "task_id": "project-task-fe023eab762b6824862e59828555b603",
+      "request_id": "theory-near-double-family-v2-20261116",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-theory",
+      "task_id": "project-task-21b152342331c5b43e04d7d121f671cb",
+      "request_id": "theory-irredundant-spectrum-v1-20261116",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-theory",
+      "task_id": "project-task-0709386d17510c02345a37c81c3b80c5",
+      "request_id": "root-resource-signature-audit-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-5c6ffec803aad5ea7d4621ee34ecfeeb",
+      "request_id": "app-r4-07445-guarded-window-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+      "request_id": "root-app-r3-07445-frozen-delayed-bridge03-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-0996b6d2018bdfc65fb43b4deee6ad38",
+      "request_id": "app-r2-s07445-prefix3-deeper-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-802847184ed0526eb3fa4966f91e216e",
+      "request_id": "app-r2-s08491-rank5-complete-certificate-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-c9c87a1852351c9edf11c3dae503cb7c",
+      "request_id": "app-r2-stable-prefix-bridge-search-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-3628c3c7ed6347e97c261d4b4cca3528",
+      "request_id": "app-r2-official-semantics-inspect-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-a8e6f1d6d1543998358a656e5c721471",
+      "request_id": "root-independent-ac-geodesic-resource-verify-v1",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    },
+    {
+      "project_id": "native-application",
+      "task_id": "project-task-159d4a8d5e947981bea8490e0c27f0cd",
+      "request_id": "app-ac08491-geodesic-resource-v1-20261116",
+      "status": "done",
+      "execution": "ended",
+      "exit_code": 0,
+      "cleanup_confirmed": true
+    }
+  ],
+  "legacy_root_error": "model-task-d1bc98e338842bb8ab774ca582b3e06d remains error; not replayed or relabelled complete",
+  "restoration": "query each exact node_request_id via ai_node_status; task_submit unknown queries exact original ID; never replay",
+  "native_shell": false,
+  "observation_method": "registered research_resources/ai_node_status/task_list; observe.py/acquire_sources.py unavailable in native no-shell catalog, not rerun; previous HOST import retained",
+  "literature": {
+    "index": "external/operation-universes-20261117-resources@1",
+    "import_is_historical": true,
+    "root_new_read": "external/mochizuki/PANO/p011@1",
+    "formula_quality": "uncertified",
+    "head_current_round_reading": "not yet confirmed at snapshot; adoption not prefilled"
+  },
+  "private_material_policy": "No full page/PDF/private memory/raw chat in public snapshot",
+  "provider_actual_identity": "unknown",
+  "actual_cost": "unknown",
+  "repository_push": "not executed here; host publication needs separate receipt",
+  "root_new_math_entry": "M-ca883c95076f9d74@1",
+  "independent_review": {
+    "target": "M-e3e7a0b3682b081e@1",
+    "event": 3435,
+    "scope": "analytic proof only, no numerical reproduction/IUT formula/AC improvement"
+  }
+}

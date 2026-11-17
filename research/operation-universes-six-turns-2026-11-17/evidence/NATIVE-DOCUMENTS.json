@@ -1,0 +1,87 @@
+[
+  {
+    "source": "files/theory/round5-final.zh.md.tex",
+    "revision": "dc82a6508c2dd708d5ec85164df13af0848b3e44e2d267da919786b7f9cb356c",
+    "body_sha256": "75e77634208839ccb609172a1cc09b61039db546ec7652aa1f9121caac2e236f"
+  },
+  {
+    "source": "files/theory/round5-joint-amplitude-targets.zh.md.tex",
+    "revision": "821225a54cd0b1b76f5195ad2c6755febf17d1a1b68fc866f5e3ce7431f5d07c",
+    "body_sha256": "960fbb5979c12d377d94af7a62806d4d5ebd5c7f76a13da7c4b4c7fe464c228a"
+  },
+  {
+    "source": "files/theory/round5-literature-receipts.json.tex",
+    "revision": "fadc1a4cea881765a71e1d961d4bf4f3670d4caa57d4310ef4052928526e23e6",
+    "body_sha256": "78809339b553e60569eaafece7ebb097be14192af36baaf9d2ec5a8e587f8d72"
+  },
+  {
+    "source": "files/theory/round5-process-index.json.tex",
+    "revision": "22d892671aed33b864d5561e4b3486eacfc7364e81bee2eb811d777418ee1d5e",
+    "body_sha256": "b78821a8f46138273ec0dc8ca862732d3519c0324fc3040d02cd26f01defe357"
+  },
+  {
+    "source": "files/theory/round5-progress.zh.md.tex",
+    "revision": "d4e9a454505bc26455cd28e09dfb83cc433a09089276f6c54fa671aacbe3f649",
+    "body_sha256": "903078545f2f062131d3f75b04b86379283172ec7fcdbdca6e3eb4a1e8a802ce"
+  },
+  {
+    "source": "files/theory/round5-root-commuting-upgrade.zh.md.tex",
+    "revision": "c18943ba2545cc748a921c820c62d813897e37652193e0df433ee04d581b37f0",
+    "body_sha256": "86f5cc919f62a55a5082de4f4c4bbdd0e87f0d24cad790a9b3e768ff9be239cf"
+  },
+  {
+    "source": "files/theory/round5-start-receipt.json.tex",
+    "revision": "abc457b38f12be5c718e74a65a16ad308d364f17e8940ac4a18ecaa45fddc2e3",
+    "body_sha256": "9ffbc129ed8d91fa6dcdc35ef292121bb9a83d9aa80400da548ac3837ecc32b7"
+  },
+  {
+    "source": "files/theory/round5-theory-early-checkpoint.zh.md.tex",
+    "revision": "9cc00b58d013c3d355a9ed984af9761756f9da33f01eec12bd18e67153ccaa1b",
+    "body_sha256": "05c3372f72390a30990289d7357f0cba9fe47c361dcc1b22638de6423f64bd00"
+  },
+  {
+    "source": "files/theory/round5-theory-process-index.zh.md.tex",
+    "revision": "f3ad959cc3d995c6ebbe3d17d641b1bd2a745b1129c4d2c0cc8c7e012cfdd770",
+    "body_sha256": "1623089b6c89b10a2b93e24614906e09103959ce78d7342b92c42ab5f5c69dd4"
+  },
+  {
+    "source": "files/application/round5-cli-local.json.tex",
+    "revision": "1f4f1517c9c6074430593c733fbba7351a2aa58e6935db4f79e8a6b66e56fd91",
+    "body_sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925"
+  },
+  {
+    "source": "files/application/round5-diamond-search.py.tex",
+    "revision": "0e602e18da96ed1b8978d8a6f4b2ed0e689a7b5ed9b54c1702c2bb0362d48029",
+    "body_sha256": "4c08844589744d61dda6a97fa035a58713f38048923d0ee3a2242a12e2d28b69"
+  },
+  {
+    "source": "files/application/round5-evidence.json.tex",
+    "revision": "7485f6f0f598ff56bbca4b83f9110b261534856a88b5def88c56061abefab024",
+    "body_sha256": "5099bee7459c3686c3a04bcb505efa818b4c9772c49c56256318df886afeae4a"
+  },
+  {
+    "source": "files/application/round5-freeze.json.tex",
+    "revision": "9f539a67bff9faf7eb8671dd117e2e5b46243d9d9e6a7d8bb1b478f7ff9d911a",
+    "body_sha256": "c6f2570c983e2b2648cc2b0bf2bbaaca7da35d1457b3724c3b5ac92b10e46a79"
+  },
+  {
+    "source": "files/application/round5-process.zh.md.tex",
+    "revision": "4aea440047f87a51ff95ef09e73c903fcf1bf283c1e433d866c60a713dd7eb87",
+    "body_sha256": "8c7a71571ad94f15c22eb84567495fb69452bd80271456bf09ff63aa7fc099a5"
+  },
+  {
+    "source": "files/application/round5-protocol.json.tex",
+    "revision": "f2f686ce8b05c8ff70555964a78a385e803e63f12f7989ab6ff152ace2947774",
+    "body_sha256": "93c8870900bb4ec101738d0804b3a39402cd3675f15ea35e596f9c4853d981f8"
+  },
+  {
+    "source": "files/application/round5-public.zh.md.tex",
+    "revision": "d58136f98aab8474578a7d176b963dbba76c40da2754ebdf866e67ffeb1084e1",
+    "body_sha256": "a544ef02436c129c9ebfeb952f68d93712abc44987b83a658ba7612e2fddb09f"
+  },
+  {
+    "source": "files/application/round5-submission-local.txt.tex",
+    "revision": "d4fd7ca00b6335e68801681ce3fc4eeb456b7f4df6825baff3abc363f420acfa",
+    "body_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2"
+  }
+]
