@@ -1,0 +1,83 @@
+{
+  "schema": "yohaku-concept-transformations-external-review/1",
+  "review_date": "2026-11-17",
+  "review_timezone": "Asia/Shanghai",
+  "source": {
+    "scientific_yohaku_commit": "b28fab89c3ed32ec8a201f93ceb31cb4ef897820",
+    "publication_receipt_commit": "5d2aa308873272468addd783612937dc72d8dc67",
+    "mathematics_commit": "43c3c2e9b026cb098f9c33d338a3bd2be34c24b5"
+  },
+  "archive": {
+    "bytes": 2043921,
+    "sha256": "55e19cbe20e5555470bcbde5a4fdef3739648d716eb74bc2484ffc0a621f7013",
+    "manifest_sha256": "8efbba2f59427340c8664f7f3ff8cffd4f8472ae2cce3be0dabe88a389c50100",
+    "files_including_manifest": 122,
+    "listed_files": 121,
+    "all_sizes_and_sha256_match": true,
+    "crc_checked": true,
+    "safe_paths_checked": true
+  },
+  "native_record_review": {
+    "model_records": 9,
+    "done": 8,
+    "historical_error": 1,
+    "all_requested_and_native_readback": "gpt-6.1-sol/max",
+    "project_tasks": 3,
+    "project_receipts_all_done_exit0_complete_cleanup": true,
+    "no_inflight_is_source_snapshot_not_live_query": true,
+    "supplier_identity": "unknown",
+    "supplier_debit": "unknown"
+  },
+  "mathematical_review": {
+    "pair": {
+      "general_proofs": "no_material_gap_found_in_declared_model",
+      "new_independent_scope": "n=0..4",
+      "graphs": 76,
+      "legal_observations": 454,
+      "observation_target_pairs": 7007,
+      "query_dp_instances": 14014,
+      "native_n5_full_rerun": false
+    },
+    "quotient": {
+      "general_proofs": "no_material_gap_found_in_declared_model",
+      "new_independent_scope": "n=1..3 plus explicit n4 counterexample",
+      "graphs": 69,
+      "graph_partitions": 329,
+      "distance_checks": 4274,
+      "fixed_route_checks": 7713,
+      "forward_backward_target_checks": 61498,
+      "native_n4_full_rerun": false
+    },
+    "math_reports": "https://github.com/epsilon-lain/lain-s-note/tree/main/research/concept-transformations-2026-11-17/external-review-2026-11-17"
+  },
+  "application": {
+    "source_reported_official_apply_calls": 303283,
+    "source_reported_beam_discarded": 136958,
+    "source_reported_abelian_pruned": 0,
+    "strict_improvement": false,
+    "baseline_stable_length": 15,
+    "search_complete": false,
+    "matrix_ball_states": 3808,
+    "word_reverse_ball_states": 40779,
+    "independently_rerun_by_this_review": false,
+    "paired_causal_gain_claimed": false,
+    "platform_upload": false
+  },
+  "phase_lineage": {
+    "source_ceiling": 12,
+    "source_reserved": 9,
+    "source_says_same_deadline": true,
+    "source_says_old_stops_preserved": true,
+    "new_resources_added_by_repair_reported": false,
+    "recovery_bridge_independently_executed_by_review": false,
+    "legacy_full_archive_independently_checked": false
+  },
+  "actions": {
+    "original_host_accessed": false,
+    "native_model_tasks_dispatched": 0,
+    "original_requests_replayed": false,
+    "uploaded_native_research_programs_executed": false,
+    "original_evidence_modified": false
+  },
+  "scope": "New external proof review and independently written small checks; scientific native records stay unchanged."
+}

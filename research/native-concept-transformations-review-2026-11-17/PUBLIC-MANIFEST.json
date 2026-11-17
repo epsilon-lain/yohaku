@@ -1,0 +1,16 @@
+{
+  "schema": "concept-transformations-review-files/1",
+  "scope": "All other files in this new external review directory; original native evidence unchanged.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3576,
+      "sha256": "feba47e79063dc5213c7b0b5de30713e3b188d7e434d4ef3c56bb171b5bda6a5"
+    },
+    {
+      "path": "REVIEW.json",
+      "bytes": 3099,
+      "sha256": "6b07be1ef441cba3f6b6445bfb785714e5645491237ebaa6ae52c105a2b07ccc"
+    }
+  ]
+}
