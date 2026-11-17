@@ -1,0 +1,34 @@
+{
+  "theory_totals": {
+    "graphs": 1099,
+    "object_count": 33866,
+    "output_subsets_examined": 59809,
+    "target_fiber_cases": 496990,
+    "codec_replays": 1065508,
+    "query_DP_instances": 14012
+  },
+  "theory_frozen_query_DP_n_max": 4,
+  "root_counts": {
+    "graphs": 4165,
+    "graph_partition_pairs": 61769,
+    "local_lifting_pairs": 12709,
+    "distance_inequalities": 1544370,
+    "local_distance_equalities": 429858,
+    "raw_tree_walks": 5797,
+    "route_endpoint_checks": 7713,
+    "local_walk_lifts": 2461,
+    "backward_target_checks": 61498,
+    "unliftable_quotient_walks": 2909,
+    "strict_optimistic_distances": 67680
+  },
+  "application": {
+    "official_move_calls": 303283,
+    "beam_discarded_total": 136958,
+    "strict_improvement": false,
+    "best_stable_length": 15,
+    "complete_search": false,
+    "search_guard": null
+  },
+  "pending_model_tasks": [],
+  "observed_at": 1794889562.684242
+}

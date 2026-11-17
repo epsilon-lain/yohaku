@@ -1,0 +1,22 @@
+{
+  "at": 1794888341.0140934,
+  "request_id": "continue-d637079e69fc161c056a4746b87a0251",
+  "queue_id": 2,
+  "local_error": "Worker resource profile exceeds native envelope",
+  "node_creation_budget": {
+    "timeout_seconds": 1800,
+    "max_tool_calls": 128
+  },
+  "current_limits": {
+    "turns": 9,
+    "nodes": 32,
+    "concurrent": 3,
+    "seconds": 10800,
+    "task_seconds": 900,
+    "task_tools": 96
+  },
+  "native_node_or_gate_reservation_exists": false,
+  "new_model_started": false,
+  "request_replayed": false,
+  "evidence": "Unchanged Control.node_dispatch validates chosen profile before workflow.reserve_start and Tasks.start. Native default node budget1800 exceeds phase900; no original request registered."
+}

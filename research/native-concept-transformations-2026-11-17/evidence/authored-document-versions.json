@@ -1,0 +1,122 @@
+[
+  {
+    "source": "files/theory/round3-bridge02-process-index.zh.md.tex",
+    "source_revision": "23c0ac1326c51b4e974f00746bccc143bc6fec91ec40245af2a32795a0e41bc3",
+    "body_sha256": "4d3b1bfd784eabdd1bde767275abc1bb48aac0154b4cbfbaa48a63aca21c0f26",
+    "public_path": "docs/theory/round3-bridge02-process-index.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-bridge02-public.zh.md.tex",
+    "source_revision": "9ed6e2a0a8eead3cf1557717434bbb67aee50ffb5f67c65551135bbcb8c87f79",
+    "body_sha256": "bc2a8a6ba27126d54f09e41494a30cd1f0a41d4f8f9a77402ab0e50d2507f82d",
+    "public_path": "docs/theory/round3-bridge02-public.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-bridge02-theory-review.zh.md.tex",
+    "source_revision": "3068b3b369cac2d7d8ecc05c32334d82633b91ea09716a5770905873d92851e7",
+    "body_sha256": "cbc7ab752106b97e8d4898009881ab2135fed78208cb45f26752c52861247484",
+    "public_path": "docs/theory/round3-bridge02-theory-review.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-bridge03-process-index.zh.md.tex",
+    "source_revision": "f94e9b9ac7fe5d191f81f36791db7e897d17bbb845939ac8c09aa64b3cd0002c",
+    "body_sha256": "8c2256775144f625ae5342b647801531cc29431211865286162bb81c53017d35",
+    "public_path": "docs/theory/round3-bridge03-process-index.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-bridge03-public.zh.md.tex",
+    "source_revision": "6482edd1e587d1e7dca6ca49ff88da1d7263e9213ab19619fe66d92ca042c85f",
+    "body_sha256": "455d2ec50dffe03d4bd82a626f85baee7d28a1b7a435be8acb0f7b1f500a0513",
+    "public_path": "docs/theory/round3-bridge03-public.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-pair-inverse.zh.md.tex",
+    "source_revision": "32846e51c15917533a696fb1fdbafd7a3b99fc6bf691a71ba4bf228bee38dd14",
+    "body_sha256": "5b9d927753adbd4b65fc28ac47a7d004781060ab15600408c4ba7756e41e969d",
+    "public_path": "docs/theory/round3-pair-inverse.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-root-process-index.zh.md.tex",
+    "source_revision": "53344f9ba94fc8a4d460793e533d89b33f954ba771954c83ec00d9d858ec025a",
+    "body_sha256": "37b889c43f1d2d825a5470f43a7c896fdfb66c391f551e5f4c4f3b33cb7e5b69",
+    "public_path": "docs/theory/round3-root-process-index.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-root-quotient-proof.zh.md.tex",
+    "source_revision": "0be48fac3c0830305dea352673bb97d82be50d52aa5e8a5fc605882b4b69799d",
+    "body_sha256": "7fa4272afa335c452549f0e956035077897329874f48a2807a651a83062dc9ea",
+    "public_path": "docs/theory/round3-root-quotient-proof.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/theory/round3-theory-process-index.zh.md.tex",
+    "source_revision": "35997db4e14a4c41251c6503868a9a857fa6a552a2d4f20a1d98e4d661dbd30f",
+    "body_sha256": "71dff22f7acefadf53489e4f9311fdcf180b8ac95faf784919ed46f38aa001e8",
+    "public_path": "docs/theory/round3-theory-process-index.zh.md",
+    "project_scope": "theory",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/application/round3-app-bridge03-process.zh.md.tex",
+    "source_revision": "0fde4d67162f501ccb7ee6cdb1a3446f8644a5f7e538360236cfd477d4efa47f",
+    "body_sha256": "fbcbd1a7a9b351de25160d39d59ee59111a0f1f46de78314315d534e19097b2a",
+    "public_path": "docs/application/round3-app-bridge03-process.zh.md",
+    "project_scope": "application",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/application/round3-app-bridge03-public.zh.md.tex",
+    "source_revision": "d93774175dba60e9408e6a8b94e0033203e0ed5b760ade9b12f2353fcaa01fbe",
+    "body_sha256": "177e9860df5aded51b3ce82302994e8b755cddbfc2373e4811422b23177cab67",
+    "public_path": "docs/application/round3-app-bridge03-public.zh.md",
+    "project_scope": "application",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/application/round3-application-process.zh.md.tex",
+    "source_revision": "f9bc9cb6250da55c8702488623835fe3d551659ba69898f0beea56b122ce35c5",
+    "body_sha256": "a65cde9348951ed4854a2c54e1ee4a351d672ec7ba7b03bcc2f6a140662255f7",
+    "public_path": "docs/application/round3-application-process.zh.md",
+    "project_scope": "application",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/application/round3-bridge02-process.zh.md.tex",
+    "source_revision": "754e65ae46960753a20cd5659ec69f0115672208fe846c1da34725bbda1c6aea",
+    "body_sha256": "4480963d865d23901b4b3a963e7605db2de4374957cd2e40b64e361c8dbe6ade",
+    "public_path": "docs/application/round3-bridge02-process.zh.md",
+    "project_scope": "application",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/application/round3-bridge02-public.zh.md.tex",
+    "source_revision": "f42a5991dd53f7c752e29ad9987bdb411a0e45363544a1240cd8d29a5e71f943",
+    "body_sha256": "744ebc28abf8460c2042fd4d52f4fb9889bbdf7b19ae6b03ccf6015d95a7acd7",
+    "public_path": "docs/application/round3-bridge02-public.zh.md",
+    "project_scope": "application",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  },
+  {
+    "source": "files/application/round3-target-information.zh.md.tex",
+    "source_revision": "2ee46e1031a25b4429fa456766723ff9a392ec8ebfe19d8b7f9e0117c256faf2",
+    "body_sha256": "1c91344b98aa6058ba6ac29b7aa48e33a12cbdd8d49a5ac1800abf81593e713a",
+    "public_path": "docs/application/round3-target-information.zh.md",
+    "project_scope": "application",
+    "writer_identity": "See exact authored manuscript and creating/editing native tools; not inferred from project directory"
+  }
+]

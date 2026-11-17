@@ -1,0 +1,34 @@
+{
+  "native_submit": {
+    "request_id": "r3-theory-pair-inverse-v1-20261117",
+    "model_task_id": "model-task-fc655eee7ba9cac94f54c1f47185d7db",
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6"
+  },
+  "task_id": "project-task-8af630bd59010ae18cf545ad37f18415",
+  "status": "done",
+  "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+  "snapshot_id": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+  "native_receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794886823.658015,
+    "output_complete": true,
+    "output_truncated": false
+  },
+  "artifacts": [
+    {
+      "id": "project-task-8af630bd59010ae18cf545ad37f18415:round3-pair-inverse-results.json",
+      "path": "round3-pair-inverse-results.json",
+      "sha256": "1a7a556eadc1c1d1015a14f3cc201146259829610b0393ffaf3d95823e6bd317",
+      "bytes": 5350386,
+      "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+      "snapshot_id": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+      "public_path": "evidence/project-task-8af630bd59010ae18cf545ad37f18415/round3-pair-inverse-results.json"
+    }
+  ],
+  "stdout_original_sha256": "ef951dc41fd166037390fb4399a4774207a2d9e6f734b38fcbffbf51c18948a1",
+  "stderr_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

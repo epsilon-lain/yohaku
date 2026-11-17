@@ -1,0 +1,79 @@
+{
+  "format": "round3-bridge02-native-checkpoint/1",
+  "user_event": 968,
+  "stage": "native-concept-transformations-sol-20261117-02",
+  "kind": "user-directed-delayed-execution-not-new-math-goal",
+  "old_models": [
+    {
+      "request": "user-concept-transformations-20261117-v1",
+      "task_id": "model-task-d942fc3b54c0fe2ba6f594c638f35a8e",
+      "status": "error",
+      "execution": "ended",
+      "cleanup_complete": true,
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max"
+    },
+    {
+      "request": "round3-theory-user-concept-transformations-v1",
+      "task_id": "model-task-fc655eee7ba9cac94f54c1f47185d7db",
+      "status": "done",
+      "execution": "ended",
+      "cleanup_complete": true,
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max"
+    },
+    {
+      "request": "round3-application-user-concept-transformations-v1",
+      "task_id": "model-task-2aa7f7552b83a2fe295ed5dd16e92dc8",
+      "status": "done",
+      "execution": "ended",
+      "cleanup_complete": true,
+      "model": "gpt-6.1-sol",
+      "reasoning_effort": "max"
+    }
+  ],
+  "original_unexecuted": [
+    {
+      "request": "round3-root-quotient-audit-v1",
+      "old_receipt": "source_conflict; no launch"
+    },
+    {
+      "request": "round3-root-quotient-audit-replanned-v2",
+      "old_receipt": "GateStopped; no launch"
+    },
+    {
+      "request": "app-r3-07445-target-info-beam-v1",
+      "old_receipt": "GateStopped; no launch"
+    }
+  ],
+  "current_lookup": "All original IDs queried: unknown_task; replay_allowed=false. New IDs permitted by explicit host/user confirmation of no launch, not by unknown lookup.",
+  "root_new_request": "round3-root-quotient-delayed-execution-bridge02-v1",
+  "root_task": "project-task-24e34a0dde1b1bd250763d7a99875d52",
+  "root_source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+  "root_frozen_mappings": [
+    {
+      "source": "files/theory/round3-root-quotient.py.tex",
+      "source_revision": "a88addefcacdabc95fc3dbf319f8199e25bdaeb31599f3639034ea8be6d43bf4",
+      "output_hash": "da2a3674295c59db460b4f5f1ac87addbb26f4ed1576464a11bc138606ef827e"
+    },
+    {
+      "source": "files/theory/round3-root-quotient-freeze.json.tex",
+      "source_revision": "dc4507a4ee4d5ae7ec2f82d38a279663f425b43e6705a4986cfb3cef099ff5ce",
+      "output_hash": "8e69c202fa177d8e6e0eee7f36c1bddc9c66655d4ccb86106aa55404eb7ded0d"
+    }
+  ],
+  "root_observed_status": "done",
+  "application_new_request": "round3-application-user-recovery-bridge02-v1",
+  "application_task": "model-task-bfa6523cccc5a8ea77cfaf023c853991",
+  "application_observed_status": "running",
+  "application_actual_model": {
+    "event": "model_settings",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "selection_source": "host private codex-provider.json",
+    "scope": "codex-local only; ordinary AI unchanged",
+    "reasoning_effort": "max"
+  },
+  "unchanged": "Old stop and old source/protocol/failure records preserved; no replay, no original deadline reset. Existing theory enumeration not rerun.",
+  "publication": "Local checkpoint only; no repository push or platform upload claimed."
+}

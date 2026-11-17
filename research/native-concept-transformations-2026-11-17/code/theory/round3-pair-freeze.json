@@ -1,0 +1,38 @@
+{
+  "format": "round3-pair-inverse-freeze/1",
+  "stage": "native-concept-transformations-sol-20261117-01",
+  "user_goal_source": "files/theory/round3-external/task/CODEX_TASK.md.tex@05ca617e98650e698e62d56d76ddc901c6e7d615a6d875fd8e6b9a6999351c32",
+  "autonomous_question": "pair-AND fibers, target-specific coded auxiliary information versus coordinate probing",
+  "graphs_n": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "all_objects": true,
+  "all_edge_output_subsets": true,
+  "all_target_subsets": true,
+  "query_dp_n_max": 4,
+  "query_models": [
+    "coordinate_projection",
+    "target_weight"
+  ],
+  "cost_ledgers": {
+    "definition_body_nodes_per_edge": 3,
+    "conversion_AND_per_edge": 1,
+    "auxiliary": "fixed binary message length only; encoder knows X",
+    "recognition": "vertex/edge inspections",
+    "decoding": "candidate enumeration and independence checks",
+    "query": "direct coordinate calls, deterministic worst case"
+  },
+  "timeout_seconds": 120,
+  "prior_math": [
+    {
+      "id": "M-98718cbca95c0dc3",
+      "revision": 1
+    }
+  ],
+  "expected_dependency": "current-stage proof ID returned separately",
+  "no_AC_code_or_platform": true
+}

@@ -1,0 +1,79 @@
+{
+  "native_submit": {
+    "request_id": "root-app-r3-07445-frozen-delayed-bridge03-v1",
+    "model_task_id": "model-task-139a1bf1066e242c351f5eb3fdac182a",
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f"
+  },
+  "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+  "status": "done",
+  "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+  "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+  "native_receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794888470.4652724,
+    "output_complete": true,
+    "output_truncated": false
+  },
+  "artifacts": [
+    {
+      "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-results.json",
+      "path": "round3-results.json",
+      "sha256": "68d994ea5391a887753b7ab126cd89d666f124733bab00f568e5fb622c4ed6d1",
+      "bytes": 9416,
+      "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-results.json"
+    },
+    {
+      "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-reverse.json",
+      "path": "round3-reverse.json",
+      "sha256": "7c0ee1286f1529a269af2d8d665243ff1f9b841f233b763ee575274041731ed9",
+      "bytes": 12517205,
+      "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-reverse.json"
+    },
+    {
+      "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-checkpoint.json",
+      "path": "round3-checkpoint.json",
+      "sha256": "78819eff5faff568936bd9808b4aced6a73728a6107fac97780cd809e696b28d",
+      "bytes": 1773,
+      "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-checkpoint.json"
+    },
+    {
+      "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-candidate.json",
+      "path": "round3-candidate.json",
+      "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+      "bytes": 177,
+      "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-candidate.json"
+    },
+    {
+      "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-submission.txt",
+      "path": "round3-submission.txt",
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "bytes": 196,
+      "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-submission.txt"
+    },
+    {
+      "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-cli.json",
+      "path": "round3-cli.json",
+      "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+      "bytes": 1004,
+      "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-cli.json"
+    }
+  ],
+  "stdout_original_sha256": "6ae87ed01d40be594294e9bf235b3dff8cb2800f4d29fd660bfbd5c135d9408e",
+  "stderr_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

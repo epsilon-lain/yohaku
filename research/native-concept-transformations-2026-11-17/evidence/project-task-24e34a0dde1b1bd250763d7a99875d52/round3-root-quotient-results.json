@@ -1,0 +1,199 @@
+{
+  "format": "native-round3-root-quotient-audit/1",
+  "status": "passed",
+  "scope": {
+    "format": "round3-root-quotient-freeze/1",
+    "proof_dependency": "M-2425cab292392fd9@1",
+    "graph_scope": "all directed loop-free labelled graphs on n=1..4; no resource or state pruning",
+    "partitions": "all set partitions via restricted growth words; quotient loops retained",
+    "distance_scope": "every concrete start and every saturated target including empty/full; local-lifting equalities and optimistic inequalities",
+    "route_scope": "n<=3 every quotient walk of lengths0..4 and every actual target subset; compare raw word trees to forward/backward representative sets",
+    "budget": {
+      "task_timeout_seconds": 120
+    },
+    "claims_excluded": [
+      "AC legal validation",
+      "search/token speedup",
+      "literature novelty",
+      "peer-independent computation"
+    ]
+  },
+  "dependencies": [
+    {
+      "id": "M-2425cab292392fd9",
+      "revision": 1,
+      "use": "local lifting, distance, route DP theorem"
+    },
+    {
+      "id": "external/framework-candidates-closure",
+      "revision": 1,
+      "use": "observation fibre language; external"
+    },
+    {
+      "id": "external/macro-expansion-interface",
+      "revision": 1,
+      "use": "raw legal path vs description; external"
+    }
+  ],
+  "counts": {
+    "graphs": 4165,
+    "graph_partition_pairs": 61769,
+    "local_lifting_pairs": 12709,
+    "distance_inequalities": 1544370,
+    "local_distance_equalities": 429858,
+    "raw_tree_walks": 5797,
+    "route_endpoint_checks": 7713,
+    "local_walk_lifts": 2461,
+    "backward_target_checks": 61498,
+    "unliftable_quotient_walks": 2909,
+    "strict_optimistic_distances": 67680
+  },
+  "counts_by_n": {
+    "1": {
+      "graphs": 1,
+      "graph_partition_pairs": 1,
+      "local_lifting_pairs": 1,
+      "distance_inequalities": 2,
+      "local_distance_equalities": 2,
+      "raw_tree_walks": 1,
+      "route_endpoint_checks": 1,
+      "local_walk_lifts": 1,
+      "backward_target_checks": 2
+    },
+    "2": {
+      "graphs": 4,
+      "graph_partition_pairs": 8,
+      "local_lifting_pairs": 6,
+      "distance_inequalities": 48,
+      "local_distance_equalities": 40,
+      "raw_tree_walks": 36,
+      "route_endpoint_checks": 50,
+      "local_walk_lifts": 30,
+      "backward_target_checks": 200,
+      "unliftable_quotient_walks": 14
+    },
+    "3": {
+      "graphs": 64,
+      "graph_partition_pairs": 320,
+      "local_lifting_pairs": 140,
+      "distance_inequalities": 4224,
+      "local_distance_equalities": 2280,
+      "raw_tree_walks": 5760,
+      "route_endpoint_checks": 7662,
+      "local_walk_lifts": 2430,
+      "backward_target_checks": 61296,
+      "unliftable_quotient_walks": 2895,
+      "strict_optimistic_distances": 96
+    },
+    "4": {
+      "graphs": 4096,
+      "graph_partition_pairs": 61440,
+      "local_lifting_pairs": 12562,
+      "distance_inequalities": 1540096,
+      "local_distance_equalities": 427536,
+      "strict_optimistic_distances": 67584
+    }
+  },
+  "first_spurious": {
+    "n": 3,
+    "edges": [
+      [
+        0,
+        1
+      ]
+    ],
+    "representation": [
+      0,
+      1,
+      0
+    ],
+    "start": 2,
+    "target_blocks": [
+      1
+    ],
+    "concrete_distance": null,
+    "quotient_distance": 1
+  },
+  "explicit_counterexamples": [
+    {
+      "name": "goal_saturated_but_one_step_spurious",
+      "edges": [
+        [
+          1,
+          2
+        ]
+      ],
+      "p": [
+        0,
+        0,
+        1
+      ],
+      "start": 0,
+      "target": [
+        2
+      ],
+      "quotient_route": [
+        0,
+        1
+      ],
+      "lift": false
+    },
+    {
+      "name": "inconsistent_middle_representatives",
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "p": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "start": 0,
+      "target": [
+        3
+      ],
+      "quotient_route": [
+        0,
+        1,
+        2
+      ],
+      "lift": false
+    },
+    {
+      "name": "uniform_orbit_but_goal_not_saturated",
+      "edges": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "p": [
+        0,
+        0
+      ],
+      "start": 0,
+      "target": [
+        1
+      ],
+      "quotient_distance": 0,
+      "concrete_distance": 1
+    }
+  ],
+  "limitations": [
+    "finite checks support but do not replace analytic proof",
+    "same-author independent algorithms are not independent peer review",
+    "unlabelled primitive graphs; no resource history, official AC, benchmark speed or token claim"
+  ]
+}

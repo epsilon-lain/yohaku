@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "check": "same original nodes and direction bindings",
+      "passed": true
+    },
+    {
+      "check": "deny gpt-6-astra/max",
+      "passed": true
+    },
+    {
+      "check": "deny gpt-6.1-sol/medium",
+      "passed": true
+    },
+    {
+      "check": "heads cannot be high",
+      "passed": true
+    },
+    {
+      "check": "host cannot dispatch direction directly",
+      "passed": true
+    },
+    {
+      "check": "unknown old task binding cannot authorize new work",
+      "passed": true
+    },
+    {
+      "check": "no duplicate native reservation",
+      "passed": true
+    },
+    {
+      "check": "unchanged NativeLease actual pre-write fixture block",
+      "passed": true
+    },
+    {
+      "check": "no replay after prewrite reservation",
+      "passed": true
+    },
+    {
+      "check": "stage stop blocks new admission",
+      "passed": true
+    }
+  ],
+  "actual_model_requests": 0,
+  "native_pipe_writes": 0,
+  "new_real_node_or_task_created": false,
+  "fixture_is_not_research": true,
+  "candidate_runtime_unchanged_and_original_seal_verified": true,
+  "parent_policy_state_and_stop_unchanged": true,
+  "at": 1794886327.7179375
+}

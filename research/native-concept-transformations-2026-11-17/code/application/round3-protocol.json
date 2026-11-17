@@ -1,0 +1,55 @@
+{
+  "format": "round3-target-information-search/1",
+  "stage": "native-concept-transformations-sol-20261117-01",
+  "user_event": 968,
+  "autonomous_method": "sac07445 no-stabilization target reduction + abelianization lower-bound beam + exact reverse word dictionary",
+  "target": [
+    [
+      2
+    ],
+    [
+      1
+    ]
+  ],
+  "ordinary_prefix_limit": 12,
+  "stable_suffix": [
+    15,
+    15
+  ],
+  "old_stable_length": 15,
+  "reverse_word": {
+    "radius": 5,
+    "max_states": 60000
+  },
+  "abelianization": {
+    "radius": 8,
+    "max_states": 100000
+  },
+  "beam": {
+    "width": 5000,
+    "forward_depth": 7,
+    "keep_full_ordered_words": true,
+    "score": [
+      "abelian_lower_bound",
+      "total_word_length",
+      "exact_word_lexicographic_order"
+    ],
+    "stop_first_valid_improvement": true
+  },
+  "guards": {
+    "wall_seconds": 150,
+    "max_official_move_calls": 1500000
+  },
+  "resource_pruning": "only admissible abelian lower-bound for g+h>12; beam discarded states make nonexhaustive",
+  "evidence_scope": "one known development instance; no dual-arm causal gain/token/search-speed claim; ordinary8/13 and Stable08491=10 only regression",
+  "dependencies": [
+    {
+      "id": "M-95d49b3f9570d1f2",
+      "revision": 1
+    },
+    {
+      "id": "external/concept-transformations-20261117-resources",
+      "revision": 1
+    }
+  ]
+}

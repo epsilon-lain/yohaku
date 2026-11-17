@@ -1,0 +1,74 @@
+{
+  "format": "round3-bridge03-live-execution/1",
+  "user_event": 968,
+  "stage": "native-concept-transformations-sol-20261117-03",
+  "original_unexecuted_requests": [
+    {
+      "request": "app-r3-07445-target-info-beam-v1",
+      "old_receipt": "GateStopped; no task record"
+    },
+    {
+      "request": "app-r3-07445-target-info-delayed-v2",
+      "old_receipt": "GateStopped; no task record"
+    }
+  ],
+  "lookup": "Both original IDs queried unknown_task/replay_allowed=false. New execution is authorized by this USER/host bridge and explicit never-launched finding, not by unknown lookup.",
+  "unchanged_sources": [
+    {
+      "source": "files/application/round3-protocol.json.tex",
+      "source_revision": "176395c299be95781e67506f5af0b5d11a7dbbde4058cc67d6709bd44ed5a7f5",
+      "output_hash": "50e4947c3e3458d2f854b07a34224befdc24ec3180c68de9d22715977e0080a7"
+    },
+    {
+      "source": "files/application/round3-target-search.py.tex",
+      "source_revision": "83729b0a652916bc94e2e23d8602e86fa92b6c4f0054c0826669f023b76ae561",
+      "output_hash": "e014ffc2c90c77a79c4cea2ea8601029ab18c8d6cc1cc5b2e50e134f84e1786a"
+    }
+  ],
+  "new_request": "root-app-r3-07445-frozen-delayed-bridge03-v1",
+  "new_task": "project-task-f3037adff007a0a53e60c6491983d93d",
+  "submit_receipt": {
+    "format": "yohaku-task/1",
+    "version": "yohaku-project-task/1",
+    "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+    "request_id": "root-app-r3-07445-frozen-delayed-bridge03-v1",
+    "project_id": "native-application",
+    "action": "round3-target-search",
+    "status": "running",
+    "state": "running",
+    "status_source": "Rust chat object",
+    "event_seq": 134217729,
+    "ledger_version": 1,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "phase": null,
+    "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "exit_code": null,
+    "error": null,
+    "cancel": {
+      "at_ms": null,
+      "by": null,
+      "requested": false,
+      "result": null
+    },
+    "cancel_confirmed": false,
+    "execution": "running",
+    "receipt": {},
+    "artifacts": [],
+    "output": {
+      "stdout": 0,
+      "stderr": 0
+    },
+    "replay_allowed": false,
+    "duplicate": false,
+    "started_new_process": true
+  },
+  "program_author": "Original application lead ai-node-0299a356d74db83b9ab4ebc7; frozen method/code unchanged",
+  "execution_submitter": "Original umbrella lead ai-node-60ce43c0fdb954913d5cf32f under existing native-application grant",
+  "head_new_request": "round3-application-user-bridge03-result-review-v1",
+  "head_model_task": "model-task-96bda9888e4a4bcd2f15e77df0a1a756",
+  "head_scope": "Read actual result/guard/official CLI, small public supplement; explicitly no duplicate submit/rerun",
+  "theory_finished": "pair8af630 and quotient24e34a plus limited independent review1841 completed; not rerun",
+  "preserved": "Parent policies/stops/queues/source/protocol/failure provenance and original deadline/total turn cap unchanged. Rejected continuation remains rejected, not retroactively dispatched."
+}

@@ -1,0 +1,144 @@
+"""Round3 new real search: target information, not free relabelling."""
+import hashlib,json,os,subprocess,sys,time
+from collections import Counter
+from pathlib import Path
+sys.path.insert(0,"/project/round2-external")
+from restore_resources import restore
+CFG=json.loads(Path("/project/round3-protocol.json").read_text())
+OUT=Path("/output");STARTED=time.monotonic();CALLS=0
+class Guard(Exception):pass
+def save(n,x):(OUT/n).write_text(json.dumps(x,ensure_ascii=False,indent=2)+"\n")
+def ab(s):
+    return tuple(tuple(sum(1 if x==g else -1 if x==-g else 0 for x in w)for g in (1,2))for w in s)
+def ma(a,m):
+    x,y=a
+    if m==0:return tuple(-v for v in x),y
+    if m==1:return x,tuple(-v for v in y)
+    if m in (2,3):return tuple(u+(1 if m==2 else -1)*v for u,v in zip(x,y)),y
+    if m in (4,5):return x,tuple(v+(1 if m==4 else -1)*u for u,v in zip(x,y))
+    return a
+def main():
+    global CALLS
+    restoration=restore("/output/round3-fixed")
+    sys.path.insert(0,restoration["acceptance"])
+    import validate_candidate as acc
+    official=acc.Official(restoration["official"])
+    core=sys.modules[official.specs.__package__+".core"]
+    target=tuple(map(tuple,CFG["target"]))
+    cid="sac-07445";ch=official.challenges[cid];start=tuple(map(tuple,ch["initial_relators"]))
+    locked=acc.LOCKED_BASELINES
+    regressions={k:official.verify(official.challenges[k],v)for k,v in locked.items()}
+    assert all(x["ok"]for x in regressions.values())
+    def move(s,m):
+        global CALLS
+        CALLS+=1
+        if CALLS>CFG["guards"]["max_official_move_calls"]:raise Guard("official_call_cap")
+        if CALLS%1024==0 and time.monotonic()-STARTED>CFG["guards"]["wall_seconds"]:raise Guard("wall_cap")
+        t=core.apply_move(s,m)
+        assert ab(t)==ma(ab(s),m)
+        return t
+    # Exact matrix graph: ordinary conjugations project to self loops.
+    am={ab(target):0};layer=[ab(target)];asizes=[1];acomplete=True;aguard=None
+    for d in range(CFG["abelianization"]["radius"]):
+        nxt=[]
+        for a in layer:
+            for m in range(6):
+                b=ma(a,m)
+                if b not in am:
+                    if len(am)>=CFG["abelianization"]["max_states"]:
+                        acomplete=False;aguard="matrix_state_cap";break
+                    am[b]=d+1;nxt.append(b)
+            if not acomplete:break
+        if not acomplete:break
+        layer=nxt;asizes.append(len(layer))
+    def lower(s):
+        a=ab(s)
+        return am[a]if a in am else CFG["abelianization"]["radius"]+1 if acomplete else 0
+    # Exact word dictionary rooted at the DIFFERENT, ordered target U.
+    reverse={target:()};layer=[target];rsizes=[1];rcomplete=True;rguard=None
+    try:
+        for d in range(CFG["reverse_word"]["radius"]):
+            nxt=[]
+            for s in layer:
+                for m in range(14):
+                    t=move(s,m)
+                    if t not in reverse:
+                        if len(reverse)>=CFG["reverse_word"]["max_states"]:raise Guard("reverse_word_state_cap")
+                        reverse[t]=(core.INVERSE_MOVE[m],)+reverse[s];nxt.append(t)
+            layer=nxt;rsizes.append(len(layer))
+    except Guard as e:rcomplete=False;rguard=str(e)
+    save("round3-reverse.json",dict(states=[dict(state=s,to_U=reverse[s])for s in sorted(reverse)]))
+    # Noninjectivity is tested but never used as a goal equivalence.
+    other=move(target,6)
+    info_counterexample=dict(U=target,other=other,abelianization=ab(target),
+        same_matrix=ab(other)==ab(target),same_exact_goal=other==target)
+    assert info_counterexample["same_matrix"] and not info_counterexample["same_exact_goal"]
+    kept={start:()};closed={start:0};layers=[];winner=None;search_guard=None
+    def try_join(s,p):
+        if s not in reverse:return None
+        path=p+reverse[s]
+        if len(path)>CFG["ordinary_prefix_limit"]:return None
+        state=start
+        for m in path:state=core.apply_move(state,m)
+        assert state==target
+        raw=list(path)+CFG["stable_suffix"]
+        verdict=official.verify(ch,raw)
+        return dict(ordinary_prefix=list(path),stable_moves=raw,verdict=verdict)if verdict["ok"] and len(raw)<CFG["old_stable_length"]else None
+    try:
+        winner=try_join(start,())
+        for depth in range(1,CFG["beam"]["forward_depth"]+1):
+            if winner:break
+            candidates={};pruned=0;revisited=0;generated=0
+            for s,p in sorted(kept.items()):
+                for m in range(14):
+                    t=move(s,m);q=p+(m,);generated+=1
+                    if depth+lower(t)>CFG["ordinary_prefix_limit"]:pruned+=1;continue
+                    if t in closed and closed[t]<depth:revisited+=1;continue
+                    if t not in candidates or q<candidates[t]:candidates[t]=q
+                    hit=try_join(t,q)
+                    if hit:
+                        winner=hit;break
+                if winner:break
+            ordered=sorted(candidates,key=lambda s:(lower(s),sum(map(len,s)),s))
+            selected=ordered[:CFG["beam"]["width"]]
+            kept={s:candidates[s]for s in selected}
+            for s in selected:closed[s]=depth
+            stat=dict(depth=depth,generated=generated,abelian_pruned=pruned,
+                previously_kept_revisits=revisited,candidate_states=len(candidates),kept=len(kept),
+                beam_discarded=max(0,len(candidates)-len(kept)),
+                distinct_matrices_among_kept=len({ab(s)for s in kept}))
+            layers.append(stat);print(json.dumps(stat),flush=True)
+            # A durable output checkpoint exists even if a later guard stops.
+            save("round3-checkpoint.json",dict(layers=layers,winner=winner,official_calls=CALLS))
+    except Guard as e:search_guard=str(e)
+    chosen=winner["stable_moves"]if winner else locked[cid]
+    candidate=dict(challenge_id=cid,tokens=chosen,macros={})
+    validation=acc.validate(json.dumps(candidate).encode(),(Path(restoration["acceptance"])/"baselines.json").read_bytes(),official)
+    assert validation["official_verdict"]["ok"]
+    save("round3-candidate.json",candidate)
+    submit="\n".join(k+": "+json.dumps(chosen if k==cid else p)for k,p in locked.items())+"\n"
+    (OUT/"round3-submission.txt").write_text(submit)
+    env=dict(os.environ,PYTHONPATH=str(Path(restoration["official"])/"competition/tools"))
+    run=subprocess.run([sys.executable,"-B","-m","verifier","--manifest",
+        str(Path(restoration["official"])/"competition/tools/verifier/data/manifest.json"),
+        "--submission",str(OUT/"round3-submission.txt"),"--pretty"],
+        cwd=restoration["official"],env=env,capture_output=True,text=True,timeout=20)
+    cli=dict(returncode=run.returncode,stdout=run.stdout,stderr=run.stderr)
+    assert run.returncode==0 and json.loads(run.stdout)["accepted"]
+    save("round3-cli.json",cli)
+    result=dict(format="round3-target-information-results/1",status="completed_bounded_search",
+        protocol=CFG,restoration=restoration,regression_verdicts=regressions,
+        matrix_ball=dict(states=len(am),layer_sizes=asizes,complete_radius=acomplete,guard=aguard),
+        reverse_word_ball=dict(states=len(reverse),layer_sizes=rsizes,complete_radius=rcomplete,guard=rguard,
+            sha256=hashlib.sha256(json.dumps(sorted(reverse),separators=(",",":")).encode()).hexdigest()),
+        information_loss_example=info_counterexample,layers=layers,search_guard=search_guard,
+        winner=winner,best_stable_length=len(chosen),strict_improvement=len(chosen)<15,
+        acceptance=validation,official_move_calls=CALLS,elapsed_seconds=time.monotonic()-STARTED,
+        beam_discarded_total=sum(x["beam_discarded"]for x in layers),complete_search=False,
+        scope="No global lower bound from beam; no-stabilization subclass only, no free swap/relabel, no causal gain claim",
+        external_review="Stable08491 exactly10 is subsequent EXTERNAL verification; native previous failure unchanged",
+        platform_upload=False)
+    save("round3-results.json",result)
+    print(json.dumps({k:result[k]for k in ["matrix_ball","reverse_word_ball","winner","best_stable_length",
+        "strict_improvement","official_move_calls","elapsed_seconds","beam_discarded_total","search_guard"]}),flush=True)
+if __name__=="__main__":main()

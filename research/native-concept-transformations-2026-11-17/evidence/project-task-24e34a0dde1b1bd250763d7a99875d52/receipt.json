@@ -1,0 +1,34 @@
+{
+  "native_submit": {
+    "request_id": "round3-root-quotient-delayed-execution-bridge02-v1",
+    "model_task_id": "model-task-5afbc922f2b4101d1025cefc01f81a28",
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f"
+  },
+  "task_id": "project-task-24e34a0dde1b1bd250763d7a99875d52",
+  "status": "done",
+  "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+  "snapshot_id": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+  "native_receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794887550.252236,
+    "output_complete": true,
+    "output_truncated": false
+  },
+  "artifacts": [
+    {
+      "id": "project-task-24e34a0dde1b1bd250763d7a99875d52:round3-root-quotient-results.json",
+      "path": "round3-root-quotient-results.json",
+      "sha256": "58a8be084120d21f97c4a875c2a036e32275aef96db74e91261b39faa4e6b371",
+      "bytes": 4655,
+      "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+      "snapshot_id": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+      "public_path": "evidence/project-task-24e34a0dde1b1bd250763d7a99875d52/round3-root-quotient-results.json"
+    }
+  ],
+  "stdout_original_sha256": "e02f393b948691076ea63a359fd760d5b016816f9dafda8b9c588c9ee8b97fc9",
+  "stderr_original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

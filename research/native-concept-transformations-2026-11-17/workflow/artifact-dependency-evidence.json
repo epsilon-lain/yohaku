@@ -1,0 +1,260 @@
+{
+  "actual_snapshot_reference_occurrences": [
+    {
+      "action": "round3-pair-inverse",
+      "task_id": "project-task-8af630bd59010ae18cf545ad37f18415",
+      "source_model_task": "model-task-fc655eee7ba9cac94f54c1f47185d7db",
+      "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+      "reference_occurrences": [
+        {
+          "path": "research.py",
+          "sha256": "261db5a9f89c1945cd83c6d3fbaf5c589245642afd1e2ad8dd1f023c659ca762",
+          "source_revision": "f0b68c31dc20c59694dc96c2e45faa7b7019ae9237b0b443c90e01f924b8f7a0",
+          "literal_reference_tokens": [
+            "M-05ac7d1d25ae1353",
+            "external/positive-edge-general-m"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "root_certificate_verify.py",
+          "sha256": "ba06d1d1a849c470d3c814e1fb706dc99ddbe1ddcb5dc6315e487f339dd1924e",
+          "source_revision": "1e9652dc90bffdff4e8082ca051ceae55cf718145b0afed996cf4407de070cee",
+          "literal_reference_tokens": [
+            "M-05ac7d1d25ae1353"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round2-pair-freeze.json",
+          "sha256": "53070c4b0b26a1e094bbfabedd0a4a5f6f46829f61bc519af367d9d815b1624f",
+          "source_revision": "ed259f669c3747a5498c56edbeec23aa240e2d006639183d79b137139e6712b5",
+          "literal_reference_tokens": [
+            "external/USER-GOAL.txt.tex",
+            "external/concept-tree-cost-9-3-9",
+            "external/native-compression-next-20261116-02-resources"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round2_pair_dictionary.py",
+          "sha256": "457ab72c0069a3fdd2e26b8380cb41c0901d41bb6da0b90e578007d12e37a470",
+          "source_revision": "b8a5653c403a09fa8967c214677ac06320f49d9a074deff14ffcfd1c3a378058",
+          "literal_reference_tokens": [
+            "M-98718cbca95c0dc3",
+            "external/concept-tree-cost-9-3-9"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-pair-freeze.json",
+          "sha256": "0909e396a94bc3b0385adf1efbb3ef26213a248f5b420648ca065a3358771e25",
+          "source_revision": "46d2f791ad2c7629be90b86b7b8da86031686886f5a848167c1bec76c10f023d",
+          "literal_reference_tokens": [
+            "M-98718cbca95c0dc3",
+            "external/task/CODEX_TASK.md.tex"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-pair-inverse.py",
+          "sha256": "4249f2bf1486064466bcc046ccb761f776a9b8a7339ee2d13ab829a67e0a107c",
+          "source_revision": "4e019c9408063de1ad4b5226200f157ff0789e28b72732563ce1ce0b7b7cbb9b",
+          "literal_reference_tokens": [
+            "M-98718cbca95c0dc3",
+            "M-a85fc42f1e3e61a9"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-root-quotient-freeze.json",
+          "sha256": "8e69c202fa177d8e6e0eee7f36c1bddc9c66655d4ccb86106aa55404eb7ded0d",
+          "source_revision": "dc4507a4ee4d5ae7ec2f82d38a279663f425b43e6705a4986cfb3cef099ff5ce",
+          "literal_reference_tokens": [
+            "M-2425cab292392fd9"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-root-quotient.py",
+          "sha256": "da2a3674295c59db460b4f5f1ac87addbb26f4ed1576464a11bc138606ef827e",
+          "source_revision": "a88addefcacdabc95fc3dbf319f8199e25bdaeb31599f3639034ea8be6d43bf4",
+          "literal_reference_tokens": [
+            "M-2425cab292392fd9",
+            "external/framework-candidates-closure",
+            "external/macro-expansion-interface"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        }
+      ]
+    },
+    {
+      "action": "round3-root-quotient",
+      "task_id": "project-task-24e34a0dde1b1bd250763d7a99875d52",
+      "source_model_task": "model-task-5afbc922f2b4101d1025cefc01f81a28",
+      "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+      "reference_occurrences": [
+        {
+          "path": "research.py",
+          "sha256": "261db5a9f89c1945cd83c6d3fbaf5c589245642afd1e2ad8dd1f023c659ca762",
+          "source_revision": "f0b68c31dc20c59694dc96c2e45faa7b7019ae9237b0b443c90e01f924b8f7a0",
+          "literal_reference_tokens": [
+            "M-05ac7d1d25ae1353",
+            "external/positive-edge-general-m"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "root_certificate_verify.py",
+          "sha256": "ba06d1d1a849c470d3c814e1fb706dc99ddbe1ddcb5dc6315e487f339dd1924e",
+          "source_revision": "1e9652dc90bffdff4e8082ca051ceae55cf718145b0afed996cf4407de070cee",
+          "literal_reference_tokens": [
+            "M-05ac7d1d25ae1353"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round2-pair-freeze.json",
+          "sha256": "53070c4b0b26a1e094bbfabedd0a4a5f6f46829f61bc519af367d9d815b1624f",
+          "source_revision": "ed259f669c3747a5498c56edbeec23aa240e2d006639183d79b137139e6712b5",
+          "literal_reference_tokens": [
+            "external/USER-GOAL.txt.tex",
+            "external/concept-tree-cost-9-3-9",
+            "external/native-compression-next-20261116-02-resources"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round2_pair_dictionary.py",
+          "sha256": "457ab72c0069a3fdd2e26b8380cb41c0901d41bb6da0b90e578007d12e37a470",
+          "source_revision": "b8a5653c403a09fa8967c214677ac06320f49d9a074deff14ffcfd1c3a378058",
+          "literal_reference_tokens": [
+            "M-98718cbca95c0dc3",
+            "external/concept-tree-cost-9-3-9"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-pair-freeze.json",
+          "sha256": "0909e396a94bc3b0385adf1efbb3ef26213a248f5b420648ca065a3358771e25",
+          "source_revision": "46d2f791ad2c7629be90b86b7b8da86031686886f5a848167c1bec76c10f023d",
+          "literal_reference_tokens": [
+            "M-98718cbca95c0dc3",
+            "external/task/CODEX_TASK.md.tex"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-pair-inverse.py",
+          "sha256": "4249f2bf1486064466bcc046ccb761f776a9b8a7339ee2d13ab829a67e0a107c",
+          "source_revision": "4e019c9408063de1ad4b5226200f157ff0789e28b72732563ce1ce0b7b7cbb9b",
+          "literal_reference_tokens": [
+            "M-98718cbca95c0dc3",
+            "M-a85fc42f1e3e61a9"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-root-quotient-freeze.json",
+          "sha256": "8e69c202fa177d8e6e0eee7f36c1bddc9c66655d4ccb86106aa55404eb7ded0d",
+          "source_revision": "dc4507a4ee4d5ae7ec2f82d38a279663f425b43e6705a4986cfb3cef099ff5ce",
+          "literal_reference_tokens": [
+            "M-2425cab292392fd9"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-root-quotient.py",
+          "sha256": "da2a3674295c59db460b4f5f1ac87addbb26f4ed1576464a11bc138606ef827e",
+          "source_revision": "a88addefcacdabc95fc3dbf319f8199e25bdaeb31599f3639034ea8be6d43bf4",
+          "literal_reference_tokens": [
+            "M-2425cab292392fd9",
+            "external/framework-candidates-closure",
+            "external/macro-expansion-interface"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        }
+      ]
+    },
+    {
+      "action": "round3-target-search",
+      "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+      "source_model_task": "model-task-139a1bf1066e242c351f5eb3fdac182a",
+      "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+      "reference_occurrences": [
+        {
+          "path": "project.json",
+          "sha256": "c26b9c03c14c64e86608f9d2040ac1c7ff25cb3f2f3cb2cadaf3f2afd27551cd",
+          "source_revision": "4a288f42434a87b9321b39167d28d3201f1e2541b03787d5cbc31e2e1e8f424a",
+          "literal_reference_tokens": [
+            "external/RESOURCE-LOCK.json.tex",
+            "external/resources.b64.tex",
+            "external/restore_resources.py.tex"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "research.py",
+          "sha256": "56a7bec46821137de761be80c4a709b3d842a5daaf1469ab9db80c91f53985ea",
+          "source_revision": "3eb410b09bb0f3d5ef62ab5c68422b2203c3f770084953d75fb300d495783462",
+          "literal_reference_tokens": [
+            "external/ac-08491-distance-8",
+            "external/macro-expansion-interface"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round2_cap5_certificate.py",
+          "sha256": "b817f72fdca471cee2577c32a86b858a228084aba0cd882f8a1e0293deab4dd6",
+          "source_revision": "8ce643c30bfad734fa3cdc7836fe336975d7d29b123fbb532d6bacfecc2191ef",
+          "literal_reference_tokens": [
+            "M-5606eba96406db45",
+            "external/native-compression-next-20261116-02-resources"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round2_s07445_search.py",
+          "sha256": "5213ae59e07be9788e8e45e065bf800aa70558100f4f16eb6758cc51811c5483",
+          "source_revision": "c263dd9b694d17e9bce927b80e0efd683fc481791872f67c0a8d565468cf8296",
+          "literal_reference_tokens": [
+            "M-5606eba96406db45",
+            "external/native-compression-next-20261116-02-resources"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round2_search.py",
+          "sha256": "0e9eefa8a6a0ce56ad7bd8d6aa72ab9f47911c3f655a7307d3f986753dadc561",
+          "source_revision": "88c32bbf8427f4b80635f2c385332e92067b1b6ad808b24ff976a15adf36d5da",
+          "literal_reference_tokens": [
+            "M-5606eba96406db45",
+            "external/native-compression-next-20261116-02-resources"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "round3-protocol.json",
+          "sha256": "50e4947c3e3458d2f854b07a34224befdc24ec3180c68de9d22715977e0080a7",
+          "source_revision": "176395c299be95781e67506f5af0b5d11a7dbbde4058cc67d6709bd44ed5a7f5",
+          "literal_reference_tokens": [
+            "M-95d49b3f9570d1f2",
+            "external/concept-transformations-20261117-resources"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        },
+        {
+          "path": "umbrella_verify.py",
+          "sha256": "aff30510285004f968f08575fb0d81ec81a4b4d51511f39b7eae7803e41ebf2c",
+          "source_revision": "9352e1862513ddc75c3663de2b078808adba15de1c7dabed58460c9e71719318",
+          "literal_reference_tokens": [
+            "M-5606eba96406db45",
+            "external/ac-08491-distance-8"
+          ],
+          "literal_occurrence_is_not_alone_semantic_dependency": true
+        }
+      ]
+    }
+  ],
+  "scope": "Literal input references are distinct from indexed publication, returned body reads, adoption assertions, actual algorithm use and independent review. Their scopes are explained in Chinese progress and authored reports."
+}

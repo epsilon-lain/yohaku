@@ -1,0 +1,76 @@
+{
+  "layers": [
+    {
+      "depth": 1,
+      "generated": 14,
+      "abelian_pruned": 0,
+      "previously_kept_revisits": 0,
+      "candidate_states": 14,
+      "kept": 14,
+      "beam_discarded": 0,
+      "distinct_matrices_among_kept": 7
+    },
+    {
+      "depth": 2,
+      "generated": 196,
+      "abelian_pruned": 0,
+      "previously_kept_revisits": 14,
+      "candidate_states": 145,
+      "kept": 145,
+      "beam_discarded": 0,
+      "distinct_matrices_among_kept": 28
+    },
+    {
+      "depth": 3,
+      "generated": 2030,
+      "abelian_pruned": 0,
+      "previously_kept_revisits": 184,
+      "candidate_states": 1388,
+      "kept": 1388,
+      "beam_discarded": 0,
+      "distinct_matrices_among_kept": 86
+    },
+    {
+      "depth": 4,
+      "generated": 19432,
+      "abelian_pruned": 0,
+      "previously_kept_revisits": 1864,
+      "candidate_states": 12895,
+      "kept": 5000,
+      "beam_discarded": 7895,
+      "distinct_matrices_among_kept": 59
+    },
+    {
+      "depth": 5,
+      "generated": 70000,
+      "abelian_pruned": 0,
+      "previously_kept_revisits": 7709,
+      "candidate_states": 46172,
+      "kept": 5000,
+      "beam_discarded": 41172,
+      "distinct_matrices_among_kept": 16
+    },
+    {
+      "depth": 6,
+      "generated": 70000,
+      "abelian_pruned": 0,
+      "previously_kept_revisits": 8937,
+      "candidate_states": 48160,
+      "kept": 5000,
+      "beam_discarded": 43160,
+      "distinct_matrices_among_kept": 5
+    },
+    {
+      "depth": 7,
+      "generated": 70000,
+      "abelian_pruned": 0,
+      "previously_kept_revisits": 9419,
+      "candidate_states": 49731,
+      "kept": 5000,
+      "beam_discarded": 44731,
+      "distinct_matrices_among_kept": 1
+    }
+  ],
+  "winner": null,
+  "official_calls": 303283
+}

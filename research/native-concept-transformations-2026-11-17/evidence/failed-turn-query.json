@@ -1,0 +1,11 @@
+{
+  "task_id": "model-task-d942fc3b54c0fe2ba6f594c638f35a8e",
+  "thread_id": "01a1e790-7cbf-7d42-805d-6e14aa193ea1",
+  "turn_id": "01a1e790-7f3b-7ad3-8480-892aa7e25132",
+  "query_ok": true,
+  "native_status": "interrupted",
+  "at": 1794887361.849483,
+  "model_requests": 0,
+  "original_journal_or_stop_modified": false,
+  "replayed": false
+}

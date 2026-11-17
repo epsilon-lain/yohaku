@@ -1,0 +1,18 @@
+{
+  "strict_improvement": false,
+  "best_stable_length": 15,
+  "official_cli_accepted": true,
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "platform_upload": false,
+  "leaderboard_queried": false,
+  "full_search_complete": false,
+  "beam_discarded_total": 136958,
+  "official_move_calls": 303283,
+  "guard": null,
+  "submission_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+  "cli_sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+  "author_node": "ai-node-0299a356d74db83b9ab4ebc7",
+  "native_submitter_node": "ai-node-60ce43c0fdb954913d5cf32f",
+  "source_model_task": "model-task-139a1bf1066e242c351f5eb3fdac182a",
+  "external_acceptance_adapter_kind_is_not_native_task_status": true
+}

@@ -1,0 +1,134 @@
+{
+  "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+  "native_submit": {
+    "request_id": "root-app-r3-07445-frozen-delayed-bridge03-v1",
+    "model_task_id": "model-task-139a1bf1066e242c351f5eb3fdac182a",
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f"
+  },
+  "project_id": "native-application",
+  "action": "round3-target-search",
+  "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+  "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+  "manifest_revision": "4a288f42434a87b9321b39167d28d3201f1e2541b03787d5cbc31e2e1e8f424a",
+  "task": {
+    "args": [],
+    "artifacts": [
+      "round3-results.json",
+      "round3-reverse.json",
+      "round3-checkpoint.json",
+      "round3-candidate.json",
+      "round3-submission.txt",
+      "round3-cli.json"
+    ],
+    "entry": "round3-target-search.py",
+    "kind": "python",
+    "timeout_seconds": 210
+  },
+  "files": [
+    {
+      "path": "project.json",
+      "sha256": "c26b9c03c14c64e86608f9d2040ac1c7ff25cb3f2f3cb2cadaf3f2afd27551cd",
+      "bytes": 2702,
+      "source": "files/application/project.json.tex",
+      "source_revision": "4a288f42434a87b9321b39167d28d3201f1e2541b03787d5cbc31e2e1e8f424a"
+    },
+    {
+      "path": "research.py",
+      "sha256": "56a7bec46821137de761be80c4a709b3d842a5daaf1469ab9db80c91f53985ea",
+      "bytes": 18404,
+      "source": "files/application/research.py.tex",
+      "source_revision": "3eb410b09bb0f3d5ef62ab5c68422b2203c3f770084953d75fb300d495783462"
+    },
+    {
+      "path": "round2-external/RESOURCE-LOCK.json",
+      "sha256": "1c571a949456c56b7edad096fe0536657011c2649f1bb104bdd45e764745a35a",
+      "bytes": 6688,
+      "source": "files/application/round2-external/RESOURCE-LOCK.json.tex",
+      "source_revision": "3a866f0fce65858ebae0fb7c1f2b5eca7eb706a32048860528b422ea866bde13"
+    },
+    {
+      "path": "round2-external/resources.b64",
+      "sha256": "ce8eadd1a714b24c065cf07996c8c7cc73c75b981ee7b9944e29039c3da899c1",
+      "bytes": 1782517,
+      "source": "files/application/round2-external/resources.b64.tex",
+      "source_revision": "9256b9cfcc12922f6b0773c2ddc96bf257182234e13004e3af46b5e8aa77e76b"
+    },
+    {
+      "path": "round2-external/restore_resources.py",
+      "sha256": "f69071e5d79b8e6c88bb8fae374b0005cefb1ce8c9028c9cb0ebbe3f9d059764",
+      "bytes": 1461,
+      "source": "files/application/round2-external/restore_resources.py.tex",
+      "source_revision": "7117fa17b4d8760d289d961896cd4707dfb91aaf8e504a945c9a723f0dd7e334"
+    },
+    {
+      "path": "round2_cap5_certificate.py",
+      "sha256": "b817f72fdca471cee2577c32a86b858a228084aba0cd882f8a1e0293deab4dd6",
+      "bytes": 13110,
+      "source": "files/application/round2_cap5_certificate.py.tex",
+      "source_revision": "8ce643c30bfad734fa3cdc7836fe336975d7d29b123fbb532d6bacfecc2191ef"
+    },
+    {
+      "path": "round2_cap5_protocol.json",
+      "sha256": "e0ff452ea6dbe17c1876f6c3e4b95329857a3f9a664bab8af7193be23344d1df",
+      "bytes": 4097,
+      "source": "files/application/round2_cap5_protocol.json.tex",
+      "source_revision": "8f5fa953a9ca17a7123ee834ff35c636b20e31c16e30c82ba748e1ef5d943c29"
+    },
+    {
+      "path": "round2_inspect.py",
+      "sha256": "a8b163609e8ce0ae2eb98b910b7d98e4baa1d7122260685b438b3242b87f8d8c",
+      "bytes": 1219,
+      "source": "files/application/round2_inspect.py.tex",
+      "source_revision": "aa45e8b755dd6c232cd0198575fb775def6d30521ac99f075c03b20c325c0929"
+    },
+    {
+      "path": "round2_protocol.json",
+      "sha256": "6fd57e4c6f8d412389f9f2791c17e5925c1de585332928cb88363f746ffb00d3",
+      "bytes": 4069,
+      "source": "files/application/round2_protocol.json.tex",
+      "source_revision": "061d858aeace058d9560acf6f6072b950d4d934b2e9dba5b9c88a712fece7519"
+    },
+    {
+      "path": "round2_s07445_protocol.json",
+      "sha256": "9ca79360893989b0c327b45b43961b25ea090bcf9e8886dbd14e5370ab16478d",
+      "bytes": 4007,
+      "source": "files/application/round2_s07445_protocol.json.tex",
+      "source_revision": "2f4db2f27528e2eb030ee68a8c7b13c14c08e91e9a1cc444740ac1d6c64be1a9"
+    },
+    {
+      "path": "round2_s07445_search.py",
+      "sha256": "5213ae59e07be9788e8e45e065bf800aa70558100f4f16eb6758cc51811c5483",
+      "bytes": 13028,
+      "source": "files/application/round2_s07445_search.py.tex",
+      "source_revision": "c263dd9b694d17e9bce927b80e0efd683fc481791872f67c0a8d565468cf8296"
+    },
+    {
+      "path": "round2_search.py",
+      "sha256": "0e9eefa8a6a0ce56ad7bd8d6aa72ab9f47911c3f655a7307d3f986753dadc561",
+      "bytes": 12588,
+      "source": "files/application/round2_search.py.tex",
+      "source_revision": "88c32bbf8427f4b80635f2c385332e92067b1b6ad808b24ff976a15adf36d5da"
+    },
+    {
+      "path": "round3-protocol.json",
+      "sha256": "50e4947c3e3458d2f854b07a34224befdc24ec3180c68de9d22715977e0080a7",
+      "bytes": 1360,
+      "source": "files/application/round3-protocol.json.tex",
+      "source_revision": "176395c299be95781e67506f5af0b5d11a7dbbde4058cc67d6709bd44ed5a7f5"
+    },
+    {
+      "path": "round3-target-search.py",
+      "sha256": "e014ffc2c90c77a79c4cea2ea8601029ab18c8d6cc1cc5b2e50e134f84e1786a",
+      "bytes": 8258,
+      "source": "files/application/round3-target-search.py.tex",
+      "source_revision": "83729b0a652916bc94e2e23d8602e86fa92b6c4f0054c0826669f023b76ae561"
+    },
+    {
+      "path": "umbrella_verify.py",
+      "sha256": "aff30510285004f968f08575fb0d81ec81a4b4d51511f39b7eae7803e41ebf2c",
+      "bytes": 5396,
+      "source": "files/application/umbrella_verify.py.tex",
+      "source_revision": "9352e1862513ddc75c3663de2b078808adba15de1c7dabed58460c9e71719318"
+    }
+  ]
+}

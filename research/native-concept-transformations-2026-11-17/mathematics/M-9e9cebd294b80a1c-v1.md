@@ -1,0 +1,24 @@
+# 实际执行与贡献边界
+本次用户event968恢复桥native-concept-transformations-sol-20261117-03，只补从未运行的07445实践缺口。原应用负责人ai-node-0299a356d74db83b9ab4ebc7选择方法并写完整封存程序；总负责人ai-node-60ce43c0fdb954913d5cf32f在既有native-application授权内直接提交执行、读真实回执并整理，不改署名为本人发现。原两个app请求GateStopped及未启动、旧续行在模型准入前profile超限拒绝均保留，不重放任何原ID、不清旧stop。新USER桥明确确认未启动并准许新请求；unknown查询自身不提供重放许可。
+
+## 同一冻结版本的新真实任务
+new request root-app-r3-07445-frozen-delayed-bridge03-v1；task project-task-f3037adff007a0a53e60c6491983d93d；action round3-target-search。重新plan missing=[]，source_set/snapshot仍2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95。
+源码revision83729b0a652916bc94e2e23d8602e86fa92b6c4f0054c0826669f023b76ae561/Python SHAe014ffc2c90c77a79c4cea2ea8601029ab18c8d6cc1cc5b2e50e134f84e1786a；协议revision176395c299be95781e67506f5af0b5d11a7dbbde4058cc67d6709bd44ed5a7f5/JSON SHA50e4947c3e3458d2f854b07a34224befdc24ec3180c68de9d22715977e0080a7。未改旧程序、协议、预算、manifest或失败记录。
+started_new_process=true，status done/state succeeded/execution ended/exit0/cleanup_confirmed/output_complete。6产物全部provenance valid，snapshot_valid=true，无issues。
+
+## 实测结果与明确失败边界
+矩阵B8完整：3808状态，层数[1,6,21,58,122,240,480,960,1920]。
+交换正基U=((2),(1))的精确有序字逆B5完整：40779状态，层数[1,10,77,574,4453,35664]。搜索保留完整字，不以相同矩阵合并或宣告目标。
+beam深1..7均完成，保留数[14,145,1388,5000,5000,5000,5000]，按各层计数丢弃总计136958。未得到可拼接的<=12步普通前缀，winner=null；仍选历史合法Stable15步。没有wall/call/球状态guard，但beam丢弃使搜索不完备，绝不推出<=14不可达或15最优。
+各层abelian_pruned均0：这次g+h>12没有实际剪去候选，投影仍参与排序；末层5000个保留字只对应1种矩阵。这说明本次实验未显示目标投影的剪枝收益，不是对所有投影方法的反例或对排序因果效果的判断。未做对照臂，不能声称加速、token收益或损害。
+计数器official_move_calls=303283只数包装move(s,m)的搜索apply（也检查投影公式），不包括回归verify、try_join直接apply、候选验证及CLI内部动作；不是所有official调用总数。程序自报elapsed11.66964180499781秒仅本次运行统计，不是与旧方法的性能对比。
+
+## 本桥真实本地官方验收与可提交文件
+固定official commit a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e，完整CLI returncode0、stderr空、accepted=true。四行ac07445/08491、sac07445/08491的length=13/8/15/10，work=127/48/128/50，全ok。Stable07445 expanded moves仍[6,4,12,1,3,6,12,2,5,6,4,2,4,16,15]，非新短路。
+预检包装器结果保留kind=external_preflight、native_receipt=false等原字段；这些是固定外部包装器标签，不是平台收据。本次真实原生执行依据上述project task回执及新产物，而非改写包装器字段。CLI stdout与历史内容相同不等于复用历史运行；新round3-cli.json有本次task生产证据。
+新原始产物round3-submission.txt196bytes，SHAa5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2；world交付files/application/round3-bridge03-submission.txt内容相同。无宏、免费swap或重标号，无平台上传。
+
+## 原始产物、实际读取与审阅状态
+round3-results.json9416bytes SHA68d994ea5391a887753b7ab126cd89d666f124733bab00f568e5fb622c4ed6d1；round3-reverse.json12517205bytes SHA7c0ee1286f1529a269af2d8d665243ff1f9b841f233b763ee575274041731ed9；round3-checkpoint.json1773bytes SHA78819eff5faff568936bd9808b4aced6a73728a6107fac97780cd809e696b28d；round3-candidate.json177bytes SHAb3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063；round3-cli.json1004bytes SHAa4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925。完整证书由宿主原产物保留，不能把result_index预览说成完整阅读。
+root已实际读完stdout1822bytes，精确读取results的matrix_ball/reverse_word_ball/layers/acceptance及cli的stdout/returncode/stderr。CLI stdout857字符全部读完；12.5MB逆字典未逐项读/独立复算。原程序作者的新限域审阅请求round3-application-user-bridge03-result-review-v1已经running，不能预填完成，也不是同伴第二份程序复算。
+理论pair任务、root商图任务及review1841都不重跑。原理论一般成果与本次比赛负结果独立评价。实际依赖在原冻结协议中是M-95d49b3f9570d1f2@1和external/concept-transformations-20261117-resources@1；解析解释M-02edaae37c383f5e@1另列。发布、文稿采用、源码/产物依赖、作者复核与独立复算分别留证。

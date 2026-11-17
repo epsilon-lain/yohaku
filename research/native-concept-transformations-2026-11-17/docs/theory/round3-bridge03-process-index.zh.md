@@ -1,0 +1,47 @@
+# 桥03过程索引：原07445封存程序的首次真实执行
+
+数学公开稿：files/theory/round3-bridge03-public.zh.md，供epsilon-lain/lain-s-note；本过程、原始程序和证据供epsilon-lain/yohaku。当前只有本机交付，不宣称公开commit或平台上传。
+
+## 安全接续与实际变化
+用户event968恢复桥native-concept-transformations-sol-20261117-03，原3h截止与总12turn不重置。初读resources=open/shared_stop=null；原两个app请求beam-v1/delayed-v2按原ID查unknown_task/replay_allowed=false，历史GateStopped及无执行记录保留。旧续行continue-d637079e69fc161c056a4746b87a0251的启动前profile拒绝和旧队列原样保留，不能称它已派发或完成。新运行许可来自本次USER明确未启动确认与新授权桥，不来自unknown本身；节点没有修改旧stop/policy/STATE。
+父桥02原应用恢复、理论小review两模型已原ID核done/ended/cleanup。理论pair、商图和review1841已完成，不重新派理论head。未增员。为尽快补实践缺口，root采用的实际工作流变化是：在原native-application grant内直接提交原head冻结程序，保留其方法/源码作者身份；原应用head接续仅做真实结果小核查，不重复submit或重跑。这不是以外部AI实验代替原生运行。
+
+## 冻结版本与唯一新项目请求
+source files/application/round3-target-search.py.tex@83729b0a652916bc94e2e23d8602e86fa92b6c4f0054c0826669f023b76ae561，生成SHAe014ffc2c90c77a79c4cea2ea8601029ab18c8d6cc1cc5b2e50e134f84e1786a。
+protocol round3-protocol.json.tex@176395c299be95781e67506f5af0b5d11a7dbbde4058cc67d6709bd44ed5a7f5，生成SHA50e4947c3e3458d2f854b07a34224befdc24ec3180c68de9d22715977e0080a7。
+source_set/snapshot 2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95，plan missing=[]，与原封存相同，没有改源/协议/预算/manifest。action round3-target-search，project timeout210秒（原协议搜索guard150秒与1500000包装calls未改）。
+request root-app-r3-07445-frozen-delayed-bridge03-v1；task project-task-f3037adff007a0a53e60c6491983d93d；submit started_new_process=true；status done/state succeeded/execution ended/exit0/cleanup_confirmed/output_complete。provenance snapshot_valid=true、6产物bytes_verified/valid、issues=[]。运行及署名边界详M-9e9cebd294b80a1c@1。live第一检查点files/application/round3-bridge03-execution-checkpoint.json保留启动收据；后来完成状态以此索引和原task为准。
+
+## 原始产物（稳定ID用task_id:文件名）
+|文件|bytes|SHA256|
+|---|---:|---|
+|round3-results.json|9416|68d994ea5391a887753b7ab126cd89d666f124733bab00f568e5fb622c4ed6d1|
+|round3-reverse.json|12517205|7c0ee1286f1529a269af2d8d665243ff1f9b841f233b763ee575274041731ed9|
+|round3-checkpoint.json|1773|78819eff5faff568936bd9808b4aced6a73728a6107fac97780cd809e696b28d|
+|round3-candidate.json|177|b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063|
+|round3-submission.txt|196|a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2|
+|round3-cli.json|1004|a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925|
+
+root实际读完stdout1822bytes；result_index只是第一页结构预览，不能当全证书读取。另读results /matrix_ball、/reverse_word_ball、/layers和/acceptance29项两页，以及CLI /stdout857字符全文、/returncode0、/stderr空。不冒称逐项读完12.5MB逆字典或完整独立复算。
+CLI固定official commit a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e，全4行accepted=true，13/8/15/10、work127/48/128/50。外部预检包装器的kind=external_preflight/native_receipt=false保留原样；本次原生执行依据project receipt而不是该标签。CLI stdout虽与历史相同，新包装产物和producer task证明本次真实重跑；不能从输出同样就抹掉新运行或把旧收据倒填。
+world文件files/application/round3-bridge03-submission.txt和round3-bridge03-official-verdict.json分别复制已实际读取的相同提交内容/新CLI stdout，已实际read_text读回，输出revision（内容SHA）分别等于a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2及8edc641744addf501b3b90752f8593e93e6443e9df3c3b8fced513fafa3354a2；不是新短路。
+
+## 数学、知识流与贡献
+原head选择M-c6b311ca449ce973@1方法/完整封存源，原协议显式依赖M-95d49b3f9570d1f2@1及external/concept-transformations-20261117-resources@1。root只执行相同封存版本，没有新增这两项的历史采用。实际依赖证据由本次固定snapshot、protocol和运行结果分开保留。root本次精读M-02edaae37c383f5e@1解释必要下界/信息丢失，不倒填其为更早源码采用；新公开稿采用另记。
+本次真实有限负结果M-9e9cebd294b80a1c@1与旧拒绝M-484776873908098a@1/M-4ece2fa2f8e1b6ab@1分开。普通8/13、Stable08491=10的外部后补复核不算本机新发现，旧原生核验失败保持。商图新结果M-57835ea93dc9d121@1和理论独立限域审稿M-2763b2dcafe3dd4f@1已精确读取审稿，review1841不扩成n3/4全独立复算。
+
+## 原应用head小交付与可恢复入口
+request round3-application-user-bridge03-result-review-v1；model-task-96bda9888e4a4bcd2f15e77df0a1a756。请求及actual model_settings均gpt-6.1-sol/max，900秒/96工具，采样running。任务只核真实project结果/guard/CLI及公开补充，不重复运行；没有新理论head或新成员。root当前model-task-139a1bf1066e242c351f5eb3fdac182a也已actual回读gpt-6.1-sol/max、limited900秒、96工具，不使用创建时1800profile。
+原head最后状态/cleanup、其补充/限域自检待实际收据，不能预填独立复算。root先保存自身完成小交付，不为等待模型挂长任务；如需终态对账只用原ID，并以新的明确research_continue提出精确小核验，不消费旧被拒续行身份。未解决Stable07445最短性，不自动扩大搜索预算；未上传平台、未声称供应商身份或实扣费用。
+
+## 读回与原head实际报告的证书读取边界
+两篇root新中文稿均已实际read_document及read_text，正文与生成输出一致。新提交与新CLI stdout副本的内容SHA已比对原task证据，非仅声称创建成功。
+原应用head实际消息报告：round3-reverse.json=12517205bytes，task_result_read读取前3条也遭8MiB文件限制(kind=result_size)拒绝。因此整文件hash验证不能替代模型读取全部40779字状态；这是产物读取接口边界，不是程序搜索guard。root未重试该确定限制，也不为此重跑搜索或扩题。head的303283=逆球展开71610+beam231672+反例1是原代码包装计数分解，不扩大到回归/join/CLI内部调用。该消息不是全独立程序复算；后续正式补充须按精确math版本查阅。
+
+
+## 唯一小续行对账：原作者已保存补充，模型终态未确认
+本次root model-task-48e61efd7407973c872afd34e470ff01，actual gpt-6.1-sol/max、limited900秒/96工具；resources仍open/shared_stop=null，remaining3 native turns。按原request round3-application-user-bridge03-result-review-v1查询应用model-task-96bda9888e4a4bcd2f15e77df0a1a756：status=running、execution=running、actual gpt-6.1-sol/max，未有最终native_cleanup_complete可确认。这是模型状态，不影响原project task已done/exit0/cleanup的独立事实。本次没有新项目任务、新模型派发、重跑或等待模型。
+起初math索引query“桥03”无命中，不据此判断没有成果；再用07445索引发现并精确全文读M-6a8ed93c5a757eba@1（body_sha256 3b336ec71940ebd696223a30e7a096eaa363171851cd7f738ef490f1004334ad）。它是原应用方法/源码作者的字段投影与源码对照，不是独立复算；与root M-9e9cebd294b80a1c@1是同一次真实task的两份作者视角记录，不能算两次实验或新增独立review。
+实际全文读取本机中文补充：files/application/round3-app-bridge03-public.zh.md.tex@d93774175dba60e9408e6a8b94e0033203e0ed5b760ade9b12f2353fcaa01fbe；files/application/round3-app-bridge03-process.zh.md.tex@0fde4d67162f501ccb7ee6cdb1a3446f8644a5f7e538360236cfd477d4efa47f。另有round3-app-bridge03-reading.json、完整候选/CLI/提交副本可按该过程索引读取；本次不冒称已重新读取其全部机器投影或逆字典。
+补充的限域说明纳入总稿：lex单前缀不是累计资源Pareto前沿，join尝试/失败数未单列，winner=null不证明完整空交；8MiB证书读取拒绝不是搜索guard。已读/采用声明只连新公开稿，不倒填冻结源码依赖；原head自身结果不是新独立math_review。
+此续行到保存边界即finish，不再research_continue，不为等待head保持本回合，也不自动排重复对账。若后来需要最终模型清理回执，唯一可恢复入口仍是上述原模型request/task；未知只查原ID，不能重放。当前合法提交和本桥官方CLI未变，无平台上传或公开push回执。旧stop、失败、源/协议和外部来源保持。

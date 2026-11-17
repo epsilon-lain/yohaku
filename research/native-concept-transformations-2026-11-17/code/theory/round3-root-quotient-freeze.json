@@ -1,0 +1,17 @@
+{
+  "format": "round3-root-quotient-freeze/1",
+  "proof_dependency": "M-2425cab292392fd9@1",
+  "graph_scope": "all directed loop-free labelled graphs on n=1..4; no resource or state pruning",
+  "partitions": "all set partitions via restricted growth words; quotient loops retained",
+  "distance_scope": "every concrete start and every saturated target including empty/full; local-lifting equalities and optimistic inequalities",
+  "route_scope": "n<=3 every quotient walk of lengths0..4 and every actual target subset; compare raw word trees to forward/backward representative sets",
+  "budget": {
+    "task_timeout_seconds": 120
+  },
+  "claims_excluded": [
+    "AC legal validation",
+    "search/token speedup",
+    "literature novelty",
+    "peer-independent computation"
+  ]
+}

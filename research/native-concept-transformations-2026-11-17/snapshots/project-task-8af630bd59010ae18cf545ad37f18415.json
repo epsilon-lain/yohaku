@@ -1,0 +1,94 @@
+{
+  "task_id": "project-task-8af630bd59010ae18cf545ad37f18415",
+  "native_submit": {
+    "request_id": "r3-theory-pair-inverse-v1-20261117",
+    "model_task_id": "model-task-fc655eee7ba9cac94f54c1f47185d7db",
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6"
+  },
+  "project_id": "native-theory",
+  "action": "round3-pair-inverse",
+  "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+  "snapshot_id": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+  "manifest_revision": "cd46a2cf67bf63b72c0989e9ed273cc5f063f72361a5f78110a5f6dfc90f80ae",
+  "task": {
+    "args": [],
+    "artifacts": [
+      "round3-pair-inverse-results.json"
+    ],
+    "entry": "round3-pair-inverse.py",
+    "kind": "python",
+    "timeout_seconds": 120
+  },
+  "files": [
+    {
+      "path": "project.json",
+      "sha256": "b2e895687ee09060d3e735813ad7d1da611ee9d1d2878e8483fe4c02e9e359de",
+      "bytes": 1755,
+      "source": "files/theory/project.json.tex",
+      "source_revision": "cd46a2cf67bf63b72c0989e9ed273cc5f063f72361a5f78110a5f6dfc90f80ae"
+    },
+    {
+      "path": "research.py",
+      "sha256": "261db5a9f89c1945cd83c6d3fbaf5c589245642afd1e2ad8dd1f023c659ca762",
+      "bytes": 10286,
+      "source": "files/theory/research.py.tex",
+      "source_revision": "f0b68c31dc20c59694dc96c2e45faa7b7019ae9237b0b443c90e01f924b8f7a0"
+    },
+    {
+      "path": "root_audit.py",
+      "sha256": "fb9afb2fd2fdd907fd4de338b051865d547bafa268dae075eacde31ff84811a9",
+      "bytes": 4011,
+      "source": "files/theory/root_audit.py.tex",
+      "source_revision": "95fa2c070a9e4a02f3dcdd11e8679693e2fd2928ed04b02e1fab351aeeb173ee"
+    },
+    {
+      "path": "root_certificate_verify.py",
+      "sha256": "ba06d1d1a849c470d3c814e1fb706dc99ddbe1ddcb5dc6315e487f339dd1924e",
+      "bytes": 5124,
+      "source": "files/theory/root_certificate_verify.py.tex",
+      "source_revision": "1e9652dc90bffdff4e8082ca051ceae55cf718145b0afed996cf4407de070cee"
+    },
+    {
+      "path": "round2-pair-freeze.json",
+      "sha256": "53070c4b0b26a1e094bbfabedd0a4a5f6f46829f61bc519af367d9d815b1624f",
+      "bytes": 2908,
+      "source": "files/theory/round2-pair-freeze.json.tex",
+      "source_revision": "ed259f669c3747a5498c56edbeec23aa240e2d006639183d79b137139e6712b5"
+    },
+    {
+      "path": "round2_pair_dictionary.py",
+      "sha256": "457ab72c0069a3fdd2e26b8380cb41c0901d41bb6da0b90e578007d12e37a470",
+      "bytes": 12293,
+      "source": "files/theory/round2_pair_dictionary.py.tex",
+      "source_revision": "b8a5653c403a09fa8967c214677ac06320f49d9a074deff14ffcfd1c3a378058"
+    },
+    {
+      "path": "round3-pair-freeze.json",
+      "sha256": "0909e396a94bc3b0385adf1efbb3ef26213a248f5b420648ca065a3358771e25",
+      "bytes": 1171,
+      "source": "files/theory/round3-pair-freeze.json.tex",
+      "source_revision": "46d2f791ad2c7629be90b86b7b8da86031686886f5a848167c1bec76c10f023d"
+    },
+    {
+      "path": "round3-pair-inverse.py",
+      "sha256": "4249f2bf1486064466bcc046ccb761f776a9b8a7339ee2d13ab829a67e0a107c",
+      "bytes": 7739,
+      "source": "files/theory/round3-pair-inverse.py.tex",
+      "source_revision": "4e019c9408063de1ad4b5226200f157ff0789e28b72732563ce1ce0b7b7cbb9b"
+    },
+    {
+      "path": "round3-root-quotient-freeze.json",
+      "sha256": "8e69c202fa177d8e6e0eee7f36c1bddc9c66655d4ccb86106aa55404eb7ded0d",
+      "bytes": 780,
+      "source": "files/theory/round3-root-quotient-freeze.json.tex",
+      "source_revision": "dc4507a4ee4d5ae7ec2f82d38a279663f425b43e6705a4986cfb3cef099ff5ce"
+    },
+    {
+      "path": "round3-root-quotient.py",
+      "sha256": "da2a3674295c59db460b4f5f1ac87addbb26f4ed1576464a11bc138606ef827e",
+      "bytes": 7417,
+      "source": "files/theory/round3-root-quotient.py.tex",
+      "source_revision": "a88addefcacdabc95fc3dbf319f8199e25bdaeb31599f3639034ea8be6d43bf4"
+    }
+  ]
+}

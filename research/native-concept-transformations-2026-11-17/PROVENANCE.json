@@ -1,0 +1,242 @@
+{
+  "round_id": "concept-transformations-user-20261117",
+  "original_nodes_preserved": true,
+  "new_user_supplement": true,
+  "theory_independent_of_competition_improvement": true,
+  "native_user_request_id": "user-concept-transformations-20261117-v1",
+  "user_instruction_event": 968,
+  "old_policy_sha256": "0d5e07fe509bed61b45248c6ff917dc509eae214041e95a955ec7f6beb8f1fd0",
+  "old_policy_unchanged": true,
+  "old_budget_reset": false,
+  "package_commit": "0683661bb89751c6d9d75e6269a77a44b633698e",
+  "external_review_commit": "0108519169ea786ed186d7c93aa13c33ffac625c",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "knowledge_event_window": [
+    967,
+    2409
+  ],
+  "gate_event_prefix": 157,
+  "raw_private_runtime_archive": "retained on the user host, not published",
+  "external_resources": {
+    "shared_math_id": "external/concept-transformations-20261117-resources",
+    "revision": 1,
+    "external_event": 967,
+    "user_instruction_event": 968,
+    "files": [
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/PUBLIC-MANIFEST.json.tex",
+        "source_revision": "1a4e8a854909e4030e732da6a9a5ff7fa4a37e8505b6446a5a52ccf98e72130a",
+        "generated_sha256": "b40f569fc6d731c83a7c0a58ee45cfd8cc91b7ebd6258fd47e774fbe837e66cd",
+        "external_relative": "external-review/PUBLIC-MANIFEST.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/README.md.tex",
+        "source_revision": "ec6610a281a231ee7bbd3c89693edbe86c62a32900f418c089ba4bdacc90293a",
+        "generated_sha256": "2420752110ae027440952b8e68a50eb2afa953e76e8f4f12ec86a9077679f28e",
+        "external_relative": "external-review/README.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/REVIEW.json.tex",
+        "source_revision": "377854b672f8791b43259c3fb677374d57388ecfd3837031dcce87ffb8da1d7e",
+        "generated_sha256": "ddad4b4e728210d9939965c03846fd38936930bfc1c0cbf2534006cdee4ac941",
+        "external_relative": "external-review/REVIEW.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/stable/README.zh.md.tex",
+        "source_revision": "35fe9378b09d08be7199d7390987b1b379cf772be2c29ab6dca54ddccce5e134",
+        "generated_sha256": "9b719597822d4d2e582057ce6115cee90d305f3674b21a6afb8b479dc4197813",
+        "external_relative": "external-review/stable/README.zh.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/stable/external-review-compact.json.tex",
+        "source_revision": "403119eff86bb515fa3ce51bb1e648e99e445816d7082fb45d2184cb5c618e6c",
+        "generated_sha256": "4b27eb0992e36189adc811214921c00b04e0fc2c4a0faca73ecca6c891b2ab26",
+        "external_relative": "external-review/stable/external-review-compact.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/stable/independent_stable_verifier.py.tex",
+        "source_revision": "652a7aad2c4549c44795c6f63059697912b0c33910df85ac6d1d7e757b2e0344",
+        "generated_sha256": "50199bce2cfab818ce43e26bd101b96ae4b3cc5892d6a06b7255aca0b7702722",
+        "external_relative": "external-review/stable/independent_stable_verifier.py",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/stable/official-source-lock.json.tex",
+        "source_revision": "27691c493b56aa71a9bc51cef6c2b93d63aa0606de6d3c9d9565af94f53cf383",
+        "generated_sha256": "7c0528c3f6a7838a762c2439497b980a405399e286ea90a10199e3d746dbfd76",
+        "external_relative": "external-review/stable/official-source-lock.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/stable/review-provenance.json.tex",
+        "source_revision": "cb58c95f65abab6b9783bce803caba98c540c0003466af30f5660081ebb6496a",
+        "generated_sha256": "c60deef5b77f8cf1f17e4cc4e41b6c25b63a9a83f51908848b1a6c22693bd37b",
+        "external_relative": "external-review/stable/review-provenance.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/external-review/stable/source/source-locations.json.tex",
+        "source_revision": "0afdd5a736741358f908a7c675d60e57a6aa2e68fa02d483117f7fd354bfa8da",
+        "generated_sha256": "26ea058e41197b778f63dbe33d14d87d30e64bc49e94b354bc75981606303c81",
+        "external_relative": "external-review/stable/source/source-locations.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/task/CODEX_TASK.md.tex",
+        "source_revision": "05ca617e98650e698e62d56d76ddc901c6e7d615a6d875fd8e6b9a6999351c32",
+        "generated_sha256": "8ebe9dddf638c0705d8214eec883ae0287c4cc618608ee0ea2973695d15f1e11",
+        "external_relative": "task/CODEX_TASK.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/task/README.md.tex",
+        "source_revision": "4440f48785db936f8296c177163acc5af7575bccd6d7384987803144b709592e",
+        "generated_sha256": "7885d72eacc98afb39b64c3145fd59ea9e9c8ff701ef89b3f4d5bf01ac87ccfa",
+        "external_relative": "task/README.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "theory",
+        "source": "files/theory/round3-external/task/STATUS.json.tex",
+        "source_revision": "323c796f9c136d4164f7185d60fe63ff79aa1a03820a5eea0eae189052b92b46",
+        "generated_sha256": "b9bfc5601e8076900928275dd346e2deacd60434dfe000eae0341c6eebcf9fd4",
+        "external_relative": "task/STATUS.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/PUBLIC-MANIFEST.json.tex",
+        "source_revision": "082182c887f98a6bbbd32b30dc31a60c5aeeb005153ad9477a9207252b117983",
+        "generated_sha256": "b40f569fc6d731c83a7c0a58ee45cfd8cc91b7ebd6258fd47e774fbe837e66cd",
+        "external_relative": "external-review/PUBLIC-MANIFEST.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/README.md.tex",
+        "source_revision": "1c206332b29bfdc4a014b55c9655f403ef02ed88ed1a00c38f7dbe433ee26181",
+        "generated_sha256": "2420752110ae027440952b8e68a50eb2afa953e76e8f4f12ec86a9077679f28e",
+        "external_relative": "external-review/README.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/REVIEW.json.tex",
+        "source_revision": "412a58affe618232c9f1c46806b294771f10731a80e89a203c8b600ce01a7270",
+        "generated_sha256": "ddad4b4e728210d9939965c03846fd38936930bfc1c0cbf2534006cdee4ac941",
+        "external_relative": "external-review/REVIEW.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/stable/README.zh.md.tex",
+        "source_revision": "1f0165fb3842e25b6b518cfc454c09ba226fa9b7035edb5aecaf3f508676d695",
+        "generated_sha256": "9b719597822d4d2e582057ce6115cee90d305f3674b21a6afb8b479dc4197813",
+        "external_relative": "external-review/stable/README.zh.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/stable/external-review-compact.json.tex",
+        "source_revision": "ce82ec9ecd7e0a520baf4b8e5d958e256c84a3a5f8a5a5d5be3af22dc98a8817",
+        "generated_sha256": "4b27eb0992e36189adc811214921c00b04e0fc2c4a0faca73ecca6c891b2ab26",
+        "external_relative": "external-review/stable/external-review-compact.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/stable/independent_stable_verifier.py.tex",
+        "source_revision": "505a00bf636ca44e252efbc41f6b4800cebe49668fbafd37689885cfdce4e7dd",
+        "generated_sha256": "50199bce2cfab818ce43e26bd101b96ae4b3cc5892d6a06b7255aca0b7702722",
+        "external_relative": "external-review/stable/independent_stable_verifier.py",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/stable/official-source-lock.json.tex",
+        "source_revision": "dc6a79fc0427b0cd5865cc99a7e6e98ef8b7232164ff8e3a7b397968ecd43718",
+        "generated_sha256": "7c0528c3f6a7838a762c2439497b980a405399e286ea90a10199e3d746dbfd76",
+        "external_relative": "external-review/stable/official-source-lock.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/stable/review-provenance.json.tex",
+        "source_revision": "2cebf88376c192243b3403f128ed261619582ab00846ae96b686be9d0089c1ae",
+        "generated_sha256": "c60deef5b77f8cf1f17e4cc4e41b6c25b63a9a83f51908848b1a6c22693bd37b",
+        "external_relative": "external-review/stable/review-provenance.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/external-review/stable/source/source-locations.json.tex",
+        "source_revision": "2e10c4d0b233eec0820b47bd9eafb7547fc229c2a495831ebb938b7a33980ac1",
+        "generated_sha256": "26ea058e41197b778f63dbe33d14d87d30e64bc49e94b354bc75981606303c81",
+        "external_relative": "external-review/stable/source/source-locations.json",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/task/CODEX_TASK.md.tex",
+        "source_revision": "5444415ec6982ae3721b2b904bcb3e10422afd6660f38aa8b0d88a55027409fd",
+        "generated_sha256": "8ebe9dddf638c0705d8214eec883ae0287c4cc618608ee0ea2973695d15f1e11",
+        "external_relative": "task/CODEX_TASK.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/task/README.md.tex",
+        "source_revision": "6e68d8d3182d1b26650cd7dbe13365fedc8451ce763e51e8c20444ecfcc2dd7d",
+        "generated_sha256": "7885d72eacc98afb39b64c3145fd59ea9e9c8ff701ef89b3f4d5bf01ac87ccfa",
+        "external_relative": "task/README.md",
+        "origin": "external_task_or_review_not_native_research"
+      },
+      {
+        "team": "application",
+        "source": "files/application/round3-external/task/STATUS.json.tex",
+        "source_revision": "4dd1f9d3b473f0557cd1d0e39a8b7cb79c3e329a4a2083e636669f10207df264",
+        "generated_sha256": "b9bfc5601e8076900928275dd346e2deacd60434dfe000eae0341c6eebcf9fd4",
+        "external_relative": "task/STATUS.json",
+        "origin": "external_task_or_review_not_native_research"
+      }
+    ],
+    "new_native_model_tasks": 0
+  },
+  "contributors": [
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "role": "原生研究总负责人",
+      "model": "gpt-6.1-sol",
+      "effort": "max"
+    },
+    {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "role": "理论方向负责人",
+      "model": "gpt-6.1-sol",
+      "effort": "max"
+    },
+    {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "role": "应用方向负责人",
+      "model": "gpt-6.1-sol",
+      "effort": "max"
+    }
+  ],
+  "host_work": "Independent delta-stage bridge, source import, original-ID status and cleanup verification, handoff, observation and public curation; not attributed to native AI mathematics"
+}

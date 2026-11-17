@@ -1,0 +1,90 @@
+[
+  {
+    "id": "project-task-8af630bd59010ae18cf545ad37f18415:round3-pair-inverse-results.json",
+    "path": "round3-pair-inverse-results.json",
+    "sha256": "1a7a556eadc1c1d1015a14f3cc201146259829610b0393ffaf3d95823e6bd317",
+    "bytes": 5350386,
+    "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+    "snapshot_id": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+    "public_path": "evidence/project-task-8af630bd59010ae18cf545ad37f18415/round3-pair-inverse-results.json",
+    "task_id": "project-task-8af630bd59010ae18cf545ad37f18415",
+    "project_id": "native-theory"
+  },
+  {
+    "id": "project-task-24e34a0dde1b1bd250763d7a99875d52:round3-root-quotient-results.json",
+    "path": "round3-root-quotient-results.json",
+    "sha256": "58a8be084120d21f97c4a875c2a036e32275aef96db74e91261b39faa4e6b371",
+    "bytes": 4655,
+    "source_set": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+    "snapshot_id": "c0e58442b566c2d83a6f87654c82a22f031543810b9f370caeec9ea95557079b",
+    "public_path": "evidence/project-task-24e34a0dde1b1bd250763d7a99875d52/round3-root-quotient-results.json",
+    "task_id": "project-task-24e34a0dde1b1bd250763d7a99875d52",
+    "project_id": "native-theory"
+  },
+  {
+    "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-results.json",
+    "path": "round3-results.json",
+    "sha256": "68d994ea5391a887753b7ab126cd89d666f124733bab00f568e5fb622c4ed6d1",
+    "bytes": 9416,
+    "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-results.json",
+    "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+    "project_id": "native-application"
+  },
+  {
+    "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-reverse.json",
+    "path": "round3-reverse.json",
+    "sha256": "7c0ee1286f1529a269af2d8d665243ff1f9b841f233b763ee575274041731ed9",
+    "bytes": 12517205,
+    "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-reverse.json",
+    "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+    "project_id": "native-application"
+  },
+  {
+    "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-checkpoint.json",
+    "path": "round3-checkpoint.json",
+    "sha256": "78819eff5faff568936bd9808b4aced6a73728a6107fac97780cd809e696b28d",
+    "bytes": 1773,
+    "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-checkpoint.json",
+    "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+    "project_id": "native-application"
+  },
+  {
+    "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-candidate.json",
+    "path": "round3-candidate.json",
+    "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+    "bytes": 177,
+    "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-candidate.json",
+    "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+    "project_id": "native-application"
+  },
+  {
+    "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-submission.txt",
+    "path": "round3-submission.txt",
+    "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+    "bytes": 196,
+    "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-submission.txt",
+    "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+    "project_id": "native-application"
+  },
+  {
+    "id": "project-task-f3037adff007a0a53e60c6491983d93d:round3-cli.json",
+    "path": "round3-cli.json",
+    "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+    "bytes": 1004,
+    "source_set": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "snapshot_id": "2c3db8649a4359d58446f4e834afc34afabccdd7e2a38da3055a831ddae64d95",
+    "public_path": "evidence/project-task-f3037adff007a0a53e60c6491983d93d/round3-cli.json",
+    "task_id": "project-task-f3037adff007a0a53e60c6491983d93d",
+    "project_id": "native-application"
+  }
+]

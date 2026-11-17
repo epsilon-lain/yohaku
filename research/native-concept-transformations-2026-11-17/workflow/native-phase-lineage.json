@@ -1,0 +1,136 @@
+{
+  "phases": [
+    {
+      "phase": "native-concept-transformations-sol-20261117-01",
+      "gate": {
+        "experiment_id": "native-concept-transformations-sol-20261117-01",
+        "phase": "open",
+        "shared_stop": {
+          "reason": "Original native task failed; inspect before new admission",
+          "task_id": "model-task-d942fc3b54c0fe2ba6f594c638f35a8e",
+          "at": 1794887269.6494908,
+          "new_dispatch_allowed": false
+        },
+        "leaders": {
+          "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "application": "ai-node-0299a356d74db83b9ab4ebc7"
+        },
+        "members": [
+          "ai-node-60ce43c0fdb954913d5cf32f",
+          "ai-node-b912b62d9e95d94ddb26bfd6",
+          "ai-node-0299a356d74db83b9ab4ebc7"
+        ],
+        "native_turns_reserved": 3,
+        "native_turns_remaining": 9,
+        "remaining_seconds": 9762.240494251251,
+        "provider_identity": "unknown; requested/native thread configuration separately recorded",
+        "provider_cost": "unknown",
+        "adaption_authority_used": false
+      },
+      "status": "closed to new admission; stop and responsibility retained",
+      "tasks": [
+        "model-task-d942fc3b54c0fe2ba6f594c638f35a8e",
+        "model-task-fc655eee7ba9cac94f54c1f47185d7db",
+        "model-task-2aa7f7552b83a2fe295ed5dd16e92dc8"
+      ]
+    },
+    {
+      "phase": "native-concept-transformations-sol-20261117-02",
+      "gate": {
+        "experiment_id": "native-concept-transformations-sol-20261117-02",
+        "phase": "open",
+        "shared_stop": {
+          "reason": "Continuation dispatch requires original-ID inspection",
+          "evidence": {
+            "queue_id": 2,
+            "request_id": "continue-d637079e69fc161c056a4746b87a0251",
+            "error": "Worker resource profile exceeds native envelope"
+          },
+          "at": 1794887889.9293995,
+          "new_dispatch_allowed": false
+        },
+        "leaders": {
+          "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "application": "ai-node-0299a356d74db83b9ab4ebc7"
+        },
+        "members": [
+          "ai-node-60ce43c0fdb954913d5cf32f",
+          "ai-node-b912b62d9e95d94ddb26bfd6",
+          "ai-node-0299a356d74db83b9ab4ebc7"
+        ],
+        "native_turns_reserved": 3,
+        "native_turns_remaining": 6,
+        "remaining_seconds": 8828.262488603592,
+        "provider_identity": "unknown; requested/native thread configuration separately recorded",
+        "provider_cost": "unknown",
+        "adaption_authority_used": false
+      },
+      "status": "closed to new admission; stop and responsibility retained",
+      "tasks": [
+        "model-task-5afbc922f2b4101d1025cefc01f81a28",
+        "model-task-0498526f0177860c94415a714617d0ff",
+        "model-task-bfa6523cccc5a8ea77cfaf023c853991"
+      ]
+    },
+    {
+      "phase": "native-concept-transformations-sol-20261117-03",
+      "gate": {
+        "experiment_id": "native-concept-transformations-sol-20261117-03",
+        "phase": "open",
+        "shared_stop": null,
+        "leaders": {
+          "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "application": "ai-node-0299a356d74db83b9ab4ebc7"
+        },
+        "members": [
+          "ai-node-60ce43c0fdb954913d5cf32f",
+          "ai-node-b912b62d9e95d94ddb26bfd6",
+          "ai-node-0299a356d74db83b9ab4ebc7"
+        ],
+        "native_turns_reserved": 3,
+        "native_turns_remaining": 3,
+        "remaining_seconds": 7606.592301130295,
+        "provider_identity": "unknown; requested/native thread configuration separately recorded",
+        "provider_cost": "unknown",
+        "adaption_authority_used": false
+      },
+      "status": "current recovery",
+      "tasks": [
+        "model-task-139a1bf1066e242c351f5eb3fdac182a",
+        "model-task-48e61efd7407973c872afd34e470ff01",
+        "model-task-96bda9888e4a4bcd2f15e77df0a1a756"
+      ]
+    }
+  ],
+  "parent_pins": [
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/POLICY.json",
+      "sha256": "0d5e07fe509bed61b45248c6ff917dc509eae214041e95a955ec7f6beb8f1fd0"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/STATE.json",
+      "sha256": "23c3e5dd9237ed8879c5cb819253f1e9b384a3f613b2ad8ca3881d6804354a36"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-01/POLICY.json",
+      "sha256": "c6e54af1c20b9633f5bfc1d2952431bf4485ac880c93dbd78eb6c77c50a16d9a"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-01/STATE.json",
+      "sha256": "98467daa732fabb4ab98ff5749a66d766b97835c8996cdf3a2eaf4cf0a2dcfc9"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-02/POLICY.json",
+      "sha256": "5eaf05b5289db9446fc804a122a3f7c422ab6e384d99212961e9abbca0bb664b"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-02/STATE.json",
+      "sha256": "3500a7cec90cd9a259e3d5ba73a77d4eeb94ad2c79a107ed640a8d8e3f0eb9fe"
+    }
+  ],
+  "total_native_turn_ceiling": 12,
+  "reserved_native_turns": 9,
+  "exact_original_deadline": 1794897169.0546498,
+  "new_turns_or_time_added_by_repair": false,
+  "old_stops_and_states_preserved": true
+}

@@ -1,0 +1,10 @@
+{
+  "archive": "process-package.zip",
+  "bytes": 2043921,
+  "sha256": "55e19cbe20e5555470bcbde5a4fdef3739648d716eb74bc2484ffc0a621f7013",
+  "files_inside": 122,
+  "manifest_sha256": "8efbba2f59427340c8664f7f3ff8cffd4f8472ae2cce3be0dabe88a389c50100",
+  "zip_crc_and_all_file_hashes_checked": true,
+  "private_payloads_excluded": true,
+  "scope": "complete public scientific inputs/outputs and sanitized native receipts; private host archive separate"
+}
