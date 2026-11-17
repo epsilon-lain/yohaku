@@ -1,0 +1,55 @@
+name: Windows preview packaging tools
+
+on:
+  pull_request:
+    paths:
+      - 'README.md*'
+      - 'docs/windows/**'
+      - 'source-documents.json*'
+      - 'scripts/package_windows_preview.py*'
+      - 'scripts/tests/test_windows_preview.py*'
+      - '.github/workflows/windows-preview-tools.yml*'
+  push:
+    paths:
+      - 'README.md*'
+      - 'docs/windows/**'
+      - 'source-documents.json*'
+      - 'scripts/package_windows_preview.py*'
+      - 'scripts/tests/test_windows_preview.py*'
+      - '.github/workflows/windows-preview-tools.yml*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  packaging-tests:
+    name: Packaging tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+      - name: Test packaging tools and launcher fixtures (no Yohaku app launch)
+        run: python -B -m unittest discover -s scripts/tests -p test_windows_preview.py -v
+
+  loom-source-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build bundled Loom with vendored dependencies
+        working-directory: loom-src
+        run: cargo build --offline --locked --release --target-dir ../target/loom
+      - name: Check authoritative Loom sources against generated text
+        run: |
+          cp target/loom/release/loom bin/loom-linux-x86_64
+          python3 scripts/sync_sources.py --check

@@ -1,0 +1,40 @@
+# Windows 下载与试用
+
+Yohaku 的 Windows 便携技术预览包正在准备。当前仓库提供源码和打包工具；
+尚无经过本流程验证的 Windows 程序包，页面不会把源码 ZIP 当作程序下载。
+
+## 发布后如何使用
+
+1. 打开 [GitHub Releases](https://github.com/epsilon-lain/yohaku/releases)，选择标为
+   **Windows technical preview** 的版本，阅读该版的已知限制。
+2. 在 **Assets** 下载 `Yohaku-<版本>-windows-x64.zip`。GitHub 自动生成的
+   `Source code (zip)` 和 `Source code (tar.gz)` 是源码。
+3. 将 ZIP 完整解压到你有写入权限的文件夹。不要在压缩包内直接运行。
+4. 双击解压目录里的 `Launch-Yohaku.cmd`，保留同目录下的所有文件。
+5. 首次启动应进入 Yohaku 窗口。模型服务需要使用者自行配置；发行包不携带账号。
+
+发布目标是 Windows 11 x64，无需安装 Rust、Python 或 WSL。
+**这一目标必须由每版的实际测试确认**；支持的系统和已通过的功能以 Release
+说明为准。x64 包不能视为原生 ARM64 版本。
+
+## 遇到问题
+
+启动器把程序输出保存到解压目录的 `logs/last-launch.log`。程序异常退出时，
+启动窗口会保留提示。若 Windows 显示来源或签名提示，请按自己的判断决定
+是否运行；本项目不要求关闭系统保护。
+
+请在 [Issues](https://github.com/epsilon-lain/yohaku/issues) 反馈版本号、Windows
+版本、复现步骤，以及相关错误文字。分享日志前检查内容，只提供需要的部分。
+无法进入窗口、缺少 DLL、中文路径或输入问题均可反馈。
+
+升级时先解压到新文件夹，保留旧版和自己的资料。数据位置、迁移和卸载方法
+必须在具体版本说明中给出；这里不假设不同候选使用相同的数据目录。
+
+## 发布准备状态
+
+- 仓库已提供便携包清单、打包工具、首次启动说明和本地接续步骤。
+- 真实 Windows 候选的二进制、依赖、数据目录和干净环境测试仍需由其所在的
+  Windows 开发环境接入。
+- 打包工具的合成文件测试不代表 Yohaku 能启动，也不代表真实模型或图片理解通过。
+
+维护者请继续阅读 [发布步骤](RELEASING.md)。

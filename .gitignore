@@ -1,4 +1,5 @@
 /target/
+/dist/
 /worlds/
 /config/ai.json
 /config/shell.json
