@@ -1,0 +1,319 @@
+{
+  "kind": "prepared-preregistered-small-training-pilot",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "source_file": "competition/examples/stable_training_424.json",
+  "source_blob": "22428166cb348d41bbc92e24ab9e2a49e1ebd235",
+  "selection_salt": "structure_discovery_pilot_v1",
+  "eligibility": "All 424 official stable training instances with published incumbent length <=20; 134 qualify. No new solver run used to select.",
+  "selection": "SHA256(official_commit|challenge_id|selection_salt), ascending; first4 development,next4 evaluation",
+  "split_limit": "Public training data, not blind scored challenges. Evaluation means unused for this round tuning; prior global/model knowledge is not controlled.",
+  "source_incumbents_independently_replayed": false,
+  "instances": [
+    {
+      "training_id": "ms-train-0379",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          1,
+          1,
+          2,
+          -1,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 17,
+      "incumbent_work_claim": 101,
+      "incumbent_certificate_hash": "sha256:9b2c8b952a18ddc6d37b352115a8dc44058fd1989a5b9ecbf70052a6ebb7696e",
+      "challenge_id": "sac-train-0379",
+      "selection_hash": "00b248ef970bd89120b8ffd8dfcd75a799aaa1c472672e8e616fbfbfb67852cb",
+      "split": "development"
+    },
+    {
+      "training_id": "ms-train-0160",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          1,
+          2,
+          2,
+          -1,
+          -2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 9,
+      "incumbent_work_claim": 47,
+      "incumbent_certificate_hash": "sha256:c35c8f0f3a47f2cf01ec5f629a29a5e85d0f2bc192055d6bdeb9be8c744017f7",
+      "challenge_id": "sac-train-0160",
+      "selection_hash": "0296517e50fb2d7b5833c66dbbb656943a18ad92ea3fc09cdea79d1532501e92",
+      "split": "development"
+    },
+    {
+      "training_id": "ms-train-0013",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 18,
+      "incumbent_work_claim": 136,
+      "incumbent_certificate_hash": "sha256:47e1a01f0b76416c9750341d0669a2e075cac79961a4afb3770b6b87348dadcf",
+      "challenge_id": "sac-train-0013",
+      "selection_hash": "03bd54f1222f93c84544574ba74336b1b32441acef44c8df32f18f066895c8d7",
+      "split": "development"
+    },
+    {
+      "training_id": "ms-train-0015",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 15,
+      "incumbent_work_claim": 66,
+      "incumbent_certificate_hash": "sha256:0f7b85edb244a60e83643c44d07f208b16e04f17aa33326dba95bdfaf045d648",
+      "challenge_id": "sac-train-0015",
+      "selection_hash": "03ec4991e683857480995c293ff99fd067a502e0de1dd17a43f9e29bfca01353",
+      "split": "development"
+    },
+    {
+      "training_id": "ms-train-0234",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          1,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -1,
+          2,
+          2,
+          1,
+          -2,
+          -2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 18,
+      "incumbent_work_claim": 125,
+      "incumbent_certificate_hash": "sha256:a0a2af65ed131fc94b546e8cbc7346b901c54b520694599ff453931633c7ecf7",
+      "challenge_id": "sac-train-0234",
+      "selection_hash": "055820e59527b2a8447ba91335eccb6e4259e186abdfe5201443ec7f04e09440",
+      "split": "evaluation"
+    },
+    {
+      "training_id": "ms-train-0316",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 20,
+      "incumbent_work_claim": 178,
+      "incumbent_certificate_hash": "sha256:719c136d26223e9f26538cd3f918aa5da0a3c55e820461af7b9de2b3d658cc7f",
+      "challenge_id": "sac-train-0316",
+      "selection_hash": "06dc717b1a0d011fe5177adcb7694a6c5feadd7f2bc0ca712eab7c3595867e6d",
+      "split": "evaluation"
+    },
+    {
+      "training_id": "ms-train-0154",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          -2,
+          -1,
+          2,
+          2,
+          1,
+          -2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 18,
+      "incumbent_work_claim": 125,
+      "incumbent_certificate_hash": "sha256:5bbc4211de3eafd86e6b64c2e5a2b5344a81f5bce832b34880301b4471aae1c7",
+      "challenge_id": "sac-train-0154",
+      "selection_hash": "07dfaac3f9611d76298054cd79b4992dccd6d11652d3fbc141248dafa86adfb6",
+      "split": "evaluation"
+    },
+    {
+      "training_id": "ms-train-0107",
+      "initial_relators": [
+        [
+          -1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2,
+          -2
+        ],
+        [
+          1,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      ],
+      "generators": [
+        "x",
+        "y"
+      ],
+      "incumbent_length_claim": 18,
+      "incumbent_work_claim": 131,
+      "incumbent_certificate_hash": "sha256:e0c41faade3c0586460f31b0414bab36046906c92745f662570ba645a9308a56",
+      "challenge_id": "sac-train-0107",
+      "selection_hash": "09ea0e4f421ee5a520e0243fcd49620ab6694942f75dc4446931ffc9a7f5d9ac",
+      "split": "evaluation"
+    }
+  ],
+  "per_arm_wrapper_call_cap": 50000,
+  "per_arm_search_wall_seconds": 10,
+  "arms": [
+    "fixed_primitive_solver",
+    "same_solver_plus_compiled_overlap_macros"
+  ],
+  "macro_word_length_cap": 3,
+  "max_macro_successors_per_state": 2,
+  "macro_cost": "full official primitive expansion, never one macro=one scored move",
+  "checkpoints_fraction": [
+    0.25,
+    0.5,
+    1.0
+  ],
+  "native_dispatched": false,
+  "actual_search_runs": 0,
+  "max_total_search_wrapper_calls": 800000,
+  "max_verification_action_calls": 20000,
+  "max_total_action_calls": 820000,
+  "logical_arm_cases": 16,
+  "development_retry_policy": "Any development retry/failure accumulates against same logical case 50000searchcalls/10s; never reset allowance.",
+  "evaluation_retry_policy": "One frozen run per logical case; changes require new version and disclosure.",
+  "verification_accounting": "Source certificate replay, regressions and independent final replay counted separately, total cap20000; macro compilation duringsearch charged tosearch.",
+  "freeze_before_evaluation": [
+    "code/config hash",
+    "seed",
+    "word candidate exact source",
+    "treatment of nonpositive predictedgain",
+    "tie_breaking",
+    "successor_order",
+    "stopping_rule",
+    "alternating armorder"
+  ]
+}

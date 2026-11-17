@@ -1,0 +1,21 @@
+{
+  "status": "prepared_not_dispatched",
+  "prepared_at": "2026-11-17T16:16:40.905804+08:00",
+  "new_native_budget_authorized": false,
+  "proposed_new_limits": {
+    "native_model_turns": 6,
+    "duration_minutes": 90,
+    "includes_all_leaders_peers_reviews_and_continuations": true
+  },
+  "grant_condition": "User must explicitly grant positive numeric limits in host message. Assistant-written packet is not a grant.",
+  "native_phase_created": false,
+  "native_tasks_dispatched": [],
+  "live_host_rechecked": false,
+  "previous_native_authority": "12/12 exhausted; deadline 2026-11-17T14:32:49+08:00; previous stops retained",
+  "benchmark_prepared": true,
+  "benchmark_search_runs": 0,
+  "benchmark_selection_validation": "8 unique IDs,4development+4evaluation, length<=20; 16logicalcases, cumulative800000search+20000verificationactions; metadata checks passed",
+  "source_incumbents_replayed": false,
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "math_seed_commit": "32a80f68693707e4d9bd3664c24f1a827776010b"
+}

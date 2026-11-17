@@ -1,0 +1,26 @@
+{
+  "kind": "native-two-team-task-packet",
+  "native_dispatched": false,
+  "files": [
+    {
+      "path": "README.zh.md",
+      "sha256": "3b11e50630f20e4bfed09983e1eaf2bbe464f07c09e2f7e37722cd13a0f4bf88",
+      "bytes": 1153
+    },
+    {
+      "path": "CODEX_TASK.md",
+      "sha256": "00e1df83885ff5e42a6d1e25282b18558201eeb9ed99b90b5f24c6e95d9490b9",
+      "bytes": 11169
+    },
+    {
+      "path": "BENCHMARK.json",
+      "sha256": "e6c3a26af690cb0342bbb03cc01052ce6a9dda1aac37267c85b737baa3edfcf4",
+      "bytes": 7913
+    },
+    {
+      "path": "STATUS.json",
+      "sha256": "8c720754492d696bc583302d26c6e90399962efb3cd383c525dd23d26122e0b4",
+      "bytes": 1040
+    }
+  ]
+}
