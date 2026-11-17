@@ -1,0 +1,51 @@
+{
+  "kind": "external-static-review",
+  "date": "2026-11-17",
+  "native_dispatch": false,
+  "native_budget_changed": false,
+  "math_source_commit": "a5d1afcced3d74f9e212b3f6a0d05925ff1504bf",
+  "runtime_source_commit": "f2af7a45bafbe656eab46b2de6715ddd7fc3ff4e",
+  "proof_audits": [
+    {
+      "task": "/root/round4_online_audit",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "artifact": "M-e3e7a0b3682b081e@1",
+      "finding": "no material mathematical error",
+      "execution": "static independent proof review"
+    },
+    {
+      "task": "/root/round4_sign_audit",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "artifact": "M-2149d7062a0719a3@1",
+      "finding": "proofs pass; distinguish anchored star from complete pair graph",
+      "execution": "static independent proof review"
+    }
+  ],
+  "runtime_checks": {
+    "primary_reads": 11,
+    "all_primary_full_text_hashes_match": true,
+    "literature_adoptions_with_prior_reads": 11,
+    "self_math_adoptions_without_preceding_entry_read": 2,
+    "remaining_native_turns": 0
+  },
+  "application_consistency": {
+    "call_sum": true,
+    "windows_count": true,
+    "all_balls_complete": true,
+    "all_windows_nohit": true,
+    "windows_expected": 60,
+    "length_new": 15,
+    "all_cli": true
+  },
+  "not_claimed": [
+    "independent numerical rerun",
+    "real-time host audit",
+    "PDF glyph authentication",
+    "IUT proof bridge",
+    "novelty",
+    "search speedup",
+    "competition improvement"
+  ]
+}
