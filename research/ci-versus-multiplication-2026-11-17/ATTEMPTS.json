@@ -1,0 +1,27 @@
+{
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "failed",
+      "code_sha256": "ea1ecdeb71e527746bb22c0e8aaaedb7e95b71a492bc0e1d4e9fc069f872ebf6",
+      "error": "ValueError: bad canonical identifier synthetic-ci-m-L1; uppercase L violates fixed canon identifier grammar.",
+      "official_apply": 4,
+      "independent_apply": 2,
+      "count_evidence": "First L=1 CI route has 2 direct actions and 2 inside-verify actions; traceback occurs only in final certificate hashing after target acceptance.",
+      "results_written": false,
+      "fix": "Use lowercase synthetic identifiers; no mathematical path or parameter changed."
+    },
+    {
+      "attempt": 2,
+      "status": "completed",
+      "code_sha256": "23248173eade8b300ba2fb7c3a5c6baec437630a4734e16f96b7bd2246163b71",
+      "official_apply": 7812,
+      "independent_apply": 3906,
+      "cases": 66,
+      "routes": 198,
+      "results_sha256": "50b8465699773a8dbe3ca3c4d0ef1871dc1587de72fccb889befbc75aa33fa3f"
+    }
+  ],
+  "all_official_apply": 7816,
+  "all_independent_apply": 3908
+}

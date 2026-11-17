@@ -1,0 +1,19 @@
+{
+  "version": "ci-versus-multiplication-synthetic-v1",
+  "scope": "Same synthetic initial tuple and exact post-deletion target; not a scored challenge or a native Yohaku continuation.",
+  "theorem_source": "epsilon-lain/lain-s-note@39913cbb1c64946ffb540692d63a046d0ae3d93d/research/native-mechanisms-execution-2026-11-17/M-538c85aecd32c8d0-v2.zh.md",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "family": "For L>=1, initial=(x^L, x^L*y*x^-L), exact target=(x^L) of rank1, specified final deletion D_1.",
+  "cases": {"range_inclusive": [1,64], "additional_L": [100,1000], "primary_L": 12},
+  "arms": {
+    "CI_optimal": "[11]*L+[16]; only slot conjugation and inversion before the specified deletion; theorem lower bound L+1.",
+    "CIM_reference": "[1,4,1,4,16]; same donor unchanged; 5-step upper bound.",
+    "CIM_lower_work": "[4,1,4,1,16]; theory collaborator proposed before execution; 5-step upper bound with lower work."
+  },
+  "limits": {"max_path_length":100000,"max_total_relator_length":10000,"max_work":5000000},
+  "official_search_apply_cap": 0,
+  "official_verification_apply_cap": 20000,
+  "native_tasks_dispatched": 0,
+  "platform_submission": false,
+  "warnings": ["Five steps is not claimed optimal in the larger operation class.","The target is a specific rank1 tuple, not the Stable AC empty target.","The framed state is supplied as input; manufacturing it or recognizing arbitrary frames is not free and is outside this fixed-input comparison.","All three arms have the same explicit word input and exact target."]
+}

@@ -1,0 +1,50 @@
+{
+  "scope": "Fixed synthetic same-input same-target comparison; all text evidence and retained failed source.",
+  "files": [
+    {
+      "path": "ATTEMPTS.json",
+      "bytes": 1062,
+      "sha256": "92c23865ff98d4b23e26f0ed34b35e0892eaf4ded1ec9d692a7fc169700c26a3"
+    },
+    {
+      "path": "METHOD-LOG.md",
+      "bytes": 1437,
+      "sha256": "158a5bea4c963673eb6dcf3ba1acd6f017098c0717ef4056ec37da96a9209142"
+    },
+    {
+      "path": "PROTOCOL.json",
+      "bytes": 1563,
+      "sha256": "241c5922f7cc88c2fbc1b9dae4496d972eedbe6600a60be7de7bad82b286214b"
+    },
+    {
+      "path": "README.zh.md",
+      "bytes": 4511,
+      "sha256": "8b922751ab42dc01fcade2fbbbefe536d30c1e28694e73e5ac70676945e642a1"
+    },
+    {
+      "path": "attempts/attempt-1-check.py",
+      "bytes": 5874,
+      "sha256": "ea1ecdeb71e527746bb22c0e8aaaedb7e95b71a492bc0e1d4e9fc069f872ebf6"
+    },
+    {
+      "path": "check.py",
+      "bytes": 6247,
+      "sha256": "23248173eade8b300ba2fb7c3a5c6baec437630a4734e16f96b7bd2246163b71"
+    },
+    {
+      "path": "checks.json",
+      "bytes": 123065,
+      "sha256": "50b8465699773a8dbe3ca3c4d0ef1871dc1587de72fccb889befbc75aa33fa3f"
+    },
+    {
+      "path": "independent_primitives.py",
+      "bytes": 7933,
+      "sha256": "c550e132bd79ffa4ae83d334155793ee02d26ff82a5ef4b362f6434364de0959"
+    },
+    {
+      "path": "theory/README.md",
+      "bytes": 6784,
+      "sha256": "87ebb5c97f242ad27b649457e08e8d69471a4439f536b7c4f7fe2fcd0426dbbc"
+    }
+  ]
+}
