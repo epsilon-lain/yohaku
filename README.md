@@ -1,29 +1,37 @@
 # Yohaku
 
+给人与 AI 的本地工作空间。
+A local workspace for people and AI.
+
+## ⬇️ [下载 Windows 版 / Download for Windows](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip)
+
+**Windows 11 x64 · 约 15 MB · 便携技术预览 2026.11.17-preview1**
+无需另装 Rust、Python 或 WSL。No Rust, Python or WSL installation required.
+
+1. **下载 / Download**：点击上方链接，保存 Windows ZIP。
+2. **解压 / Extract**：完整解压到有写入权限的文件夹，保留所有包内文件。
+3. **启动 / Launch**：双击解压目录中的 **`Launch-Yohaku.cmd`**。
+
+[首次使用与常见问题 / Getting started](docs/windows/README.md) · [版本说明与校验 / Release notes](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1) · [反馈问题 / Report an issue](https://github.com/epsilon-lain/yohaku/issues)
+
+第一次打开可以先体验本地文档、Loom 和 Socius 设置。模型连接可稍后自行配置；
+真实模型工具调用和图片理解尚未验收。资料默认保存在解压目录的 `data/Yohaku`。
+
+请使用上方 Windows 下载链接；GitHub 的 **Code → Download ZIP** 和 **Source code** 是源码归档。
+**仅在当前电脑隔离环境验证，尚未在独立干净 Windows 环境验证。**
+
+---
+
+## 开发与研究 / Development
+
+以下构建与能力说明对应 Linux / WSL 源码。Windows 预览的实际范围、运行包和独立源码身份见
+[Windows 使用说明](docs/windows/README.md)及 Release 附件 `BUILD-SOURCE.json`。
+
 Yohaku is an experimental native, local-first workspace for people and AI.
 It is independent of Lain Brain. Loom, the deterministic `.tex` text generator,
 is kept in this repository. This source snapshot is **not open source**:
 original material is all rights reserved. See [LICENSE](LICENSE) and
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
-## Windows preview download
-
-[Download the Windows x64 portable ZIP](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip) · [Release notes and SHA256SUMS](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1) · [Windows 下载与试用说明](docs/windows/README.md)
-
-**2026.11.17-preview1** is a native Windows x64 technical preview. Extract the
-complete ZIP and double-click `Launch-Yohaku.cmd`; Rust, Python and WSL do not
-need to be installed. The package includes its own runtime and stores default
-data under `data/Yohaku` in the extracted folder. Model setup remains optional
-and user-owned; real-model tools and image understanding remain unverified.
-
-Validation is limited to the maintainer's Windows 11 Home machine with fresh
-data/profile variables and a system-only PATH, including Chinese/space paths.
-**仅在当前电脑隔离环境验证，尚未在独立干净 Windows 环境验证。**
-GitHub's **Code → Download ZIP** and automatic **Source code** assets contain
-repository source; use the named Windows ZIP above to run the app. The Windows
-payload's separate source/build identity is recorded in `BUILD-SOURCE.json`.
-The repository's default build and Linux capabilities below remain separate
-from the native Windows preview. See the [maintainer guide](docs/windows/RELEASING.md).
 
 ## Capabilities
 
