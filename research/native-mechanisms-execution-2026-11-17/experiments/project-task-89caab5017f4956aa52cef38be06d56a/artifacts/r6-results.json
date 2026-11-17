@@ -1,0 +1,267 @@
+{
+  "summary": {
+    "best_length": 15,
+    "strict_improvement": false,
+    "winner": false,
+    "guard": "search_wall_seconds",
+    "reverse": {
+      "states": 347,
+      "layer_sizes": [
+        1,
+        1,
+        3,
+        26,
+        316
+      ],
+      "complete_bounded_radius": true,
+      "rank_cap": 3,
+      "length_cap": 96
+    },
+    "layers": [
+      {
+        "depth": 1,
+        "candidates": 15,
+        "retained": 15,
+        "discarded": 0,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 14,
+          "3": 1
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 7,
+          "3": 1
+        }
+      },
+      {
+        "depth": 2,
+        "candidates": 178,
+        "retained": 178,
+        "discarded": 0,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 146,
+          "3": 32
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 28,
+          "3": 17
+        }
+      },
+      {
+        "depth": 3,
+        "candidates": 2140,
+        "retained": 1024,
+        "discarded": 1116,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 86,
+          "3": 175
+        }
+      },
+      {
+        "depth": 4,
+        "candidates": 17351,
+        "retained": 1024,
+        "discarded": 16327,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 208,
+          "3": 1381
+        }
+      },
+      {
+        "depth": 5,
+        "candidates": 20771,
+        "retained": 1024,
+        "discarded": 19747,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 428,
+          "3": 4134
+        }
+      },
+      {
+        "depth": 6,
+        "candidates": 21035,
+        "retained": 1024,
+        "discarded": 20011,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 739,
+          "3": 4917
+        }
+      },
+      {
+        "depth": 7,
+        "candidates": 21697,
+        "retained": 1024,
+        "discarded": 20673,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 1012,
+          "3": 5456
+        }
+      },
+      {
+        "depth": 8,
+        "candidates": 22270,
+        "retained": 1024,
+        "discarded": 21246,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 1052,
+          "3": 6220
+        }
+      }
+    ],
+    "counts": {
+      "search_apply_calls": 140329,
+      "reverse_apply_calls": 724,
+      "forward_apply_calls": 139605,
+      "joins": 0,
+      "candidate_checks": 0,
+      "illegal": 11826,
+      "length_pruned": 857,
+      "beam_discard_events": 99120
+    },
+    "elapsed_seconds": 94.96895569100161,
+    "global_complete": false,
+    "platform_upload": false
+  },
+  "protocol": {
+    "format": "native-r6-stable-offpath-stratified-beam/1",
+    "stage": "native-mechanisms-next-20261117-v1",
+    "challenge": "sac-07445",
+    "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "baseline": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "baseline_signature": {
+      "length": 15,
+      "peak_total_relator_length": 13,
+      "work": 128
+    },
+    "method": "Exact-state Stable rank-stratified structural-diversity beam to exact reverse empty B4; not path windows",
+    "seed": 0,
+    "randomness": false,
+    "rank_cap": 3,
+    "reverse_radius": 4,
+    "forward_depth": 10,
+    "beam_width_per_rank": 512,
+    "max_generated_total_length": 96,
+    "guards": {
+      "search_apply_calls": 590000,
+      "search_wall_seconds": 90,
+      "reverse_states": 10000,
+      "candidate_verifications": 100
+    },
+    "planned_allocation": {
+      "search_apply": 600000,
+      "verification_apply": 6000
+    },
+    "stopping": "First fully verified <15 route, otherwise frozen depth/budget/wall/state boundary; no retries",
+    "state_equality": "Exact ordered freely reduced tuple, no renaming/conjugation/cyclic quotient",
+    "score": "eligible positive singleton deletions descending, total length ascending, exponent norm ascending, work ascending, literal path lexicographic; buckets by exact exponent matrix and signed singleton vector; rank-separated round robin",
+    "prior_not_reused": [
+      "round3 rank2 targetU beam",
+      "round4 radius3/60 windows",
+      "round5 resource-monotone two-path closure",
+      "external original-path fixed DAG"
+    ],
+    "external_read_only": [
+      {
+        "id": "external/mechanisms-20261117/index",
+        "revision": 1
+      },
+      {
+        "id": "external/mechanisms-20261117/source/workflow/MECHANISMS.zh.md",
+        "revision": 1
+      },
+      {
+        "id": "external/mechanisms-20261117/source/workflow/SUMMARY.json",
+        "revision": 1
+      }
+    ],
+    "adopted_new_math": [],
+    "stage_status": "frozen_but_not_executed_due_tool_argument_loss",
+    "excluded_v1_training": [
+      "0234",
+      "0316",
+      "0154",
+      "0107"
+    ],
+    "platform_upload": false
+  },
+  "restoration": {
+    "official": "/output/r6-fixed/official",
+    "acceptance": "/output/r6-fixed/acceptance",
+    "archive_sha256": "c8ed06893cf895f1221cae149de5b1c4af1657f713aeaf225618723ced9960d6",
+    "files_verified": 41
+  },
+  "stable_source_sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d",
+  "final_path_artifact": "r6-full-path.json",
+  "limitations": "Finite deterministic beam; dropping any state defeats exhaustive negative conclusions. Rank<=3 and total-length<=96 are additional search restrictions. Independent interpreter is same-author, not independent-author review. Native trusted ledger, not wrapper counts, governs total charges including verification and Python CLI subprocess. No improvement is not 15-minimality."
+}

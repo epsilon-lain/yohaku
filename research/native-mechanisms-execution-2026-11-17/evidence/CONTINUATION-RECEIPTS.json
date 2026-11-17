@@ -1,0 +1,206 @@
+[
+  {
+    "seq": 4711,
+    "at": 1794920339.4243622,
+    "actor": {
+      "actor_node_id": "HOST"
+    },
+    "kind": "explicit_ai_continuation_consumed",
+    "data": {
+      "queue_id": 5,
+      "source_actor_task": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "group_id": "native-theory-application-sol-20261116-01",
+        "team": "application",
+        "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+        "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+      },
+      "request_id": "continue-5038cd8812d15822bff32d7afc0c0a00",
+      "result": {
+        "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64",
+        "request_id": "ainode-382ccc51c243dd62f1b3233dceba4444ab2e51d5ff14a14b",
+        "object": "chat-request-000027",
+        "version": "host-codex-tasks-collaboration-v2",
+        "status": "running",
+        "status_source": "Rust chat object",
+        "session_id": null,
+        "usage": null,
+        "elapsed_seconds": null,
+        "memory_versions": [],
+        "execution": "running",
+        "model_phase": null,
+        "model_settings": null,
+        "turn_settings": null,
+        "host_elapsed_seconds": null,
+        "output": "",
+        "next_cursor": 0,
+        "has_more": false,
+        "error": null,
+        "cancel": {
+          "at_ms": null,
+          "by": null,
+          "requested": false,
+          "result": null
+        },
+        "worker": null,
+        "receipt": null,
+        "replay_allowed": false,
+        "construction_session_affected": false,
+        "authorization": {
+          "version": "yohaku-delegation/1",
+          "mode": "read_only",
+          "permissions": {
+            "read": true,
+            "write": false,
+            "run": false,
+            "delete": false,
+            "import": false
+          },
+          "execution_backend": "none",
+          "policy_sha256": null
+        },
+        "effective_capabilities": null,
+        "world_operations": [],
+        "checks": [],
+        "context_policy": "ai_node",
+        "submitted_context": null,
+        "cancel_confirmed": false,
+        "output_cursor_unit": "unicode_scalars",
+        "output_complete": false,
+        "duplicate": false,
+        "prompt_accepted": true,
+        "started_new_process": true,
+        "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+        "node_request_id": "continue-5038cd8812d15822bff32d7afc0c0a00",
+        "requested_profile": {
+          "provider": "openai",
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "max",
+          "budget": {
+            "timeout_seconds": 900,
+            "max_tool_calls": 96
+          }
+        }
+      },
+      "effective_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "host_selected_mathematical_task": false,
+      "root_delegation_event": 4201,
+      "host_authorized_root_scope_retained": true,
+      "new_authority_added": false,
+      "original_ai_task_sha256": "4bf928d06b3c02b6249fd5648b5d168eabfde914740e2999ffa589e859f394ea",
+      "effective_task_sha256": "b37ca69a797c0a3902b5ae369da708f9d9d2f98b8fb9f67d8aa277e63dc2bf4a",
+      "host_operational_note_sha256": "c67d2721a33c2273629c2a1c7a3c9e6fd950e9ba66768266b19be335882cb6b8",
+      "host_operational_note_characters": 352
+    }
+  },
+  {
+    "seq": 5431,
+    "at": 1794921662.3865573,
+    "actor": {
+      "actor_node_id": "HOST"
+    },
+    "kind": "explicit_ai_continuation_consumed",
+    "data": {
+      "queue_id": 6,
+      "source_actor_task": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "group_id": "native-theory-application-sol-20261116-01",
+        "team": null,
+        "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+        "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+      },
+      "request_id": "continue-d14e99d5011075d071f260bf484d9a60",
+      "result": {
+        "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa",
+        "request_id": "ainode-c4b936529b45acf028f94e5733a3ae40d309e87359f1577e",
+        "object": "chat-request-000029",
+        "version": "host-codex-tasks-collaboration-v2",
+        "status": "running",
+        "status_source": "Rust chat object",
+        "session_id": null,
+        "usage": null,
+        "elapsed_seconds": null,
+        "memory_versions": [],
+        "execution": "running",
+        "model_phase": null,
+        "model_settings": null,
+        "turn_settings": null,
+        "host_elapsed_seconds": null,
+        "output": "",
+        "next_cursor": 0,
+        "has_more": false,
+        "error": null,
+        "cancel": {
+          "at_ms": null,
+          "by": null,
+          "requested": false,
+          "result": null
+        },
+        "worker": null,
+        "receipt": null,
+        "replay_allowed": false,
+        "construction_session_affected": false,
+        "authorization": {
+          "version": "yohaku-delegation/1",
+          "mode": "read_only",
+          "permissions": {
+            "read": true,
+            "write": false,
+            "run": false,
+            "delete": false,
+            "import": false
+          },
+          "execution_backend": "none",
+          "policy_sha256": null
+        },
+        "effective_capabilities": null,
+        "world_operations": [],
+        "checks": [],
+        "context_policy": "ai_node",
+        "submitted_context": null,
+        "cancel_confirmed": false,
+        "output_cursor_unit": "unicode_scalars",
+        "output_complete": false,
+        "duplicate": false,
+        "prompt_accepted": true,
+        "started_new_process": true,
+        "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+        "node_request_id": "continue-d14e99d5011075d071f260bf484d9a60",
+        "requested_profile": {
+          "provider": "openai",
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "max",
+          "budget": {
+            "timeout_seconds": 900,
+            "max_tool_calls": 96
+          }
+        }
+      },
+      "effective_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "host_selected_mathematical_task": false,
+      "root_delegation_event": 5029,
+      "host_authorized_root_scope_retained": true,
+      "new_authority_added": false,
+      "original_ai_task_sha256": "36fd90a068282fb06db2b779ca3d8c9797b0eb9818444b92dbf22f10b0eea1a5",
+      "effective_task_sha256": "e40c248013cf58c752500104d8748114af458cf6cd0be6cf88b9c778a46d3c39",
+      "host_operational_note_sha256": "c67d2721a33c2273629c2a1c7a3c9e6fd950e9ba66768266b19be335882cb6b8",
+      "host_operational_note_characters": 352
+    }
+  }
+]

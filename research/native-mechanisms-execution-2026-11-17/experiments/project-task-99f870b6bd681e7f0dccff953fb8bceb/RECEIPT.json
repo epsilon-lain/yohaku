@@ -1,0 +1,208 @@
+{
+  "format": "yohaku-task/1",
+  "version": "yohaku-project-task/1",
+  "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+  "request_id": "r6-independent-fixed-acceptance-producer-v1",
+  "project_id": "native-theory",
+  "action": "r6-independent-acceptance",
+  "status": "done",
+  "state": "succeeded",
+  "status_source": "Rust chat object",
+  "event_seq": 402654194,
+  "ledger_version": 3,
+  "stdout_bytes": 1007,
+  "stderr_bytes": 0,
+  "phase": "validating fixed snapshot and sandbox",
+  "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+  "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+  "exit_code": 0,
+  "error": null,
+  "cancel": {
+    "at_ms": null,
+    "by": null,
+    "requested": false,
+    "result": null
+  },
+  "cancel_confirmed": false,
+  "execution": "ended",
+  "receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794921199.2478542,
+    "output_complete": true,
+    "output_truncated": false,
+    "process": {
+      "pid": 650985,
+      "start": "7636229",
+      "state": "R"
+    },
+    "program_budget": {
+      "actual_calls_separate_from_nonrefundable_issued_leases": true,
+      "binding": {
+        "actor": "ai-node-22a9d6534cbf32a3d7d5029c",
+        "allocation": "program-18cdbe71f56ee4a53991f8ee",
+        "deadline": 1794924663.8307414,
+        "guard_hashes": {
+          "budget_server.py": "1db6e09afed1ce38c27fcff71e68c546aa32a540de3788978d20a05fdc20ccaf",
+          "meter.py": "8aed0889b4f723eaba0f8d9918049e772e1dbe9ce145e40d761a53133f484f1b",
+          "official-apply-hashes.json": "106d68c3dc1da798b02d9c1c0530302ba72dd4953339b21deddb2a7c0807cd82",
+          "runner.py": "255c0229c99fe79ec11472922c664eb000789b8c140584969f41988453a1f711"
+        },
+        "guard_root": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/candidate/guard",
+        "model_task": "model-task-d72eded67cc42e86e4dc23dc047db011",
+        "search_cap": 0,
+        "socket": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/apply.sock",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+        "verification_cap": 5000
+      },
+      "shared": {
+        "allocations": [
+          {
+            "id": "program-18cdbe71f56ee4a53991f8ee",
+            "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+            "project": "native-theory",
+            "search_cap": 0,
+            "search_issued": 0,
+            "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+            "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+            "task": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+            "verification_cap": 5000,
+            "verification_issued": 216
+          },
+          {
+            "id": "program-3ad0a623ab2690a2b074aa1b",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 600000,
+            "search_issued": 140352,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+            "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+            "verification_cap": 6000,
+            "verification_issued": 96
+          },
+          {
+            "id": "program-bda6dc0945a703d4c90d2966",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 0,
+            "search_issued": 0,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+            "verification_cap": 0,
+            "verification_issued": 0
+          },
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "search_issued": 0,
+            "source_set": null,
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "task": null,
+            "verification_cap": 0,
+            "verification_issued": 0
+          }
+        ],
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "issued": {
+          "search": 140352,
+          "verification": 312
+        },
+        "reported": {
+          "search": 140329,
+          "verification": 301
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "bytes": 1223,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-results.json",
+      "path": "r6-independent-results.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "e7dd8cf639c5adf55dcdda60ec31a8673f54bf68f0722fd8b7422559618bf731",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 18779,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-paths.json",
+      "path": "r6-independent-paths.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 1966,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-theory-certificate.json",
+      "path": "r6-independent-theory-certificate.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "efe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 2382,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-probes.json",
+      "path": "r6-independent-probes.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "e50a09cc20d07601ac0fea760b81f5c1f77b5e958649cd9d4243764bde256ea8",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 1333,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-cli.json",
+      "path": "r6-independent-cli.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "246aaef1bda420fcc61d914e1cd1ae9171c9866b3ba56f295b794a830d941c5e",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 11066,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-official-source.json",
+      "path": "r6-independent-official-source.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 196,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-submission.txt",
+      "path": "r6-independent-submission.txt",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    }
+  ],
+  "output": {
+    "stdout": 1007,
+    "stderr": 0
+  },
+  "replay_allowed": false
+}

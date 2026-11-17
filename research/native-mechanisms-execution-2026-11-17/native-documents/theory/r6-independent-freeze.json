@@ -1,0 +1,396 @@
+{
+  "format": "r6-independent-acceptance-freeze/1",
+  "stage": "native-mechanisms-next-20261117-v1",
+  "author_node": "ai-node-22a9d6534cbf32a3d7d5029c",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "randomness": false,
+  "seed": null,
+  "search": false,
+  "stop_rule": "One fixed producer only; fail on first mismatch; subprocess timeout20s; task timeout150s; no search or candidate generation.",
+  "limits": {
+    "max_actions": 100000,
+    "max_total_length": 10000,
+    "max_work": 5000000,
+    "max_rank": 8
+  },
+  "baselines": {
+    "ac-07445": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4
+    ],
+    "ac-08491": [
+      7,
+      4,
+      12,
+      12,
+      3,
+      1,
+      5,
+      5
+    ],
+    "sac-07445": [
+      6,
+      4,
+      12,
+      1,
+      3,
+      6,
+      12,
+      2,
+      5,
+      6,
+      4,
+      2,
+      4,
+      16,
+      15
+    ],
+    "sac-08491": [
+      7,
+      4,
+      12,
+      1,
+      12,
+      2,
+      5,
+      5,
+      16,
+      15
+    ]
+  },
+  "expected": {
+    "ac-07445": [
+      13,
+      127,
+      13
+    ],
+    "ac-08491": [
+      8,
+      48,
+      9
+    ],
+    "sac-07445": [
+      15,
+      128,
+      13
+    ],
+    "sac-08491": [
+      10,
+      50,
+      9
+    ]
+  },
+  "prior": {
+    "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+    "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+    "export_source": "files/application/r6-root-executed-evidence.json.tex",
+    "export_source_revision": "45dd889e66b59affa58ce0018c6ce0f306f634dadfd424967475f78bd97d77c6",
+    "artifact_hashes": [
+      {
+        "path": "r6-results.json",
+        "sha256": "71921a2e692b850b77d01f1b48f36b2e48d46df8ceef879ecae0b3fd433c7b72"
+      },
+      {
+        "path": "r6-checkpoint.json",
+        "sha256": "791b5f5c1d1af04f9e6e2c29ec41e304ffc4ce2f0f388d3be0bb112357aba8eb"
+      },
+      {
+        "path": "r6-candidate.json",
+        "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063"
+      },
+      {
+        "path": "r6-full-path.json",
+        "sha256": "37c99c2abefbf197d193365cb5ec634c5730dccba31c0e9af0d1574d566749f9"
+      },
+      {
+        "path": "r6-cli.json",
+        "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925"
+      },
+      {
+        "path": "r6-reverse.json",
+        "sha256": "4f1833267ab88c73f8fc2788daf02e1727a8b2f32c9d8005c16cb61f5459f84f"
+      },
+      {
+        "path": "r6-submission.txt",
+        "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2"
+      }
+    ],
+    "trace": [
+      [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -2,
+          -1,
+          2,
+          1,
+          -2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          -2,
+          1,
+          2
+        ],
+        [
+          -1,
+          2,
+          -1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          1,
+          -2,
+          1
+        ],
+        [
+          -1,
+          2,
+          -1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2,
+          1,
+          -2
+        ],
+        [
+          -1,
+          2,
+          -1,
+          -2,
+          1,
+          2
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2,
+          1,
+          -2
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          1
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -2,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          -2,
+          1
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2
+        ],
+        [
+          2,
+          -1,
+          2,
+          -1,
+          -1
+        ]
+      ],
+      [
+        [
+          1,
+          1,
+          -2
+        ],
+        [
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2,
+          -1
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      [
+        [
+          1
+        ]
+      ],
+      []
+    ]
+  },
+  "theory": {
+    "entry": "M-538c85aecd32c8d0",
+    "revision": 2,
+    "initial": [
+      [
+        1,
+        2,
+        1,
+        -2,
+        -1
+      ],
+      [
+        1,
+        2,
+        1,
+        2,
+        -1,
+        -2,
+        -1
+      ]
+    ],
+    "actions": [
+      7,
+      9,
+      11,
+      13,
+      11,
+      16,
+      15
+    ],
+    "expected": [
+      7,
+      43,
+      12
+    ],
+    "expected_lengths": [
+      12,
+      10,
+      8,
+      6,
+      4,
+      2,
+      1,
+      0
+    ]
+  },
+  "scope": "Full-path validation, not a rerun of the bounded search. No shortestness, causal speed, leaderboard or platform claim."
+}

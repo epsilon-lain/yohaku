@@ -1,0 +1,16 @@
+{
+  "goal_id": "native-mechanisms-next-20261117-v1",
+  "pre_admission_engineering_is_not_native_research": true,
+  "production_budget_was_not_reset": true,
+  "retained_failures": [
+    {"area":"isolated runtime patcher", "failure":"Exact return-tools newline assertion; copied source ended without newline", "resolution":"Normalize only the new copied file ending; old candidate unchanged"},
+    {"area":"fake-core budget fixture", "failure":"Bubblewrap could not create /output under a read-only fixture root", "resolution":"Use a writable ephemeral fixture root with read-only runtime mounts"},
+    {"area":"fake-core Python child fixture", "failure":"python -m verifier lacked normal cwd import semantics", "resolution":"Trusted runner explicitly restores cwd import semantics for -m/-c"},
+    {"area":"fake-core verification fixture", "failure":"Parent conservatively reserved the four-ticket allocation, leaving none for its child", "resolution":"Fixture envelope enlarged to sixteen for two separate eight-ticket process leases; issued leases are never refunded"},
+    {"area":"old-program safety query", "failure":"Controller initially tested nonexistent cleanup_complete field", "resolution":"Use the actual cleanup_confirmed contract; all 16 old project tasks then confirmed terminal and clean, before new admission"},
+    {"area":"real native application tool", "event":4553, "model_task":"model-task-5f7ea7b9088bdeac230a5604540b9d49", "failure":"Adapter removed budget_allocation_id before the shared extended base schema validated it", "known_outcome":"No project task reservation or apply execution; original request queried and not found", "resolution":"Keep argument through the real base validator; preserve host SLOT; ADAPTER-VALIDATION.json passed; only subsequent worker uses repair; original model turn and failure retained"}
+  ],
+  "fixture_ledgers": "fixture-* directories remain private on disk, each explicitly FIXTURE_ONLY and using a fake core source, not fixed official apply",
+  "old_policy_state_files_mutated": false,
+  "original_chat_and_private_memories_exported": false
+}

@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "actual_model_requests": 0,
+  "fixture_is_not_research": true,
+  "hard_stop_before_fourth_apply": true,
+  "cross_process_subprocess_and_independent_verification": true,
+  "source_hash_guard": true,
+  "global_allocation_overflow_rejected": true,
+  "restart_does_not_reset": true,
+  "fixture_counts": {
+    "goal_id": "FIXTURE_ONLY",
+    "caps": {
+      "search": 6,
+      "verification": 16
+    },
+    "allocations": [
+      {
+        "id": "program-25b35ebd536037e62a625b5a",
+        "spec": "{\"actor\": \"fixture\", \"node\": \"fixture\", \"project\": \"p\", \"purpose\": \"child and verification\", \"request_id\": \"b\", \"search\": 3, \"verification\": 16}",
+        "node": "fixture",
+        "project": "p",
+        "search_cap": 3,
+        "verification_cap": 16,
+        "search_issued": 3,
+        "verification_issued": 16,
+        "task": "program-25b35ebd536037e62a625b5a",
+        "source_set": "frozen-fixture"
+      },
+      {
+        "id": "program-9af5316c811efc4d0a6fcc84",
+        "spec": "{\"actor\": \"fixture\", \"node\": \"fixture\", \"project\": \"p\", \"purpose\": \"cap before fourth apply\", \"request_id\": \"a\", \"search\": 3, \"verification\": 0}",
+        "node": "fixture",
+        "project": "p",
+        "search_cap": 3,
+        "verification_cap": 0,
+        "search_issued": 3,
+        "verification_issued": 0,
+        "task": "program-9af5316c811efc4d0a6fcc84",
+        "source_set": "frozen-fixture"
+      }
+    ],
+    "issued": {
+      "search": 6,
+      "verification": 16
+    },
+    "reported": {
+      "search": 4,
+      "verification": 3
+    },
+    "unresolved_leases": [],
+    "unused_issued_is_not_refunded": true
+  },
+  "stdout": "fixture-child-done\n",
+  "old_runtime_modified": false,
+  "at": 1794919140.7561622
+}

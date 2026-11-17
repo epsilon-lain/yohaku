@@ -1,0 +1,432 @@
+[
+  {
+    "seq": 4526,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "id": "external/mechanisms-20261117/index",
+    "revision": 1,
+    "artifact": "files/theory/r6-plan.zh.md.tex",
+    "explanation": "采用用户全文索引确定本轮边界、保留旧责任和8回合阶段规划；不是数学发现。",
+    "canonical_source": "files/theory/r6-plan.zh.md.tex",
+    "artifact_revision": "0d198bf1cd50c22fc7b99fd51df1517752198775e7ee9ef09f1b2f7a1a8dc0ee",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "fac2fd24e007986ca9a74ee93f8d23c52f4cabfcc893320dfd93b6350bb5b3eb",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4501,
+      "revision": "7f707316997f80c3ce7e91c1a180ec6449e479f7ea22348004b7c0c5b8233e31"
+    },
+    "preceding_full_read_events": [
+      3947
+    ]
+  },
+  {
+    "seq": 4528,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "id": "external/mechanisms-20261117/source/workflow/SUMMARY.json",
+    "revision": 1,
+    "artifact": "files/theory/r6-plan.zh.md.tex",
+    "explanation": "采用外部summary中的15步基线、后验训练与未改善边界形成启动计划；外部计算不计本机新研究。",
+    "canonical_source": "files/theory/r6-plan.zh.md.tex",
+    "artifact_revision": "0d198bf1cd50c22fc7b99fd51df1517752198775e7ee9ef09f1b2f7a1a8dc0ee",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "fac2fd24e007986ca9a74ee93f8d23c52f4cabfcc893320dfd93b6350bb5b3eb",
+    "literal_entry_id_in_artifact": false,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4501,
+      "revision": "7f707316997f80c3ce7e91c1a180ec6449e479f7ea22348004b7c0c5b8233e31"
+    },
+    "preceding_full_read_events": [
+      4192
+    ]
+  },
+  {
+    "seq": 4530,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "id": "external/mechanisms-20261117/source/workflow/MECHANISMS.zh.md",
+    "revision": 1,
+    "artifact": "files/theory/r6-plan.zh.md.tex",
+    "explanation": "采用机制分类与前提/恢复/资源区别用于开放分工，不宣称规则本机新发现；此时尚无新代码/证明依赖。",
+    "canonical_source": "files/theory/r6-plan.zh.md.tex",
+    "artifact_revision": "0d198bf1cd50c22fc7b99fd51df1517752198775e7ee9ef09f1b2f7a1a8dc0ee",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "fac2fd24e007986ca9a74ee93f8d23c52f4cabfcc893320dfd93b6350bb5b3eb",
+    "literal_entry_id_in_artifact": false,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4501,
+      "revision": "7f707316997f80c3ce7e91c1a180ec6449e479f7ea22348004b7c0c5b8233e31"
+    },
+    "preceding_full_read_events": [
+      4194
+    ]
+  },
+  {
+    "seq": 4600,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "id": "external/mechanisms-20261117/source/workflow/conjugation_frames/PROOF.zh.md",
+    "revision": 1,
+    "artifact": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "explanation": "实际精读后用于定义共同框架及单字母共轭、原语全展开与跨D谨慎边界；精确修复定理另给自含经典正规形证明，不采用外部训练结果为本机结果。",
+    "canonical_source": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "artifact_revision": "bd9782ff1e8e8a7ba768f1ed87af5b84d45f7b5e09e902505dd46acb5d023e51",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4590,
+      "revision": "77527d5ba36abbd51d07854a22733e62c93ce1d3dfbc17b45143dd5a25f4181e"
+    },
+    "preceding_full_read_events": [
+      4572,
+      4502
+    ]
+  },
+  {
+    "seq": 4602,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "id": "external/mechanisms-20261117/source/math/goal-suffix.zh.md",
+    "revision": 1,
+    "artifact": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "explanation": "实际精读后用于正单字母删除guard和指数和仅必要不充分的机制背景；没有运行其外部代码或重算其训练收益。",
+    "canonical_source": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "artifact_revision": "bd9782ff1e8e8a7ba768f1ed87af5b84d45f7b5e09e902505dd46acb5d023e51",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4590,
+      "revision": "77527d5ba36abbd51d07854a22733e62c93ce1d3dfbc17b45143dd5a25f4181e"
+    },
+    "preceding_full_read_events": [
+      4473
+    ]
+  },
+  {
+    "seq": 4604,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "id": "external/mechanisms-20261117/source/math/conjugation-frames.zh.md",
+    "revision": 1,
+    "artifact": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "explanation": "实际精读后用于定位对外部不跨D框架规则的受限解析补充，并明示v2/010不双计、资源验收义务；外部结果来源不变。",
+    "canonical_source": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "artifact_revision": "bd9782ff1e8e8a7ba768f1ed87af5b84d45f7b5e09e902505dd46acb5d023e51",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8",
+    "literal_entry_id_in_artifact": false,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4590,
+      "revision": "77527d5ba36abbd51d07854a22733e62c93ce1d3dfbc17b45143dd5a25f4181e"
+    },
+    "preceding_full_read_events": [
+      4471
+    ]
+  },
+  {
+    "seq": 4606,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "id": "M-538c85aecd32c8d0",
+    "revision": 1,
+    "artifact": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "explanation": "同作者数学稿实际使用本turn一般定理、反例及手算小证书；发布/采用并非独立验证，无程序生产者可倒填依赖。",
+    "canonical_source": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "artifact_revision": "bd9782ff1e8e8a7ba768f1ed87af5b84d45f7b5e09e902505dd46acb5d023e51",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8",
+    "literal_entry_id_in_artifact": false,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4590,
+      "revision": "77527d5ba36abbd51d07854a22733e62c93ce1d3dfbc17b45143dd5a25f4181e"
+    },
+    "preceding_full_read_events": []
+  },
+  {
+    "seq": 4638,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "id": "M-538c85aecd32c8d0",
+    "revision": 2,
+    "artifact": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "explanation": "数学稿实际使用格式澄清v2：显式r槽/索引域、C-I交换恒等式、Python tuple尾逗号；定理数值不变，不算两个独立结果，不倒填程序依赖。",
+    "canonical_source": "files/theory/round6-frame-deletion-boundary.zh.md.tex",
+    "artifact_revision": "bd9782ff1e8e8a7ba768f1ed87af5b84d45f7b5e09e902505dd46acb5d023e51",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8",
+    "literal_entry_id_in_artifact": false,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4637,
+      "revision": "bd9782ff1e8e8a7ba768f1ed87af5b84d45f7b5e09e902505dd46acb5d023e51"
+    },
+    "preceding_full_read_events": []
+  },
+  {
+    "seq": 4655,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "id": "M-5606eba96406db45",
+    "revision": 1,
+    "artifact": "files/application/r6-application-public.zh.md.tex",
+    "explanation": "本turn实际读取精确版本后，将其含入口work拼接公式用于公开稿的候选整路径验收条件说明；仅解析文字依赖，未倒填未执行的搜索数值或跨队新定理采用。",
+    "canonical_source": "files/application/r6-application-public.zh.md.tex",
+    "artifact_revision": "7e4e86183d3e4b3431978c23b831a0497464a78c1d95e00e57366ce875ce0ad1",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "48bd500a1d1188b17f8b3f64df98b087a9c17b69c3c60d9d60acf4d4f0f8d180",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 4654,
+      "revision": "4de20d39187f7527cbb3a93ea0a499f0a92b97b9547e132a3393e01a58689eaa"
+    },
+    "preceding_full_read_events": [
+      4614
+    ]
+  },
+  {
+    "seq": 5364,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "id": "M-faadd67bbdf57a62",
+    "revision": 2,
+    "artifact": "files/theory/r6-progress.zh.md.tex",
+    "explanation": "本进展稿实际引用同一首真实producer有限结果与新CLI；只采用明确范围，独立作者计算验收仍在途，不升级最短性。",
+    "canonical_source": "files/theory/r6-progress.zh.md.tex",
+    "artifact_revision": "a27935c68342a8b0f4b580f7faa40f7d8ece405ec3429c82daa331449c4b5766",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "2fa55ca571b762d487015bf6a3a6144d6d168e8c2fa54941c03db7cf00841aec",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 5334,
+      "revision": "61f8c480fe769b22159a050243ccc550f697df486fd0acb39fc2020b43b78504"
+    },
+    "preceding_full_read_events": [
+      5362
+    ]
+  },
+  {
+    "seq": 5366,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "id": "M-538c85aecd32c8d0",
+    "revision": 2,
+    "artifact": "files/theory/r6-progress.zh.md.tex",
+    "explanation": "本进展稿实际采用已读精确命题/条件及拒作一般beam下界的边界；只作为中文理论汇总，不倒填应用搜索源码依赖。",
+    "canonical_source": "files/theory/r6-progress.zh.md.tex",
+    "artifact_revision": "a27935c68342a8b0f4b580f7faa40f7d8ece405ec3429c82daa331449c4b5766",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "2fa55ca571b762d487015bf6a3a6144d6d168e8c2fa54941c03db7cf00841aec",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 5334,
+      "revision": "61f8c480fe769b22159a050243ccc550f697df486fd0acb39fc2020b43b78504"
+    },
+    "preceding_full_read_events": [
+      4984
+    ]
+  },
+  {
+    "seq": 5410,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "id": "M-538c85aecd32c8d0",
+    "revision": 2,
+    "artifact": "files/theory/r6-independent-freeze.json.tex@0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6 ; project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-theory-certificate.json",
+    "explanation": "真实读@2后将该版本给定的合成入口、7原语及预期长度序列纳入冻结protocol，并已执行本节点新写分治正规形primitive解释器与固定官方apply逐态验收到空，7/work43/peak12。是跨队具体证书测试依赖，不是把仅C/I最少修复数采用为含M/S的beam下界；一般证明不由此有限测试替代。",
+    "canonical_source": "files/theory/r6-independent-freeze.json.tex",
+    "artifact_revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6",
+    "pinned_revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6 ; project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-theory-certificate.json",
+    "pinned_matches": false,
+    "artifact_body_sha256": "c82b97b0240bfa9b0c234563efa8a39f86fd8e74068bde029ece89bd5db11139",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 5348,
+      "revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6"
+    },
+    "preceding_full_read_events": [
+      5296,
+      5303
+    ]
+  },
+  {
+    "seq": 5418,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "id": "M-faadd67bbdf57a62",
+    "revision": 1,
+    "artifact": "files/theory/r6-independent-freeze.json.tex@0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6 ; project-task-99f870b6bd681e7f0dccff953fb8bceb",
+    "explanation": "实际精确读本条，采用其中仍15原语候选及其root导出16态作为独立验收固定输入/比较参照。本节点随后新写逐动作解释器并真实执行四条路径及官方CLI；未采用未核的逆347行或beam数值作证明，未重跑搜索；这不是新缩步。",
+    "canonical_source": "files/theory/r6-independent-freeze.json.tex",
+    "artifact_revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6",
+    "pinned_revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6 ; project-task-99f870b6bd681e7f0dccff953fb8bceb",
+    "pinned_matches": false,
+    "artifact_body_sha256": "c82b97b0240bfa9b0c234563efa8a39f86fd8e74068bde029ece89bd5db11139",
+    "literal_entry_id_in_artifact": false,
+    "artifact_observation_before_adopt": {
+      "event_seq": 5348,
+      "revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6"
+    },
+    "preceding_full_read_events": [
+      5294
+    ]
+  },
+  {
+    "seq": 5761,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "id": "M-538c85aecd32c8d0",
+    "revision": 2,
+    "artifact": "files/theory/r6-final.zh.md.tex",
+    "explanation": "最终稿真实汇总条件小命题、解析证明和反例，准确区分其合成证书的新程序依赖与应用拒作beam下界；不升级全Stable下界。",
+    "canonical_source": "files/theory/r6-final.zh.md.tex",
+    "artifact_revision": "3ef6db55be08182e6c311b8c808200b823a59b8e95b656b12aa7aa0ef94ae37b",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "c3b95548c37dff870a78a471804740f998865aed909451b4af32ed951fad0c36",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 5750,
+      "revision": "3ef6db55be08182e6c311b8c808200b823a59b8e95b656b12aa7aa0ef94ae37b"
+    },
+    "preceding_full_read_events": [
+      5715
+    ]
+  },
+  {
+    "seq": 5763,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "id": "M-faadd67bbdf57a62",
+    "revision": 2,
+    "artifact": "files/theory/r6-final.zh.md.tex",
+    "explanation": "最终稿采用同一实际有限搜索的更窄范围/计数/仍15上界；独立review5412精确目标@1不自动迁移到本版本，不宣称重算搜索。",
+    "canonical_source": "files/theory/r6-final.zh.md.tex",
+    "artifact_revision": "3ef6db55be08182e6c311b8c808200b823a59b8e95b656b12aa7aa0ef94ae37b",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "c3b95548c37dff870a78a471804740f998865aed909451b4af32ed951fad0c36",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 5750,
+      "revision": "3ef6db55be08182e6c311b8c808200b823a59b8e95b656b12aa7aa0ef94ae37b"
+    },
+    "preceding_full_read_events": [
+      5713
+    ]
+  },
+  {
+    "seq": 5765,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "id": "M-110bcf615851324b",
+    "revision": 1,
+    "artifact": "files/theory/r6-final.zh.md.tex",
+    "explanation": "最终稿采用另一作者真实固定官方CLI/四条全路径及合成证书验收；本root已审源、provenance、选定原始结果，review5747只该范围，不再运行程序。",
+    "canonical_source": "files/theory/r6-final.zh.md.tex",
+    "artifact_revision": "3ef6db55be08182e6c311b8c808200b823a59b8e95b656b12aa7aa0ef94ae37b",
+    "pinned_revision": null,
+    "pinned_matches": true,
+    "artifact_body_sha256": "c3b95548c37dff870a78a471804740f998865aed909451b4af32ed951fad0c36",
+    "literal_entry_id_in_artifact": true,
+    "artifact_observation_before_adopt": {
+      "event_seq": 5750,
+      "revision": "3ef6db55be08182e6c311b8c808200b823a59b8e95b656b12aa7aa0ef94ae37b"
+    },
+    "preceding_full_read_events": [
+      5711
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "at": 1794920320.1150022,
+  "old_identity": {
+    "pid": 614466,
+    "start": "7484630",
+    "state": "R"
+  },
+  "stopped_identity": {
+    "pid": 614466,
+    "start": "7484630",
+    "state": "T"
+  },
+  "reason": "Consume exact root-delegated continuation and deliver verified operational repair under original user-authorized root scopes; no project scope expansion, no new budget",
+  "native_models_untouched": true,
+  "new_authority_added": false
+}

@@ -1,0 +1,593 @@
+{
+  "format": "r6-root-selected-result-export/1",
+  "stage": "native-mechanisms-next-20261117-v1",
+  "authoritative_deadline_epoch": 1794924663.8307414,
+  "source_task": "project-task-89caab5017f4956aa52cef38be06d56a",
+  "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+  "author": "original application leader method and frozen code; root executor and evidence exporter",
+  "read_scope": "Root read complete stdout1913bytes/stderr0, all summary fields, full official trace16 states, full verdict and CLI stdout857/return0/stderr0. Independent trace only structural hash and execution assertion; reverse347 rows only byte hash, NOT full model read or independent replay.",
+  "summary": {
+    "best_length": 15,
+    "strict_improvement": false,
+    "winner": false,
+    "guard": "search_wall_seconds",
+    "reverse": {
+      "states": 347,
+      "layer_sizes": [
+        1,
+        1,
+        3,
+        26,
+        316
+      ],
+      "complete_bounded_radius": true,
+      "rank_cap": 3,
+      "length_cap": 96
+    },
+    "layers": [
+      {
+        "depth": 1,
+        "candidates": 15,
+        "retained": 15,
+        "discarded": 0,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 14,
+          "3": 1
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 7,
+          "3": 1
+        }
+      },
+      {
+        "depth": 2,
+        "candidates": 178,
+        "retained": 178,
+        "discarded": 0,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 146,
+          "3": 32
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 28,
+          "3": 17
+        }
+      },
+      {
+        "depth": 3,
+        "candidates": 2140,
+        "retained": 1024,
+        "discarded": 1116,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 86,
+          "3": 175
+        }
+      },
+      {
+        "depth": 4,
+        "candidates": 17351,
+        "retained": 1024,
+        "discarded": 16327,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 208,
+          "3": 1381
+        }
+      },
+      {
+        "depth": 5,
+        "candidates": 20771,
+        "retained": 1024,
+        "discarded": 19747,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 428,
+          "3": 4134
+        }
+      },
+      {
+        "depth": 6,
+        "candidates": 21035,
+        "retained": 1024,
+        "discarded": 20011,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 739,
+          "3": 4917
+        }
+      },
+      {
+        "depth": 7,
+        "candidates": 21697,
+        "retained": 1024,
+        "discarded": 20673,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 1012,
+          "3": 5456
+        }
+      },
+      {
+        "depth": 8,
+        "candidates": 22270,
+        "retained": 1024,
+        "discarded": 21246,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 1052,
+          "3": 6220
+        }
+      }
+    ],
+    "counts": {
+      "search_apply_calls": 140329,
+      "reverse_apply_calls": 724,
+      "forward_apply_calls": 139605,
+      "joins": 0,
+      "candidate_checks": 0,
+      "illegal": 11826,
+      "length_pruned": 857,
+      "beam_discard_events": 99120
+    },
+    "elapsed_seconds": 94.96895569100161,
+    "global_complete": false,
+    "platform_upload": false
+  },
+  "challenge_id": "sac-07445",
+  "path": [
+    6,
+    4,
+    12,
+    1,
+    3,
+    6,
+    12,
+    2,
+    5,
+    6,
+    4,
+    2,
+    4,
+    16,
+    15
+  ],
+  "trace": [
+    [
+      [
+        -2,
+        -2,
+        1,
+        2,
+        1
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -2,
+        -1,
+        2,
+        1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -2,
+        -1,
+        2,
+        1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        -2,
+        1,
+        2
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1,
+        -2,
+        1
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2,
+        1,
+        -2
+      ],
+      [
+        -1,
+        2,
+        -1,
+        -2,
+        1,
+        2
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -2,
+        1
+      ]
+    ],
+    [
+      [
+        1,
+        -2,
+        1
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1,
+        2,
+        -1,
+        -1
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        -2
+      ],
+      [
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1
+      ],
+      [
+        2,
+        -1
+      ]
+    ],
+    [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    [
+      [
+        1
+      ]
+    ],
+    []
+  ],
+  "verdict": {
+    "ok": true,
+    "length": 15,
+    "peak_total_relator_length": 13,
+    "work": 128,
+    "certificate_hash": "sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b"
+  },
+  "cli": {
+    "returncode": 0,
+    "stdout": "{\n  \"accepted\": true,\n  \"results\": [\n    {\n      \"certificate_hash\": \"sha256:e13f345f7c99dd9813e1e59c6eda976d2a8918b6c79feb3027dc73cfe3483e2a\",\n      \"challenge_id\": \"ac-07445\",\n      \"length\": 13,\n      \"ok\": true,\n      \"work\": 127\n    },\n    {\n      \"certificate_hash\": \"sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1\",\n      \"challenge_id\": \"ac-08491\",\n      \"length\": 8,\n      \"ok\": true,\n      \"work\": 48\n    },\n    {\n      \"certificate_hash\": \"sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b\",\n      \"challenge_id\": \"sac-07445\",\n      \"length\": 15,\n      \"ok\": true,\n      \"work\": 128\n    },\n    {\n      \"certificate_hash\": \"sha256:3432ef3c28cf1da26ebb85f8c9afd094014420570e06e706721a5bbb9cbeed58\",\n      \"challenge_id\": \"sac-08491\",\n      \"length\": 10,\n      \"ok\": true,\n      \"work\": 50\n    }\n  ]\n}\n",
+    "stderr": ""
+  },
+  "execution": {
+    "status": "done",
+    "state": "succeeded",
+    "execution": "ended",
+    "exit_code": 0,
+    "cleanup_confirmed": true,
+    "output_complete": true
+  },
+  "program_budget": {
+    "allocations": [
+      {
+        "id": "program-3ad0a623ab2690a2b074aa1b",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 600000,
+        "search_issued": 140352,
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+        "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+        "verification_cap": 6000,
+        "verification_issued": 96
+      },
+      {
+        "id": "program-bda6dc0945a703d4c90d2966",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 0,
+        "search_issued": 0,
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+        "verification_cap": 0,
+        "verification_issued": 0
+      },
+      {
+        "id": "program-fd52688e6d881e7ed2233dfd",
+        "node": "ai-node-0299a356d74db83b9ab4ebc7",
+        "project": "native-application",
+        "search_cap": 0,
+        "search_issued": 0,
+        "source_set": null,
+        "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "task": null,
+        "verification_cap": 0,
+        "verification_issued": 0
+      }
+    ],
+    "caps": {
+      "search": 2000000,
+      "verification": 50000
+    },
+    "goal_id": "native-mechanisms-next-20261117-v1",
+    "issued": {
+      "search": 140352,
+      "verification": 96
+    },
+    "reported": {
+      "search": 140329,
+      "verification": 91
+    },
+    "unresolved_leases": [],
+    "unused_issued_is_not_refunded": true
+  },
+  "artifacts": [
+    {
+      "id": "artifact-9a903457b644e66b470b136b584d66e25987c00d429c0b41efd3cde2e27bd6d7",
+      "path": "r6-results.json",
+      "expected_sha256": "71921a2e692b850b77d01f1b48f36b2e48d46df8ceef879ecae0b3fd433c7b72",
+      "valid": true,
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "expected_executable": false,
+      "actual_sha256": "71921a2e692b850b77d01f1b48f36b2e48d46df8ceef879ecae0b3fd433c7b72",
+      "bytes": 6478,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-dc9b2fb5774b12e8781fa28271b9a416a478b934e1691788624defd8def27030",
+      "path": "r6-checkpoint.json",
+      "expected_sha256": "791b5f5c1d1af04f9e6e2c29ec41e304ffc4ce2f0f388d3be0bb112357aba8eb",
+      "valid": true,
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "expected_executable": false,
+      "actual_sha256": "791b5f5c1d1af04f9e6e2c29ec41e304ffc4ce2f0f388d3be0bb112357aba8eb",
+      "bytes": 3024,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-af10618b082d05bfd3cdc0ef46e1a0ce54785bbf630744c949bc65301b6a326d",
+      "path": "r6-candidate.json",
+      "expected_sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+      "valid": true,
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "expected_executable": false,
+      "actual_sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+      "bytes": 177,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-5f3e7cad3485495d563e83a0c9c5c20637f2accba4ffca50a03c90a0f68063a9",
+      "path": "r6-full-path.json",
+      "expected_sha256": "37c99c2abefbf197d193365cb5ec634c5730dccba31c0e9af0d1574d566749f9",
+      "valid": true,
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "expected_executable": false,
+      "actual_sha256": "37c99c2abefbf197d193365cb5ec634c5730dccba31c0e9af0d1574d566749f9",
+      "bytes": 4616,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-269e927c1dcbe6ebd73562f7fdc15ad8417d7740db7441e9087a5472325f1ec6",
+      "path": "r6-cli.json",
+      "expected_sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+      "valid": true,
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "expected_executable": false,
+      "actual_sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+      "bytes": 1004,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-eb15973586db27c59f30485a7d37289db9e8213899f9c31285856baab36409e9",
+      "path": "r6-reverse.json",
+      "expected_sha256": "4f1833267ab88c73f8fc2788daf02e1727a8b2f32c9d8005c16cb61f5459f84f",
+      "valid": true,
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "expected_executable": false,
+      "actual_sha256": "4f1833267ab88c73f8fc2788daf02e1727a8b2f32c9d8005c16cb61f5459f84f",
+      "bytes": 62902,
+      "actual_executable": false,
+      "bytes_verified": true
+    },
+    {
+      "id": "artifact-4f491188e72c7ebff28a641b76531d79110c524aa749e7b7f0107bf5b964e6c5",
+      "path": "r6-submission.txt",
+      "expected_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "valid": true,
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "expected_executable": false,
+      "actual_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "bytes": 196,
+      "actual_executable": false,
+      "bytes_verified": true
+    }
+  ],
+  "initial_independent_acceptance": false
+}

@@ -1,0 +1,1908 @@
+{
+  "format": "r6-independent-selected-evidence-export/1",
+  "author_node": "ai-node-22a9d6534cbf32a3d7d5029c",
+  "model_task": "model-task-d72eded67cc42e86e4dc23dc047db011",
+  "native_request": "r6-independent-official-fullpath-acceptance-v1",
+  "actual_profile": {
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "max",
+    "seconds": 900,
+    "max_tool_calls": 96
+  },
+  "stage": "native-mechanisms-next-20261117-v1",
+  "absolute_deadline_epoch": 1794924663.8307414,
+  "scope": "Selected exact reads and original artifact bindings; not the raw artifact bytes, not search reproduction.",
+  "producer": {
+    "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+    "request_id": "r6-independent-fixed-acceptance-producer-v1",
+    "status": "done",
+    "state": "succeeded",
+    "execution": "ended",
+    "exit_code": 0,
+    "cleanup_confirmed": true,
+    "output_complete": true,
+    "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+  },
+  "summary": {
+    "format": "r6-independent-author-acceptance/1",
+    "status": "passed",
+    "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "restoration": {
+      "official": "/output/r6-independent-fixed/official",
+      "acceptance": "/output/r6-independent-fixed/acceptance",
+      "archive_sha256": "c8ed06893cf895f1221cae149de5b1c4af1657f713aeaf225618723ced9960d6",
+      "files_verified": 41
+    },
+    "signatures": {
+      "ac-07445": [
+        13,
+        127,
+        13
+      ],
+      "ac-08491": [
+        8,
+        48,
+        9
+      ],
+      "sac-07445": [
+        15,
+        128,
+        13
+      ],
+      "sac-08491": [
+        10,
+        50,
+        9
+      ]
+    },
+    "prior_export_full_trace_equal": true,
+    "cli_accepted": true,
+    "theory_synthetic_signature": [
+      7,
+      43,
+      12
+    ],
+    "fixed_guard_probes": 5,
+    "local_direct_calls": {
+      "official": 59,
+      "independent": 59
+    },
+    "search": 0,
+    "all_primitive_interpretations_decorated": true,
+    "limits_checked": {
+      "max_actions": 100000,
+      "max_total_length": 10000,
+      "max_work": 5000000,
+      "max_rank": 8
+    },
+    "platform_upload": false,
+    "scope": "Independent fixed-path replay and guards only, not reproduction of search counts/reverse dictionary, no Stable shortestness."
+  },
+  "provenance": {
+    "ok": true,
+    "snapshot_valid": true,
+    "issues": [],
+    "mappings": [
+      {
+        "body_source_line": 10,
+        "macro": "macros/raw.source.md",
+        "macro_hash": "67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8",
+        "map": ".provenance/maps/15e923609d8d852850269adaaa6a6408800e6f9f486163274da6566d360169cb.json",
+        "output": "r6-independent-acceptance.py",
+        "output_hash": "86970096a0d2b5590fc8863a3c2ad719a09b8e9290c9f5a066f1d0a18dab792c",
+        "source": "files/theory/r6-independent-acceptance.py.tex",
+        "source_revision": "ecc031de007afb8539cc10ca833bdf489ff59b8b8075e51f8366d7cf72036042",
+        "generated_line_count": 188
+      },
+      {
+        "body_source_line": 10,
+        "macro": "macros/raw.source.md",
+        "macro_hash": "67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8",
+        "map": ".provenance/maps/93d76c66355890dc71c9fd6adfc0d1e1707f69f1d1c08da92d06e3c6eebb7497.json",
+        "output": "r6-independent-freeze.json",
+        "output_hash": "c82b97b0240bfa9b0c234563efa8a39f86fd8e74068bde029ece89bd5db11139",
+        "source": "files/theory/r6-independent-freeze.json.tex",
+        "source_revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6",
+        "generated_line_count": 396
+      },
+      {
+        "body_source_line": 10,
+        "macro": "macros/raw.source.md",
+        "macro_hash": "67ececca3997f000b8d50523fa3bb68af48f319b039493b87d0ce30414cb3bd8",
+        "map": ".provenance/maps/f443843289441aa048dcad7f2893c93dfcc9679d3879de513bccbbc91b7777dd.json",
+        "output": "r6-official-source-lock.json",
+        "output_hash": "7c0528c3f6a7838a762c2439497b980a405399e286ea90a10199e3d746dbfd76",
+        "source": "files/theory/r6-official-source-lock.json.tex",
+        "source_revision": "2e54000429f4040337bf8bfe298885326106f841607827928ec5dc51f87b946d",
+        "generated_line_count": 156
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "artifact-1c57a5a7259e5fc69138a5f9ccec791cae0a3e39ee81bb836d930d5b5ad84747",
+        "path": "r6-independent-results.json",
+        "expected_sha256": "e7dd8cf639c5adf55dcdda60ec31a8673f54bf68f0722fd8b7422559618bf731",
+        "valid": true,
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "expected_executable": false,
+        "actual_sha256": "e7dd8cf639c5adf55dcdda60ec31a8673f54bf68f0722fd8b7422559618bf731",
+        "bytes": 1223,
+        "actual_executable": false,
+        "bytes_verified": true
+      },
+      {
+        "id": "artifact-e51b63d998668854d6a11f53580e3dadeac50b93d7c5a9ccbe7f4b1e953e2051",
+        "path": "r6-independent-paths.json",
+        "expected_sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+        "valid": true,
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "expected_executable": false,
+        "actual_sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+        "bytes": 18779,
+        "actual_executable": false,
+        "bytes_verified": true
+      },
+      {
+        "id": "artifact-248836b202692ecf382f86911a71a9dcdfa449fd3e5fedd76e6cbc137a705bba",
+        "path": "r6-independent-theory-certificate.json",
+        "expected_sha256": "efe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321",
+        "valid": true,
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "expected_executable": false,
+        "actual_sha256": "efe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321",
+        "bytes": 1966,
+        "actual_executable": false,
+        "bytes_verified": true
+      },
+      {
+        "id": "artifact-18e4d6583cfffc5f7eff85b564f2df7fe32ded74a87339323ec364b2395b50c6",
+        "path": "r6-independent-probes.json",
+        "expected_sha256": "e50a09cc20d07601ac0fea760b81f5c1f77b5e958649cd9d4243764bde256ea8",
+        "valid": true,
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "expected_executable": false,
+        "actual_sha256": "e50a09cc20d07601ac0fea760b81f5c1f77b5e958649cd9d4243764bde256ea8",
+        "bytes": 2382,
+        "actual_executable": false,
+        "bytes_verified": true
+      },
+      {
+        "id": "artifact-e75e200da88004a16b5c720f054dbbbbfe58247b21478a156434ca572f69f18e",
+        "path": "r6-independent-cli.json",
+        "expected_sha256": "246aaef1bda420fcc61d914e1cd1ae9171c9866b3ba56f295b794a830d941c5e",
+        "valid": true,
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "expected_executable": false,
+        "actual_sha256": "246aaef1bda420fcc61d914e1cd1ae9171c9866b3ba56f295b794a830d941c5e",
+        "bytes": 1333,
+        "actual_executable": false,
+        "bytes_verified": true
+      },
+      {
+        "id": "artifact-d483891b127eec29d8d54483040085070fb7f4d822231d0dca711249ca51c336",
+        "path": "r6-independent-official-source.json",
+        "expected_sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+        "valid": true,
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "expected_executable": false,
+        "actual_sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+        "bytes": 11066,
+        "actual_executable": false,
+        "bytes_verified": true
+      },
+      {
+        "id": "artifact-621a91de7e60589be1eff7236de515cbab44ca5ac19103b3adf28b0600766f58",
+        "path": "r6-independent-submission.txt",
+        "expected_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+        "valid": true,
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "expected_executable": false,
+        "actual_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+        "bytes": 196,
+        "actual_executable": false,
+        "bytes_verified": true
+      }
+    ]
+  },
+  "receipt_artifact_ids": [
+    {
+      "bytes": 1223,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-results.json",
+      "path": "r6-independent-results.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "e7dd8cf639c5adf55dcdda60ec31a8673f54bf68f0722fd8b7422559618bf731",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 18779,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-paths.json",
+      "path": "r6-independent-paths.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 1966,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-theory-certificate.json",
+      "path": "r6-independent-theory-certificate.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "efe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 2382,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-probes.json",
+      "path": "r6-independent-probes.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "e50a09cc20d07601ac0fea760b81f5c1f77b5e958649cd9d4243764bde256ea8",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 1333,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-cli.json",
+      "path": "r6-independent-cli.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "246aaef1bda420fcc61d914e1cd1ae9171c9866b3ba56f295b794a830d941c5e",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 11066,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-official-source.json",
+      "path": "r6-independent-official-source.json",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    },
+    {
+      "bytes": 196,
+      "executable": false,
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-submission.txt",
+      "path": "r6-independent-submission.txt",
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+    }
+  ],
+  "cli": {
+    "stdout": "{\n  \"accepted\": true,\n  \"results\": [\n    {\n      \"certificate_hash\": \"sha256:e13f345f7c99dd9813e1e59c6eda976d2a8918b6c79feb3027dc73cfe3483e2a\",\n      \"challenge_id\": \"ac-07445\",\n      \"length\": 13,\n      \"ok\": true,\n      \"work\": 127\n    },\n    {\n      \"certificate_hash\": \"sha256:f6b1e9cd8eb7b3778eefce5fc75c4cd8f6297dff5b4d96aaa2ebd0fbdf03ccd1\",\n      \"challenge_id\": \"ac-08491\",\n      \"length\": 8,\n      \"ok\": true,\n      \"work\": 48\n    },\n    {\n      \"certificate_hash\": \"sha256:69cdffa8edc863a319ddbadf2822ed1bd0a1fabfe3b83c9cf0fee6fb2008831b\",\n      \"challenge_id\": \"sac-07445\",\n      \"length\": 15,\n      \"ok\": true,\n      \"work\": 128\n    },\n    {\n      \"certificate_hash\": \"sha256:3432ef3c28cf1da26ebb85f8c9afd094014420570e06e706721a5bbb9cbeed58\",\n      \"challenge_id\": \"sac-08491\",\n      \"length\": 10,\n      \"ok\": true,\n      \"work\": 50\n    }\n  ]\n}\n",
+    "returncode": 0,
+    "stderr": "",
+    "artifact_sha256": "246aaef1bda420fcc61d914e1cd1ae9171c9866b3ba56f295b794a830d941c5e",
+    "stdout_value_sha256": "8edc641744addf501b3b90752f8593e93e6443e9df3c3b8fced513fafa3354a2"
+  },
+  "independent_path_reads": {
+    "ac-07445": {
+      "source_sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+      "pointer": "/ac-07445/independent_trace",
+      "host_complete_field_flag": false,
+      "has_more": false,
+      "items": [
+        {
+          "key": 0,
+          "value": [
+            [
+              -2,
+              -2,
+              1,
+              2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 1,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 2,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 3,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 4,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 5,
+          "value": [
+            [
+              1,
+              -2,
+              1,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 6,
+          "value": [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 7,
+          "value": [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 8,
+          "value": [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 9,
+          "value": [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 10,
+          "value": [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 11,
+          "value": [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 12,
+          "value": [
+            [
+              1
+            ],
+            [
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 13,
+          "value": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ]
+        }
+      ]
+    },
+    "ac-08491": {
+      "source_sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+      "pointer": "/ac-08491/independent_trace",
+      "host_complete_field_flag": false,
+      "has_more": false,
+      "items": [
+        {
+          "key": 0,
+          "value": [
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 1,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 2,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 3,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -1,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 4,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1,
+              -2
+            ]
+          ]
+        },
+        {
+          "key": 5,
+          "value": [
+            [
+              1
+            ],
+            [
+              -1,
+              -1,
+              -2
+            ]
+          ]
+        },
+        {
+          "key": 6,
+          "value": [
+            [
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 7,
+          "value": [
+            [
+              1
+            ],
+            [
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 8,
+          "value": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ]
+        }
+      ]
+    },
+    "sac-07445": {
+      "source_sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+      "pointer": "/sac-07445/independent_trace",
+      "host_complete_field_flag": false,
+      "has_more": false,
+      "items": [
+        {
+          "key": 0,
+          "value": [
+            [
+              -2,
+              -2,
+              1,
+              2,
+              1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 1,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 2,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 3,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -2,
+              -1,
+              2,
+              1,
+              -2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 4,
+          "value": [
+            [
+              1,
+              -2,
+              -2,
+              1,
+              2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 5,
+          "value": [
+            [
+              1,
+              -2,
+              1,
+              -2,
+              1
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 6,
+          "value": [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              -1,
+              2,
+              -1,
+              -2,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 7,
+          "value": [
+            [
+              1,
+              1,
+              -2,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 8,
+          "value": [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 9,
+          "value": [
+            [
+              1,
+              -2,
+              1
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 10,
+          "value": [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1,
+              2,
+              -1,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 11,
+          "value": [
+            [
+              1,
+              1,
+              -2
+            ],
+            [
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 12,
+          "value": [
+            [
+              1
+            ],
+            [
+              2,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 13,
+          "value": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        {
+          "key": 14,
+          "value": [
+            [
+              1
+            ]
+          ]
+        },
+        {
+          "key": 15,
+          "value": []
+        }
+      ]
+    },
+    "sac-08491": {
+      "source_sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+      "pointer": "/sac-08491/independent_trace",
+      "host_complete_field_flag": false,
+      "has_more": false,
+      "items": [
+        {
+          "key": 0,
+          "value": [
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 1,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 2,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -2,
+              -1,
+              -1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 3,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              -2,
+              -1,
+              -1
+            ]
+          ]
+        },
+        {
+          "key": 4,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              1,
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "key": 5,
+          "value": [
+            [
+              -1,
+              -2
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 6,
+          "value": [
+            [
+              1
+            ],
+            [
+              2,
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 7,
+          "value": [
+            [
+              1
+            ],
+            [
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "key": 8,
+          "value": [
+            [
+              1
+            ],
+            [
+              2
+            ]
+          ]
+        },
+        {
+          "key": 9,
+          "value": [
+            [
+              1
+            ]
+          ]
+        },
+        {
+          "key": 10,
+          "value": []
+        }
+      ]
+    }
+  },
+  "main_official_trace_read": {
+    "format": "yohaku-task-result-view/1",
+    "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+    "project_id": "native-theory",
+    "artifact": {
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-paths.json",
+      "path": "r6-independent-paths.json",
+      "sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+      "bytes": 18779,
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "registration_kind": "original_declared_artifact_receipt"
+    },
+    "json_pointer": "/sac-07445/official_trace",
+    "host_generated_display_aid": true,
+    "mathematical_interpretation_authored_by_host": false,
+    "source_bytes": 18779,
+    "source_sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+    "items": [
+      {
+        "key": 0,
+        "value": [
+          [
+            -2,
+            -2,
+            1,
+            2,
+            1
+          ],
+          [
+            -2,
+            -2,
+            -1,
+            2,
+            1,
+            2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 1,
+        "value": [
+          [
+            1,
+            -2,
+            -2,
+            1,
+            2
+          ],
+          [
+            -2,
+            -2,
+            -1,
+            2,
+            1,
+            2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 2,
+        "value": [
+          [
+            1,
+            -2,
+            -2,
+            1,
+            2
+          ],
+          [
+            -2,
+            -2,
+            -1,
+            2,
+            1,
+            -2,
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "key": 3,
+        "value": [
+          [
+            1,
+            -2,
+            -2,
+            1,
+            2
+          ],
+          [
+            -2,
+            -1,
+            2,
+            1,
+            -2,
+            1
+          ]
+        ]
+      },
+      {
+        "key": 4,
+        "value": [
+          [
+            1,
+            -2,
+            -2,
+            1,
+            2
+          ],
+          [
+            -1,
+            2,
+            -1,
+            -2,
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "key": 5,
+        "value": [
+          [
+            1,
+            -2,
+            1,
+            -2,
+            1
+          ],
+          [
+            -1,
+            2,
+            -1,
+            -2,
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "key": 6,
+        "value": [
+          [
+            1,
+            1,
+            -2,
+            1,
+            -2
+          ],
+          [
+            -1,
+            2,
+            -1,
+            -2,
+            1,
+            2
+          ]
+        ]
+      },
+      {
+        "key": 7,
+        "value": [
+          [
+            1,
+            1,
+            -2,
+            1,
+            -2
+          ],
+          [
+            2,
+            -1,
+            2,
+            -1,
+            -2,
+            1
+          ]
+        ]
+      },
+      {
+        "key": 8,
+        "value": [
+          [
+            1,
+            -2,
+            1
+          ],
+          [
+            2,
+            -1,
+            2,
+            -1,
+            -2,
+            1
+          ]
+        ]
+      },
+      {
+        "key": 9,
+        "value": [
+          [
+            1,
+            -2,
+            1
+          ],
+          [
+            2,
+            -1,
+            2,
+            -1,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 10,
+        "value": [
+          [
+            1,
+            1,
+            -2
+          ],
+          [
+            2,
+            -1,
+            2,
+            -1,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 11,
+        "value": [
+          [
+            1,
+            1,
+            -2
+          ],
+          [
+            2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 12,
+        "value": [
+          [
+            1
+          ],
+          [
+            2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 13,
+        "value": [
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      {
+        "key": 14,
+        "value": [
+          [
+            1
+          ]
+        ]
+      },
+      {
+        "key": 15,
+        "value": []
+      }
+    ],
+    "offset": 0,
+    "next_offset": 16,
+    "total_items": 16,
+    "cursor_unit": "items",
+    "has_more": false,
+    "complete_field_returned": false,
+    "read_scope": "Selected items compacted; nested omissions remain references"
+  },
+  "synthetic_trace_read": {
+    "format": "yohaku-task-result-view/1",
+    "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+    "project_id": "native-theory",
+    "artifact": {
+      "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-theory-certificate.json",
+      "path": "r6-independent-theory-certificate.json",
+      "sha256": "efe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321",
+      "bytes": 1966,
+      "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "registration_kind": "original_declared_artifact_receipt"
+    },
+    "json_pointer": "/independent_trace",
+    "host_generated_display_aid": true,
+    "mathematical_interpretation_authored_by_host": false,
+    "source_bytes": 1966,
+    "source_sha256": "efe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321",
+    "items": [
+      {
+        "key": 0,
+        "value": [
+          [
+            1,
+            2,
+            1,
+            -2,
+            -1
+          ],
+          [
+            1,
+            2,
+            1,
+            2,
+            -1,
+            -2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 1,
+        "value": [
+          [
+            2,
+            1,
+            -2
+          ],
+          [
+            1,
+            2,
+            1,
+            2,
+            -1,
+            -2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 2,
+        "value": [
+          [
+            1
+          ],
+          [
+            1,
+            2,
+            1,
+            2,
+            -1,
+            -2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 3,
+        "value": [
+          [
+            1
+          ],
+          [
+            2,
+            1,
+            2,
+            -1,
+            -2
+          ]
+        ]
+      },
+      {
+        "key": 4,
+        "value": [
+          [
+            1
+          ],
+          [
+            1,
+            2,
+            -1
+          ]
+        ]
+      },
+      {
+        "key": 5,
+        "value": [
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ]
+      },
+      {
+        "key": 6,
+        "value": [
+          [
+            1
+          ]
+        ]
+      },
+      {
+        "key": 7,
+        "value": []
+      }
+    ],
+    "offset": 0,
+    "next_offset": 8,
+    "total_items": 8,
+    "cursor_unit": "items",
+    "has_more": false,
+    "complete_field_returned": false,
+    "read_scope": "Selected items compacted; nested omissions remain references"
+  },
+  "source_function_reads": {
+    "core": {
+      "format": "yohaku-task-result-view/1",
+      "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "project_id": "native-theory",
+      "artifact": {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-official-source.json",
+        "path": "r6-independent-official-source.json",
+        "sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+        "bytes": 11066,
+        "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "registration_kind": "original_declared_artifact_receipt"
+      },
+      "json_pointer": "/core_apply_move",
+      "host_generated_display_aid": true,
+      "mathematical_interpretation_authored_by_host": false,
+      "source_bytes": 11066,
+      "source_sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+      "text": "def apply_move(state, m):\n    \"\"\"Apply frozen atomic move ``m`` (0..13) and freely reduce.\n\n    ``state`` is a pair of freely reduced tuples; the result is too.\n    Raises ``ValueError`` on an out-of-range id — callers that face\n    untrusted input must range-check first (E_BAD_MOVE_ID).\n    \"\"\"\n    r0, r1 = state\n    if m == 0:\n        return (invert(r0), r1)\n    if m == 1:\n        return (r0, invert(r1))\n    if m == 2:\n        return (free_reduce(r0 + r1), r1)\n    if m == 3:\n        return (free_reduce(r0 + invert(r1)), r1)\n    if m == 4:\n        return (r0, free_reduce(r1 + r0))\n    if m == 5:\n        return (r0, free_reduce(r1 + invert(r0)))\n    if 6 <= m <= 9:\n        g = GENS[m - 6]\n        return (free_reduce((g,) + r0 + (-g,)), r1)\n    if 10 <= m <= 13:\n        g = GENS[m - 10]\n        return (r0, free_reduce((g,) + r1 + (-g,)))\n    raise ValueError(\"bad move id: %r\" % (m,))\n",
+      "offset": 0,
+      "next_offset": 896,
+      "total_characters": 896,
+      "cursor_unit": "unicode_scalars",
+      "value_utf8_sha256": "408f6ef91f16d58b918cea3116a1ad515e397a60bd9b30f7b5877e73c57cd46d",
+      "has_more": false,
+      "complete_field_returned": true
+    },
+    "stable": {
+      "format": "yohaku-task-result-view/1",
+      "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "project_id": "native-theory",
+      "artifact": {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-official-source.json",
+        "path": "r6-independent-official-source.json",
+        "sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+        "bytes": 11066,
+        "producer_task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+        "snapshot_id": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+        "registration_kind": "original_declared_artifact_receipt"
+      },
+      "json_pointer": "/stable_apply_move",
+      "host_generated_display_aid": true,
+      "mathematical_interpretation_authored_by_host": false,
+      "source_bytes": 11066,
+      "source_sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+      "text": "def apply_move(state, m):\n    \"\"\"Apply frozen atomic move ``m`` (0..256) and freely reduce.\n\n    ``state`` is a tuple of freely reduced tuples; the result is too.\n    Returns ``(new_state, None)`` on success or ``(None, reason)`` when\n    the move is not applicable at the current rank, where ``reason`` is\n    one of :data:`NOT_APPLICABLE_REASONS`.\n\n    Raises ``ValueError`` on an out-of-range id — callers that face\n    untrusted input must range-check first (E_BAD_MOVE_ID).\n    \"\"\"\n    if type(m) is not int or not (0 <= m < NUM_MOVES):\n        raise ValueError(\"bad move id: %r\" % (m,))\n    row = MOVE_TABLE[m]\n    cat = row[\"category\"]\n    k = len(state)\n\n    if cat == \"stabilize\":\n        if k >= MAX_RANK:\n            return None, \"max_rank_exceeded\"\n        return state + ((k + 1,),), None\n\n    i = row[\"relator\"]\n    if i >= k:\n        return None, \"relator_out_of_rank\"\n\n    if cat == \"destabilize\":\n        word = state[i]\n        if len(word) != 1 or word[0] <= 0:\n            return None, \"destabilize_precondition\"\n        g = word[0]\n        for j, other in enumerate(state):\n            if j == i:\n                continue\n            for a in other:\n                if a == g or a == -g:\n                    return None, \"destabilize_precondition\"\n        rest = state[:i] + state[i + 1:]\n        return tuple(_relabel_after(w, g) for w in rest), None\n\n    if cat == \"inversion\":\n        return state[:i] + (core.invert(state[i]),) + state[i + 1:], None\n\n    if cat == \"multiplication\":\n        j = row[\"other\"]\n        if j >= k:\n            return None, \"relator_out_of_rank\"\n        other = state[j]\n        if row[\"invert_other\"]:\n            other = core.invert(other)\n        new = core.free_reduce(state[i] + other)\n        return state[:i] + (new,) + state[i + 1:], None\n\n    # conjugation\n    c = row[\"conjugator\"]\n    if abs(c) > k:\n        return None, \"generator_out_of_rank\"\n    new = core.free_reduce((c,) + state[i] + (-c,))\n    return state[:i] + (new,) + state[i + 1:], None\n",
+      "offset": 0,
+      "next_offset": 2013,
+      "total_characters": 2013,
+      "cursor_unit": "unicode_scalars",
+      "value_utf8_sha256": "7be3bb63d7957968e8d907777b51c8dd69922baee0b18c9c1607645e49bc3238",
+      "has_more": false,
+      "complete_field_returned": true
+    }
+  },
+  "budget": {
+    "allocation_id": "program-18cdbe71f56ee4a53991f8ee",
+    "cap": {
+      "search": 0,
+      "verification": 5000
+    },
+    "own_reported": {
+      "search": 0,
+      "verification": 210
+    },
+    "own_issued": {
+      "search": 0,
+      "verification": 216
+    },
+    "shared": {
+      "goal_id": "native-mechanisms-next-20261117-v1",
+      "caps": {
+        "search": 2000000,
+        "verification": 50000
+      },
+      "allocations": [
+        {
+          "id": "program-18cdbe71f56ee4a53991f8ee",
+          "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+          "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+          "project": "native-theory",
+          "search_cap": 0,
+          "verification_cap": 5000,
+          "search_issued": 0,
+          "verification_issued": 216,
+          "task": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+          "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+        },
+        {
+          "id": "program-3ad0a623ab2690a2b074aa1b",
+          "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+          "node": "ai-node-60ce43c0fdb954913d5cf32f",
+          "project": "native-application",
+          "search_cap": 600000,
+          "verification_cap": 6000,
+          "search_issued": 140352,
+          "verification_issued": 96,
+          "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+        },
+        {
+          "id": "program-bda6dc0945a703d4c90d2966",
+          "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+          "node": "ai-node-60ce43c0fdb954913d5cf32f",
+          "project": "native-application",
+          "search_cap": 0,
+          "verification_cap": 0,
+          "search_issued": 0,
+          "verification_issued": 0,
+          "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+        },
+        {
+          "id": "program-fd52688e6d881e7ed2233dfd",
+          "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+          "node": "ai-node-0299a356d74db83b9ab4ebc7",
+          "project": "native-application",
+          "search_cap": 0,
+          "verification_cap": 0,
+          "search_issued": 0,
+          "verification_issued": 0,
+          "task": null,
+          "source_set": null
+        }
+      ],
+      "issued": {
+        "search": 140352,
+        "verification": 312
+      },
+      "reported": {
+        "search": 140329,
+        "verification": 301
+      },
+      "unresolved_leases": [],
+      "unused_issued_is_not_refunded": true
+    }
+  },
+  "prior_search": {
+    "math_entry": "M-faadd67bbdf57a62@1",
+    "world_export_source": "files/application/r6-root-executed-evidence.json.tex",
+    "world_export_revision": "45dd889e66b59affa58ce0018c6ce0f306f634dadfd424967475f78bd97d77c6",
+    "source_task": "project-task-89caab5017f4956aa52cef38be06d56a",
+    "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+    "provenance_accessible": {
+      "ok": true,
+      "snapshot_valid": true,
+      "issues": [],
+      "execution": {
+        "receipt_available": true,
+        "exit_code": 0,
+        "cleanup_confirmed": true,
+        "output_complete": true,
+        "output_truncated": false,
+        "adapter": "linux-bubblewrap"
+      },
+      "artifacts": [
+        {
+          "id": "artifact-9a903457b644e66b470b136b584d66e25987c00d429c0b41efd3cde2e27bd6d7",
+          "path": "r6-results.json",
+          "expected_sha256": "71921a2e692b850b77d01f1b48f36b2e48d46df8ceef879ecae0b3fd433c7b72",
+          "valid": true,
+          "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "expected_executable": false,
+          "actual_sha256": "71921a2e692b850b77d01f1b48f36b2e48d46df8ceef879ecae0b3fd433c7b72",
+          "bytes": 6478,
+          "actual_executable": false,
+          "bytes_verified": true
+        },
+        {
+          "id": "artifact-dc9b2fb5774b12e8781fa28271b9a416a478b934e1691788624defd8def27030",
+          "path": "r6-checkpoint.json",
+          "expected_sha256": "791b5f5c1d1af04f9e6e2c29ec41e304ffc4ce2f0f388d3be0bb112357aba8eb",
+          "valid": true,
+          "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "expected_executable": false,
+          "actual_sha256": "791b5f5c1d1af04f9e6e2c29ec41e304ffc4ce2f0f388d3be0bb112357aba8eb",
+          "bytes": 3024,
+          "actual_executable": false,
+          "bytes_verified": true
+        },
+        {
+          "id": "artifact-af10618b082d05bfd3cdc0ef46e1a0ce54785bbf630744c949bc65301b6a326d",
+          "path": "r6-candidate.json",
+          "expected_sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+          "valid": true,
+          "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "expected_executable": false,
+          "actual_sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+          "bytes": 177,
+          "actual_executable": false,
+          "bytes_verified": true
+        },
+        {
+          "id": "artifact-5f3e7cad3485495d563e83a0c9c5c20637f2accba4ffca50a03c90a0f68063a9",
+          "path": "r6-full-path.json",
+          "expected_sha256": "37c99c2abefbf197d193365cb5ec634c5730dccba31c0e9af0d1574d566749f9",
+          "valid": true,
+          "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "expected_executable": false,
+          "actual_sha256": "37c99c2abefbf197d193365cb5ec634c5730dccba31c0e9af0d1574d566749f9",
+          "bytes": 4616,
+          "actual_executable": false,
+          "bytes_verified": true
+        },
+        {
+          "id": "artifact-269e927c1dcbe6ebd73562f7fdc15ad8417d7740db7441e9087a5472325f1ec6",
+          "path": "r6-cli.json",
+          "expected_sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+          "valid": true,
+          "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "expected_executable": false,
+          "actual_sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+          "bytes": 1004,
+          "actual_executable": false,
+          "bytes_verified": true
+        },
+        {
+          "id": "artifact-eb15973586db27c59f30485a7d37289db9e8213899f9c31285856baab36409e9",
+          "path": "r6-reverse.json",
+          "expected_sha256": "4f1833267ab88c73f8fc2788daf02e1727a8b2f32c9d8005c16cb61f5459f84f",
+          "valid": true,
+          "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "expected_executable": false,
+          "actual_sha256": "4f1833267ab88c73f8fc2788daf02e1727a8b2f32c9d8005c16cb61f5459f84f",
+          "bytes": 62902,
+          "actual_executable": false,
+          "bytes_verified": true
+        },
+        {
+          "id": "artifact-4f491188e72c7ebff28a641b76531d79110c524aa749e7b7f0107bf5b964e6c5",
+          "path": "r6-submission.txt",
+          "expected_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+          "valid": true,
+          "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+          "expected_executable": false,
+          "actual_sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+          "bytes": 196,
+          "actual_executable": false,
+          "bytes_verified": true
+        }
+      ]
+    },
+    "result_read_error": {
+      "ok": false,
+      "error": "Artifact is not registered for this owned task",
+      "kind": "result_artifact",
+      "replay_allowed": false,
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 3,
+        "remaining_seconds": 3452.2770652770996
+      }
+    },
+    "body_source": "Registered root world export, not a new direct task-result body read."
+  },
+  "tool_boundary_notes": [
+    "An initial create_document directory=theory was rejected; exact directory=files/theory succeeded; no permission expansion.",
+    "task_result_index limit10 rejected. Default returned actual receipt artifact IDs.",
+    "Provenance-style artifact-* IDs were not accepted by task_result_read, including own task. Own task receipt-style IDs from task_result_index/status succeeded. No new producer or replay.",
+    "Original root result body read rejected; did not retry with other IDs or bypass ownership. Used registered world export and original provenance only."
+  ],
+  "remaining_at_checkpoint": {
+    "experiment_id": "native-mechanisms-next-20261117-v1",
+    "phase": "open",
+    "shared_stop": null,
+    "leaders": {
+      "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "application": "ai-node-0299a356d74db83b9ab4ebc7"
+    },
+    "members": [
+      "ai-node-60ce43c0fdb954913d5cf32f",
+      "ai-node-b912b62d9e95d94ddb26bfd6",
+      "ai-node-0299a356d74db83b9ab4ebc7",
+      "ai-node-22a9d6534cbf32a3d7d5029c"
+    ],
+    "native_turns_reserved": 5,
+    "native_turns_remaining": 3,
+    "remaining_seconds": 3303.606376886368,
+    "provider_identity": "unknown; requested/native thread configuration separately recorded",
+    "provider_cost": "unknown",
+    "adaption_authority_used": false,
+    "this_task_elapsed_seconds": 435.9187579154968,
+    "this_task_seconds_remaining": 464.0812420845032,
+    "program_budget": {
+      "goal_id": "native-mechanisms-next-20261117-v1",
+      "caps": {
+        "search": 2000000,
+        "verification": 50000
+      },
+      "allocations": [
+        {
+          "id": "program-18cdbe71f56ee4a53991f8ee",
+          "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+          "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+          "project": "native-theory",
+          "search_cap": 0,
+          "verification_cap": 5000,
+          "search_issued": 0,
+          "verification_issued": 216,
+          "task": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+          "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+        },
+        {
+          "id": "program-3ad0a623ab2690a2b074aa1b",
+          "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+          "node": "ai-node-60ce43c0fdb954913d5cf32f",
+          "project": "native-application",
+          "search_cap": 600000,
+          "verification_cap": 6000,
+          "search_issued": 140352,
+          "verification_issued": 96,
+          "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+        },
+        {
+          "id": "program-bda6dc0945a703d4c90d2966",
+          "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+          "node": "ai-node-60ce43c0fdb954913d5cf32f",
+          "project": "native-application",
+          "search_cap": 0,
+          "verification_cap": 0,
+          "search_issued": 0,
+          "verification_issued": 0,
+          "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+          "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+        },
+        {
+          "id": "program-fd52688e6d881e7ed2233dfd",
+          "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+          "node": "ai-node-0299a356d74db83b9ab4ebc7",
+          "project": "native-application",
+          "search_cap": 0,
+          "verification_cap": 0,
+          "search_issued": 0,
+          "verification_issued": 0,
+          "task": null,
+          "source_set": null
+        }
+      ],
+      "issued": {
+        "search": 140352,
+        "verification": 312
+      },
+      "reported": {
+        "search": 140329,
+        "verification": 301
+      },
+      "unresolved_leases": [],
+      "unused_issued_is_not_refunded": true
+    }
+  }
+}

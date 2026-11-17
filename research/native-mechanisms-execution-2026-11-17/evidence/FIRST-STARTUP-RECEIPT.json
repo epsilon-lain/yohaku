@@ -1,0 +1,169 @@
+{
+  "observed_at": 1794919367.4378693,
+  "observed_at_asia_shanghai": "2026-11-17T20:42:47.437879+08:00",
+  "phase": "native-mechanisms-next-20261117-v1",
+  "knowledge_prefix": 4198,
+  "tasks": [
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "role": "原生研究总负责人",
+      "node_request_id": "native-mechanisms-next-20261117-v1-initial",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d",
+      "submitted_by": "main",
+      "status": "running",
+      "output_complete": false,
+      "commit_confirmed": null,
+      "native_cleanup_complete": null,
+      "completed_real_research_receipt": false,
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "thread_id": "01a1e986-a1bd-7e53-bf73-70d66763f5bb",
+      "turn_id": "01a1e986-a464-7561-801f-312206ff21e3",
+      "native_state": "started",
+      "wire_write_completed": true,
+      "usage": {
+        "source": "thread/tokenUsage/updated",
+        "raw": {
+          "total": {
+            "totalTokens": 178399,
+            "inputTokens": 177234,
+            "cachedInputTokens": 126976,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 1165,
+            "reasoningOutputTokens": 425
+          },
+          "last": {
+            "totalTokens": 50705,
+            "inputTokens": 50434,
+            "cachedInputTokens": 50176,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 271,
+            "reasoningOutputTokens": 38
+          },
+          "modelContextWindow": 475000
+        },
+        "turn_id": "01a1e986-a464-7561-801f-312206ff21e3",
+        "baseline": {},
+        "input_tokens": 177234,
+        "output_tokens": 1165,
+        "total_tokens": 178399,
+        "cached_input_tokens": 126976,
+        "reasoning_output_tokens": 425
+      },
+      "error": null
+    }
+  ],
+  "new_grant_limits": {
+    "turns": 8,
+    "nodes": 32,
+    "concurrent": 3,
+    "seconds": 5400,
+    "task_seconds": 900,
+    "task_tools": 96
+  },
+  "gate_status": {
+    "experiment_id": "native-mechanisms-next-20261117-v1",
+    "phase": "open",
+    "shared_stop": null,
+    "leaders": {
+      "theory": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "application": "ai-node-0299a356d74db83b9ab4ebc7"
+    },
+    "members": [
+      "ai-node-60ce43c0fdb954913d5cf32f",
+      "ai-node-b912b62d9e95d94ddb26bfd6",
+      "ai-node-0299a356d74db83b9ab4ebc7"
+    ],
+    "native_turns_reserved": 1,
+    "native_turns_remaining": 7,
+    "remaining_seconds": 5296.629324913025,
+    "provider_identity": "unknown; requested/native thread configuration separately recorded",
+    "provider_cost": "unknown",
+    "adaption_authority_used": false
+  },
+  "first_admission_at": 1794919263.8307414,
+  "exact_deadline": 1794924663.8307414,
+  "parent_authorities_unchanged": true,
+  "old_stops_and_liabilities_retained": true,
+  "actual_reads": [
+    {
+      "event_seq": 3947,
+      "tool_event_seq": 3948,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d",
+      "entry_id": "external/mechanisms-20261117/index",
+      "revision": 1,
+      "body_sha256": "e702a62348886c5b95573db3ea83d5c9057f8dd902bbfcad464097784d50a238",
+      "returned_body_characters": 12065,
+      "returned_body_sha256": "e702a62348886c5b95573db3ea83d5c9057f8dd902bbfcad464097784d50a238",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 4192,
+      "tool_event_seq": 4193,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d",
+      "entry_id": "external/mechanisms-20261117/source/workflow/SUMMARY.json",
+      "revision": 1,
+      "body_sha256": "746db72c9880c44357add51cfe39796c4d59e62ef14a94e9c3fecc52f8f67645",
+      "returned_body_characters": 2014,
+      "returned_body_sha256": "746db72c9880c44357add51cfe39796c4d59e62ef14a94e9c3fecc52f8f67645",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 4194,
+      "tool_event_seq": 4195,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d",
+      "entry_id": "external/mechanisms-20261117/source/workflow/MECHANISMS.zh.md",
+      "revision": 1,
+      "body_sha256": "a3b17360ace4dc33f22795d668fb81b68617ae6700d62c3749f0aa3c1237ed19",
+      "returned_body_characters": 2094,
+      "returned_body_sha256": "a3b17360ace4dc33f22795d668fb81b68617ae6700d62c3749f0aa3c1237ed19",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    },
+    {
+      "event_seq": 4196,
+      "tool_event_seq": 4197,
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d",
+      "entry_id": "external/mechanisms-20261117/source/math/MECHANISMS.zh.md",
+      "revision": 1,
+      "body_sha256": "b0dbab0d2e0682d490002f709b6150f02f1b3db61d5ff54eae9d3c3e4cf4cd15",
+      "returned_body_characters": 2886,
+      "returned_body_sha256": "b0dbab0d2e0682d490002f709b6150f02f1b3db61d5ff54eae9d3c3e4cf4cd15",
+      "full_body_returned": true,
+      "tool_ok": true,
+      "primary_literature": false
+    }
+  ],
+  "adoption_events": [],
+  "native_math_versions": [],
+  "computations": [],
+  "pending_queue": [],
+  "tool_failures": [],
+  "full_original_literature_or_private_chat_published": false
+}

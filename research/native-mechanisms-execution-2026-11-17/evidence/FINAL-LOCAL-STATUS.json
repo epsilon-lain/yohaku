@@ -1,0 +1,291 @@
+{
+  "at": 1794922885.6331155,
+  "asia_shanghai": "2026-11-17T21:41:25.633141+08:00",
+  "goal_id": "native-mechanisms-next-20261117-v1",
+  "status": "complete_with_theory_result_and_finite_search_negative",
+  "model_attempts": 6,
+  "model_turns": 6,
+  "remaining_unused_turns": 2,
+  "all_models_done_committed_and_clean": true,
+  "tasks": [
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d",
+      "status": "done",
+      "thread_id": "01a1e986-a1bd-7e53-bf73-70d66763f5bb",
+      "turn_id": "01a1e986-a464-7561-801f-312206ff21e3",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "completed_real_research_receipt": true
+    },
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64",
+      "status": "done",
+      "thread_id": "01a1e986-a1bd-7e53-bf73-70d66763f5bb",
+      "turn_id": "01a1e996-f37f-75d2-9728-a2954d54817c",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "completed_real_research_receipt": true
+    },
+    {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa",
+      "status": "done",
+      "thread_id": "01a1e986-a1bd-7e53-bf73-70d66763f5bb",
+      "turn_id": "01a1e9ab-2631-7ac3-bf81-976639f023c3",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "completed_real_research_receipt": true
+    },
+    {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872",
+      "status": "done",
+      "thread_id": "01a1e988-8ff5-7940-9f61-d870ee2078b1",
+      "turn_id": "01a1e988-9252-7171-a3d6-2e80e0471287",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "completed_real_research_receipt": true
+    },
+    {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49",
+      "status": "done",
+      "thread_id": "01a1e988-9727-7620-9bb0-7e50e85a42b1",
+      "turn_id": "01a1e988-998b-7bb0-8bed-9a2d6b121d2c",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "completed_real_research_receipt": true
+    },
+    {
+      "node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011",
+      "status": "done",
+      "thread_id": "01a1e99f-c296-7ad0-a485-9f42f82889f6",
+      "turn_id": "01a1e99f-c61f-70b3-bcaf-c4e8b00dfb3a",
+      "requested_profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "native_thread_configuration": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "selection_source": "host private codex-provider.json",
+        "scope": "codex-local only; ordinary AI unchanged",
+        "reasoning_effort": "max",
+        "thread_start_model": "gpt-6.1-sol",
+        "thread_start_provider": "openai",
+        "thread_start_effort": "max"
+      },
+      "completed_real_research_receipt": true
+    }
+  ],
+  "first_admission_at": 1794919263.8307414,
+  "absolute_deadline": 1794924663.8307414,
+  "completed_before_deadline": true,
+  "programs": [
+    {
+      "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "action": "r6-independent-acceptance",
+      "status": "done",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "allocation": "program-18cdbe71f56ee4a53991f8ee",
+      "cleanup_confirmed": true,
+      "exit_code": 0
+    },
+    {
+      "task_id": "project-task-44729ab486376ccf39736952c84cdbd4",
+      "action": "r6-runtime-fixture",
+      "status": "done",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "allocation": "program-bda6dc0945a703d4c90d2966",
+      "cleanup_confirmed": true,
+      "exit_code": 0
+    },
+    {
+      "task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "action": "r6-offpath-search",
+      "status": "done",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "allocation": "program-3ad0a623ab2690a2b074aa1b",
+      "cleanup_confirmed": true,
+      "exit_code": 0
+    }
+  ],
+  "program_budget": {
+    "goal_id": "native-mechanisms-next-20261117-v1",
+    "caps": {
+      "search": 2000000,
+      "verification": 50000
+    },
+    "allocations": [
+      {
+        "id": "program-18cdbe71f56ee4a53991f8ee",
+        "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+        "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+        "project": "native-theory",
+        "search_cap": 0,
+        "verification_cap": 5000,
+        "search_issued": 0,
+        "verification_issued": 216,
+        "task": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+      },
+      {
+        "id": "program-3ad0a623ab2690a2b074aa1b",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 600000,
+        "verification_cap": 6000,
+        "search_issued": 140352,
+        "verification_issued": 96,
+        "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+      },
+      {
+        "id": "program-bda6dc0945a703d4c90d2966",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+      },
+      {
+        "id": "program-fd52688e6d881e7ed2233dfd",
+        "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-0299a356d74db83b9ab4ebc7",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": null,
+        "source_set": null
+      }
+    ],
+    "issued": {
+      "search": 140352,
+      "verification": 312
+    },
+    "reported": {
+      "search": 140329,
+      "verification": 301
+    },
+    "unresolved_leases": [],
+    "unused_issued_is_not_refunded": true
+  },
+  "pending_model_tasks": 0,
+  "pending_program_tasks": 0,
+  "pending_ai_continuations": 0,
+  "admission_closed": true,
+  "old_stops_failures_memories_and_authorities_preserved": true,
+  "old_unused_two_reused": false,
+  "competition_platform_upload": false,
+  "leaderboard_read": false,
+  "publication_status": "pending_host_github_write_and_readback",
+  "independent_review_scope": {
+    "theory_exact_version": "M-538c85aecd32c8d0@2",
+    "experiment_summary_reviewed_version": "M-faadd67bbdf57a62@1",
+    "experiment_narrower_revision": "M-faadd67bbdf57a62@2",
+    "revision2_has_independent_review": false,
+    "revision2_change": "Only narrows the incomplete forward-depth9/10 claim; no automatic review inheritance",
+    "independent_fixed_path_acceptance": "M-110bcf615851324b@1",
+    "search_or_reverse_dictionary_independently_rerun": false
+  }
+}

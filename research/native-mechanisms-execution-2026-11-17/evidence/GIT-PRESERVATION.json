@@ -1,0 +1,26 @@
+{
+  "at": 1794921975.5204697,
+  "tracked_diff_stat_matches_preserved_original": true,
+  "tracked_diff_stat": " Cargo.lock                    |    3 +\n Cargo.toml                    |    3 +\n examples/yohaku_compositor.rs | 1118 +++++++++++++++++++++++++++++++++++------\n 3 files changed, 957 insertions(+), 167 deletions(-)\n",
+  "tracked_diff_sha256": "c9f2c1bb04774fa8d7dfbed36d66cf9f18529845cbd39302fde59a157a0bddad",
+  "local_git_head": "8da1e3c615d65bbf18675eca57d0ab085af14c4d",
+  "tracked_files": [
+    {
+      "path": "Cargo.lock",
+      "sha256": "0c39fea992f964f0f8ee49c030d25de1a7d95177224e407b92eee42c8b495ce7",
+      "old_archive_matches": []
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "0ee31b1faf3b171c04d13c302c22407143aa1699d7b5d39693ab4fd3564876af",
+      "old_archive_matches": []
+    },
+    {
+      "path": "examples/yohaku_compositor.rs",
+      "sha256": "cfdd8e29d1808b20a52321bfd659cb639115169e904467ae88c26bf8d6138e2e",
+      "old_archive_matches": []
+    }
+  ],
+  "no_local_git_reset_pull_commit_or_push": true,
+  "remote_publication_uses_leased_additive_trees": true
+}

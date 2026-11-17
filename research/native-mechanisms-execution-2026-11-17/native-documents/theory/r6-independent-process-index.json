@@ -1,0 +1,192 @@
+{
+  "format": "r6-independent-process-index/1",
+  "node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+  "role": "本轮独立官方CLI与全路径验收同伴",
+  "model_task": "model-task-d72eded67cc42e86e4dc23dc047db011",
+  "request_id": "r6-independent-official-fullpath-acceptance-v1",
+  "thread": "01a1e99f-c296-7ad0-a485-9f42f82889f6",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "max",
+  "task_limits": {
+    "seconds": 900,
+    "tool_calls": 96
+  },
+  "stage": "native-mechanisms-next-20261117-v1",
+  "absolute_deadline_epoch": 1794924663.8307414,
+  "read_entries": [
+    {
+      "id": "external/mechanisms-20261117/index",
+      "revision": 1,
+      "body_sha256": "e702a62348886c5b95573db3ea83d5c9057f8dd902bbfcad464097784d50a238"
+    },
+    {
+      "id": "M-faadd67bbdf57a62",
+      "revision": 1,
+      "body_sha256": "243c09d3337da630d02ba882982119994695fcb773360887f8b7a8feb666ec5b"
+    },
+    {
+      "id": "M-538c85aecd32c8d0",
+      "revision": 2,
+      "body_sha256": "2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8"
+    }
+  ],
+  "read_scope": "Shared search summaries followed by exact bodies; no old Mochizuki pages or private peer memory read; official core apply functions read only after frozen execution; reverse347 table not read/reproduced.",
+  "adoption_events": [
+    {
+      "event": 5410,
+      "id": "M-538c85aecd32c8d0",
+      "revision": 2,
+      "meaning": "author-reported adoption only; later artifact evidence remains separate"
+    },
+    {
+      "event": 5418,
+      "id": "M-faadd67bbdf57a62",
+      "revision": 1,
+      "meaning": "author-reported adoption only; later artifact evidence remains separate"
+    }
+  ],
+  "independent_review_events": [
+    {
+      "event": 5412,
+      "id": "M-faadd67bbdf57a62",
+      "revision": 1,
+      "meaning": "reviewer assertion retained separately"
+    },
+    {
+      "event": 5414,
+      "id": "M-538c85aecd32c8d0",
+      "revision": 2,
+      "meaning": "reviewer assertion retained separately"
+    }
+  ],
+  "publication": {
+    "id": "M-110bcf615851324b",
+    "revision": 1,
+    "writing_event": 5420,
+    "author_status": "Independent of application method/code author and root executor; author of this new verifier only; not a new score, full search reproduction, universal interpreter proof or literature-priority claim.",
+    "independent_review_status": "unreviewed",
+    "publication_is_not_validation": true
+  },
+  "documents": {
+    "chinese_review": {
+      "source": "files/theory/r6-independent-review.zh.md.tex",
+      "revision": "a444ac684fc60aa5c0565ad4727d28c132d251af5074ea170bd0fb3f9c4aa0b4"
+    },
+    "evidence": {
+      "source": "files/theory/r6-independent-evidence.json.tex",
+      "revision": "7a59ff1e9c90325c86254f8b9d35720ee1b7935f460f7447a832c7dae8111a88",
+      "generated_hash_note": "Derived selected export; original artifact SHA hashes are separate in its body."
+    },
+    "code": {
+      "source": "files/theory/r6-independent-acceptance.py.tex",
+      "revision": "ecc031de007afb8539cc10ca833bdf489ff59b8b8075e51f8366d7cf72036042"
+    },
+    "freeze": {
+      "source": "files/theory/r6-independent-freeze.json.tex",
+      "revision": "0bb5cc838ec081116d9cd7841b10b3bb9715503c45a1bede153a6d7996cd87b6"
+    }
+  },
+  "producer": {
+    "task": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+    "request": "r6-independent-fixed-acceptance-producer-v1",
+    "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+    "allocation": "program-18cdbe71f56ee4a53991f8ee",
+    "terminal": "done/succeeded/ended/exit0",
+    "cleanup_confirmed": true,
+    "output_complete": true,
+    "provenance_ok": true,
+    "artifact_count": 7,
+    "issues": [],
+    "reported": {
+      "search": 0,
+      "verification": 210
+    },
+    "issued": {
+      "search": 0,
+      "verification": 216
+    }
+  },
+  "shared_budget": {
+    "goal_id": "native-mechanisms-next-20261117-v1",
+    "caps": {
+      "search": 2000000,
+      "verification": 50000
+    },
+    "allocations": [
+      {
+        "id": "program-18cdbe71f56ee4a53991f8ee",
+        "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+        "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+        "project": "native-theory",
+        "search_cap": 0,
+        "verification_cap": 5000,
+        "search_issued": 0,
+        "verification_issued": 216,
+        "task": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+      },
+      {
+        "id": "program-3ad0a623ab2690a2b074aa1b",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 600000,
+        "verification_cap": 6000,
+        "search_issued": 140352,
+        "verification_issued": 96,
+        "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+      },
+      {
+        "id": "program-bda6dc0945a703d4c90d2966",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+      },
+      {
+        "id": "program-fd52688e6d881e7ed2233dfd",
+        "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-0299a356d74db83b9ab4ebc7",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": null,
+        "source_set": null
+      }
+    ],
+    "issued": {
+      "search": 140352,
+      "verification": 312
+    },
+    "reported": {
+      "search": 140329,
+      "verification": 301
+    },
+    "unresolved_leases": [],
+    "unused_issued_is_not_refunded": true
+  },
+  "cross_team_effect": "M538@2 actually caused addition of a frozen synthetic-certificate acceptance input and new executed verifier dependency. It did not change application search or become a beam lower bound. No paired design/causal performance claim.",
+  "method_author_attribution": "Application lead authored prior method/code; root first executed bounded search; this node authored new independent verifier only. External official code and cloud results keep external attribution.",
+  "tool_failures": "Initial directory=theory create rejected; corrected explicit files/theory within granted scope. task_result_index limit10 invalid; default index succeeded. task_result_read artifact-* provenance IDs rejected, own actual receipt IDs succeeded; root result body not retried with alternate IDs or bypassed, source was registered world export. No producer failure/retry or new search.",
+  "handoff": {
+    "only_request_id": "r6-root-final-after-independent-acceptance-v1",
+    "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+    "status": "will be submitted once after saved evidence/memory; actual receipt will be saved separately",
+    "allowed_scope": "Final evidence closure only, no new search/mainline/math model; preserve original stage deadline and8-turn cap."
+  },
+  "constraints": {
+    "no_platform_upload": true,
+    "no_leaderboard": true,
+    "no_search_rerun": true,
+    "no_shortestness_claim": true,
+    "no_new_peers": true
+  }
+}

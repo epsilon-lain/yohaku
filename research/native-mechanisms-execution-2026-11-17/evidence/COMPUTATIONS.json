@@ -1,0 +1,173 @@
+[
+  {
+    "task_id": "project-task-44729ab486376ccf39736952c84cdbd4",
+    "status": "done",
+    "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+    "receipt": "experiments/project-task-44729ab486376ccf39736952c84cdbd4/RECEIPT.json",
+    "inputs_zip_sha256": "b0306ed4a286b41c7e0062565da1cf7080ceca3e5b0308bf15455914c1271187",
+    "program_budget": {
+      "actor": "ai-node-60ce43c0fdb954913d5cf32f",
+      "allocation": "program-bda6dc0945a703d4c90d2966",
+      "deadline": 1794924663.8307414,
+      "guard_hashes": {
+        "budget_server.py": "1db6e09afed1ce38c27fcff71e68c546aa32a540de3788978d20a05fdc20ccaf",
+        "meter.py": "8aed0889b4f723eaba0f8d9918049e772e1dbe9ce145e40d761a53133f484f1b",
+        "official-apply-hashes.json": "106d68c3dc1da798b02d9c1c0530302ba72dd4953339b21deddb2a7c0807cd82",
+        "runner.py": "255c0229c99fe79ec11472922c664eb000789b8c140584969f41988453a1f711"
+      },
+      "guard_root": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/candidate/guard",
+      "model_task": "model-task-6094ccd810d80ae30ff9c006bceb9e64",
+      "search_cap": 0,
+      "socket": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/apply.sock",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "task_id": "project-task-44729ab486376ccf39736952c84cdbd4",
+      "verification_cap": 0
+    },
+    "artifacts": [
+      {
+        "id": "project-task-44729ab486376ccf39736952c84cdbd4:r6-runtime-fixture.json",
+        "path": "r6-runtime-fixture.json",
+        "sha256": "4a7367e70e2762f6b423ee0606c50e445fbd091b873046b44d59cfd9b069872d",
+        "bytes": 18283
+      }
+    ]
+  },
+  {
+    "task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+    "status": "done",
+    "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+    "receipt": "experiments/project-task-89caab5017f4956aa52cef38be06d56a/RECEIPT.json",
+    "inputs_zip_sha256": "b0306ed4a286b41c7e0062565da1cf7080ceca3e5b0308bf15455914c1271187",
+    "program_budget": {
+      "actor": "ai-node-60ce43c0fdb954913d5cf32f",
+      "allocation": "program-3ad0a623ab2690a2b074aa1b",
+      "deadline": 1794924663.8307414,
+      "guard_hashes": {
+        "budget_server.py": "1db6e09afed1ce38c27fcff71e68c546aa32a540de3788978d20a05fdc20ccaf",
+        "meter.py": "8aed0889b4f723eaba0f8d9918049e772e1dbe9ce145e40d761a53133f484f1b",
+        "official-apply-hashes.json": "106d68c3dc1da798b02d9c1c0530302ba72dd4953339b21deddb2a7c0807cd82",
+        "runner.py": "255c0229c99fe79ec11472922c664eb000789b8c140584969f41988453a1f711"
+      },
+      "guard_root": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/candidate/guard",
+      "model_task": "model-task-6094ccd810d80ae30ff9c006bceb9e64",
+      "search_cap": 600000,
+      "socket": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/apply.sock",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "verification_cap": 6000
+    },
+    "artifacts": [
+      {
+        "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-results.json",
+        "path": "r6-results.json",
+        "sha256": "71921a2e692b850b77d01f1b48f36b2e48d46df8ceef879ecae0b3fd433c7b72",
+        "bytes": 6478
+      },
+      {
+        "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-checkpoint.json",
+        "path": "r6-checkpoint.json",
+        "sha256": "791b5f5c1d1af04f9e6e2c29ec41e304ffc4ce2f0f388d3be0bb112357aba8eb",
+        "bytes": 3024
+      },
+      {
+        "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-candidate.json",
+        "path": "r6-candidate.json",
+        "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+        "bytes": 177
+      },
+      {
+        "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-full-path.json",
+        "path": "r6-full-path.json",
+        "sha256": "37c99c2abefbf197d193365cb5ec634c5730dccba31c0e9af0d1574d566749f9",
+        "bytes": 4616
+      },
+      {
+        "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-cli.json",
+        "path": "r6-cli.json",
+        "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+        "bytes": 1004
+      },
+      {
+        "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-reverse.json",
+        "path": "r6-reverse.json",
+        "sha256": "4f1833267ab88c73f8fc2788daf02e1727a8b2f32c9d8005c16cb61f5459f84f",
+        "bytes": 62902
+      },
+      {
+        "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-submission.txt",
+        "path": "r6-submission.txt",
+        "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+        "bytes": 196
+      }
+    ]
+  },
+  {
+    "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+    "status": "done",
+    "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+    "receipt": "experiments/project-task-99f870b6bd681e7f0dccff953fb8bceb/RECEIPT.json",
+    "inputs_zip_sha256": "c4ccee4a8a405c1707237b520e2bbcbc80cc2f30d99360b17544954cfdc43b45",
+    "program_budget": {
+      "actor": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "allocation": "program-18cdbe71f56ee4a53991f8ee",
+      "deadline": 1794924663.8307414,
+      "guard_hashes": {
+        "budget_server.py": "1db6e09afed1ce38c27fcff71e68c546aa32a540de3788978d20a05fdc20ccaf",
+        "meter.py": "8aed0889b4f723eaba0f8d9918049e772e1dbe9ce145e40d761a53133f484f1b",
+        "official-apply-hashes.json": "106d68c3dc1da798b02d9c1c0530302ba72dd4953339b21deddb2a7c0807cd82",
+        "runner.py": "255c0229c99fe79ec11472922c664eb000789b8c140584969f41988453a1f711"
+      },
+      "guard_root": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/candidate/guard",
+      "model_task": "model-task-d72eded67cc42e86e4dc23dc047db011",
+      "search_cap": 0,
+      "socket": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/apply.sock",
+      "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb",
+      "task_id": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+      "verification_cap": 5000
+    },
+    "artifacts": [
+      {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-results.json",
+        "path": "r6-independent-results.json",
+        "sha256": "e7dd8cf639c5adf55dcdda60ec31a8673f54bf68f0722fd8b7422559618bf731",
+        "bytes": 1223
+      },
+      {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-paths.json",
+        "path": "r6-independent-paths.json",
+        "sha256": "f146e191b214f7114b5a106546d3f469f3cbfb81acaf3cba44a64b5e4ada08b6",
+        "bytes": 18779
+      },
+      {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-theory-certificate.json",
+        "path": "r6-independent-theory-certificate.json",
+        "sha256": "efe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321",
+        "bytes": 1966
+      },
+      {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-probes.json",
+        "path": "r6-independent-probes.json",
+        "sha256": "e50a09cc20d07601ac0fea760b81f5c1f77b5e958649cd9d4243764bde256ea8",
+        "bytes": 2382
+      },
+      {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-cli.json",
+        "path": "r6-independent-cli.json",
+        "sha256": "246aaef1bda420fcc61d914e1cd1ae9171c9866b3ba56f295b794a830d941c5e",
+        "bytes": 1333
+      },
+      {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-official-source.json",
+        "path": "r6-independent-official-source.json",
+        "sha256": "71b8b89bd7fca688d0d3cbe4cc721a52b25cce6c79b4832a31f60042734e24ca",
+        "bytes": 11066
+      },
+      {
+        "id": "project-task-99f870b6bd681e7f0dccff953fb8bceb:r6-independent-submission.txt",
+        "path": "r6-independent-submission.txt",
+        "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+        "bytes": 196
+      }
+    ]
+  }
+]

@@ -1,0 +1,9 @@
+本轮实际模型任务model-task-5f7ea7b9088bdeac230a5604540b9d49，原node应用负责人，request r6-application-offpath-resynthesis-v1，回读requested/native model_settings均gpt-6.1-sol/max，900秒96工具。已读external/mechanisms-20261117/index@1、workflow/MECHANISMS.zh.md@1和SUMMARY.json@1；外部仍外部。
+
+自主冻结：Stable官方初态出发，rank≤3、总词长≤96；按rank、精确指数和矩阵和正unit结构分桶保留每rank512状态，所有生成状态先查与空目标精确逆B4交点，正深≤10，候选全展开≤14。允许暂涨work/peak，有真实稳定化/删除；不把矩阵作状态商或目标。上限本地search590000、拟可信600000/verification6000、wall90秒、producer150秒，无随机；首个完整验收短路即停，否则到冻结边界停。此法区别于旧rank2-U beam、radius3局部窗、资源单调交换闭包和原路径DAG；普通07445到有序T已知13最短，因此不重做不可能的该端点缩步。
+
+实际失败只在0/0无动作夹具：allocation program-fd52688e6d881e7ed2233dfd，request r6-app-runtime-fixture-v1，action r6-runtime-fixture，plan source_set 2e88ff8033e75350ec65ec05e52ba3233b82c921237b6a7d4c680d601aea899c。传参明确含budget_allocation_id，但tool返回 Missing or unknown tool argument；missing=[budget_allocation_id]；saved=false；recovery明确no operation was executed。随后只按原request查询unknown_task/replay_allowed=false。lookup-derived project-task-c06eb545c2842a3cfe0b6c58ba04159d不是真实任务ID。未更名重试、未省预算绕过、未新增或唤醒model。
+
+主代码/协议已保存并plan missing=[]，但没有compile/execute，meter.verification接口尚未经夹具实际读取，不能称运行可用。最终冻结source_set 8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343；r6-protocol.json.tex@81140be245751e7b0cff51e55666e6e43003838e66a2bca4aec7ffdd36c9c812（JSON SHA50b8767e76cf29b72d78b2a33228c6aca12acbd1298b24eb61978f0020cf84ee）；r6-offpath-search.py.tex@2bc5723f9984938995783e451065b03f678bce44019304fc83192306cd12f1dc（Python SHA5d46af043af6da517ddae700a875412483a1a118835cd50ebbe8cce9d438287a）。独立解释器源每primitive有meter.independent_step，另用相邻消约实现并拟逐步和官方trace比较；当前未运行，同作者亦不等于独立作者review。Python CLI环境保留继承PYTHONPATH，避免删可信计量路径。
+
+没有搜索结果/新候选/新CLI或解释器回执；不能称有限负实验或15最短。预算ledger actual issued=reported=0，只有0/0未绑定allocation。旧15/work128/peak13保持历史上界；未上传/查榜，未重读旧望月页。具体方法及完整阻塞数据为公开安全本地准备，不含私有记忆或旧数学正文。

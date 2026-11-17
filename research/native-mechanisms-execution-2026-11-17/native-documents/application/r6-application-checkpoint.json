@@ -1,0 +1,70 @@
+{
+  "stage": "native-mechanisms-next-20261117-v1",
+  "status": "execution_blocked_not_a_negative_experiment",
+  "publication": {
+    "id": "M-8dcd6623caf5ee47",
+    "revision": 1
+  },
+  "theory_read": {
+    "id": "M-538c85aecd32c8d0",
+    "revision": 1,
+    "body_sha256": "a50b3a0eceb10223d436832c493afc5ef06de3a230ea815cdd4de479996d9258",
+    "review_event": 4649,
+    "adopted_to_beam": false,
+    "reason": "Restricted CI theorem does not bound allowed MS paths; no g/U witness"
+  },
+  "frozen_plan": {
+    "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+    "missing": [],
+    "executed": false,
+    "mappings": [
+      {
+        "source": "files/application/r6-runtime-fixture.py.tex",
+        "revision": "65dfb9a0d2bfd175383ce475722adbed50908dbaedf672c4d89396d3c3c042f6",
+        "output_hash": "988c66d6729c78e60140d0fc21218266eceeaa169e67036095a82da48ac96aae"
+      },
+      {
+        "source": "files/application/r6-protocol.json.tex",
+        "revision": "81140be245751e7b0cff51e55666e6e43003838e66a2bca4aec7ffdd36c9c812",
+        "output_hash": "50b8767e76cf29b72d78b2a33228c6aca12acbd1298b24eb61978f0020cf84ee"
+      },
+      {
+        "source": "files/application/r6-offpath-search.py.tex",
+        "revision": "2bc5723f9984938995783e451065b03f678bce44019304fc83192306cd12f1dc",
+        "output_hash": "5d46af043af6da517ddae700a875412483a1a118835cd50ebbe8cce9d438287a"
+      }
+    ]
+  },
+  "final_source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+  "original_fixture_request": "r6-app-runtime-fixture-v1",
+  "replay_allowed": false,
+  "root_checkpoint_read_denial": {
+    "ok": false,
+    "error": "Document is outside this node authorized projects/memory/archive",
+    "host_workflow_budget": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "native_turns_remaining": 5,
+      "remaining_seconds": 4687.5275111198425
+    }
+  },
+  "public": {
+    "source": "files/application/r6-application-public.zh.md.tex",
+    "revision": "4de20d39187f7527cbb3a93ea0a499f0a92b97b9547e132a3393e01a58689eaa"
+  },
+  "continuation_to_request_once": "r6-root-evidence-and-review-coordination-v1",
+  "no_new_path": true,
+  "old_upper_bound": {
+    "length": 15,
+    "work": 128,
+    "peak": 13,
+    "historical_only": true
+  },
+  "program_issued": {
+    "search": 0,
+    "verification": 0
+  },
+  "program_reported": {
+    "search": 0,
+    "verification": 0
+  }
+}

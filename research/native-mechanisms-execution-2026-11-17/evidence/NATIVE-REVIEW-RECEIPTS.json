@@ -1,0 +1,152 @@
+[
+  {
+    "seq": 4650,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "arguments": {
+      "id": "M-538c85aecd32c8d0",
+      "revision": 1,
+      "decision": "verified_analytic_within_CI_repair_scope_no_program_replay",
+      "evidence": "本应用节点实际阅读全文@1/bodySHA a50b3a0eceb10223d436832c493afc5ef06de3a230ea815cdd4de479996d9258，非作者。逐项核：自由积H*<z>正规形给非空H词共轭留H的必要g∈H，基z中央化子为<z>；距离min{|h|:hg∈A}=δ_A由最长终端A字消约证明。各槽独立且I与C交换，累加得到mδ_H+δ_Z+负号校正。构造中每C去精确两端一对字母，N次总长度L0-2q，I后置和D减1给所列work；未省去残余t_H或rho_j。独立手算7步表状态与长度12,10,8,6,4,2,1,0，work43；只手算，不是官方CLI、程序/独立解释器或全Stable最短性核验。无M/S等前提不可删。本应用beam允许M/S且不携带g/U见证，所以拒把该受限最少修复数作为beam可采纳下界；未采用入已冻结源码。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 4649,
+        "id": "M-538c85aecd32c8d0",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 4681,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "arguments": {
+      "id": "M-538c85aecd32c8d0",
+      "revision": 2,
+      "decision": "verified_analytic_within_CI_repair_scope_no_program_replay",
+      "evidence": "实际读取精确@2/bodySHA 2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8并与已读/已review@1逐行核对；新增r∈[1,8]/槽域、C与I交换恒等式、Python单元素tuple尾逗号，不改变定理或计数。独立解析核查自由积H*Z非空共轭条件、基z中央化子、最长终端A子词距离、各槽C/I下界及逐字去prefix构造、L0-2q资源轨迹、残余t_H和删除rho_j。独立手算7步表/work43，无运行、无官方CLI或计算结果复算，未证明全Stable最短。仍拒把受限CI最少数作允许M/S且无g/U见证的beam下界。旧@1 review只覆盖@1，本次另对@2留证；同一数学结果不双计。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 4680,
+        "id": "M-538c85aecd32c8d0",
+        "revision": 2,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 5002,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "arguments": {
+      "id": "M-538c85aecd32c8d0",
+      "revision": 2,
+      "decision": "verified_analytic_within_explicit_CI_repair_class_no_computational_validation",
+      "evidence": "Root为非作者，实际读取精确@2/bodySHA2a707c86...，独立核定义与证明：H*<z>正规形给非单位H词的malnormal条件，基z中央化子与指数和给指定槽条件及负号必要I；最长终端A子词给min{|h|:hg∈A}=δ_A。I与C交换后各槽动作数独立相加，得N+e，逐字剥b_A达到。每C去精确两端字母，总长L0-2q；最后I不改长/D减1，所列W和peak成立；残余t_H及rho_j不得省。独立手算合成表每步词与长度12,10,8,6,4,2,1,0，和43，7步/peak12。r1/m0与正负号退化边界正确。范围仅已给共同frame见证且仅C/I到指定D，不是含M/S一般beam下界；无官方CLI或自写解释器计算复算，也非sac07445成绩。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 5001,
+        "id": "M-538c85aecd32c8d0",
+        "revision": 2,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 5413,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "arguments": {
+      "id": "M-faadd67bbdf57a62",
+      "revision": 1,
+      "decision": "verified_fixed_paths_independently_and_search_scope_by_source_and_receipts_only",
+      "evidence": "本节点非方法/代码作者亦非root执行者。已读精确@1/bodySHA243c09d3337da630d02ba882982119994695fcb773360887f8b7a8feb666ec5b、应用冻源@2bc5723f.../协议@81140be...及world导出@45dd889e...；原producer provenance可读且source_set8bdad4ae/7hash/issues[]/exit0/cleanup一致。原结果正文以provenance式artifactID读取拒绝，未绕过，数值正文采用注册world导出。源码核逆D全字母号/槽位插入和官方guard、逆S真实最高末槽条件，及精确tuple beam。search140329、逆347/四层、1..8正层及部分9、丢弃99120/joins0只是源/回执/导出一致性审计，未重算搜索/逆字典，不核全图完备、不证明15最短。另真实独立producer project-task-99f870b6bd681e7f0dccff953fb8bceb在source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb，用本节点新写字面目录/分治约简解释器（每primitive independent_step）和锁定官方core/Stable逐动作比较四条LOCKED_BASELINES全路径；主要15动作/16态与root导出完全相等，到空，15/work128/peak13。官方CLI stdout857全文已读，accepted true/return0/stderr空，四行13/8/15/10和work127/48/128/50；普通用core不误用Stable。新producer exit0/cleanup/output_complete，7hash valid/issues[]；可信reported0search/210verification、保守issued0/216。只认证这批固定路径/guard，非全部257动作通用实现认证。完整中文审稿files/theory/r6-independent-review.zh.md.tex，原始/导出绑定和读范围r6-independent-evidence.json.tex；CLI原artifact SHA246aaef1...,路径SHAf146e191...。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 5412,
+        "id": "M-faadd67bbdf57a62",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 5415,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "arguments": {
+      "id": "M-538c85aecd32c8d0",
+      "revision": 2,
+      "decision": "verified_analytic_CI_scope_and_independent_fixed_synthetic_full_path",
+      "evidence": "独立于理论作者，实际读@2/bodySHA2a707c86fd8d3438f54d862609b56b936146883091c1765b648452c9efa7d7a8。独立核H*<z>正规形非空H词的malnormal条件、z中央化子、末尾A子词给min|h|=δ_A；I与C交换且各槽互不代费，累加N=mδH+δZ及负号校正；逐字剥prefix每C恰降2，I后置/D减1给所列work/peak，保留t_H和rho真实重编号；m0/r1边界正确。最短性仅C/I到指定D，不是含M/S全图下界。真实依赖该版本合成证书，冻结[7,9,11,13,11,16,15]与给定12长入口，本节点独立分治约简/primitive解释器（independent_step）及固定a0fd6e6f官方apply每态比较到空，长度12,10,8,6,4,2,1,0，核7/work43/peak12；project-task-99f870b6bd681e7f0dccff953fb8bceb，合成artifact SHAefe6e10222771ccfbce7d093f83752257f6453fd6243e026066860e19d3ba321。该小例不是比赛实例，未给制造frame免费成本、不以有限验收代替一般解析证明/最短性；CLI四正式例另核，不称该合成初态是官方比赛CLI项目。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 5414,
+        "id": "M-538c85aecd32c8d0",
+        "revision": 2,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  },
+  {
+    "seq": 5748,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "arguments": {
+      "id": "M-110bcf615851324b",
+      "revision": 1,
+      "decision": "verified_source_snapshot_receipts_and_selected_complete_certificate_fields_no_rerun",
+      "evidence": "Root为本条目非作者，本turn实际精确读bodySHA2b69d09db7bc70cae8eafdf8ae41b186f167637323c0130321796660a29629f9，全文独立验收源@ecc031de...及freeze@0bb5cc83...。代码采用另一作者字面目录/分治约简，primitive统一independent_step，官方直接/verify与Python CLI处于verification且保留环境；四正式路径check逐态assert/目标/资源，不只端点，含真实D重编号。按原producer99f870查询done/succeeded/ended/exit0/cleanup/output_complete；provenance snapshot33e943...及7产物hash全valid/issues[]。Root本turn精确读新结果四signatures、直接official/independent各59及全部limits，主要sac07445官方/独立16态完整短tuple（无嵌套遗漏）、合成8态/7-43-12，和CLI stdout857全文/return0/空stderr；stdout1007/stderr0均drained。全部与条目/中文稿一致，210=59+59+46verify+46CLI，shared reported140329/301 vs issued140352/312无未决。此review仅源码/原始产物/回执审计及所列字段阅读，未再跑解释器/CLI，未重算140329搜索或逆347行，不认证全257目录/15最短。原有限搜索独立review5412只target Mfa@1，未自动提升到@2；最终总结对9/10层用@2更窄未完成表述。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "event": 5747,
+        "id": "M-110bcf615851324b",
+        "revision": 1,
+        "meaning": "reviewer assertion retained separately"
+      }
+    }
+  }
+]

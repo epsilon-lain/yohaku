@@ -1,0 +1,8 @@
+{
+  "status": "stopped_before_closing_or_changing_authority",
+  "failed_assumption": "Host initially required an independent math_review event for experiment summary M-faadd67bbdf57a62@2",
+  "actual_evidence": "The independent actor reviewed @1 and the actual frozen program/certificates; @2 narrows the unfinished forward-depth wording. Root final review explicitly does not inherit the @1 review to @2.",
+  "resolution": "Validate actual @1 review and independent-author program acceptance; report @2 narrower wording separately without claiming it was independently reviewed.",
+  "new_native_model_turns_requested_for_this_correction": 0,
+  "ledger_reset": false
+}

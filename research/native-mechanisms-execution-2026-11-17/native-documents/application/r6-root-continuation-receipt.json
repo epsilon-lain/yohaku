@@ -1,0 +1,31 @@
+{
+  "request_id": "r6-root-evidence-and-review-coordination-v1",
+  "target_node": "ai-node-60ce43c0fdb954913d5cf32f",
+  "registered_once": true,
+  "wake": false,
+  "persistent_profile_observed": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "max",
+    "budget": {
+      "timeout_seconds": 1800,
+      "max_tool_calls": 128
+    }
+  },
+  "required_profile": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "max",
+    "budget": {
+      "timeout_seconds": 900,
+      "max_tool_calls": 96
+    }
+  },
+  "profile_warning_sent_before_registration": true,
+  "result": {
+    "queued": true,
+    "starts_model_now": false,
+    "event": 4703
+  },
+  "no_retry": true
+}

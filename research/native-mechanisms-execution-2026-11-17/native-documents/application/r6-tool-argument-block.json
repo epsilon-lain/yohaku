@@ -1,0 +1,33 @@
+{
+  "stage": "native-mechanisms-next-20261117-v1",
+  "request_id": "r6-app-runtime-fixture-v1",
+  "action": "r6-runtime-fixture",
+  "source_set": "2e88ff8033e75350ec65ec05e52ba3233b82c921237b6a7d4c680d601aea899c",
+  "supplied_budget_allocation_id": "program-fd52688e6d881e7ed2233dfd",
+  "submit_result": {
+    "ok": false,
+    "error": "Missing or unknown tool argument",
+    "tool": "task_submit",
+    "saved": false,
+    "missing": [
+      "budget_allocation_id"
+    ],
+    "unknown": [],
+    "recovery": "Use this tool schema; no operation was executed",
+    "host_workflow_budget": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "native_turns_remaining": 5,
+      "remaining_seconds": 5040.9265015125275
+    }
+  },
+  "original_request_query": {
+    "kind": "unknown_task",
+    "replay_allowed": false,
+    "task_id": "project-task-c06eb545c2842a3cfe0b6c58ba04159d",
+    "error": "No task with this identity; no process targeted"
+  },
+  "no_replay": true,
+  "search_executed": false,
+  "fixture_executed": false,
+  "new_cli_or_independent_run": false
+}

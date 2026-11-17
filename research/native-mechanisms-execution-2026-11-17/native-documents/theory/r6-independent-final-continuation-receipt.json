@@ -1,0 +1,13 @@
+{
+  "format": "r6-independent-final-continuation/1",
+  "request_id": "r6-root-final-after-independent-acceptance-v1",
+  "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+  "single_submission": true,
+  "receipt": "{\"ok\": true, \"result\": {\"queued\": true, \"starts_model_now\": false, \"event\": 5427}}",
+  "not_replayed": true,
+  "new_search_authorized": false,
+  "independent_entry": "M-110bcf615851324b@1",
+  "chinese_review": "files/theory/r6-independent-review.zh.md.tex@a444ac684fc60aa5c0565ad4727d28c132d251af5074ea170bd0fb3f9c4aa0b4",
+  "evidence": "files/theory/r6-independent-evidence.json.tex@7a59ff1e9c90325c86254f8b9d35720ee1b7935f460f7447a832c7dae8111a88",
+  "memory": "files/theory/r6-independent-peer-memory.md.tex@83e51cde9e64f5dad9ad03070b93cc8f079ac634e842f8c51bf1ada903fd09c8"
+}

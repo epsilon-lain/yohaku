@@ -1,0 +1,89 @@
+{
+  "at": 1794922776.5168674,
+  "goal_id": "native-mechanisms-next-20261117-v1",
+  "task_commit": "3b729871d1ee83e4f3ab5ea048bfaa0fe67209ce",
+  "authorization": {
+    "kind": "explicit_new_user_grant",
+    "goal_id": "native-mechanisms-next-20261117-v1",
+    "turns": 8,
+    "seconds": 5400,
+    "all_teams_shared": true,
+    "old_remainder_reused": false,
+    "source_user_message": "本轮新授权最多8个原生模型回合、首次准入起90分钟，所有团队共享，旧剩余额度不复用。"
+  },
+  "limits": {
+    "turns": 8,
+    "nodes": 32,
+    "concurrent": 3,
+    "seconds": 5400,
+    "task_seconds": 900,
+    "task_tools": 96
+  },
+  "first_admission_at": 1794919263.8307414,
+  "exact_deadline": 1794924663.8307414,
+  "native_admitted_attempts": 6,
+  "native_turns": 6,
+  "unused_turns": 2,
+  "parent_pins": [
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/POLICY.json",
+      "sha256": "0d5e07fe509bed61b45248c6ff917dc509eae214041e95a955ec7f6beb8f1fd0"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-two-team-sol-20261116/run/STATE.json",
+      "sha256": "23c3e5dd9237ed8879c5cb819253f1e9b384a3f613b2ad8ca3881d6804354a36"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-01/POLICY.json",
+      "sha256": "c6e54af1c20b9633f5bfc1d2952431bf4485ac880c93dbd78eb6c77c50a16d9a"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-01/STATE.json",
+      "sha256": "98467daa732fabb4ab98ff5749a66d766b97835c8996cdf3a2eaf4cf0a2dcfc9"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-02/POLICY.json",
+      "sha256": "5eaf05b5289db9446fc804a122a3f7c422ab6e384d99212961e9abbca0bb664b"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-02/STATE.json",
+      "sha256": "3500a7cec90cd9a259e3d5ba73a77d4eeb94ad2c79a107ed640a8d8e3f0eb9fe"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-03/POLICY.json",
+      "sha256": "7a7f84933a045f52498951c5d2fdee623de08e28de58f2fc03f5ec6f1a5e9b31"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/native-concept-transformations-20261117-03/STATE.json",
+      "sha256": "a7a73e052ea579bc591b15ff4d57cdd0e2ae6c033971da08aeffe953081633d4"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/operation-universes-continuation-20261117-01/POLICY.json",
+      "sha256": "df8a6dfad53dc6f0785413404af8c6b7c50f7a28ca0564ebe7273faa4ce849e1"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/operation-universes-continuation-20261117-01/STATE.json",
+      "sha256": "34453da03daab9776c58c0f9a254685939d810e707af4aaa14ef1f8ce7c762c0"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/operation-universes-continuation-20261117-02/POLICY.json",
+      "sha256": "ef6430a7238f7805c3fdc5e8d3ecf888536f07a53841a0d8167ed07d5590c7cb"
+    },
+    {
+      "path": "/root/projects/yohaku/diagnostics/operation-universes-continuation-20261117-02/STATE.json",
+      "sha256": "22bc61fdf7d1863e87653120035da7205ecdecb61ed5718dd56cd8d6357ebbda"
+    }
+  ],
+  "old_model_tasks_terminal_clean": 23,
+  "old_program_tasks_terminal_clean": 16,
+  "old_unused_two_reused": false,
+  "shared_stop": {
+    "reason": "Finite user round completed after independent acceptance; future admission closed",
+    "at": 1794922885.4089384,
+    "new_dispatch_allowed": false,
+    "completed_goal_id": "native-mechanisms-next-20261117-v1"
+  },
+  "old_nodes_memories_failures_stops_preserved": true,
+  "private_memories_published": false,
+  "phase": "closed"
+}

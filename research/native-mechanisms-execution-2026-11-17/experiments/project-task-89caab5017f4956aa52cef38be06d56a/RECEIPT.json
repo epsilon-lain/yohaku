@@ -1,0 +1,196 @@
+{
+  "format": "yohaku-task/1",
+  "version": "yohaku-project-task/1",
+  "task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+  "request_id": "r6-root-frozen-offpath-execution-v1",
+  "project_id": "native-application",
+  "action": "r6-offpath-search",
+  "status": "done",
+  "state": "succeeded",
+  "status_source": "Rust chat object",
+  "event_seq": 1610614661,
+  "ledger_version": 12,
+  "stdout_bytes": 1913,
+  "stderr_bytes": 0,
+  "phase": "project process running",
+  "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+  "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+  "exit_code": 0,
+  "error": null,
+  "cancel": {
+    "at_ms": null,
+    "by": null,
+    "requested": false,
+    "result": null
+  },
+  "cancel_confirmed": false,
+  "execution": "ended",
+  "receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794920623.4097736,
+    "output_complete": true,
+    "output_truncated": false,
+    "process": {
+      "pid": 633542,
+      "start": "7569244",
+      "state": "R"
+    },
+    "program_budget": {
+      "actual_calls_separate_from_nonrefundable_issued_leases": true,
+      "binding": {
+        "actor": "ai-node-60ce43c0fdb954913d5cf32f",
+        "allocation": "program-3ad0a623ab2690a2b074aa1b",
+        "deadline": 1794924663.8307414,
+        "guard_hashes": {
+          "budget_server.py": "1db6e09afed1ce38c27fcff71e68c546aa32a540de3788978d20a05fdc20ccaf",
+          "meter.py": "8aed0889b4f723eaba0f8d9918049e772e1dbe9ce145e40d761a53133f484f1b",
+          "official-apply-hashes.json": "106d68c3dc1da798b02d9c1c0530302ba72dd4953339b21deddb2a7c0807cd82",
+          "runner.py": "255c0229c99fe79ec11472922c664eb000789b8c140584969f41988453a1f711"
+        },
+        "guard_root": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/candidate/guard",
+        "model_task": "model-task-6094ccd810d80ae30ff9c006bceb9e64",
+        "search_cap": 600000,
+        "socket": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/apply.sock",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+        "task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+        "verification_cap": 6000
+      },
+      "shared": {
+        "allocations": [
+          {
+            "id": "program-3ad0a623ab2690a2b074aa1b",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 600000,
+            "search_issued": 140352,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+            "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+            "verification_cap": 6000,
+            "verification_issued": 96
+          },
+          {
+            "id": "program-bda6dc0945a703d4c90d2966",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 0,
+            "search_issued": 0,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+            "verification_cap": 0,
+            "verification_issued": 0
+          },
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "search_issued": 0,
+            "source_set": null,
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "task": null,
+            "verification_cap": 0,
+            "verification_issued": 0
+          }
+        ],
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "issued": {
+          "search": 140352,
+          "verification": 96
+        },
+        "reported": {
+          "search": 140329,
+          "verification": 91
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "bytes": 6478,
+      "executable": false,
+      "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-results.json",
+      "path": "r6-results.json",
+      "producer_task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "sha256": "71921a2e692b850b77d01f1b48f36b2e48d46df8ceef879ecae0b3fd433c7b72",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    },
+    {
+      "bytes": 3024,
+      "executable": false,
+      "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-checkpoint.json",
+      "path": "r6-checkpoint.json",
+      "producer_task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "sha256": "791b5f5c1d1af04f9e6e2c29ec41e304ffc4ce2f0f388d3be0bb112357aba8eb",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    },
+    {
+      "bytes": 177,
+      "executable": false,
+      "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-candidate.json",
+      "path": "r6-candidate.json",
+      "producer_task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "sha256": "b3674e9483d9bd5ee0a2730f88eeab27cd954b580e898702d0397bae8ec39063",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    },
+    {
+      "bytes": 4616,
+      "executable": false,
+      "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-full-path.json",
+      "path": "r6-full-path.json",
+      "producer_task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "sha256": "37c99c2abefbf197d193365cb5ec634c5730dccba31c0e9af0d1574d566749f9",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    },
+    {
+      "bytes": 1004,
+      "executable": false,
+      "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-cli.json",
+      "path": "r6-cli.json",
+      "producer_task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "sha256": "a4160c60722f357c8825d2243deccf04df6060272e03cf870fc0819713e5b925",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    },
+    {
+      "bytes": 62902,
+      "executable": false,
+      "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-reverse.json",
+      "path": "r6-reverse.json",
+      "producer_task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "sha256": "4f1833267ab88c73f8fc2788daf02e1727a8b2f32c9d8005c16cb61f5459f84f",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    },
+    {
+      "bytes": 196,
+      "executable": false,
+      "id": "project-task-89caab5017f4956aa52cef38be06d56a:r6-submission.txt",
+      "path": "r6-submission.txt",
+      "producer_task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+      "sha256": "a5061ca016dd710a8a0ea2909bba1a08a796b2c6a75152ee0019d65408c969f2",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    }
+  ],
+  "output": {
+    "stdout": 1913,
+    "stderr": 0
+  },
+  "replay_allowed": false
+}

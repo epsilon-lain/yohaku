@@ -1,0 +1,190 @@
+{
+  "counts": {
+    "search_apply_calls": 140329,
+    "reverse_apply_calls": 724,
+    "forward_apply_calls": 139605,
+    "joins": 0,
+    "candidate_checks": 0,
+    "illegal": 11826,
+    "length_pruned": 857,
+    "beam_discard_events": 99120
+  },
+  "layers": [
+    {
+      "depth": 1,
+      "candidates": 15,
+      "retained": 15,
+      "discarded": 0,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 14,
+        "3": 1
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 7,
+        "3": 1
+      }
+    },
+    {
+      "depth": 2,
+      "candidates": 178,
+      "retained": 178,
+      "discarded": 0,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 146,
+        "3": 32
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 28,
+        "3": 17
+      }
+    },
+    {
+      "depth": 3,
+      "candidates": 2140,
+      "retained": 1024,
+      "discarded": 1116,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 512,
+        "3": 512
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 86,
+        "3": 175
+      }
+    },
+    {
+      "depth": 4,
+      "candidates": 17351,
+      "retained": 1024,
+      "discarded": 16327,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 512,
+        "3": 512
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 208,
+        "3": 1381
+      }
+    },
+    {
+      "depth": 5,
+      "candidates": 20771,
+      "retained": 1024,
+      "discarded": 19747,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 512,
+        "3": 512
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 428,
+        "3": 4134
+      }
+    },
+    {
+      "depth": 6,
+      "candidates": 21035,
+      "retained": 1024,
+      "discarded": 20011,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 512,
+        "3": 512
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 739,
+        "3": 4917
+      }
+    },
+    {
+      "depth": 7,
+      "candidates": 21697,
+      "retained": 1024,
+      "discarded": 20673,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 512,
+        "3": 512
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 1012,
+        "3": 5456
+      }
+    },
+    {
+      "depth": 8,
+      "candidates": 22270,
+      "retained": 1024,
+      "discarded": 21246,
+      "rank_counts": {
+        "0": 0,
+        "1": 0,
+        "2": 512,
+        "3": 512
+      },
+      "buckets": {
+        "0": 0,
+        "1": 0,
+        "2": 1052,
+        "3": 6220
+      }
+    }
+  ],
+  "reverse_meta": {
+    "states": 347,
+    "layer_sizes": [
+      1,
+      1,
+      3,
+      26,
+      316
+    ],
+    "complete_bounded_radius": true,
+    "rank_cap": 3,
+    "length_cap": 96
+  },
+  "best": [
+    6,
+    4,
+    12,
+    1,
+    3,
+    6,
+    12,
+    2,
+    5,
+    6,
+    4,
+    2,
+    4,
+    16,
+    15
+  ],
+  "guard": "search_wall_seconds",
+  "winner": null
+}

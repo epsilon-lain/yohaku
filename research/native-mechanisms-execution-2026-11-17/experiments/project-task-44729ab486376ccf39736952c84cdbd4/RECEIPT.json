@@ -1,0 +1,124 @@
+{
+  "format": "yohaku-task/1",
+  "version": "yohaku-project-task/1",
+  "task_id": "project-task-44729ab486376ccf39736952c84cdbd4",
+  "request_id": "r6-root-runtime-fixture-after-validator-fix-v1",
+  "project_id": "native-application",
+  "action": "r6-runtime-fixture",
+  "status": "done",
+  "state": "succeeded",
+  "status_source": "Rust chat object",
+  "event_seq": 402653565,
+  "ledger_version": 3,
+  "stdout_bytes": 378,
+  "stderr_bytes": 0,
+  "phase": "validating fixed snapshot and sandbox",
+  "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+  "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+  "exit_code": 0,
+  "error": null,
+  "cancel": {
+    "at_ms": null,
+    "by": null,
+    "requested": false,
+    "result": null
+  },
+  "cancel_confirmed": false,
+  "execution": "ended",
+  "receipt": {
+    "adapter": "linux-bubblewrap",
+    "cancel_observed": false,
+    "cleanup_confirmed": true,
+    "error": null,
+    "exit_code": 0,
+    "finished": 1794920483.679332,
+    "output_complete": true,
+    "output_truncated": false,
+    "process": {
+      "pid": 632621,
+      "start": "7564767",
+      "state": "R"
+    },
+    "program_budget": {
+      "actual_calls_separate_from_nonrefundable_issued_leases": true,
+      "binding": {
+        "actor": "ai-node-60ce43c0fdb954913d5cf32f",
+        "allocation": "program-bda6dc0945a703d4c90d2966",
+        "deadline": 1794924663.8307414,
+        "guard_hashes": {
+          "budget_server.py": "1db6e09afed1ce38c27fcff71e68c546aa32a540de3788978d20a05fdc20ccaf",
+          "meter.py": "8aed0889b4f723eaba0f8d9918049e772e1dbe9ce145e40d761a53133f484f1b",
+          "official-apply-hashes.json": "106d68c3dc1da798b02d9c1c0530302ba72dd4953339b21deddb2a7c0807cd82",
+          "runner.py": "255c0229c99fe79ec11472922c664eb000789b8c140584969f41988453a1f711"
+        },
+        "guard_root": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/candidate/guard",
+        "model_task": "model-task-6094ccd810d80ae30ff9c006bceb9e64",
+        "search_cap": 0,
+        "socket": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/apply.sock",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+        "task_id": "project-task-44729ab486376ccf39736952c84cdbd4",
+        "verification_cap": 0
+      },
+      "shared": {
+        "allocations": [
+          {
+            "id": "program-bda6dc0945a703d4c90d2966",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 0,
+            "search_issued": 0,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+            "verification_cap": 0,
+            "verification_issued": 0
+          },
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "search_issued": 0,
+            "source_set": null,
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "task": null,
+            "verification_cap": 0,
+            "verification_issued": 0
+          }
+        ],
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "issued": {
+          "search": 0,
+          "verification": 0
+        },
+        "reported": {
+          "search": 0,
+          "verification": 0
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "bytes": 18283,
+      "executable": false,
+      "id": "project-task-44729ab486376ccf39736952c84cdbd4:r6-runtime-fixture.json",
+      "path": "r6-runtime-fixture.json",
+      "producer_task_id": "project-task-44729ab486376ccf39736952c84cdbd4",
+      "sha256": "4a7367e70e2762f6b423ee0606c50e445fbd091b873046b44d59cfd9b069872d",
+      "snapshot_id": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+      "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+    }
+  ],
+  "output": {
+    "stdout": 378,
+    "stderr": 0
+  },
+  "replay_allowed": false
+}

@@ -1,0 +1,320 @@
+{
+  "goal_id": "native-mechanisms-next-20261117-v1",
+  "status": "complete_with_theory_result_and_finite_search_negative",
+  "model_turns": 6,
+  "unused_turns": 2,
+  "all_models_done_and_clean": true,
+  "admission_closed": true,
+  "search": {
+    "best_length": 15,
+    "strict_improvement": false,
+    "winner": false,
+    "guard": "search_wall_seconds",
+    "reverse": {
+      "states": 347,
+      "layer_sizes": [
+        1,
+        1,
+        3,
+        26,
+        316
+      ],
+      "complete_bounded_radius": true,
+      "rank_cap": 3,
+      "length_cap": 96
+    },
+    "layers": [
+      {
+        "depth": 1,
+        "candidates": 15,
+        "retained": 15,
+        "discarded": 0,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 14,
+          "3": 1
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 7,
+          "3": 1
+        }
+      },
+      {
+        "depth": 2,
+        "candidates": 178,
+        "retained": 178,
+        "discarded": 0,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 146,
+          "3": 32
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 28,
+          "3": 17
+        }
+      },
+      {
+        "depth": 3,
+        "candidates": 2140,
+        "retained": 1024,
+        "discarded": 1116,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 86,
+          "3": 175
+        }
+      },
+      {
+        "depth": 4,
+        "candidates": 17351,
+        "retained": 1024,
+        "discarded": 16327,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 208,
+          "3": 1381
+        }
+      },
+      {
+        "depth": 5,
+        "candidates": 20771,
+        "retained": 1024,
+        "discarded": 19747,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 428,
+          "3": 4134
+        }
+      },
+      {
+        "depth": 6,
+        "candidates": 21035,
+        "retained": 1024,
+        "discarded": 20011,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 739,
+          "3": 4917
+        }
+      },
+      {
+        "depth": 7,
+        "candidates": 21697,
+        "retained": 1024,
+        "discarded": 20673,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 1012,
+          "3": 5456
+        }
+      },
+      {
+        "depth": 8,
+        "candidates": 22270,
+        "retained": 1024,
+        "discarded": 21246,
+        "rank_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 512,
+          "3": 512
+        },
+        "buckets": {
+          "0": 0,
+          "1": 0,
+          "2": 1052,
+          "3": 6220
+        }
+      }
+    ],
+    "counts": {
+      "search_apply_calls": 140329,
+      "reverse_apply_calls": 724,
+      "forward_apply_calls": 139605,
+      "joins": 0,
+      "candidate_checks": 0,
+      "illegal": 11826,
+      "length_pruned": 857,
+      "beam_discard_events": 99120
+    },
+    "elapsed_seconds": 94.96895569100161,
+    "global_complete": false,
+    "platform_upload": false
+  },
+  "independent_acceptance": {
+    "format": "r6-independent-author-acceptance/1",
+    "status": "passed",
+    "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "restoration": {
+      "official": "/output/r6-independent-fixed/official",
+      "acceptance": "/output/r6-independent-fixed/acceptance",
+      "archive_sha256": "c8ed06893cf895f1221cae149de5b1c4af1657f713aeaf225618723ced9960d6",
+      "files_verified": 41
+    },
+    "signatures": {
+      "ac-07445": [
+        13,
+        127,
+        13
+      ],
+      "ac-08491": [
+        8,
+        48,
+        9
+      ],
+      "sac-07445": [
+        15,
+        128,
+        13
+      ],
+      "sac-08491": [
+        10,
+        50,
+        9
+      ]
+    },
+    "prior_export_full_trace_equal": true,
+    "cli_accepted": true,
+    "theory_synthetic_signature": [
+      7,
+      43,
+      12
+    ],
+    "fixed_guard_probes": 5,
+    "local_direct_calls": {
+      "official": 59,
+      "independent": 59
+    },
+    "search": 0,
+    "all_primitive_interpretations_decorated": true,
+    "limits_checked": {
+      "max_actions": 100000,
+      "max_total_length": 10000,
+      "max_work": 5000000,
+      "max_rank": 8
+    },
+    "platform_upload": false,
+    "scope": "Independent fixed-path replay and guards only, not reproduction of search counts/reverse dictionary, no Stable shortestness."
+  },
+  "review_scope": {
+    "theory_exact_version": "M-538c85aecd32c8d0@2",
+    "experiment_summary_reviewed_version": "M-faadd67bbdf57a62@1",
+    "experiment_narrower_revision": "M-faadd67bbdf57a62@2",
+    "revision2_has_independent_review": false,
+    "revision2_change": "Only narrows the incomplete forward-depth9/10 claim; no automatic review inheritance",
+    "independent_fixed_path_acceptance": "M-110bcf615851324b@1",
+    "search_or_reverse_dictionary_independently_rerun": false
+  },
+  "first_admission_at": 1794919263.8307414,
+  "absolute_deadline": 1794924663.8307414,
+  "program_budget": {
+    "goal_id": "native-mechanisms-next-20261117-v1",
+    "caps": {
+      "search": 2000000,
+      "verification": 50000
+    },
+    "allocations": [
+      {
+        "id": "program-18cdbe71f56ee4a53991f8ee",
+        "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+        "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+        "project": "native-theory",
+        "search_cap": 0,
+        "verification_cap": 5000,
+        "search_issued": 0,
+        "verification_issued": 216,
+        "task": "project-task-99f870b6bd681e7f0dccff953fb8bceb",
+        "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+      },
+      {
+        "id": "program-3ad0a623ab2690a2b074aa1b",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 600000,
+        "verification_cap": 6000,
+        "search_issued": 140352,
+        "verification_issued": 96,
+        "task": "project-task-89caab5017f4956aa52cef38be06d56a",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+      },
+      {
+        "id": "program-bda6dc0945a703d4c90d2966",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": "project-task-44729ab486376ccf39736952c84cdbd4",
+        "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+      },
+      {
+        "id": "program-fd52688e6d881e7ed2233dfd",
+        "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-0299a356d74db83b9ab4ebc7",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": null,
+        "source_set": null
+      }
+    ],
+    "issued": {
+      "search": 140352,
+      "verification": 312
+    },
+    "reported": {
+      "search": 140329,
+      "verification": 301
+    },
+    "unresolved_leases": [],
+    "unused_issued_is_not_refunded": true
+  },
+  "publication_source_snapshot": "Before the containing Git commit; final commit existence/readback is recorded separately by the host"
+}

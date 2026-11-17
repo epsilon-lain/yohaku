@@ -1,0 +1,81 @@
+{
+  "stage": "native-mechanisms-next-20261117-v1",
+  "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+  "node_request_id": "r6-application-offpath-resynthesis-v1",
+  "model_task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49",
+  "session_id": "01a1e988-9727-7620-9bb0-7e50e85a42b1",
+  "requested_profile": {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "max",
+    "budget": {
+      "timeout_seconds": 900,
+      "max_tool_calls": 96
+    }
+  },
+  "model_settings": {
+    "event": "model_settings",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "selection_source": "host private codex-provider.json",
+    "scope": "codex-local only; ordinary AI unchanged",
+    "reasoning_effort": "max"
+  },
+  "turn_settings": {
+    "seconds": 900,
+    "mode": "limited"
+  },
+  "memory_read": {
+    "source": "files/application/application-lead-memory.md.tex",
+    "revision": "43ed398631d37774b572071f4df0d1861446dc96c7499601c9bf169945564de3",
+    "body_sha256": "d7f5e32c74b745fc0ccc60d4fc70f735915c3ad7fb994ea7f4f361511d19e224"
+  },
+  "final_frozen_plan": {
+    "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+    "missing": [],
+    "executed": false,
+    "mappings": [
+      {
+        "source": "files/application/r6-runtime-fixture.py.tex",
+        "revision": "65dfb9a0d2bfd175383ce475722adbed50908dbaedf672c4d89396d3c3c042f6",
+        "output_hash": "988c66d6729c78e60140d0fc21218266eceeaa169e67036095a82da48ac96aae"
+      },
+      {
+        "source": "files/application/r6-protocol.json.tex",
+        "revision": "81140be245751e7b0cff51e55666e6e43003838e66a2bca4aec7ffdd36c9c812",
+        "output_hash": "50b8767e76cf29b72d78b2a33228c6aca12acbd1298b24eb61978f0020cf84ee"
+      },
+      {
+        "source": "files/application/r6-offpath-search.py.tex",
+        "revision": "2bc5723f9984938995783e451065b03f678bce44019304fc83192306cd12f1dc",
+        "output_hash": "5d46af043af6da517ddae700a875412483a1a118835cd50ebbe8cce9d438287a"
+      }
+    ]
+  },
+  "fixture_request": "r6-app-runtime-fixture-v1",
+  "fixture_allocation": "program-fd52688e6d881e7ed2233dfd",
+  "fixture_submission": {
+    "ok": false,
+    "error": "Missing or unknown tool argument",
+    "tool": "task_submit",
+    "saved": false,
+    "missing": [
+      "budget_allocation_id"
+    ],
+    "unknown": [],
+    "recovery": "Use this tool schema; no operation was executed",
+    "host_workflow_budget": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "native_turns_remaining": 5,
+      "remaining_seconds": 5040.9265015125275
+    }
+  },
+  "fixture_status": {
+    "kind": "unknown_task",
+    "lookup_only_task_id": "project-task-c06eb545c2842a3cfe0b6c58ba04159d",
+    "replay_allowed": false
+  },
+  "search_executed": false,
+  "official_cli_executed": false,
+  "independent_interpreter_executed": false
+}

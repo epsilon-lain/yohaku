@@ -1,0 +1,17 @@
+[
+  {
+    "event_seq": 4502,
+    "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872",
+    "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+    "entry_id": "external/mechanisms-20261117/source/workflow/conjugation_frames/PROOF.zh.md",
+    "revision": 1,
+    "body_sha256": "96b6b9bed88c0a05ba99d0802717f28080d6cdc09942023e453e6ba5c4c2923a",
+    "offset": 0,
+    "returned_body_characters": 4061,
+    "returned_body_sha256": "96b6b9bed88c0a05ba99d0802717f28080d6cdc09942023e453e6ba5c4c2923a",
+    "total_characters": 4061,
+    "next_offset": null,
+    "full_body_returned": true,
+    "adoption_recorded": false
+  }
+]

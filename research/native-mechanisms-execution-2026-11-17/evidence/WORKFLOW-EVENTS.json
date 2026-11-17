@@ -1,0 +1,2182 @@
+[
+  {
+    "seq": 4199,
+    "at": 1794919396.2123897,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "tool": "ai_node_dispatch",
+    "arguments": {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "request_id": "r6-theory-transferable-mechanism-v1",
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "task_sha256": "f1493fa068ea5261a60eba889084704323cf59603bf12ac7061a6ed5a9a13501",
+      "task_characters": 1789
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872",
+        "request_id": "ainode-4067398c6c18e8b30406501ebd458fbcb7cc5f5ee0add99d",
+        "object": "chat-request-000025",
+        "version": "host-codex-tasks-collaboration-v2",
+        "status": "running",
+        "status_source": "Rust chat object",
+        "session_id": null,
+        "usage": null,
+        "elapsed_seconds": null,
+        "memory_versions": [],
+        "execution": "running",
+        "model_phase": null,
+        "model_settings": null,
+        "turn_settings": null,
+        "host_elapsed_seconds": null,
+        "output": "",
+        "next_cursor": 0,
+        "has_more": false,
+        "error": null,
+        "cancel": {
+          "at_ms": null,
+          "by": null,
+          "requested": false,
+          "result": null
+        },
+        "worker": null,
+        "receipt": null,
+        "replay_allowed": false,
+        "construction_session_affected": false,
+        "authorization": {
+          "version": "yohaku-delegation/1",
+          "mode": "read_only",
+          "permissions": {
+            "read": true,
+            "write": false,
+            "run": false,
+            "delete": false,
+            "import": false
+          },
+          "execution_backend": "none",
+          "policy_sha256": null
+        },
+        "effective_capabilities": null,
+        "world_operations": [],
+        "checks": [],
+        "context_policy": "ai_node",
+        "submitted_context": null,
+        "cancel_confirmed": false,
+        "output_cursor_unit": "unicode_scalars",
+        "output_complete": false,
+        "duplicate": false,
+        "prompt_accepted": true,
+        "started_new_process": true,
+        "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+        "node_request_id": "r6-theory-transferable-mechanism-v1",
+        "requested_profile": {
+          "provider": "openai",
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "max",
+          "budget": {
+            "timeout_seconds": 900,
+            "max_tool_calls": 96
+          }
+        }
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 7,
+        "remaining_seconds": 5267.621091842651
+      }
+    }
+  },
+  {
+    "seq": 4201,
+    "at": 1794919399.6362233,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "tool": "ai_node_dispatch",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-application-offpath-resynthesis-v1",
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "task_sha256": "6fb0ed79fcebfdca497a1bab492efce1d965076756680f66a3224eea6cadb5d9",
+      "task_characters": 2318
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49",
+        "request_id": "ainode-47d45bdc8e463420e9d5e5c3f5d8720c497f02868f1dc64d",
+        "object": "chat-request-000026",
+        "version": "host-codex-tasks-collaboration-v2",
+        "status": "running",
+        "status_source": "Rust chat object",
+        "session_id": null,
+        "usage": null,
+        "elapsed_seconds": null,
+        "memory_versions": [],
+        "execution": "running",
+        "model_phase": null,
+        "model_settings": null,
+        "turn_settings": null,
+        "host_elapsed_seconds": null,
+        "output": "",
+        "next_cursor": 0,
+        "has_more": false,
+        "error": null,
+        "cancel": {
+          "at_ms": null,
+          "by": null,
+          "requested": false,
+          "result": null
+        },
+        "worker": null,
+        "receipt": null,
+        "replay_allowed": false,
+        "construction_session_affected": false,
+        "authorization": {
+          "version": "yohaku-delegation/1",
+          "mode": "read_only",
+          "permissions": {
+            "read": true,
+            "write": false,
+            "run": false,
+            "delete": false,
+            "import": false
+          },
+          "execution_backend": "none",
+          "policy_sha256": null
+        },
+        "effective_capabilities": null,
+        "world_operations": [],
+        "checks": [],
+        "context_policy": "ai_node",
+        "submitted_context": null,
+        "cancel_confirmed": false,
+        "output_cursor_unit": "unicode_scalars",
+        "output_complete": false,
+        "duplicate": false,
+        "prompt_accepted": true,
+        "started_new_process": true,
+        "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+        "node_request_id": "r6-application-offpath-resynthesis-v1",
+        "requested_profile": {
+          "provider": "openai",
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "max",
+          "budget": {
+            "timeout_seconds": 900,
+            "max_tool_calls": 96
+          }
+        }
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 6,
+        "remaining_seconds": 5264.198312520981
+      }
+    }
+  },
+  {
+    "seq": 4483,
+    "at": 1794919476.7971,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-theory-topic-root-v1",
+      "text_sha256": "6468ce4e84f906fb400ed914827644f0e490e0dbbbe12c794b7d3b89653194b8",
+      "text_characters": 302,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27:2",
+          "chat_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27",
+          "seq": 2,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "6468ce4e84f906fb400ed914827644f0e490e0dbbbe12c794b7d3b89653194b8",
+          "text_characters": 302,
+          "reply_to": null,
+          "created_at": 1794919475.859169,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 5187.041961669922
+      }
+    }
+  },
+  {
+    "seq": 4484,
+    "at": 1794919478.2310674,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-theory-topic-app-v1",
+      "text_sha256": "6468ce4e84f906fb400ed914827644f0e490e0dbbbe12c794b7d3b89653194b8",
+      "text_characters": 302,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-0701fa4e6d13327084c6d5c2:1",
+          "chat_id": "ai-chat-0701fa4e6d13327084c6d5c2",
+          "seq": 1,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "6468ce4e84f906fb400ed914827644f0e490e0dbbbe12c794b7d3b89653194b8",
+          "text_characters": 302,
+          "reply_to": null,
+          "created_at": 1794919477.1222637,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 5185.606724500656
+      }
+    }
+  },
+  {
+    "seq": 4502,
+    "at": 1794919495.5636475,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "mechanism_source_read",
+    "arguments": {
+      "origin": "workflow",
+      "path": "conjugation_frames/PROOF.zh.md",
+      "max_chars": 16000,
+      "offset": 0
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "id": "external/mechanisms-20261117/source/workflow/conjugation_frames/PROOF.zh.md",
+        "revision": 1,
+        "source": {
+          "repo": "epsilon-lain/yohaku",
+          "ref": "c51ccae2ea38ab14aa376fecdfed774403ce776b",
+          "path": "conjugation_frames/PROOF.zh.md",
+          "url": "https://raw.githubusercontent.com/epsilon-lain/yohaku/c51ccae2ea38ab14aa376fecdfed774403ce776b/research/proof-mechanisms-portfolio-2026-11-17/conjugation_frames/PROOF.zh.md",
+          "local": "/root/projects/yohaku/diagnostics/native-mechanisms-20261117-01/external/workflow/conjugation_frames/PROOF.zh.md",
+          "bytes": 7645,
+          "sha256": "96b6b9bed88c0a05ba99d0802717f28080d6cdc09942023e453e6ba5c4c2923a",
+          "git_blob": "6169a706fe442d6b8d5d5e6f974b80f6f2213066",
+          "origin": "workflow"
+        },
+        "authoritative_files": [],
+        "body_sha256": "96b6b9bed88c0a05ba99d0802717f28080d6cdc09942023e453e6ba5c4c2923a",
+        "offset": 0,
+        "total_characters": 4061,
+        "next_offset": null,
+        "adoption_recorded": false
+      }
+    }
+  },
+  {
+    "seq": 4532,
+    "at": 1794919526.9206505,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "request_id": "r6-root-short-plan-to-theory-v1",
+      "wake": [],
+      "text_sha256": "f95f1152c92845fd5d16fce199fb760091a7451803edc87da82b820dbf58dfe8",
+      "text_characters": 325
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27:3",
+          "chat_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27",
+          "seq": 3,
+          "sender_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+          "text_sha256": "f95f1152c92845fd5d16fce199fb760091a7451803edc87da82b820dbf58dfe8",
+          "text_characters": 325,
+          "reply_to": null,
+          "created_at": 1794919525.926943,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 5136.920650959015
+      }
+    }
+  },
+  {
+    "seq": 4533,
+    "at": 1794919528.486383,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-root-short-plan-to-application-v1",
+      "wake": [],
+      "text_sha256": "9d2223a7340d13298d4f9ad6095b8b0eef85fca6bba4566edbcdfbf16774352c",
+      "text_characters": 372
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:5",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 5,
+          "sender_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+          "text_sha256": "9d2223a7340d13298d4f9ad6095b8b0eef85fca6bba4566edbcdfbf16774352c",
+          "text_characters": 372,
+          "reply_to": null,
+          "created_at": 1794919527.4834628,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 5135.355775117874
+      }
+    }
+  },
+  {
+    "seq": 4544,
+    "at": 1794919563.4050257,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-c2ea3667aa5aed3137ffee53ff8d2f2d"
+    },
+    "tool": "research_finish",
+    "arguments": {
+      "reason": "已完成用户要求的首回合短索引、原两head显式Sol/max真实启动回读、计划/检查点及权威记忆保存；不等待研究，约300秒内主动结束。",
+      "open_questions": "两队尚在自主研究，当前无新路径/理论结果。由应用交稿后按唯一r6-root-evidence-and-review-coordination-v1显式登记root证据协调；共享余5回合中至少为协调/独立复核/最终各留1。原两task与预算/来源/范围须后续真实核验，不重放未知请求、不重置阶段。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "recorded": true,
+        "meaning": "This node chose to finish or sleep; no automatic restart without pending work"
+      }
+    }
+  },
+  {
+    "seq": 4549,
+    "at": 1794919590.397918,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "program_budget_allocate",
+    "arguments": {
+      "project_id": "native-application",
+      "request_id": "r6-app-runtime-fixture-budget-v1",
+      "search_apply": 0,
+      "verification_apply": 0,
+      "purpose": "Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search."
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "id": "program-fd52688e6d881e7ed2233dfd",
+        "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-0299a356d74db83b9ab4ebc7",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": null,
+        "source_set": null
+      }
+    }
+  },
+  {
+    "seq": 4551,
+    "at": 1794919597.1043925,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-app-method-choice-root-v1",
+      "text_sha256": "6e5591e8291fe543aa4910108f8c73e75b6fc703cf34d587ae8d9d2615723be1",
+      "text_characters": 283,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:6",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 6,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "6e5591e8291fe543aa4910108f8c73e75b6fc703cf34d587ae8d9d2615723be1",
+          "text_characters": 283,
+          "reply_to": null,
+          "created_at": 1794919596.1210752,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 5066.737559080124
+      }
+    }
+  },
+  {
+    "seq": 4552,
+    "at": 1794919598.6386833,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "request_id": "r6-app-method-choice-theory-v1",
+      "text_sha256": "6e5591e8291fe543aa4910108f8c73e75b6fc703cf34d587ae8d9d2615723be1",
+      "text_characters": 283,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-0701fa4e6d13327084c6d5c2:2",
+          "chat_id": "ai-chat-0701fa4e6d13327084c6d5c2",
+          "seq": 2,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "6e5591e8291fe543aa4910108f8c73e75b6fc703cf34d587ae8d9d2615723be1",
+          "text_characters": 283,
+          "reply_to": null,
+          "created_at": 1794919597.6202238,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 5065.202543973923
+      }
+    }
+  },
+  {
+    "seq": 4557,
+    "at": 1794919667.9542491,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-app-tool-argument-block-root-v1",
+      "wake": [],
+      "text_sha256": "6b36deb88950cf119d19cf0abeffc1fc4a8e0263e5d580c2428de17ac2f76d86",
+      "text_characters": 391
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:7",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 7,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "6b36deb88950cf119d19cf0abeffc1fc4a8e0263e5d580c2428de17ac2f76d86",
+          "text_characters": 391,
+          "reply_to": null,
+          "created_at": 1794919666.932814,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4995.889805555344
+      }
+    }
+  },
+  {
+    "seq": 4558,
+    "at": 1794919669.3229508,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "request_id": "r6-app-tool-argument-block-theory-v1",
+      "wake": [],
+      "text_sha256": "9233a0fca08ac1434f8df1125619c7c4a597e0504b22948ef960753313f94fd8",
+      "text_characters": 197
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-0701fa4e6d13327084c6d5c2:3",
+          "chat_id": "ai-chat-0701fa4e6d13327084c6d5c2",
+          "seq": 3,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "9233a0fca08ac1434f8df1125619c7c4a597e0504b22948ef960753313f94fd8",
+          "text_characters": 197,
+          "reply_to": null,
+          "created_at": 1794919668.3348186,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4994.519005537033
+      }
+    }
+  },
+  {
+    "seq": 4559,
+    "at": 1794919669.4668155,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "program_budget_status",
+    "arguments": {},
+    "result": {
+      "ok": true,
+      "result": {
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "allocations": [
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task": null,
+            "source_set": null
+          }
+        ],
+        "issued": {
+          "search": 0,
+          "verification": 0
+        },
+        "reported": {
+          "search": 0,
+          "verification": 0
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  {
+    "seq": 4598,
+    "at": 1794919897.9202456,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-theory-exact-app-v1",
+      "text_sha256": "f521d4e574bbe0e84343852798e59cc8e362b3a635d255f48e41deec99676b08",
+      "text_characters": 463,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-0701fa4e6d13327084c6d5c2:4",
+          "chat_id": "ai-chat-0701fa4e6d13327084c6d5c2",
+          "seq": 4,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "f521d4e574bbe0e84343852798e59cc8e362b3a635d255f48e41deec99676b08",
+          "text_characters": 463,
+          "reply_to": null,
+          "created_at": 1794919896.8575141,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4765.9240136146545
+      }
+    }
+  },
+  {
+    "seq": 4599,
+    "at": 1794919899.4126768,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-theory-exact-root-v1",
+      "text_sha256": "d676f6fa02d1e1c8928e312482ef355b361bf6f1439223e65bea9fc9e18260c9",
+      "text_characters": 520,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27:4",
+          "chat_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27",
+          "seq": 4,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "d676f6fa02d1e1c8928e312482ef355b361bf6f1439223e65bea9fc9e18260c9",
+          "text_characters": 520,
+          "reply_to": null,
+          "created_at": 1794919898.3100574,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4764.441567897797
+      }
+    }
+  },
+  {
+    "seq": 4629,
+    "at": 1794919985.4251473,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "program_budget_status",
+    "arguments": {},
+    "result": {
+      "ok": true,
+      "result": {
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "allocations": [
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task": null,
+            "source_set": null
+          }
+        ],
+        "issued": {
+          "search": 0,
+          "verification": 0
+        },
+        "reported": {
+          "search": 0,
+          "verification": 0
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  {
+    "seq": 4640,
+    "at": 1794920010.9114354,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-theory-exact-v2-app",
+      "text_sha256": "47af7bf4049e9abfe26071edbe96d5847bdd8bea35633fe00146f970eb19c8a5",
+      "text_characters": 150,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-0701fa4e6d13327084c6d5c2:5",
+          "chat_id": "ai-chat-0701fa4e6d13327084c6d5c2",
+          "seq": 5,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "47af7bf4049e9abfe26071edbe96d5847bdd8bea35633fe00146f970eb19c8a5",
+          "text_characters": 150,
+          "reply_to": null,
+          "created_at": 1794920009.8446033,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4652.937014341354
+      }
+    }
+  },
+  {
+    "seq": 4641,
+    "at": 1794920012.3688645,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-theory-exact-v2-root",
+      "text_sha256": "47af7bf4049e9abfe26071edbe96d5847bdd8bea35633fe00146f970eb19c8a5",
+      "text_characters": 150,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27:5",
+          "chat_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27",
+          "seq": 5,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "47af7bf4049e9abfe26071edbe96d5847bdd8bea35633fe00146f970eb19c8a5",
+          "text_characters": 150,
+          "reply_to": null,
+          "created_at": 1794920011.3160396,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4651.47935128212
+      }
+    }
+  },
+  {
+    "seq": 4651,
+    "at": 1794920079.668739,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "request_id": "r6-app-theory-read-and-reject-pruning-v1",
+      "wake": [],
+      "text_sha256": "52c2dba3fc529d5a3a4c84987e20c42983d82632b8eaaa5ae29e0e69c57cd432",
+      "text_characters": 279
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-0701fa4e6d13327084c6d5c2:6",
+          "chat_id": "ai-chat-0701fa4e6d13327084c6d5c2",
+          "seq": 6,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "52c2dba3fc529d5a3a4c84987e20c42983d82632b8eaaa5ae29e0e69c57cd432",
+          "text_characters": 279,
+          "reply_to": null,
+          "created_at": 1794920078.6023061,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4584.177956104279
+      }
+    }
+  },
+  {
+    "seq": 4652,
+    "at": 1794920081.3068051,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-app-theory-read-and-reject-root-v1",
+      "wake": [],
+      "text_sha256": "843ee6369dad0c2086ae1736cf0d9cf4da866790afd014f10ad910dd5f1a6f13",
+      "text_characters": 310
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:8",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 8,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "843ee6369dad0c2086ae1736cf0d9cf4da866790afd014f10ad910dd5f1a6f13",
+          "text_characters": 310,
+          "reply_to": null,
+          "created_at": 1794920080.192088,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4582.5414435863495
+      }
+    }
+  },
+  {
+    "seq": 4677,
+    "at": 1794920155.3554184,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-theory-ack-app-rejection-v1",
+      "reply_to": "ai-chat-0701fa4e6d13327084c6d5c2:6",
+      "text_sha256": "a095e11bee39405ebd4bb5aacdadb3ea669c344d6f066b2ff189ba97f7eba687",
+      "text_characters": 152,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-0701fa4e6d13327084c6d5c2:7",
+          "chat_id": "ai-chat-0701fa4e6d13327084c6d5c2",
+          "seq": 7,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "a095e11bee39405ebd4bb5aacdadb3ea669c344d6f066b2ff189ba97f7eba687",
+          "text_characters": 152,
+          "reply_to": "ai-chat-0701fa4e6d13327084c6d5c2:6",
+          "created_at": 1794920154.2788312,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4508.491701602936
+      }
+    }
+  },
+  {
+    "seq": 4695,
+    "at": 1794920217.913797,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-theory-final-delivery-root-v1",
+      "text_sha256": "ba2296604a373afa7c7f5397005d4961b29fe8ab754217286bd718c1e38ffb81",
+      "text_characters": 539,
+      "wake": []
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27:6",
+          "chat_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27",
+          "seq": 6,
+          "sender_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+          "text_sha256": "ba2296604a373afa7c7f5397005d4961b29fe8ab754217286bd718c1e38ffb81",
+          "text_characters": 539,
+          "reply_to": null,
+          "created_at": 1794920216.8670228,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4445.935262441635
+      }
+    }
+  },
+  {
+    "seq": 4697,
+    "at": 1794920233.5001845,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "theory",
+      "actor_node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872"
+    },
+    "tool": "research_finish",
+    "arguments": {
+      "reason": "本turn自选纯解析小题已完成：M-538c85aecd32c8d0@2给共同框架跨指定D的C/I受限最少修复、精确残余frame/rho及work/peak，自含证明/反例/手核证书；中文数学稿与过程索引保存读回，权威记忆续存，root已收精确交付。应用针对@1限域解析review和拒作一般beam下界理由实际读取记录；无程序/CLI或比赛改善声明。现在主动结束，不等待、不新唤醒/续行。",
+      "open_questions": "未派任务：@2独立解析复核、实际计量编译/固定官方CLI与独立解释器回放、允许M/S的其它修复。@1的应用review不自动覆盖@2；本题0apply，不证明全Stable最短或07445改进。应用程序参数桥/计算及最终收尾由root后续按原共享预算协调，本节点不request_continue。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "recorded": true,
+        "meaning": "This node chose to finish or sleep; no automatic restart without pending work"
+      }
+    }
+  },
+  {
+    "seq": 4702,
+    "at": 1794920291.468245,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-app-root-continuation-profile-warning-v1",
+      "wake": [],
+      "text_sha256": "122351367c89ce20ceff7361bcb640fa8269d8f56af5fbf92bd7416eebfd8dde",
+      "text_characters": 393
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:9",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 9,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "122351367c89ce20ceff7361bcb640fa8269d8f56af5fbf92bd7416eebfd8dde",
+          "text_characters": 393,
+          "reply_to": null,
+          "created_at": 1794920290.3795843,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4372.381574392319
+      }
+    }
+  },
+  {
+    "seq": 4704,
+    "at": 1794920291.6746829,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "research_continue",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-root-evidence-and-review-coordination-v1",
+      "task_sha256": "4bf928d06b3c02b6249fd5648b5d168eabfde914740e2999ffa589e859f394ea",
+      "task_characters": 282
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "queued": true,
+        "starts_model_now": false,
+        "event": 4703
+      }
+    }
+  },
+  {
+    "seq": 4707,
+    "at": 1794920293.8061538,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-app-final-evidence-and-continuation-receipt-v1",
+      "wake": [],
+      "text_sha256": "935cf67dd4e05294fec8e9a73a6cbec21211ba5793b4ad022df346389dd92d3b",
+      "text_characters": 372
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:10",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 10,
+          "sender_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+          "text_sha256": "935cf67dd4e05294fec8e9a73a6cbec21211ba5793b4ad022df346389dd92d3b",
+          "text_characters": 372,
+          "reply_to": null,
+          "created_at": 1794920292.7540474,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 5,
+        "remaining_seconds": 4370.042174577713
+      }
+    }
+  },
+  {
+    "seq": 4709,
+    "at": 1794920294.006312,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": "application",
+      "actor_node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49"
+    },
+    "tool": "research_finish",
+    "arguments": {
+      "reason": "应用有限任务收尾：新离路径方法/源/规则冻结并保存；0/0准备夹具预算参数桥明确拒绝，原ID查询后未重放，无新程序或计分结果。已实际读取理论@1/@2并留限域不同作者解析review，拒把受限CI数用于含MS的beam。按用户只登记一次root证据协调续行，配置1800/128不符已先报告并留原回执。立即最终答复。",
+      "open_questions": "原生task_submit为何丢budget_allocation_id；root continuation能否合法继承/夹紧Sol/max900秒96工具。合法接口恢复前不得把准备作运行或unknown作重放授权；Stable07445<15仍未知，旧15/work128/peak13历史上界保持。独立程序验收与最终root仍需同阶段按预算决定。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "recorded": true,
+        "meaning": "This node chose to finish or sleep; no automatic restart without pending work"
+      }
+    }
+  },
+  {
+    "seq": 4989,
+    "at": 1794920460.0336068,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "program_budget_allocate",
+    "arguments": {
+      "project_id": "native-application",
+      "request_id": "r6-root-runtime-fixture-after-validator-fix-budget-v1",
+      "search_apply": 0,
+      "verification_apply": 0,
+      "purpose": "After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay."
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "id": "program-bda6dc0945a703d4c90d2966",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 0,
+        "verification_cap": 0,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": null,
+        "source_set": null
+      }
+    }
+  },
+  {
+    "seq": 4997,
+    "at": 1794920509.4614158,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "program_budget_allocate",
+    "arguments": {
+      "project_id": "native-application",
+      "request_id": "r6-root-frozen-offpath-execution-budget-v1",
+      "search_apply": 600000,
+      "verification_apply": 6000,
+      "purpose": "Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay."
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "id": "program-3ad0a623ab2690a2b074aa1b",
+        "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+        "node": "ai-node-60ce43c0fdb954913d5cf32f",
+        "project": "native-application",
+        "search_cap": 600000,
+        "verification_cap": 6000,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": null,
+        "source_set": null
+      }
+    }
+  },
+  {
+    "seq": 5005,
+    "at": 1794920602.296596,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-root-fixed-worker-execution-receipt-v1",
+      "wake": [],
+      "text_sha256": "7d23086dcfc768abe6f38303066a13c6116b18881ac6f0572ace1cf68913b66a",
+      "text_characters": 475
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:11",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 11,
+          "sender_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+          "text_sha256": "7d23086dcfc768abe6f38303066a13c6116b18881ac6f0572ace1cf68913b66a",
+          "text_characters": 475,
+          "reply_to": null,
+          "created_at": 1794920601.0956702,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 4,
+        "remaining_seconds": 4061.5601189136505
+      }
+    }
+  },
+  {
+    "seq": 5008,
+    "at": 1794920641.988383,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "ai_node_create",
+    "arguments": {
+      "role": "本轮独立官方CLI与全路径验收同伴",
+      "memory_source": "files/theory/r6-independent-review-memory.md.tex",
+      "project_ids": [
+        "native-theory",
+        "native-application"
+      ],
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "request_id": "r6-independent-acceptance-peer-create-v1",
+      "task_sha256": "ef5f697efe185151c535fc362bd221a3bc96f52b4b256e200a6e1e45380439ea",
+      "task_characters": 74
+    },
+    "result": {
+      "ok": false,
+      "error": "Descendants need new memory inside their authorized project or ai-nodes; existing foreign documents cannot become writable memory",
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 4,
+        "remaining_seconds": 4021.8679695129395
+      }
+    }
+  },
+  {
+    "seq": 5010,
+    "at": 1794920665.2966928,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "ai_node_create",
+    "arguments": {
+      "role": "本轮独立官方CLI与全路径验收同伴",
+      "memory_source": "files/theory/r6-independent-peer-memory.md.tex",
+      "project_ids": [
+        "native-theory",
+        "native-application"
+      ],
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "request_id": "r6-independent-acceptance-peer-new-memory-create-v1",
+      "task_sha256": "ef5f697efe185151c535fc362bd221a3bc96f52b4b256e200a6e1e45380439ea",
+      "task_characters": 74
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "node": {
+          "node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+          "role": "本轮独立官方CLI与全路径验收同伴",
+          "initial_task_sha256": "ef5f697efe185151c535fc362bd221a3bc96f52b4b256e200a6e1e45380439ea",
+          "initial_task_characters": 74,
+          "memory_source": "files/theory/r6-independent-peer-memory.md.tex",
+          "created_by": "ai-node-60ce43c0fdb954913d5cf32f",
+          "created_at": 1794920663.9703338,
+          "profile": {
+            "provider": "openai",
+            "model": "gpt-6.1-sol",
+            "reasoning_effort": "max",
+            "budget": {
+              "timeout_seconds": 900,
+              "max_tool_calls": 96
+            }
+          },
+          "tasks": [],
+          "session_id": null,
+          "segments": [],
+          "generation": 0,
+          "context": null,
+          "memory_origin": {
+            "source": "files/theory/r6-independent-peer-memory.md.tex",
+            "revision": "284c565182a67168b895e4bfc6556f2a9f01b3640b626f7fa1a06bdefc0f3589"
+          },
+          "project_scopes": [
+            {
+              "project_id": "native-application",
+              "root": "files/application",
+              "manifest_source": "files/application/project.json.tex"
+            },
+            {
+              "project_id": "native-theory",
+              "root": "files/theory",
+              "manifest_source": "files/theory/project.json.tex"
+            }
+          ]
+        },
+        "duplicate": false,
+        "started_model": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 4,
+        "remaining_seconds": 3998.5619564056396
+      }
+    }
+  },
+  {
+    "seq": 5029,
+    "at": 1794920916.089112,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "ai_node_dispatch",
+    "arguments": {
+      "node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "request_id": "r6-independent-official-fullpath-acceptance-v1",
+      "profile": {
+        "provider": "openai",
+        "model": "gpt-6.1-sol",
+        "reasoning_effort": "max",
+        "budget": {
+          "timeout_seconds": 900,
+          "max_tool_calls": 96
+        }
+      },
+      "task_sha256": "0b43f36fdb1e55cf666eae604bcc7c47b7601951d21c350c8934b488295d7936",
+      "task_characters": 3608
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011",
+        "request_id": "ainode-9280308ec3760dc2e0e55f66384bfefb1eddd643436eb77e",
+        "object": "chat-request-000028",
+        "version": "host-codex-tasks-collaboration-v2",
+        "status": "running",
+        "status_source": "Rust chat object",
+        "session_id": null,
+        "usage": null,
+        "elapsed_seconds": null,
+        "memory_versions": [],
+        "execution": "running",
+        "model_phase": null,
+        "model_settings": null,
+        "turn_settings": null,
+        "host_elapsed_seconds": null,
+        "output": "",
+        "next_cursor": 0,
+        "has_more": false,
+        "error": null,
+        "cancel": {
+          "at_ms": null,
+          "by": null,
+          "requested": false,
+          "result": null
+        },
+        "worker": null,
+        "receipt": null,
+        "replay_allowed": false,
+        "construction_session_affected": false,
+        "authorization": {
+          "version": "yohaku-delegation/1",
+          "mode": "read_only",
+          "permissions": {
+            "read": true,
+            "write": false,
+            "run": false,
+            "delete": false,
+            "import": false
+          },
+          "execution_backend": "none",
+          "policy_sha256": null
+        },
+        "effective_capabilities": null,
+        "world_operations": [],
+        "checks": [],
+        "context_policy": "ai_node",
+        "submitted_context": null,
+        "cancel_confirmed": false,
+        "output_cursor_unit": "unicode_scalars",
+        "output_complete": false,
+        "duplicate": false,
+        "prompt_accepted": true,
+        "started_new_process": true,
+        "node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+        "node_request_id": "r6-independent-official-fullpath-acceptance-v1",
+        "requested_profile": {
+          "provider": "openai",
+          "model": "gpt-6.1-sol",
+          "reasoning_effort": "max",
+          "budget": {
+            "timeout_seconds": 900,
+            "max_tool_calls": 96
+          }
+        }
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 4,
+        "remaining_seconds": 3747.7758305072784
+      }
+    }
+  },
+  {
+    "seq": 5318,
+    "at": 1794921003.7592888,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "request_id": "r6-root-scope-clarification-to-reviewer-v1",
+      "wake": [],
+      "text_sha256": "ebeb4330e4c61ebc90df271019f4e707a873c31e1f5b532b819bd0243558a98f",
+      "text_characters": 214
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-5690e3fc7d3ccd2e9aa3eaad:1",
+          "chat_id": "ai-chat-5690e3fc7d3ccd2e9aa3eaad",
+          "seq": 1,
+          "sender_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+          "text_sha256": "ebeb4330e4c61ebc90df271019f4e707a873c31e1f5b532b819bd0243558a98f",
+          "text_characters": 214,
+          "reply_to": null,
+          "created_at": 1794921002.5003908,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 3,
+        "remaining_seconds": 3660.1152050495148
+      }
+    }
+  },
+  {
+    "seq": 5355,
+    "at": 1794921185.1204603,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "tool": "program_budget_allocate",
+    "arguments": {
+      "project_id": "native-theory",
+      "request_id": "r6-independent-fixed-acceptance-budget-v1",
+      "search_apply": 0,
+      "verification_apply": 5000,
+      "purpose": "Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries."
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "id": "program-18cdbe71f56ee4a53991f8ee",
+        "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+        "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+        "project": "native-theory",
+        "search_cap": 0,
+        "verification_cap": 5000,
+        "search_issued": 0,
+        "verification_issued": 0,
+        "task": null,
+        "source_set": null
+      }
+    }
+  },
+  {
+    "seq": 5372,
+    "at": 1794921191.290657,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-6094ccd810d80ae30ff9c006bceb9e64"
+    },
+    "tool": "research_finish",
+    "arguments": {
+      "reason": "本次证据协调已完成：原模型终态/接口拒绝按原ID核清，修复worker真实执行未改冻结程序并保存有限负结果、全CLI与同作者全路径验收，理论精确限域review；独立作者已实际Sol/max派发并回读。保存后立即结束，不等待模型。",
+      "open_questions": "独立peer r6-independent-official-fullpath-acceptance-v1/model-task-d72eded67cc42e86e4dc23dc047db011仍在途，需真正另一作者CLI+逐动作独立解释器验收。由peer保存后唯一显式请求r6-root-final-after-independent-acceptance-v1；后续root只核验收和最终中文证据闭合，不新搜索/重置阶段。当前15/128/13未改善；有限beam不证最短性。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "recorded": true,
+        "meaning": "This node chose to finish or sleep; no automatic restart without pending work"
+      }
+    }
+  },
+  {
+    "seq": 5389,
+    "at": 1794921251.1546965,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "tool": "program_budget_status",
+    "arguments": {},
+    "result": {
+      "ok": true,
+      "result": {
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "allocations": [
+          {
+            "id": "program-18cdbe71f56ee4a53991f8ee",
+            "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+            "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+            "project": "native-theory",
+            "search_cap": 0,
+            "verification_cap": 5000,
+            "search_issued": 0,
+            "verification_issued": 216,
+            "task_sha256": "3d47fc68154d182dc3b42deaa00a5ba344c90fc1ae76f8eefc6258d85cc13637",
+            "task_characters": 45,
+            "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+          },
+          {
+            "id": "program-3ad0a623ab2690a2b074aa1b",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 600000,
+            "verification_cap": 6000,
+            "search_issued": 140352,
+            "verification_issued": 96,
+            "task_sha256": "8d9ea5e05a35b229c822f08085bce011d0e0f1af134167af3e250891145481b1",
+            "task_characters": 45,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+          },
+          {
+            "id": "program-bda6dc0945a703d4c90d2966",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task_sha256": "c134110a1b288195f983a20c696aaaef49214c839cfc2a758bc913b7dc9762ea",
+            "task_characters": 45,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+          },
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task": null,
+            "source_set": null
+          }
+        ],
+        "issued": {
+          "search": 140352,
+          "verification": 312
+        },
+        "reported": {
+          "search": 140329,
+          "verification": 301
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  {
+    "seq": 5402,
+    "at": 1794921359.8692248,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "tool": "program_budget_status",
+    "arguments": {},
+    "result": {
+      "ok": true,
+      "result": {
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "allocations": [
+          {
+            "id": "program-18cdbe71f56ee4a53991f8ee",
+            "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+            "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+            "project": "native-theory",
+            "search_cap": 0,
+            "verification_cap": 5000,
+            "search_issued": 0,
+            "verification_issued": 216,
+            "task_sha256": "3d47fc68154d182dc3b42deaa00a5ba344c90fc1ae76f8eefc6258d85cc13637",
+            "task_characters": 45,
+            "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+          },
+          {
+            "id": "program-3ad0a623ab2690a2b074aa1b",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 600000,
+            "verification_cap": 6000,
+            "search_issued": 140352,
+            "verification_issued": 96,
+            "task_sha256": "8d9ea5e05a35b229c822f08085bce011d0e0f1af134167af3e250891145481b1",
+            "task_characters": 45,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+          },
+          {
+            "id": "program-bda6dc0945a703d4c90d2966",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task_sha256": "c134110a1b288195f983a20c696aaaef49214c839cfc2a758bc913b7dc9762ea",
+            "task_characters": 45,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+          },
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task": null,
+            "source_set": null
+          }
+        ],
+        "issued": {
+          "search": 140352,
+          "verification": 312
+        },
+        "reported": {
+          "search": 140329,
+          "verification": 301
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  {
+    "seq": 5426,
+    "at": 1794921631.940861,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-independent-acceptance-handoff-message-v1",
+      "wake": [],
+      "text_sha256": "d0d6abcbdb3916244982f3d286acb1f2741d83abeaf3762ae46c8350cceaef61",
+      "text_characters": 941
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-5690e3fc7d3ccd2e9aa3eaad:2",
+          "chat_id": "ai-chat-5690e3fc7d3ccd2e9aa3eaad",
+          "seq": 2,
+          "sender_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+          "text_sha256": "d0d6abcbdb3916244982f3d286acb1f2741d83abeaf3762ae46c8350cceaef61",
+          "text_characters": 941,
+          "reply_to": null,
+          "created_at": 1794921630.6123848,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 3,
+        "remaining_seconds": 3031.940623998642
+      }
+    }
+  },
+  {
+    "seq": 5428,
+    "at": 1794921653.4491503,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "tool": "research_continue",
+    "arguments": {
+      "node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "request_id": "r6-root-final-after-independent-acceptance-v1",
+      "task_sha256": "36fd90a068282fb06db2b779ca3d8c9797b0eb9818444b92dbf22f10b0eea1a5",
+      "task_characters": 315
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "queued": true,
+        "starts_model_now": false,
+        "event": 5427
+      }
+    }
+  },
+  {
+    "seq": 5433,
+    "at": 1794921662.7127483,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "task_id": "model-task-d72eded67cc42e86e4dc23dc047db011"
+    },
+    "tool": "research_finish",
+    "arguments": {
+      "reason": "独立官方CLI与四条逐动作全路径验收、有限搜索审源/范围复核及理论小证书核证均已真实完成，程序exit0/cleanup，中文稿/证据/过程/权威记忆已保存。仅一次root最终收尾续行r6-root-final-after-independent-acceptance-v1已queued(event5427)，不启动本节点新回合，不另排模型。",
+      "open_questions": "sac-07445仍15/work128/peak13，上界而非最短；140329次beam搜索及逆347字典未由本节点重算，正9层中断/丢弃限制保留。理论通用结论仅C/I修复类，小合成核证非比赛成绩。最终root仅证据闭合，无新搜索/新数学主线。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "recorded": true,
+        "meaning": "This node chose to finish or sleep; no automatic restart without pending work"
+      }
+    }
+  },
+  {
+    "seq": 5745,
+    "at": 1794921928.6433885,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "tool": "program_budget_status",
+    "arguments": {},
+    "result": {
+      "ok": true,
+      "result": {
+        "goal_id": "native-mechanisms-next-20261117-v1",
+        "caps": {
+          "search": 2000000,
+          "verification": 50000
+        },
+        "allocations": [
+          {
+            "id": "program-18cdbe71f56ee4a53991f8ee",
+            "spec": "{\"actor\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"node\": \"ai-node-22a9d6534cbf32a3d7d5029c\", \"project\": \"native-theory\", \"purpose\": \"Independent-author fixed 4 LOCKED_BASELINES official CLI plus exact per-action paths, synthetic M538@2 7-step certificate and five frozen S/D guard probes. Deterministic no search. Newly written literal catalogue/divide-conquer interpreter with every primitive @independent_step. source_set33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb; one producer150s; all official calls in meter.verification, Python CLI preserves trusted env; no automatic retries.\", \"request_id\": \"r6-independent-fixed-acceptance-budget-v1\", \"search\": 0, \"verification\": 5000}",
+            "node": "ai-node-22a9d6534cbf32a3d7d5029c",
+            "project": "native-theory",
+            "search_cap": 0,
+            "verification_cap": 5000,
+            "search_issued": 0,
+            "verification_issued": 216,
+            "task_sha256": "3d47fc68154d182dc3b42deaa00a5ba344c90fc1ae76f8eefc6258d85cc13637",
+            "task_characters": 45,
+            "source_set": "33e9431961bb10ad7043a57b7c31eaeaa443e0af70020d93eeca563bfc0b6dbb"
+          },
+          {
+            "id": "program-3ad0a623ab2690a2b074aa1b",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"Execute original application author's frozen deterministic rank<=3 exact Stable structural-diversity beam + exact empty B4 on unchanged source_set8bdad4ae; seed0/nonrandom, local590000/wall90s, max producer150s, max100 candidate verifications; includes official CLI subprocess and @independent_step. Independent-review15000+ verification reserved. Original fixture rejection retained; this is first actual research producer, not a replay.\", \"request_id\": \"r6-root-frozen-offpath-execution-budget-v1\", \"search\": 600000, \"verification\": 6000}",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 600000,
+            "verification_cap": 6000,
+            "search_issued": 140352,
+            "verification_issued": 96,
+            "task_sha256": "8d9ea5e05a35b229c822f08085bce011d0e0f1af134167af3e250891145481b1",
+            "task_characters": 45,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+          },
+          {
+            "id": "program-bda6dc0945a703d4c90d2966",
+            "spec": "{\"actor\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"node\": \"ai-node-60ce43c0fdb954913d5cf32f\", \"project\": \"native-application\", \"purpose\": \"After explicit HOST validator repair and original r6-app-runtime-fixture-v1 query confirms no task: run unchanged no-move fixture once on frozen source_set8bdad4ae, public meter inspection only; not research search or replay.\", \"request_id\": \"r6-root-runtime-fixture-after-validator-fix-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-60ce43c0fdb954913d5cf32f",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task_sha256": "c134110a1b288195f983a20c696aaaef49214c839cfc2a758bc913b7dc9762ea",
+            "task_characters": 45,
+            "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343"
+          },
+          {
+            "id": "program-fd52688e6d881e7ed2233dfd",
+            "spec": "{\"actor\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"node\": \"ai-node-0299a356d74db83b9ab4ebc7\", \"project\": \"native-application\", \"purpose\": \"Frozen no-move fixture: inspect meter public contexts, check fixed official archive bytes; not research search.\", \"request_id\": \"r6-app-runtime-fixture-budget-v1\", \"search\": 0, \"verification\": 0}",
+            "node": "ai-node-0299a356d74db83b9ab4ebc7",
+            "project": "native-application",
+            "search_cap": 0,
+            "verification_cap": 0,
+            "search_issued": 0,
+            "verification_issued": 0,
+            "task": null,
+            "source_set": null
+          }
+        ],
+        "issued": {
+          "search": 140352,
+          "verification": 312
+        },
+        "reported": {
+          "search": 140329,
+          "verification": 301
+        },
+        "unresolved_leases": [],
+        "unused_issued_is_not_refunded": true
+      }
+    }
+  },
+  {
+    "seq": 5782,
+    "at": 1794922455.391287,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-b912b62d9e95d94ddb26bfd6",
+      "request_id": "r6-root-final-closeout-to-theory-v1",
+      "wake": [],
+      "text_sha256": "b7f15dcce4f679110d5fb383a143f52cfa057dc5501413e0488535a9a177b8f7",
+      "text_characters": 426
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27:7",
+          "chat_id": "ai-chat-3fe6dd5a8db3bbdf7783fa27",
+          "seq": 7,
+          "sender_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+          "text_sha256": "b7f15dcce4f679110d5fb383a143f52cfa057dc5501413e0488535a9a177b8f7",
+          "text_characters": 426,
+          "reply_to": null,
+          "created_at": 1794922453.8704674,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 2,
+        "remaining_seconds": 2208.497386932373
+      }
+    }
+  },
+  {
+    "seq": 5783,
+    "at": 1794922457.7815733,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-0299a356d74db83b9ab4ebc7",
+      "request_id": "r6-root-final-closeout-to-application-v1",
+      "wake": [],
+      "text_sha256": "b7f15dcce4f679110d5fb383a143f52cfa057dc5501413e0488535a9a177b8f7",
+      "text_characters": 426
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-ef6c201bb77037429a1df1c0:12",
+          "chat_id": "ai-chat-ef6c201bb77037429a1df1c0",
+          "seq": 12,
+          "sender_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+          "text_sha256": "b7f15dcce4f679110d5fb383a143f52cfa057dc5501413e0488535a9a177b8f7",
+          "text_characters": 426,
+          "reply_to": null,
+          "created_at": 1794922456.1714795,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 2,
+        "remaining_seconds": 2206.1213297843933
+      }
+    }
+  },
+  {
+    "seq": 5784,
+    "at": 1794922460.1137726,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "tool": "ai_message_send",
+    "arguments": {
+      "node_id": "ai-node-22a9d6534cbf32a3d7d5029c",
+      "request_id": "r6-root-final-closeout-to-independent-v1",
+      "wake": [],
+      "text_sha256": "b7f15dcce4f679110d5fb383a143f52cfa057dc5501413e0488535a9a177b8f7",
+      "text_characters": 426
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "message": {
+          "message_id": "ai-chat-5690e3fc7d3ccd2e9aa3eaad:3",
+          "chat_id": "ai-chat-5690e3fc7d3ccd2e9aa3eaad",
+          "seq": 3,
+          "sender_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+          "text_sha256": "b7f15dcce4f679110d5fb383a143f52cfa057dc5501413e0488535a9a177b8f7",
+          "text_characters": 426,
+          "reply_to": null,
+          "created_at": 1794922458.5566099,
+          "provenance": null
+        },
+        "wake_requests": {},
+        "tasks": {},
+        "duplicate": false
+      },
+      "host_workflow_budget": {
+        "experiment_id": "native-mechanisms-next-20261117-v1",
+        "native_turns_remaining": 2,
+        "remaining_seconds": 2203.7777540683746
+      }
+    }
+  },
+  {
+    "seq": 5788,
+    "at": 1794922543.4655142,
+    "actor": {
+      "experiment_id": "native-mechanisms-next-20261117-v1",
+      "group_id": "native-theory-application-sol-20261116-01",
+      "team": null,
+      "actor_node_id": "ai-node-60ce43c0fdb954913d5cf32f",
+      "task_id": "model-task-2a5b8d3f21e2f0248f03f512492a24fa"
+    },
+    "tool": "research_finish",
+    "arguments": {
+      "reason": "本阶段最终证据闭合完成：三真实程序、五前序模型均按原ID确认terminal/cleanup；理论精确命题/反例/合成证书与有限未命中、另一作者官方CLI+四条全路径验收均核证；最终中文稿/过程索引/原字节证书与判定副本已保存读回，权威记忆已续存。本final不新运行/派发，立即结束，不再续行。",
+      "open_questions": "没有本阶段待执行的研究/验收任务；15步仍只是合法上界，有限beam未命中不证明最短。一般含M/S机制和未探索路线是未排工作，不请求延长或新阶段。当前final root进程的最终cleanup由HOST在返回后观察，未提前自证；余2模型回合不自动消费。"
+    },
+    "result": {
+      "ok": true,
+      "result": {
+        "recorded": true,
+        "meaning": "This node chose to finish or sleep; no automatic restart without pending work"
+      }
+    }
+  }
+]

@@ -1,0 +1,222 @@
+[
+  {
+    "actions": [
+      14,
+      17
+    ],
+    "official_trace": [
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ]
+    ],
+    "independent_trace": [
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ]
+    ],
+    "lengths": [
+      2,
+      3,
+      2
+    ],
+    "ranks": [
+      2,
+      3,
+      2
+    ],
+    "signature": [
+      2,
+      7,
+      3
+    ],
+    "every_state_equal": true
+  },
+  {
+    "actions": [
+      16
+    ],
+    "official_trace": [
+      [
+        [
+          3,
+          -1
+        ],
+        [
+          2
+        ],
+        [
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          -1
+        ],
+        [
+          1
+        ]
+      ]
+    ],
+    "independent_trace": [
+      [
+        [
+          3,
+          -1
+        ],
+        [
+          2
+        ],
+        [
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          -1
+        ],
+        [
+          1
+        ]
+      ]
+    ],
+    "lengths": [
+      4,
+      3
+    ],
+    "ranks": [
+      3,
+      2
+    ],
+    "signature": [
+      1,
+      7,
+      4
+    ],
+    "every_state_equal": true
+  },
+  {
+    "actions": [
+      16
+    ],
+    "official_trace": [
+      [
+        [
+          2
+        ],
+        [
+          1
+        ]
+      ],
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "independent_trace": [
+      [
+        [
+          2
+        ],
+        [
+          1
+        ]
+      ],
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "lengths": [
+      2,
+      1
+    ],
+    "ranks": [
+      2,
+      1
+    ],
+    "signature": [
+      1,
+      3,
+      2
+    ],
+    "every_state_equal": true
+  },
+  {
+    "initial": [
+      [
+        1,
+        2,
+        -1
+      ],
+      [
+        2
+      ]
+    ],
+    "action": 16,
+    "both_reject": true
+  },
+  {
+    "initial": [
+      [
+        1
+      ],
+      [
+        -2
+      ]
+    ],
+    "action": 16,
+    "both_reject": true
+  }
+]

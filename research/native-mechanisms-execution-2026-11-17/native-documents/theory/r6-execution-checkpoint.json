@@ -1,0 +1,74 @@
+{
+  "stage": "native-mechanisms-next-20261117-v1",
+  "authoritative_first_admission_epoch": 1794919263.8307414,
+  "authoritative_deadline_epoch": 1794924663.8307414,
+  "authoritative_deadline_china": "2026-11-17 22:11:03.831 +08:00",
+  "deadline_source": "HOST current_task STATE correction; confirmed program receipt budget binding.deadline; prior reservation-derived deadline is noncontrolling historical estimate",
+  "model_task": "model-task-6094ccd810d80ae30ff9c006bceb9e64",
+  "requested_and_actual_profile": "openai/gpt-6.1-sol/max,900 seconds/96 tools",
+  "old_model_tasks": {
+    "theory": {
+      "task_id": "model-task-2ed3e5bb0bea4f7e826102506ce40872",
+      "status": "done",
+      "execution": "ended",
+      "native_exit_code": 0,
+      "reaped": true,
+      "native_cleanup_complete": true
+    },
+    "application": {
+      "task_id": "model-task-5f7ea7b9088bdeac230a5604540b9d49",
+      "status": "done",
+      "execution": "ended",
+      "native_exit_code": 0,
+      "reaped": true,
+      "native_cleanup_complete": true
+    }
+  },
+  "original_rejected_program": {
+    "request_id": "r6-app-runtime-fixture-v1",
+    "query": "unknown_task/replay_allowed=false; lookup-derived id not actual task",
+    "host_confirmation": "budget field stripped by previous wrapper; no program launched; validator repair in this worker",
+    "not_replayed": true
+  },
+  "fixture": {
+    "request_id": "r6-root-runtime-fixture-after-validator-fix-v1",
+    "task_id": "project-task-44729ab486376ccf39736952c84cdbd4",
+    "allocation": "program-bda6dc0945a703d4c90d2966",
+    "search": 0,
+    "verification": 0,
+    "status": "done",
+    "exit_code": 0,
+    "cleanup_confirmed": true,
+    "artifact_sha256": "4a7367e70e2762f6b423ee0606c50e445fbd091b873046b44d59cfd9b069872d",
+    "purpose": "only preparation, not research search",
+    "actual_meter_api": "verification callable contextmanager, independent_step decorator; public source read 2 pages",
+    "stable_source_sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+  },
+  "research_producer": {
+    "author_node": "ai-node-0299a356d74db83b9ab4ebc7",
+    "executor_node": "ai-node-60ce43c0fdb954913d5cf32f",
+    "task_id": "project-task-89caab5017f4956aa52cef38be06d56a",
+    "request_id": "r6-root-frozen-offpath-execution-v1",
+    "allocation": "program-3ad0a623ab2690a2b074aa1b",
+    "source_set": "8bdad4ae61955873477db5878e282e533dbd2e42b215f8cef2120ec7d0a60343",
+    "source_unchanged": true,
+    "search_cap": 600000,
+    "verification_cap": 6000,
+    "status": "running as of launch receipt; result not prefilled",
+    "frozen": "deterministic exact Stable rank<=3 structural-diversity beam to empty B4; max total length96; width512/rank; depth10; seed0 no random; local590000/90s; max producer150s"
+  },
+  "theory": {
+    "id": "M-538c85aecd32c8d0",
+    "revision": 2,
+    "root_actual_body_read": true,
+    "app_exact_revision_review": 4680,
+    "beam_rejection_reason": "C/I restricted repair bound cannot be used with M/S and no g/U witness; no code dependency or method change"
+  },
+  "rounds": {
+    "used": 4,
+    "remaining": 4,
+    "independent_review_reserved": 1,
+    "final_root_reserved": 1
+  },
+  "platform_upload": false
+}

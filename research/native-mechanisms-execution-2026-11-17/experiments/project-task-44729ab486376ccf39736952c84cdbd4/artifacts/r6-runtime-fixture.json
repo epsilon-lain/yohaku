@@ -1,0 +1,137 @@
+{
+  "preparation_only": true,
+  "restoration": {
+    "official": "/output/r6-fixture-fixed/official",
+    "acceptance": "/output/r6-fixture-fixed/acceptance",
+    "archive_sha256": "c8ed06893cf895f1221cae149de5b1c4af1657f713aeaf225618723ced9960d6",
+    "files_verified": 41
+  },
+  "meter_source": "\"\"\"Sandbox meter: immutable pinned apply hooks, durable host leases, descendants.\"\"\"\nimport atexit,contextlib,hashlib,json,os,socket,sys,threading\nfrom pathlib import Path\n_local=threading.local();_clients=[];_lock=threading.Lock();_hashes={};ALLOCATION=None;SOCKET='/budget.sock';ALLOWED=set();FORCE_VERIFY=False\ndef rpc(req,sock=None):\n    own=sock is None\n    if own:sock=socket.socket(socket.AF_UNIX);sock.connect(SOCKET)\n    try:\n        sock.sendall((json.dumps(req)+'\\n').encode());line=b''\n        while not line.endswith(b'\\n'):\n            p=sock.recv(65536)\n            if not p:raise RuntimeError('Budget server closed; fail closed')\n            line+=p\n        out=json.loads(line)\n        if not out['ok']:raise RuntimeError(out['error'])\n        return out['result']\n    finally:\n        if own:sock.close()\nclass Client:\n    def __init__(self):\n        self.sock=socket.socket(socket.AF_UNIX);self.sock.connect(SOCKET);self.slots={};self.actual={'search':0,'verification':0};self.closed=False\n        with _lock:_clients.append(self)\n    def report(self,kind):\n        x=self.slots.get(kind)\n        if x:rpc(dict(op='report',allocation=ALLOCATION,lease=x['lease'],used=x['used']),self.sock);self.slots.pop(kind,None)\n    def consume(self,kind):\n        x=self.slots.get(kind)\n        if not x or x['used']>=x['n']:\n            self.report(kind);r=rpc(dict(op='lease',allocation=ALLOCATION,kind=kind),self.sock)\n            if not r['allowed']:hard_stop(r['error'],86)\n            x=dict(r,used=0);self.slots[kind]=x\n        x['used']+=1;self.actual[kind]+=1\n    def close(self):\n        if self.closed:return\n        for k in list(self.slots):self.report(k)\n        self.closed=True;self.sock.close()\ndef client():\n    if not hasattr(_local,'client'):_local.client=Client()\n    return _local.client\ndef close_all():\n    for c in list(_clients):\n        try:c.close()\n        except Exception:pass\ndef hard_stop(message,code):\n    close_all()\n    try:\n        Path('/output/PROGRAM-BUDGET-ERROR.json').write_text(json.dumps(dict(error=message,code=code,pid=os.getpid(),allocation=ALLOCATION,already_issued_not_refunded=True))+'\\n')\n        os.write(2,('PROGRAM_BUDGET_HARD_STOP '+message+'\\n').encode())\n    finally:os._exit(code)\n@contextlib.contextmanager\ndef verification(reason='explicit independent/final verification'):\n    old=getattr(_local,'manual_verification',False);_local.manual_verification=True\n    try:yield\n    finally:_local.manual_verification=old\ndef independent_step(fn):\n    def wrapped(*a,**k):client().consume('verification');return fn(*a,**k)\n    return wrapped\ndef profile(frame,event,arg):\n    try:\n        if not hasattr(_local,'verify_frames'):_local.verify_frames=set()\n        code=frame.f_code;name=code.co_name;filename=code.co_filename\n        if event=='call':\n            obj=frame.f_locals.get('self');typename=type(obj).__name__ if obj is not None else ''\n            if name.startswith(('verify','validate'))and ('/verifier/'in filename or typename=='Official'):_local.verify_frames.add(id(frame))\n            if name=='apply_move'and Path(filename).name in('core.py','stable_core.py'):\n                if filename not in _hashes:_hashes[filename]=hashlib.sha256(Path(filename).read_bytes()).hexdigest()\n                if _hashes[filename]not in ALLOWED:hard_stop('Official apply source differs from fixed a0fd6e6f lock',87)\n                kind='verification'if FORCE_VERIFY or _local.verify_frames or getattr(_local,'manual_verification',False)else'search'\n                client().consume(kind)\n        elif event=='return':_local.verify_frames.discard(id(frame))\n    except BaseException as exc:hard_stop(str(exc),87)\ndef install(allocation,allowed,force_verification=False):\n    global ALLOCATION,ALLOWED,FORCE_VERIFY\n    ALLOCATION=allocation;ALLOWED=set(allowed);FORCE_VERIFY=force_verification\n    sys.setprofile(profile);threading.setprofile(profile);atexit.register(close_all)\n    def forbidden(*a,**k):raise RuntimeError('Use metered Python subprocesses; disabling/forking around the budget guard is forbidden')\n    sys.setprofile=forbidden;threading.setprofile=forbidden\n    for name in('fork','forkpty','system','execv','execve','execvp','execvpe'):\n        if hasattr(os,name):setattr(os,name,forbidden)\n",
+  "stable_source": "\"\"\"Deterministic verifier core for Stable AC, move spec ``sac-r8-v1``.\n\nThe Stable AC problem in the Discovery Track asks for a *stable* trivialization:\nthe same balanced presentations as the AC problem, but the target is\nthe EMPTY presentation and the move set additionally allows stabilization\n(add a fresh generator with the relator that names it) and its inverse,\ndestabilization, up to rank :data:`MAX_RANK`.\n\nSame engineering contract as :mod:`verifier.core` (decision D-10):\npure integer arithmetic, standard library only, no floats, no\nconcurrency, no randomness.  Words are tuples of nonzero ints with\n``g`` meaning the generator ``g`` and ``-g`` its inverse; at rank ``k``\nthe alphabet is exactly ``+-1 .. +-k``.  Generator 1 is ``x``,\ngenerator 2 is ``y``, generators 3..8 are ``g3``..``g8``.\n\nA state is a tuple of ``k`` freely reduced words, ``k`` = the current\nrank; the presentation stays balanced (``k`` generators, ``k``\nrelators) after every move.  The target is the empty tuple ``()``.\n\nFrozen semantics.  Move ids must never change once frozen; ids 0..13\nare byte-identical to :data:`verifier.core.MOVE_TABLE`, so an\n``ac-r2-v1`` certificate is a legal ``sac-r8-v1`` prefix.\n\"\"\"\n\nfrom . import canon, core\n\nMOVE_SPEC_VERSION = \"sac-r8-v1\"\n\n#: Highest rank reachable by stabilization.  Rank starts at 2 for every\n#: published challenge; repeated additions and deletions are allowed,\n#: provided the current rank never exceeds this bound.\nMAX_RANK = 8\n\nNUM_MOVES = 257\n\n#: The target of every stable challenge: the empty presentation.\nTARGET = ()\n\n#: Generator display names, index = generator number - 1.\nGENERATOR_NAMES = (\"x\", \"y\", \"g3\", \"g4\", \"g5\", \"g6\", \"g7\", \"g8\")\n\n#: The four ``E_MOVE_NOT_APPLICABLE`` reasons (frozen vocabulary).\nNOT_APPLICABLE_REASONS = (\"relator_out_of_rank\", \"generator_out_of_rank\",\n                          \"max_rank_exceeded\", \"destabilize_precondition\")\n\n\ndef _build_move_table():\n    \"\"\"Deterministically enumerate the frozen 257-row table.\n\n    Layout (ids are frozen; the enumeration order below defines them):\n\n      0..13    the ``ac-r2-v1`` table verbatim\n      14       stabilize\n      15..22   destabilize r_i, i = 0..7\n      23..28   invert r_i, i = 2..7\n      29..136  r_i <- r_i r_j^(+-1), i = 0..7, j = 0..7 (j != i),\n               sign +1 then -1, skipping the four rows already in 0..13\n      137..256 r_i <- c r_i c^-1, c = +-g, i = 0..7, g = 1..8,\n               sign +1 then -1, skipping the eight rows already in 0..13\n    \"\"\"\n    rows = [dict(r) for r in core.MOVE_TABLE]\n    assert len(rows) == core.NUM_MOVES == 14, len(rows)\n\n    rows.append({\"id\": 14, \"category\": \"stabilize\", \"inverse\": None})\n\n    for i in range(MAX_RANK):\n        rows.append({\"id\": 15 + i, \"category\": \"destabilize\",\n                     \"relator\": i, \"inverse\": None})\n\n    for i in range(2, MAX_RANK):\n        mid = 23 + (i - 2)\n        rows.append({\"id\": mid, \"category\": \"inversion\",\n                     \"relator\": i, \"inverse\": mid})\n\n    mid = 29\n    for i in range(MAX_RANK):\n        for j in range(MAX_RANK):\n            if j == i or (i in (0, 1) and j in (0, 1)):\n                continue\n            rows.append({\"id\": mid, \"category\": \"multiplication\",\n                         \"relator\": i, \"other\": j, \"invert_other\": False,\n                         \"inverse\": mid + 1})\n            rows.append({\"id\": mid + 1, \"category\": \"multiplication\",\n                         \"relator\": i, \"other\": j, \"invert_other\": True,\n                         \"inverse\": mid})\n            mid += 2\n    assert mid == 137, mid\n\n    for i in range(MAX_RANK):\n        for g in range(1, MAX_RANK + 1):\n            if i in (0, 1) and g in (1, 2):\n                continue\n            rows.append({\"id\": mid, \"category\": \"conjugation\",\n                         \"relator\": i, \"conjugator\": g, \"inverse\": mid + 1})\n            rows.append({\"id\": mid + 1, \"category\": \"conjugation\",\n                         \"relator\": i, \"conjugator\": -g, \"inverse\": mid})\n            mid += 2\n    assert mid == NUM_MOVES == 257, mid\n\n    assert [r[\"id\"] for r in rows] == list(range(NUM_MOVES))\n    assert tuple(rows[:core.NUM_MOVES]) == core.MOVE_TABLE, \\\n        \"ids 0..13 must be byte-identical to the frozen ac-r2-v1 table\"\n    return tuple(rows)\n\n\n#: The frozen 257-row move table.  This exact structure \u2014 id / category /\n#: parameters / inverse \u2014 is what ``move_spec_hash`` covers, serialized\n#: with :func:`verifier.canon.jcs`.\nMOVE_TABLE = _build_move_table()\n\n#: ``INVERSE_MOVE[m]`` undoes move ``m``, or ``None`` for the two moves\n#: that change the rank: stabilize and destabilize are inverse to each\n#: other only up to relabeling, so neither has a fixed partner id.\nINVERSE_MOVE = tuple(row[\"inverse\"] for row in MOVE_TABLE)\n\n\ndef generator_name(g):\n    \"\"\"``1 -> \"x\"``, ``2 -> \"y\"``, ``3..8 -> \"g3\"..\"g8\"``.\"\"\"\n    return GENERATOR_NAMES[abs(g) - 1]\n\n\ndef _relabel_after(word, g):\n    \"\"\"Shift every letter above ``g`` down by one (``g`` itself is gone).\"\"\"\n    return tuple(a - 1 if a > g else (a + 1 if a < -g else a) for a in word)\n\n\ndef apply_move(state, m):\n    \"\"\"Apply frozen atomic move ``m`` (0..256) and freely reduce.\n\n    ``state`` is a tuple of freely reduced tuples; the result is too.\n    Returns ``(new_state, None)`` on success or ``(None, reason)`` when\n    the move is not applicable at the current rank, where ``reason`` is\n    one of :data:`NOT_APPLICABLE_REASONS`.\n\n    Raises ``ValueError`` on an out-of-range id \u2014 callers that face\n    untrusted input must range-check first (E_BAD_MOVE_ID).\n    \"\"\"\n    if type(m) is not int or not (0 <= m < NUM_MOVES):\n        raise ValueError(\"bad move id: %r\" % (m,))\n    row = MOVE_TABLE[m]\n    cat = row[\"category\"]\n    k = len(state)\n\n    if cat == \"stabilize\":\n        if k >= MAX_RANK:\n            return None, \"max_rank_exceeded\"\n        return state + ((k + 1,),), None\n\n    i = row[\"relator\"]\n    if i >= k:\n        return None, \"relator_out_of_rank\"\n\n    if cat == \"destabilize\":\n        word = state[i]\n        if len(word) != 1 or word[0] <= 0:\n            return None, \"destabilize_precondition\"\n        g = word[0]\n        for j, other in enumerate(state):\n            if j == i:\n                continue\n            for a in other:\n                if a == g or a == -g:\n                    return None, \"destabilize_precondition\"\n        rest = state[:i] + state[i + 1:]\n        return tuple(_relabel_after(w, g) for w in rest), None\n\n    if cat == \"inversion\":\n        return state[:i] + (core.invert(state[i]),) + state[i + 1:], None\n\n    if cat == \"multiplication\":\n        j = row[\"other\"]\n        if j >= k:\n            return None, \"relator_out_of_rank\"\n        other = state[j]\n        if row[\"invert_other\"]:\n            other = core.invert(other)\n        new = core.free_reduce(state[i] + other)\n        return state[:i] + (new,) + state[i + 1:], None\n\n    # conjugation\n    c = row[\"conjugator\"]\n    if abs(c) > k:\n        return None, \"generator_out_of_rank\"\n    new = core.free_reduce((c,) + state[i] + (-c,))\n    return state[:i] + (new,) + state[i + 1:], None\n\n\ndef _err(code, move_index=None, **extra):\n    out = {\"ok\": False, \"code\": code, \"move_index\": move_index}\n    out.update(extra)\n    return out\n\n\ndef verify(challenge, moves, move_spec_version, limits):\n    \"\"\"Replay ``moves`` on a ``sac-r8-v1`` ``challenge`` under ``limits``.\n\n    Mirrors :func:`verifier.core.verify` check for check.  The only\n    addition is ``E_MOVE_NOT_APPLICABLE``, raised inside the per-move\n    loop immediately after the move-id range check and before the\n    relator-length check, carrying ``move``, ``move_index`` and\n    ``reason``.\n\n    ``challenge`` needs keys ``challenge_id``, ``move_spec_version``,\n    ``initial_relators``, ``target_relators``.  ``moves`` is the parsed\n    JSON value from the submission (may be arbitrarily malformed).\n    ``limits`` needs ``max_path_length``, ``max_total_relator_length``,\n    ``max_work``.\n    \"\"\"\n    if move_spec_version != challenge[\"move_spec_version\"]:\n        return _err(\"E_SPEC_MISMATCH\",\n                    expected=challenge[\"move_spec_version\"],\n                    got=move_spec_version)\n    if not isinstance(moves, list):\n        return _err(\"E_MALFORMED\", detail=\"moves_not_array\")\n    if len(moves) > limits[\"max_path_length\"]:\n        return _err(\"E_PATH_TOO_LONG\", path_length=len(moves),\n                    max_path_length=limits[\"max_path_length\"])\n\n    state = tuple(tuple(w) for w in challenge[\"initial_relators\"])\n    rank = len(state)\n    # The manifest guarantees a balanced, freely reduced, in-alphabet\n    # start; a violation is an organizer-side data bug, not a contestant\n    # error, so it raises instead of producing a verdict.\n    if not 1 <= rank <= MAX_RANK:\n        raise ValueError(\"initial rank %d outside 1..%d: %s\"\n                         % (rank, MAX_RANK, challenge[\"challenge_id\"]))\n    for w in state:\n        if core.free_reduce(w) != w:\n            raise ValueError(\"initial_relators not freely reduced: %s\"\n                             % (challenge[\"challenge_id\"],))\n        for a in w:\n            if a == 0 or abs(a) > rank:\n                raise ValueError(\n                    \"initial_relators letter %r outside +-1..+-%d: %s\"\n                    % (a, rank, challenge[\"challenge_id\"]))\n\n    max_total = limits[\"max_total_relator_length\"]\n    max_work = limits[\"max_work\"]\n    tot = sum(len(w) for w in state)\n    peak = tot\n    work = tot\n    for k, m in enumerate(moves):\n        # bool is an int subclass in Python; true/false are not move ids.\n        if type(m) is not int or not (0 <= m < NUM_MOVES):\n            return _err(\"E_BAD_MOVE_ID\", move_index=k, move=m)\n        state, reason = apply_move(state, m)\n        if reason is not None:\n            return _err(\"E_MOVE_NOT_APPLICABLE\", move_index=k, move=m,\n                        reason=reason)\n        tot = sum(len(w) for w in state)\n        if tot > max_total:\n            return _err(\"E_LENGTH_LIMIT\", move_index=k,\n                        total_relator_length=tot,\n                        max_total_relator_length=max_total)\n        if tot > peak:\n            peak = tot\n        work += tot\n        if work > max_work:\n            return _err(\"E_WORK_BUDGET\", move_index=k, work=work,\n                        max_work=max_work)\n\n    target = tuple(tuple(r) for r in challenge[\"target_relators\"])\n    if state != target:\n        return _err(\"E_NOT_TARGET\", move_index=None,\n                    final_shape=[len(w) for w in state])\n\n    return {\n        \"ok\": True,\n        \"length\": len(moves),\n        \"peak_total_relator_length\": peak,\n        \"work\": work,\n        \"certificate_hash\": canon.certificate_hash(\n            challenge[\"challenge_id\"], move_spec_version, moves),\n    }\n",
+  "stable_sha256": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d",
+  "sample_rows": [
+    {
+      "id": 0,
+      "category": "inversion",
+      "relator": 0,
+      "inverse": 0
+    },
+    {
+      "id": 1,
+      "category": "inversion",
+      "relator": 1,
+      "inverse": 1
+    },
+    {
+      "id": 2,
+      "category": "multiplication",
+      "relator": 0,
+      "other": 1,
+      "invert_other": false,
+      "inverse": 3
+    },
+    {
+      "id": 3,
+      "category": "multiplication",
+      "relator": 0,
+      "other": 1,
+      "invert_other": true,
+      "inverse": 2
+    },
+    {
+      "id": 4,
+      "category": "multiplication",
+      "relator": 1,
+      "other": 0,
+      "invert_other": false,
+      "inverse": 5
+    },
+    {
+      "id": 5,
+      "category": "multiplication",
+      "relator": 1,
+      "other": 0,
+      "invert_other": true,
+      "inverse": 4
+    },
+    {
+      "id": 6,
+      "category": "conjugation",
+      "relator": 0,
+      "conjugator": 1,
+      "inverse": 7
+    },
+    {
+      "id": 7,
+      "category": "conjugation",
+      "relator": 0,
+      "conjugator": -1,
+      "inverse": 6
+    },
+    {
+      "id": 8,
+      "category": "conjugation",
+      "relator": 0,
+      "conjugator": 2,
+      "inverse": 9
+    },
+    {
+      "id": 9,
+      "category": "conjugation",
+      "relator": 0,
+      "conjugator": -2,
+      "inverse": 8
+    },
+    {
+      "id": 10,
+      "category": "conjugation",
+      "relator": 1,
+      "conjugator": 1,
+      "inverse": 11
+    },
+    {
+      "id": 11,
+      "category": "conjugation",
+      "relator": 1,
+      "conjugator": -1,
+      "inverse": 10
+    },
+    {
+      "id": 12,
+      "category": "conjugation",
+      "relator": 1,
+      "conjugator": 2,
+      "inverse": 13
+    },
+    {
+      "id": 13,
+      "category": "conjugation",
+      "relator": 1,
+      "conjugator": -2,
+      "inverse": 12
+    },
+    {
+      "id": 14,
+      "category": "stabilize",
+      "inverse": null
+    },
+    {
+      "id": 15,
+      "category": "destabilize",
+      "relator": 0,
+      "inverse": null
+    },
+    {
+      "id": 16,
+      "category": "destabilize",
+      "relator": 1,
+      "inverse": null
+    },
+    {
+      "id": 17,
+      "category": "destabilize",
+      "relator": 2,
+      "inverse": null
+    }
+  ]
+}
