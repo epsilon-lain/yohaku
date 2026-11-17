@@ -1,0 +1,45 @@
+{
+  "schema": "public-task-packet-v1",
+  "native_dispatch": false,
+  "excludes": [
+    "private-sources: full PDFs and extracted original text",
+    "credentials and private native memory"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1246,
+      "sha256": "662d5ed3e81bf01428f91809263eff4f0c870f417227eaabc751e9ac4b1fb8cb"
+    },
+    {
+      "path": "CODEX_TASK.md",
+      "bytes": 9735,
+      "sha256": "d17e9631911144e3dcfc89734635a021a1492a1b333c54f97c36cb9d098eab8a"
+    },
+    {
+      "path": "MOCHIZUKI_SOURCE_MAP.md",
+      "bytes": 5867,
+      "sha256": "e653df7c5950b2cadbbf13b1d3120cbe4492fa64008d386bd9d36879d5a322d7"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 3610,
+      "sha256": "0aed054d4e8399156c158ae13ccc20337d2ea07c11bab6ded8a7fdeee736735f"
+    },
+    {
+      "path": "acquire_sources.py",
+      "bytes": 5847,
+      "sha256": "418d872afc032b7ec1e84966792b0cd5d36caea544c1bc4872cc414472f7f543"
+    },
+    {
+      "path": "competition-discovery.md",
+      "bytes": 1144,
+      "sha256": "f7c38d5f0ddf3877ece4a943e7bd7ec31d5fcf67bc55016c2bf3631c1f645b3a"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 1788,
+      "sha256": "7e5a5b798db9361eeaa071af17a47f816959b6f48c9a35af4fba40ce592c9819"
+    }
+  ]
+}

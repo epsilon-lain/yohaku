@@ -1,0 +1,56 @@
+{
+  "status": "prepared_not_dispatched",
+  "prepared_at": "2026-11-17T13:55:26.688926+08:00",
+  "user_requested_native_start": true,
+  "native_host_access": {
+    "wsl_project_path_available": false,
+    "local_browser_connected": false,
+    "reason": "Current cloud workspace has no local WSL path; browser reports originating browser context required"
+  },
+  "native_dispatch_attempted": false,
+  "native_phase_created": false,
+  "native_imported": false,
+  "native_read_verified": false,
+  "current_native_tasks": "unknown: host live state not accessible",
+  "historical_native_snapshot": {
+    "observed_at": "2026-11-17T12:26:02.684517+08:00",
+    "in_flight": [],
+    "turns_reserved": 9,
+    "turn_limit": 12,
+    "deadline": "2026-11-17T14:32:49.054650+08:00",
+    "not_a_current_grant": true
+  },
+  "source_bytes_verified_ids": [
+    "PANO",
+    "IUT1",
+    "IUT2",
+    "IUT3",
+    "IUT4"
+  ],
+  "cloud_extraction_check": {
+    "source_ids": [
+      "PANO",
+      "IUT1"
+    ],
+    "pages": 11,
+    "status": "private_staging_only",
+    "manual_math_glyph_check_complete": false
+  },
+  "acquisition_script_actual_check": {
+    "default_sources": 2,
+    "exit_code": 0,
+    "receipt_status": "ready",
+    "no_native_calls": true
+  },
+  "math_seed": {
+    "repository": "epsilon-lain/lain-s-note",
+    "commit": "77cd23d1ab33f6efefb274c8f86ecc869c35f62d",
+    "path": "research/operation-universes-2026-11-17/"
+  },
+  "official_competition": {
+    "repository": "SAIRcompetition/Andrews-Curtis",
+    "commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+    "rules_blob": "fd7fb9b85d1484430a3ad9a7ddb25b13b1e456fa"
+  },
+  "next_action": "Host Codex must read CODEX_TASK.md and authoritative live admission/budget, import sources, and obtain native dispatch and reading receipts"
+}
