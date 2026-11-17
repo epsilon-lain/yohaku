@@ -1,30 +1,67 @@
-# Windows 下载与试用
+# Windows 下载与首次使用
 
-原生 Windows x64 便携技术预览版 **2026.11.17-preview1** 已发布。
+## ⬇️ [下载 Windows x64 ZIP（约 15 MB）](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip)
 
-[下载可运行 ZIP](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip) · [Release 说明与 SHA256SUMS](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1)
+**2026.11.17-preview1 · Windows 11 x64 · 便携技术预览**
+无需另装 Rust、Python 或 WSL。程序带有所需运行时。
 
-## 使用
+1. **下载**：点击上方链接，保存 `Yohaku-2026.11.17-preview1-windows-x64.zip`。
+2. **完整解压**：放到有写入权限的本地文件夹，保留全部文件。不要在压缩包内直接运行。
+3. **双击启动**：打开解压后的文件夹，双击 **`Launch-Yohaku.cmd`**。
 
-1. 下载 `Yohaku-2026.11.17-preview1-windows-x64.zip` 并完整解压到有写入权限的本地目录。
-2. 双击 `Launch-Yohaku.cmd`。无需安装 Rust、Python 或 WSL；保留所有包内文件。
-3. 可使用原生窗口、本地文档/Loom 和 Socius 设置。模型连接由你自行配置，首次启动不请求模型或登录账号。
-4. 默认资料、配置、聊天和诊断位于解压目录内 `data/Yohaku`，默认世界为 `data/Yohaku/world`。启动日志在 `logs/last-launch.log`。
+English: download the Windows ZIP above, extract all files, then double-click
+`Launch-Yohaku.cmd`. No developer tools need to be installed.
 
-GitHub 的 `Source code (zip)`、`Source code (tar.gz)` 和 Code → Download ZIP 是仓库源码，不是可运行的 Windows 包。此仓库标签标识发布工具；实际 Windows 源快照、基线和二进制哈希由附件及包内 `BUILD-SOURCE.json` 记录。运行包只带运行所需的 Python 源与宏，不把仓库源码 ZIP 宣称为完整的原生 Windows 源快照。
+## 第一次打开，先试什么？
 
-## 已验证范围
+本版可先体验原生窗口、本地文档、Loom 和 Socius 设置，无需先配置模型服务。
+文档、配置和聊天等资料默认保存在解压目录内；保留这份文件夹即可继续使用。
+已有 Yohaku 世界时，可用 **Open workspace** 主动选择原世界目录。
 
-Windows 11 Home x64（build 26300），全新数据/Profile 环境变量、仅系统 PATH，已验证原生启动、普通及中文/空格/感叹号路径、文档经包内 Loom 创建、关闭重开保持资料、整包移动后的默认数据位置、缺少运行文件时的具体错误日志与非零退出码，以及解压包的 Enter/多行离线回环。
+如需连接 AI，再在 Socius 设置中配置自己的服务。首次启动不会自动登录或请求模型。
+**真实模型工具调用和图片理解仍未验收**，本地窗口与文档测试不代表这些能力已通过。
 
-**仅在当前电脑隔离环境验证，尚未在独立干净 Windows 环境验证。** 这不是另一台电脑、另一个 Windows 账号或虚拟机的验收。真人输入结果和精确 ZIP 哈希以该版 Release 的验证记录为准。
+## 常见问题
 
-真实模型工具调用、图片理解、外部 Codex 登录/沙箱、Developer 自举构建和浏览器/研究生态继续暂缓。其他输入法、物理长按和极长路径没有新增兼容性保证。预览未数字签名；系统提示时自行判断，本项目不要求关闭系统保护。
+| 问题 | 怎么做 |
+| --- | --- |
+| 我应该下载哪个文件？ | 下载本页顶部链接的 Windows ZIP；GitHub 的 Code → Download ZIP 和 Source code 附件是源码归档。 |
+| 双击后打不开，或提示缺少文件？ | 确认已经完整解压且保留所有文件，使用 `Launch-Yohaku.cmd` 启动；查看 `logs/last-launch.log` 中的具体错误。 |
+| 启动报错窗口怎么办？ | 保留其中的退出码和错误文字，连同版本与复现步骤在 [Issues](https://github.com/epsilon-lain/yohaku/issues) 反馈。 |
+| 需要安装 Python、Rust 或 WSL 吗？ | 使用这个 Windows 便携包不需要。源码构建说明是给开发者使用的。 |
+| 资料在哪里？ | 默认在解压目录下的 `data/Yohaku`，默认世界为 `data/Yohaku/world`；主动选择的外部世界继续使用原位置。 |
+| 如何反馈输入或模型连接问题？ | 提供版本号、Windows 版本、复现步骤及相关日志文字；模型工具和图片理解目前仍未验收。 |
 
-## 升级、移除与反馈
+启动日志 `logs/last-launch.log` 会在再次启动时覆盖。日志可能含本机路径和任务内容，
+反馈前检查，只提供相关错误部分。当前预览未数字签名；系统提示时自行判断，
+本项目不要求关闭系统保护。
 
-升级先解压到新目录，保留旧目录和资料；可用 Open workspace 主动打开旧世界，或关闭应用后复制自己的 data。主动选择的外部世界仍使用原位置。移除解压目录会同时移除其中的 data，先备份自己的资料。
+## 更新、搬移与移除
 
-请在 [Issues](https://github.com/epsilon-lain/yohaku/issues) 提供版本号、Windows 版本、复现步骤及相关日志文字。日志可能包含本机路径和任务内容，分享前检查，只提交需要的部分。
+- **更新**：解压到新目录，保留旧目录和资料。可以用 Open workspace 打开原世界，
+  或关闭应用后复制自己的 `data`。
+- **搬移**：关闭应用后复制整个解压文件夹，保留 `data`。默认世界会随新位置使用；
+  主动选择的外部世界仍在原位置。
+- **移除**：移除解压目录会同时移除其中的 `data`，请先备份自己的资料。
 
-维护者流程见 [发布步骤](RELEASING.md)。本版是 technical preview / prerelease，下载链接指向精确版本，不使用 /releases/latest。
+## 版本说明与验证范围
+
+[Release 说明与 SHA256SUMS](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1)
+
+Windows 11 Home x64（build 26300），全新数据/Profile 环境变量、仅系统 PATH，
+已验证原生启动、普通及中文/空格/感叹号路径、文档经包内 Loom 创建、关闭重开保持资料、
+整包移动后的默认数据位置、缺少运行文件时的具体错误日志与非零退出码，
+以及解压包的 Enter/多行离线回环。真人输入结果和精确 ZIP 哈希以该版 Release 验证记录为准。
+
+**仅在当前电脑隔离环境验证，尚未在独立干净 Windows 环境验证。**
+这不是另一台电脑、另一个 Windows 账号或虚拟机的验收。
+其他输入法、物理长按和极长路径没有新增兼容性保证。
+
+外部 Codex 登录/沙箱、Developer 自举构建和浏览器/研究生态继续暂缓。
+本版是 technical preview / prerelease，下载链接指向精确版本，不使用 /releases/latest。
+
+## 给开发者
+
+仓库标签对应发布工具和说明；实际 Windows 源快照、基线与二进制哈希由 Release 附件及
+包内 `BUILD-SOURCE.json` 记录。运行包只带运行所需的 Python 源与宏，仓库源码 ZIP
+不代表完整的原生 Windows 维护快照。维护流程见 [发布步骤](RELEASING.md)。
