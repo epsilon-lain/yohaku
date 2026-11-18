@@ -1,0 +1,28 @@
+{
+  "reverse_orbit_layers": [
+    1,
+    5,
+    94,
+    1671,
+    29968,
+    540624
+  ],
+  "forward_orbit_layers": [
+    1,
+    31,
+    703,
+    14425,
+    285707
+  ],
+  "exact_ball_edge_slots": 1547667,
+  "forward_shell_edge_slots": 9428331,
+  "elapsed_seconds": 4.19804,
+  "rank_preserving_witness": null,
+  "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+  "fixture_sha256": "80bb20b050fecf08ee6d56f3c72c2dd10360e31bf39bfa751a755b82969bbeff",
+  "max_states_per_ball": 2000000,
+  "seconds_cap": 45,
+  "candidate": null,
+  "official_verdict": null
+}

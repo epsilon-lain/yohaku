@@ -1,0 +1,1011 @@
+{
+  "status": "complete",
+  "upstream_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+  "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "official_blobs": {
+    "canon": "93175152acd876566ff60bbfaf7cd90cd8cd2fa9",
+    "core": "0a5da5fe6e3e42c96877734dad46b155a69c02b2",
+    "stable_core": "af48e32f766dbcd0cad0becd8c1c4edb4358efac"
+  },
+  "state_equivalence": "multiset of ambient-rank many freely reduced words in x,y",
+  "cases": [
+    {
+      "adds": 1,
+      "ambient_rank": 3,
+      "projected_start": [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ],
+        []
+      ],
+      "projected_target": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        []
+      ],
+      "radius": 5,
+      "move_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        23,
+        29,
+        30,
+        41,
+        42,
+        53,
+        54,
+        55,
+        56,
+        161,
+        162,
+        163,
+        164
+      ],
+      "forward": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "195cc7348ec14bda920a15361b3ffe9c5443d288596ed7c3df95664c0fa2b97c"
+          },
+          {
+            "states": 18,
+            "sha256": "9baf85bf85864ad99683f270ed7494736b6baae240ae1ba56e97f6b2eb05a327"
+          },
+          {
+            "states": 241,
+            "sha256": "ed8015774f57ac7470397bf7dcadfbd4e746d8f85d30dd14befbacc002fe89f6"
+          },
+          {
+            "states": 3096,
+            "sha256": "3a8e782ce82e668217121ab7d76fed2fa5133dfefd4fbf02d90c71342a0b3dba"
+          },
+          {
+            "states": 40987,
+            "sha256": "ef6d0b424cb5996efe2789d6564fbd2fb09e2e8e24c7c55518d3a7838e930eef"
+          },
+          {
+            "states": 570951,
+            "sha256": "159e7d71cbea525e024f8d5d48f72ff923b7fc553b2a287e2471aa25722794ec"
+          }
+        ],
+        "states": 615294,
+        "official_apply_calls": 1197261
+      },
+      "reverse": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "4c8ea7b2a2f8d457ee18f77e201158bd6924141a25ce36ce13e6ee396d42be77"
+          },
+          {
+            "states": 14,
+            "sha256": "72641c58ba70c269938620fab2e041529091c11c56e34041f912d79029944c7d"
+          },
+          {
+            "states": 145,
+            "sha256": "f7214dbe2d20fb54c28bbb937f826a8dddcf4712b48824a09fa3124fde4c73b4"
+          },
+          {
+            "states": 1422,
+            "sha256": "5d7301f24ef24d9f7c83b4e027d5d4113ab83e37cbe2376558738b829d886e5c"
+          },
+          {
+            "states": 14876,
+            "sha256": "16b7267b33c4614edfd0e6739b8d2ae99516d00a473d4ccf1859304c05dbc612"
+          },
+          {
+            "states": 169074,
+            "sha256": "2adc7000ef3a8bd0c1f2b26bccf5fb32c289c9508055d03c3a307e7c253a25b8"
+          }
+        ],
+        "states": 185532,
+        "official_apply_calls": 444366
+      },
+      "intersections": 0,
+      "preserving_moves_through": 10,
+      "wall_time_seconds": 6.09089680499892
+    },
+    {
+      "adds": 2,
+      "ambient_rank": 4,
+      "projected_start": [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ],
+        [],
+        []
+      ],
+      "projected_target": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [],
+        []
+      ],
+      "radius": 4,
+      "move_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        23,
+        24,
+        29,
+        30,
+        31,
+        32,
+        41,
+        42,
+        43,
+        44,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        161,
+        162,
+        163,
+        164,
+        177,
+        178,
+        179,
+        180
+      ],
+      "forward": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "e4d0acc99e7dd869393d7ca55443dc7d3bbf8fdb4008c7d74221333aa2e075fd"
+          },
+          {
+            "states": 18,
+            "sha256": "ea2c85d54f7f3354a129a633e11c606adf362574d2fd91c2f1ee9771005ca4ae"
+          },
+          {
+            "states": 251,
+            "sha256": "e999053b002c5b2d8a08280561d860587ce4b52afb3365cc164641980c374183"
+          },
+          {
+            "states": 3452,
+            "sha256": "4ac18e0b37ec4c53594682d821f271dea2b09aa555757ef32a93666d4a4926c0"
+          },
+          {
+            "states": 50423,
+            "sha256": "711e0ab3e4d5d1a050790a63381ad40136d22e6f10ff92b439ad9f3221c0bd8c"
+          }
+        ],
+        "states": 54145,
+        "official_apply_calls": 163768
+      },
+      "reverse": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "f99cc2cd74f2fc50fe7765149aa0ddc654aa7ba724c623abc69e25400f384843"
+          },
+          {
+            "states": 14,
+            "sha256": "22fc1f8a7b040fa522c2110f7d9514d6d3e092e8631be9cbc0bbef13a156f2b5"
+          },
+          {
+            "states": 155,
+            "sha256": "6950e5a581b5f7af0a5fa6ac842a6048cd288efad0d93b85cd658bd776d4a177"
+          },
+          {
+            "states": 1674,
+            "sha256": "115a4664add897307b1b348c62fa41bef8e53bd428f3cb9d62c7839e7fc3223d"
+          },
+          {
+            "states": 19704,
+            "sha256": "3cadf67f407aa551aa86207d2bada48443af9636722aa9fea88c00455ebd3b9f"
+          }
+        ],
+        "states": 21548,
+        "official_apply_calls": 81136
+      },
+      "intersections": 0,
+      "preserving_moves_through": 8,
+      "wall_time_seconds": 0.5600550540002587
+    },
+    {
+      "adds": 3,
+      "ambient_rank": 5,
+      "projected_start": [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ],
+        [],
+        [],
+        []
+      ],
+      "projected_target": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [],
+        [],
+        []
+      ],
+      "radius": 3,
+      "move_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        23,
+        24,
+        25,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        161,
+        162,
+        163,
+        164,
+        177,
+        178,
+        179,
+        180,
+        193,
+        194,
+        195,
+        196
+      ],
+      "forward": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "20efc5b26703113f9477f69b42690a5e6c0f3d50d4dba1e3e0eb092ef5ea544f"
+          },
+          {
+            "states": 18,
+            "sha256": "8b3ac256c48a9a5279dac9ef7f991a8f20c1e6d7019f13c9ab190e3b46009fe3"
+          },
+          {
+            "states": 251,
+            "sha256": "388666b7d5caeb399e922cb44867cc55aa01aaaf63d1f519b89ae38b21f74351"
+          },
+          {
+            "states": 3472,
+            "sha256": "2f5c5751710427681d11483ed66a40e50bc3ea9ad5c902e387f3a450df869c98"
+          }
+        ],
+        "states": 3742,
+        "official_apply_calls": 17550
+      },
+      "reverse": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "08fbffab734c2efaac4eee74e2f437b8006edab0a84dfbf5034f1d2383f234da"
+          },
+          {
+            "states": 14,
+            "sha256": "89be067d298b57b1a049c18302fa188067c8e6ec9822acd0dbcfb79db45adbde"
+          },
+          {
+            "states": 155,
+            "sha256": "6ff4845784603c6fdbc8eb2405794728cab39b5c40695c70b5a452ac9d47c0c1"
+          },
+          {
+            "states": 1694,
+            "sha256": "6175aad87c49b64ab550cfe9e713c5975e518fab7fa36432e9a1dec0147370da"
+          }
+        ],
+        "states": 1864,
+        "official_apply_calls": 11050
+      },
+      "intersections": 0,
+      "preserving_moves_through": 6,
+      "wall_time_seconds": 0.05375370600086171
+    },
+    {
+      "adds": 4,
+      "ambient_rank": 6,
+      "projected_start": [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "projected_target": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "radius": 2,
+      "move_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        23,
+        24,
+        25,
+        26,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        161,
+        162,
+        163,
+        164,
+        177,
+        178,
+        179,
+        180,
+        193,
+        194,
+        195,
+        196,
+        209,
+        210,
+        211,
+        212
+      ],
+      "forward": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "395abd78f43d7491089b274d957807995f740d22c2f5959573840fbd7792d5af"
+          },
+          {
+            "states": 18,
+            "sha256": "18660916045bf279195374b5b3ef349ec4d36a1a9ef465256a397be83ebf2376"
+          },
+          {
+            "states": 251,
+            "sha256": "0beea9c08476c21baf5bc2f06816697efc967ba0658d35c792a1d744bf243d23"
+          }
+        ],
+        "states": 270,
+        "official_apply_calls": 1710
+      },
+      "reverse": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "f85cec90ebee65406b724a9f6efc3299bc53643eea423bd64dcdcf059514955f"
+          },
+          {
+            "states": 14,
+            "sha256": "5c720621d68fbd152a577a90a5203096845e1db182f0de6db6fd9db1fe8f4263"
+          },
+          {
+            "states": 155,
+            "sha256": "ef6cb82aa3eff51db111695c00efc346a4ed24407eb41bc08ae234a87f624dfa"
+          }
+        ],
+        "states": 170,
+        "official_apply_calls": 1350
+      },
+      "intersections": 0,
+      "preserving_moves_through": 4,
+      "wall_time_seconds": 0.005155433998879744
+    },
+    {
+      "adds": 5,
+      "ambient_rank": 7,
+      "projected_start": [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "projected_target": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "radius": 1,
+      "move_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        23,
+        24,
+        25,
+        26,
+        27,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        161,
+        162,
+        163,
+        164,
+        177,
+        178,
+        179,
+        180,
+        193,
+        194,
+        195,
+        196,
+        209,
+        210,
+        211,
+        212,
+        225,
+        226,
+        227,
+        228
+      ],
+      "forward": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "826906b0dd076571ac9164014bdfe022c21fc617d50d639ce657f62007175099"
+          },
+          {
+            "states": 18,
+            "sha256": "3ab4d60d8d60e523eccbeb3e26f10f4c0bc2cd991faa9d272b540c90f15932b6"
+          }
+        ],
+        "states": 19,
+        "official_apply_calls": 119
+      },
+      "reverse": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "5ac3b49e3d15044ad90b103afccaa445eba97192771c6a5b7a089f3479c9ab19"
+          },
+          {
+            "states": 14,
+            "sha256": "fdc4a2d856473e81b887db89ae2251c18939571c55015f2752e6e74f87b092ea"
+          }
+        ],
+        "states": 15,
+        "official_apply_calls": 119
+      },
+      "intersections": 0,
+      "preserving_moves_through": 2,
+      "wall_time_seconds": 0.00042452799971215427
+    },
+    {
+      "adds": 6,
+      "ambient_rank": 8,
+      "projected_start": [
+        [
+          -2,
+          -2,
+          1,
+          2,
+          1
+        ],
+        [
+          -2,
+          -2,
+          -1,
+          2,
+          1,
+          2,
+          -1
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "projected_target": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "radius": 0,
+      "move_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        161,
+        162,
+        163,
+        164,
+        177,
+        178,
+        179,
+        180,
+        193,
+        194,
+        195,
+        196,
+        209,
+        210,
+        211,
+        212,
+        225,
+        226,
+        227,
+        228,
+        241,
+        242,
+        243,
+        244
+      ],
+      "forward": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "f66a05c5b31711a142830ebeef708d19ce95d81ddf79230f30a654b2af44a0d0"
+          }
+        ],
+        "states": 1,
+        "official_apply_calls": 0
+      },
+      "reverse": {
+        "layers": [
+          {
+            "states": 1,
+            "sha256": "0687722be01d9f7c49a2c353d51a01243c0a66b99dc0055e12ae7500157ea067"
+          }
+        ],
+        "states": 1,
+        "official_apply_calls": 0
+      },
+      "intersections": 0,
+      "preserving_moves_through": 0,
+      "wall_time_seconds": 1.0456002200953662e-05
+    }
+  ],
+  "wall_time_seconds": 7.002794650001306,
+  "peak_rss_kib": 157688
+}

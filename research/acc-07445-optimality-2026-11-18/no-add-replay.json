@@ -1,0 +1,96 @@
+{
+  "upstream_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "stable_challenge": "sac-07445",
+  "stable_instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+  "start": [
+    [
+      -2,
+      -2,
+      1,
+      2,
+      1
+    ],
+    [
+      -2,
+      -2,
+      -1,
+      2,
+      1,
+      2,
+      -1
+    ]
+  ],
+  "swapped_target": [
+    [
+      2
+    ],
+    [
+      1
+    ]
+  ],
+  "maximum_seconds": 12,
+  "maximum_official_apply_calls": 325000,
+  "maximum_states_per_ball": 150000,
+  "forward_5": {
+    "states": 132341,
+    "layers": [
+      1,
+      14,
+      145,
+      1388,
+      12895,
+      117898
+    ],
+    "layer_state_sha256": [
+      "e9f16f9cf948e1cee264d454cd78610093a9ef4a1e5ea87e1d02dc1febaf9eb4",
+      "90bb83223c3189179629d1694b1c1c57211ce0b59d21704e0f5ec04bbd16456e",
+      "778d229c1407a5f033a6ce3dd51155ba1bbecb9ea4a5822a097366d7cb896c5c",
+      "a8a2873b5a80d85847a825812764b77b7d6e78f02303434b7e15911a719f60ed",
+      "d88f4e8bc54d99cc52e75ab366e8db90117524cd7a646a0dbc3561cb6fdba72d",
+      "ae162fb74df8ca900ba7c3b47c61d5649e839b9b544451566c62e69460ac5461"
+    ],
+    "official_apply_calls": 202202
+  },
+  "inverse_5": {
+    "states": 40779,
+    "layers": [
+      1,
+      10,
+      77,
+      574,
+      4453,
+      35664
+    ],
+    "official_apply_calls": 71610
+  },
+  "intersections_within_5_plus_5": 0,
+  "inverse_6_shell": {
+    "candidate_edges": 499296,
+    "necessary_filter_rejections": 495132,
+    "official_apply_calls": 4164,
+    "intersections": 0,
+    "maximum_evaluated_total_word_length": 25
+  },
+  "conclusion": {
+    "swapped_target_excluded_through": 12,
+    "stable_without_additions_distance_interval": [
+      15,
+      15
+    ],
+    "condition": "Exact rank-two ordinary actions until first deletion, without stabilization anywhere; the known ordered target distance is 13."
+  },
+  "both_depth_6_shells": {
+    "candidate_reverse_edges": 499296,
+    "distinct_checked_midpoints": 7302,
+    "reverse_official_apply_calls": 12580,
+    "forward_official_apply_calls": 29481,
+    "intersections": 0,
+    "exact_projection_sizes": [
+      152436,
+      152372
+    ]
+  },
+  "status": "complete",
+  "official_apply_calls": 320037,
+  "seconds": 4.8626476649988035
+}

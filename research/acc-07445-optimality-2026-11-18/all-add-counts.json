@@ -1,0 +1,163 @@
+{
+  "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+  "states_per_ball_cap": 1500000,
+  "seconds_cap": 45,
+  "elapsed_seconds": 16.296,
+  "runs": [
+    {
+      "additions": 0,
+      "deletions": 2,
+      "projected_rank": 2,
+      "max_preserving_moves": 12,
+      "each_ball_radius": 6,
+      "forward_layers": [
+        1,
+        14,
+        145,
+        1380,
+        12710,
+        115211,
+        1036251
+      ],
+      "reverse_layers": [
+        1,
+        10,
+        77,
+        542,
+        4090,
+        32390,
+        266400
+      ],
+      "projected_apply_calls": 2331994,
+      "intersections": 0,
+      "full_routes_excluded_through_14": true
+    },
+    {
+      "additions": 1,
+      "deletions": 3,
+      "projected_rank": 3,
+      "max_preserving_moves": 10,
+      "each_ball_radius": 5,
+      "forward_layers": [
+        1,
+        18,
+        241,
+        3096,
+        40987,
+        570951
+      ],
+      "reverse_layers": [
+        1,
+        14,
+        145,
+        1422,
+        14876,
+        169074
+      ],
+      "projected_apply_calls": 1641627,
+      "intersections": 0,
+      "full_routes_excluded_through_14": true
+    },
+    {
+      "additions": 2,
+      "deletions": 4,
+      "projected_rank": 4,
+      "max_preserving_moves": 8,
+      "each_ball_radius": 4,
+      "forward_layers": [
+        1,
+        18,
+        251,
+        3452,
+        50423
+      ],
+      "reverse_layers": [
+        1,
+        14,
+        155,
+        1674,
+        19704
+      ],
+      "projected_apply_calls": 244904,
+      "intersections": 0,
+      "full_routes_excluded_through_14": true
+    },
+    {
+      "additions": 3,
+      "deletions": 5,
+      "projected_rank": 5,
+      "max_preserving_moves": 6,
+      "each_ball_radius": 3,
+      "forward_layers": [
+        1,
+        18,
+        251,
+        3472
+      ],
+      "reverse_layers": [
+        1,
+        14,
+        155,
+        1694
+      ],
+      "projected_apply_calls": 28600,
+      "intersections": 0,
+      "full_routes_excluded_through_14": true
+    },
+    {
+      "additions": 4,
+      "deletions": 6,
+      "projected_rank": 6,
+      "max_preserving_moves": 4,
+      "each_ball_radius": 2,
+      "forward_layers": [
+        1,
+        18,
+        251
+      ],
+      "reverse_layers": [
+        1,
+        14,
+        155
+      ],
+      "projected_apply_calls": 3060,
+      "intersections": 0,
+      "full_routes_excluded_through_14": true
+    },
+    {
+      "additions": 5,
+      "deletions": 7,
+      "projected_rank": 7,
+      "max_preserving_moves": 2,
+      "each_ball_radius": 1,
+      "forward_layers": [
+        1,
+        18
+      ],
+      "reverse_layers": [
+        1,
+        14
+      ],
+      "projected_apply_calls": 238,
+      "intersections": 0,
+      "full_routes_excluded_through_14": true
+    },
+    {
+      "additions": 6,
+      "deletions": 8,
+      "projected_rank": 8,
+      "max_preserving_moves": 0,
+      "each_ball_radius": 0,
+      "forward_layers": [
+        1
+      ],
+      "reverse_layers": [
+        1
+      ],
+      "projected_apply_calls": 0,
+      "intersections": 0,
+      "full_routes_excluded_through_14": true
+    }
+  ]
+}

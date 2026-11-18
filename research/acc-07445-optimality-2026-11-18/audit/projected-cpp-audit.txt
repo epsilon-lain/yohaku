@@ -1,0 +1,28 @@
+adds 0, rank 2, radius 6, actions 14
+forward layers 1 14 145 1380 12710 115211 1036251, total 1165712
+reverse layers 1 10 77 542 4090 32390 266400, total 303510
+intersections 0
+adds 1, rank 3, radius 5, actions 27
+forward layers 1 18 241 3096 40987 570951, total 615294
+reverse layers 1 14 145 1422 14876 169074, total 185532
+intersections 0
+adds 2, rank 4, radius 4, actions 44
+forward layers 1 18 251 3452 50423, total 54145
+reverse layers 1 14 155 1674 19704, total 21548
+intersections 0
+adds 3, rank 5, radius 3, actions 65
+forward layers 1 18 251 3472, total 3742
+reverse layers 1 14 155 1694, total 1864
+intersections 0
+adds 4, rank 6, radius 2, actions 90
+forward layers 1 18 251, total 270
+reverse layers 1 14 155, total 170
+intersections 0
+adds 5, rank 7, radius 1, actions 119
+forward layers 1 18, total 19
+reverse layers 1 14, total 15
+intersections 0
+adds 6, rank 8, radius 0, actions 152
+forward layers 1, total 1
+reverse layers 1, total 1
+intersections 0

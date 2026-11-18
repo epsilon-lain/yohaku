@@ -1,0 +1,147 @@
+{
+  "instance_hash": "sha256:f704cfdedbc0b2205b6af5e0aaff9de3ea51826121e55252dcd72ecbf7637477",
+  "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "search": "stabilize first and delete at the end; within that form, beam search",
+  "beam_width": 3072,
+  "max_calls_per_mode": 700000,
+  "seconds_cap": 45,
+  "reverse_exact_layers": [
+    6,
+    162,
+    3258,
+    59970
+  ],
+  "reverse_calls": 113058,
+  "runs": [
+    {
+      "mode": 0,
+      "calls": 429759,
+      "layers": [
+        {
+          "depth": 1,
+          "candidates": 31,
+          "kept": 31
+        },
+        {
+          "depth": 2,
+          "candidates": 703,
+          "kept": 703
+        },
+        {
+          "depth": 3,
+          "candidates": 14481,
+          "kept": 3072
+        },
+        {
+          "depth": 4,
+          "candidates": 61242,
+          "kept": 3072
+        },
+        {
+          "depth": 5,
+          "candidates": 68763,
+          "kept": 3072
+        },
+        {
+          "depth": 6,
+          "candidates": 70037,
+          "kept": 3072
+        },
+        {
+          "depth": 7,
+          "candidates": 72235,
+          "kept": 3072
+        }
+      ],
+      "stop": "depth"
+    },
+    {
+      "mode": 1,
+      "calls": 429759,
+      "layers": [
+        {
+          "depth": 1,
+          "candidates": 31,
+          "kept": 31
+        },
+        {
+          "depth": 2,
+          "candidates": 703,
+          "kept": 703
+        },
+        {
+          "depth": 3,
+          "candidates": 14481,
+          "kept": 3072
+        },
+        {
+          "depth": 4,
+          "candidates": 61183,
+          "kept": 3072
+        },
+        {
+          "depth": 5,
+          "candidates": 65280,
+          "kept": 3072
+        },
+        {
+          "depth": 6,
+          "candidates": 64708,
+          "kept": 3072
+        },
+        {
+          "depth": 7,
+          "candidates": 66512,
+          "kept": 3072
+        }
+      ],
+      "stop": "depth"
+    },
+    {
+      "mode": 2,
+      "calls": 429759,
+      "layers": [
+        {
+          "depth": 1,
+          "candidates": 31,
+          "kept": 31
+        },
+        {
+          "depth": 2,
+          "candidates": 703,
+          "kept": 703
+        },
+        {
+          "depth": 3,
+          "candidates": 14481,
+          "kept": 3072
+        },
+        {
+          "depth": 4,
+          "candidates": 62499,
+          "kept": 3072
+        },
+        {
+          "depth": 5,
+          "candidates": 68700,
+          "kept": 3072
+        },
+        {
+          "depth": 6,
+          "candidates": 76628,
+          "kept": 3072
+        },
+        {
+          "depth": 7,
+          "candidates": 75224,
+          "kept": 3072
+        }
+      ],
+      "stop": "depth"
+    }
+  ],
+  "official_apply_calls": 1402335,
+  "candidate": null,
+  "official_verdict": null,
+  "seconds_elapsed": 4.629
+}
