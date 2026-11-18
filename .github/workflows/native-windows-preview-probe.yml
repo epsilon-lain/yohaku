@@ -103,14 +103,39 @@ jobs:
           catalog = invoke(worker, 'catalog_info')
           print('Native catalog info: ' + json.dumps(catalog, ensure_ascii=True), flush=True)
           example = copy.deepcopy(catalog['example'])
-          script = invoke(worker, 'create_document', name='probe.py', body='print("yohaku-probe")\n', notes=notes)
+          tool_body = '\n'.join([
+              'import json, sys',
+              'from pathlib import Path',
+              'lines = Path(json.loads(sys.argv[1])["path"]).read_text(encoding="utf-8").splitlines()',
+              'opened = sum(line.startswith("- [ ] ") for line in lines)',
+              'done = sum(line.startswith("- [x] ") for line in lines)',
+              'print(json.dumps(dict(open=opened, done=done, total=opened + done)))',
+              '',
+          ])
+          script = invoke(worker, 'create_document', name='checklist-count.py', body=tool_body, notes=notes)
           script_read = invoke(worker, 'read_document', source=script['source'])
-          example.update(id='windows-preview-probe', source=script['source'], source_revision=script_read['revision'])
+          example.update(id='checklist-count', name='Checklist count', description='Count Markdown checklist items.',
+              source=script['source'], source_revision=script_read['revision'],
+              input_schema={'type': 'object', 'additionalProperties': False, 'required': ['path'],
+                            'properties': {'path': {'type': 'string', 'maxLength': 160}}},
+              output_contract={'artifacts': []}, examples=[{'input': {'path': 'files/input-a.md'}}])
           assert (world / script['output']).is_file()
           proposal = invoke(worker, 'catalog_request', request_id='windows-preview-proposal', descriptor=example)
           worker = open_worker()
           persisted = invoke(worker, 'catalog_get', request_id='windows-preview-proposal')
           print('Catalog proposal: ' + json.dumps(proposal, ensure_ascii=True), flush=True)
           print('Reopened catalog: ' + json.dumps(persisted, ensure_ascii=True), flush=True)
-          assert 'pending' in json.dumps(persisted)
+          assert persisted['status'] == 'pending'
+          assert persisted['descriptor']['source_revision'] == script_read['revision']
           print('PASS: a Loom-generated tool proposal persists across native API processes and is pending Techne approval.', flush=True)
+
+          for filename, text, expected in [
+              ('input-a.md', '- [ ] 下载\n- [x] 解压\n- [ ] 启动\n- [X] 忽略\n', {'open': 2, 'done': 1, 'total': 3}),
+              ('input-b.md', '- [x] Alpha\n- [X] Beta\n- [ ] 检查\n- [x] Gamma\n', {'open': 1, 'done': 2, 'total': 3}),
+          ]:
+              (world / 'files' / filename).write_text(text, encoding='utf-8')
+              result = subprocess.run([str(app / 'runtime/python/python.exe'), '-I', '-B', '-X', 'utf8',
+                  str(world / script['output']), json.dumps({'path': f'files/{filename}'})],
+                  cwd=world, capture_output=True, timeout=10, check=True)
+              assert json.loads(result.stdout) == expected
+          print('PASS: generated checklist fixture ran with packaged Python and matched both expected results (direct diagnostic, outside Techne).', flush=True)
