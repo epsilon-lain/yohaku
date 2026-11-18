@@ -1,0 +1,30 @@
+{
+  "purpose": "Requested model settings for future operation-family research tasks",
+  "teams": {
+    "theory": {
+      "model": "gpt-6.2-sol",
+      "effort_default": "max",
+      "effort_allowed": [
+        "high",
+        "max",
+        "ultra"
+      ]
+    },
+    "practice": {
+      "model": "gpt-6.2-sol",
+      "effort_default": "max",
+      "effort_allowed": [
+        "high",
+        "max",
+        "ultra"
+      ]
+    }
+  },
+  "effort_guidance": {
+    "high": "Routine checks and bounded work",
+    "max": "Team leads, proofs and experimental design",
+    "ultra": "Hard proof bottlenecks or difficult discrepancies"
+  },
+  "verify_requested_and_recovered_native_thread_model": true,
+  "exact_result": "https://github.com/epsilon-lain/lain-s-note/blob/2a4ddce5f6a5f0f82e9c20ba878b5b2a313de80d/research/operation-family-ci-cim-2026-11-18/README.zh.md"
+}
