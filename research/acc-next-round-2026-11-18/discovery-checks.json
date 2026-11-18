@@ -1,0 +1,151 @@
+{
+  "manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+  "manifest_file_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "radii": {
+    "forward": 4,
+    "reverse": 5
+  },
+  "reverse_states": 40779,
+  "case_count": 25,
+  "found": [
+    {
+      "ac_id": "ac-01635",
+      "stable_id": "sac-01635",
+      "forward_states": 14029,
+      "ac": {
+        "moves": [
+          0,
+          4,
+          12,
+          4,
+          1,
+          5,
+          3,
+          3
+        ],
+        "ok": true,
+        "length": 8,
+        "peak_total_relator_length": 13,
+        "work": 71,
+        "certificate_hash": "sha256:06c6faa9bd7ba317d7be724d7c60d99ede44a7c96e0268e1fa458ef6e3e63958"
+      },
+      "stable": {
+        "moves": [
+          0,
+          4,
+          12,
+          4,
+          1,
+          5,
+          3,
+          3,
+          16,
+          15
+        ],
+        "ok": true,
+        "length": 10,
+        "peak_total_relator_length": 13,
+        "work": 72,
+        "certificate_hash": "sha256:44087e1f92985b904b104eb551948863bbb33e0997aba93f4461784cc3ec97da"
+      }
+    }
+  ],
+  "missed": [
+    {
+      "id": "ac-04359",
+      "forward_states": 14428
+    },
+    {
+      "id": "ac-08327",
+      "forward_states": 14428
+    },
+    {
+      "id": "ac-09594",
+      "forward_states": 14428
+    },
+    {
+      "id": "ac-00104",
+      "forward_states": 14443
+    },
+    {
+      "id": "ac-00399",
+      "forward_states": 14458
+    },
+    {
+      "id": "ac-00974",
+      "forward_states": 14458
+    },
+    {
+      "id": "ac-04308",
+      "forward_states": 14458
+    },
+    {
+      "id": "ac-06279",
+      "forward_states": 14458
+    },
+    {
+      "id": "ac-06500",
+      "forward_states": 14458
+    },
+    {
+      "id": "ac-06945",
+      "forward_states": 14458
+    },
+    {
+      "id": "ac-00286",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-00413",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-02089",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-02842",
+      "forward_states": 14445
+    },
+    {
+      "id": "ac-03467",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-03919",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-04376",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-05406",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-05932",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-06556",
+      "forward_states": 14445
+    },
+    {
+      "id": "ac-06960",
+      "forward_states": 14445
+    },
+    {
+      "id": "ac-08126",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-08651",
+      "forward_states": 14473
+    },
+    {
+      "id": "ac-09868",
+      "forward_states": 14473
+    }
+  ]
+}

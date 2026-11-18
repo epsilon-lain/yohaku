@@ -1,0 +1,25 @@
+{
+  "manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+  "manifest_file_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "radii": {
+    "forward": 5,
+    "reverse": 5
+  },
+  "reverse_states": 40779,
+  "case_count": 3,
+  "found": [],
+  "missed": [
+    {
+      "id": "ac-04359",
+      "forward_states": 132148
+    },
+    {
+      "id": "ac-08327",
+      "forward_states": 132148
+    },
+    {
+      "id": "ac-09594",
+      "forward_states": 132148
+    }
+  ]
+}

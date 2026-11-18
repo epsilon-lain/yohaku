@@ -1,0 +1,100 @@
+{
+  "challenge_id": "sac-01635",
+  "instance_hash": "sha256:ab0e3b2700e7d2339ac66c67f3efe6124f83fba51cf02673c28be5bd25ffb01e",
+  "initial": [
+    [
+      -2,
+      -2,
+      -1
+    ],
+    [
+      -2,
+      -2,
+      -2,
+      -1,
+      -2,
+      -2,
+      -2,
+      -1,
+      -2,
+      -1
+    ]
+  ],
+  "manifest_hash": "sha256:eeeb5cfec64e5ac797f32516c6f1a659383262df6d710cb1a713744e6540b745",
+  "official_files_verified": 30,
+  "audit_source_sha256": "50199bce2cfab818ce43e26bd101b96ae4b3cc5892d6a06b7255aca0b7702722",
+  "rank_cap": 5,
+  "complete_forward": {
+    "radius": 4,
+    "complete": true,
+    "layers": [
+      1,
+      15,
+      175,
+      2117,
+      29193
+    ],
+    "states": 31501,
+    "state_sha256": "a505e85c5151e4a88fb7e773d82369483fdd975e503731fceb7cf6c6849e3135",
+    "max_generated_total_length": 95,
+    "counts": {
+      "own_apply": 593156,
+      "official_apply": 593156
+    },
+    "ranks": {
+      "2": 14029,
+      "3": 15141,
+      "4": 2241,
+      "5": 90
+    }
+  },
+  "complete_reverse": {
+    "radius": 5,
+    "complete": true,
+    "layers": [
+      1,
+      1,
+      3,
+      26,
+      340,
+      5710
+    ],
+    "states": 6081,
+    "state_sha256": "a00fe597b1afe1a6ec3df7083fad09e30873d1ba7827b012c99988f13ffe60d3",
+    "max_generated_total_length": 11,
+    "counts": {
+      "own_apply": 106374,
+      "official_apply": 106374,
+      "inverse_destabilize_candidates": 4881
+    },
+    "ranks": {
+      "0": 1,
+      "1": 2,
+      "2": 1260,
+      "3": 3426,
+      "4": 1272,
+      "5": 120
+    }
+  },
+  "intersection": 0,
+  "witness": [
+    0,
+    4,
+    12,
+    4,
+    1,
+    5,
+    3,
+    3,
+    16,
+    15
+  ],
+  "verdict": {
+    "ok": true,
+    "length": 10,
+    "peak_total_relator_length": 13,
+    "work": 72,
+    "certificate_hash": "sha256:44087e1f92985b904b104eb551948863bbb33e0997aba93f4461784cc3ec97da"
+  },
+  "global_minimum": 10
+}
