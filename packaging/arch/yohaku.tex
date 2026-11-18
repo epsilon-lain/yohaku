@@ -1,0 +1,21 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+#!/bin/sh
+exec /usr/bin/python3 -B /usr/lib/yohaku/agent/yohaku_launcher.py --installed --project /usr/lib/yohaku "$@"
+````
+
+## 输出与关联
+```yaml
+output: "packaging/arch/yohaku"
+```
+
+## AI 笔记
+```yaml
+{"source_version": 1, "writer": "codex", "summary": "Starts the installed Yohaku runtime."}
+```

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/python3 -B /usr/lib/yohaku/agent/yohaku_launcher.py --installed --project /usr/lib/yohaku "$@"

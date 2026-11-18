@@ -255,7 +255,8 @@ pub(crate) fn budget_status(status: String, budget: Option<TurnBudget>, since: s
 }
 impl AgentPanel {
     pub fn new() -> Self {
-        let config = std::fs::read_to_string("config/ai.json").ok().and_then(|s|serde_json::from_str::<Value>(&s).ok()).filter(Value::is_object)
+        let config_path = yohaku::config_dir().join("ai.json");
+        let config = std::fs::read_to_string(&config_path).ok().and_then(|s|serde_json::from_str::<Value>(&s).ok()).filter(Value::is_object)
             .unwrap_or_else(||json!({"protocol":"chat","base_url":"https://api.deepseek.com","model":"deepseek-flash","api_key_env":"DEEPSEEK_API_KEY","max_tokens":4096,"timeout":120}));
         let (tx, rx) = mpsc::channel();
         let panel = Self {
@@ -278,7 +279,7 @@ impl AgentPanel {
             sessions: HashMap::new(),
             entry_save: None,
             config,
-            config_path: "config/ai.json".into(),
+            config_path,
             chat_open: false,
             chat_focus: false,
             log_focus: false,

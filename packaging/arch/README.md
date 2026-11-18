@@ -1,0 +1,18 @@
+# Yohaku on Arch Linux / 在 Arch Linux 上运行 Yohaku
+
+Build from the Yohaku source checkout as a regular user. Run Yohaku from your graphical session.
+
+```sh
+cd packaging/arch
+makepkg --cleanbuild --syncdeps
+sudo pacman -U ./yohaku-0.1.0-1-x86_64.pkg.tar.zst
+yohaku
+```
+
+The package starts the prebuilt compositor. It puts the default workspace under `$XDG_DATA_HOME/yohaku/worlds/default` and user configuration under `$XDG_CONFIG_HOME/yohaku`. The respective defaults are `~/.local/share` and `~/.config`.
+
+To try an editable session rule, find `Yohaku session startup` in the world (source `files/session-startup.json.tex`). Set `open_terminal` to `true`, save and generate with Loom, then quit and reopen Yohaku. Look for the separate Yohaku Terminal window and `Yohaku session startup applied` in the launcher output. Set it to `false` and repeat to disable it. To use Socius for the edit, configure your own model after installation.
+
+在已有的图形会话中，以普通用户从仓库按上面的命令打包、安装和启动。安装包直接运行预编译的 Yohaku。用户工作区和配置保存在各自的 XDG 目录。你可以在工作区找到 `Yohaku session startup` 的 `.tex`，将 `open_terminal` 改成 `true`，保存、用 Loom 生成配置，再重开 Yohaku 检查终端是否自动打开。要让 Socius 修改，可在安装后配置模型。
+
+This package is the first milestone of the [Yohaku OS roadmap](https://github.com/epsilon-lain/yohaku/issues/4). The bootable image and Framework startup are later milestones.

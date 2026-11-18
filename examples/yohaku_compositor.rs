@@ -410,9 +410,36 @@ fn draw_shell_text_on<F: Frame>(
     Ok(())
 }
 
+fn apply_session_startup(panel: &workspace_panel::Panel, tools: &mut tool_panel::ToolPanel) {
+    let path = std::path::Path::new(&panel.root).join("files/session-startup.json");
+    let text = match std::fs::read_to_string(&path) {
+        Ok(text) => text,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return,
+        Err(error) => {
+            eprintln!("Could not read Yohaku session startup {}: {error}", path.display());
+            return;
+        }
+    };
+    let config = serde_json::from_str::<serde_json::Value>(&text);
+    let open_terminal = match config.as_ref().ok().and_then(|value| value["open_terminal"].as_bool()) {
+        Some(open_terminal) => open_terminal,
+        None => {
+            eprintln!("Invalid Yohaku session startup {}: expected a boolean open_terminal", path.display());
+            return;
+        }
+    };
+    if open_terminal {
+        if let Err(error) = tools.open_terminal_window(panel) {
+            eprintln!("Yohaku session startup could not open Terminal: {error}");
+            return;
+        }
+    }
+    println!("Yohaku session startup applied: {} open_terminal={open_terminal}", path.display());
+}
+
 pub fn run_winit() -> Result<(), Box<dyn std::error::Error>> {
     // Load the user-editable Yohaku Shell configuration.
-    let shell_text = std::fs::read_to_string("config/shell.json")?;
+    let shell_text = std::fs::read_to_string(yohaku::config_dir().join("shell.json"))?;
     let shell_config: serde_json::Value = serde_json::from_str(&shell_text)?;
     let mut shell_mouse_grab = false;
     let mut macro_right_grab = false;
@@ -523,6 +550,7 @@ pub fn run_winit() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     let mut tools = tool_panel::ToolPanel::new(tool_socket);
+    apply_session_startup(&local_space, &mut tools);
 
     let keyboard = state
         .seat
