@@ -1,0 +1,314 @@
+{
+  "reverse_exact_radius": 5,
+  "reverse_states": 185532,
+  "reverse_apply_calls": 444366,
+  "reverse_seconds": 0.905461728998489,
+  "beam_width": 4096,
+  "forward_depth_cap": 14,
+  "runs": [
+    {
+      "case": "sac-04359",
+      "forward_apply_calls": 865399,
+      "beam_layers": [
+        {
+          "generated_distinct": 18,
+          "retained": 18
+        },
+        {
+          "generated_distinct": 241,
+          "retained": 241
+        },
+        {
+          "generated_distinct": 3095,
+          "retained": 3095
+        },
+        {
+          "generated_distinct": 40966,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 53000,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 49891,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 49169,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50266,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50233,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50488,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50702,
+          "retained": 4096
+        }
+      ],
+      "stop": "hit_forward_depth_12",
+      "search_seconds": 3.2080160069999692,
+      "projected_preserving_moves": [
+        1,
+        4,
+        10,
+        0,
+        2,
+        6,
+        6,
+        12,
+        5,
+        10,
+        13,
+        4,
+        3,
+        6,
+        2,
+        4,
+        2
+      ],
+      "lift": {
+        "status": "lifted",
+        "full_preserving_witness": [
+          1,
+          4,
+          10,
+          0,
+          2,
+          6,
+          6,
+          12,
+          5,
+          10,
+          13,
+          4,
+          3,
+          6,
+          2,
+          4,
+          2
+        ],
+        "frontier_sizes": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "first_empty_frontier": null,
+        "terminal_fiber_size": 1,
+        "terminal_goal_count": 1,
+        "examined_moves": 561,
+        "elapsed_seconds": 0.0026135560001421254,
+        "certificate": {
+          "moves": [
+            14,
+            1,
+            4,
+            10,
+            0,
+            2,
+            6,
+            6,
+            12,
+            5,
+            10,
+            13,
+            4,
+            3,
+            6,
+            2,
+            4,
+            2,
+            15,
+            15,
+            15
+          ],
+          "ok": true,
+          "length": 21,
+          "peak_total_relator_length": 18,
+          "work": 224,
+          "certificate_hash": "sha256:898b9c9a320f8138da286ba1b6443b31a1e7698ef3caf9535a5961f4a5355f1d"
+        }
+      }
+    },
+    {
+      "case": "sac-08327",
+      "forward_apply_calls": 975340,
+      "beam_layers": [
+        {
+          "generated_distinct": 18,
+          "retained": 18
+        },
+        {
+          "generated_distinct": 241,
+          "retained": 241
+        },
+        {
+          "generated_distinct": 3095,
+          "retained": 3095
+        },
+        {
+          "generated_distinct": 40966,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 52950,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 49532,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 49723,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50205,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50233,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50541,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50556,
+          "retained": 4096
+        },
+        {
+          "generated_distinct": 50778,
+          "retained": 4096
+        }
+      ],
+      "stop": "hit_forward_depth_13",
+      "search_seconds": 3.217271230001643,
+      "projected_preserving_moves": [
+        10,
+        8,
+        5,
+        12,
+        2,
+        8,
+        13,
+        11,
+        5,
+        12,
+        10,
+        4,
+        3,
+        8,
+        2,
+        4,
+        2,
+        0
+      ],
+      "lift": {
+        "status": "lifted",
+        "full_preserving_witness": [
+          10,
+          8,
+          5,
+          12,
+          2,
+          8,
+          13,
+          11,
+          5,
+          12,
+          10,
+          4,
+          3,
+          8,
+          2,
+          4,
+          2,
+          0
+        ],
+        "frontier_sizes": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "first_empty_frontier": null,
+        "terminal_fiber_size": 1,
+        "terminal_goal_count": 1,
+        "examined_moves": 594,
+        "elapsed_seconds": 0.0021713230016757734,
+        "certificate": {
+          "moves": [
+            14,
+            10,
+            8,
+            5,
+            12,
+            2,
+            8,
+            13,
+            11,
+            5,
+            12,
+            10,
+            4,
+            3,
+            8,
+            2,
+            4,
+            2,
+            0,
+            15,
+            15,
+            15
+          ],
+          "ok": true,
+          "length": 22,
+          "peak_total_relator_length": 16,
+          "work": 220,
+          "certificate_hash": "sha256:65a25f639d15ce783211c73d0939c16729016dd63328e7665a0cbe25f85b4832"
+        }
+      }
+    }
+  ]
+}

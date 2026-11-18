@@ -1,0 +1,114 @@
+{
+  "study": "exactly one added generator; both arms search the fixed-rank representation",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "official_sha256": {
+    "data/manifest.json": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+    "canon.py": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297",
+    "core.py": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5",
+    "stable_core.py": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+  },
+  "limits": {
+    "max_preserving_distance": 12,
+    "forward_radius": 5,
+    "reverse_radius": 6,
+    "seconds_per_arm": 30,
+    "states_per_ball": 1800000,
+    "address_space_mib": 460
+  },
+  "runs": [
+    {
+      "case": "sac-04359",
+      "cohort": "follow_up",
+      "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+      "initial_length": 11,
+      "direct": {
+        "status": "guard",
+        "preprocess_seconds": 5.0795999413821846e-05,
+        "elapsed_including_preprocess_seconds": 2.0709399030019995,
+        "guard_detail": [
+          "reverse complete layer 1 states 5",
+          "reverse complete layer 2 states 94",
+          "reverse complete layer 3 states 1671",
+          "reverse complete layer 4 states 29968",
+          "reverse complete layer 5 states 540624",
+          "reverse state cap at layer 6"
+        ]
+      },
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 6.434500028262846e-05,
+        "elapsed_including_preprocess_seconds": 9.722568713001237,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537,
+          1041459
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3095,
+          40966,
+          570576
+        ],
+        "exact_ball_edge_slots": 3701511,
+        "forward_shell_edge_slots": 15405552,
+        "elapsed_seconds": 9.45236,
+        "peak_rss_kib": 268548,
+        "distance_lower_bound": 13,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-08327",
+      "cohort": "follow_up",
+      "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+      "initial_length": 11,
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 4.860199987888336e-05,
+        "elapsed_including_preprocess_seconds": 9.808854419999989,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537,
+          1041459
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3095,
+          40966,
+          570576
+        ],
+        "exact_ball_edge_slots": 3701511,
+        "forward_shell_edge_slots": 15405552,
+        "elapsed_seconds": 9.54809,
+        "peak_rss_kib": 269740,
+        "distance_lower_bound": 13,
+        "rank_preserving_witness": null
+      },
+      "direct": {
+        "status": "guard",
+        "preprocess_seconds": 5.1977000111946836e-05,
+        "elapsed_including_preprocess_seconds": 1.7333001160004642,
+        "guard_detail": [
+          "reverse complete layer 1 states 5",
+          "reverse complete layer 2 states 94",
+          "reverse complete layer 3 states 1671",
+          "reverse complete layer 4 states 29968",
+          "reverse complete layer 5 states 540624",
+          "reverse state cap at layer 6"
+        ]
+      }
+    }
+  ]
+}

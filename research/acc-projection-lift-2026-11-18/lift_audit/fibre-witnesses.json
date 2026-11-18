@@ -1,0 +1,596 @@
+{
+  "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "toy_ordered": {
+    "ordered_endpoint_distance": 2,
+    "unordered_endpoint_distance": 0,
+    "projected_move_ids": [
+      53,
+      30
+    ],
+    "projected_trace": [
+      [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        []
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          1
+        ]
+      ],
+      [
+        [],
+        [
+          2
+        ],
+        [
+          1
+        ]
+      ]
+    ],
+    "literal_trace": [
+      [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ]
+      ],
+      [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          -3
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          1
+        ]
+      ]
+    ],
+    "one_move_per_edge_lift": {
+      "layer_sizes": [
+        1,
+        1,
+        1
+      ],
+      "final_fibre": [
+        [
+          [
+            -3
+          ],
+          [
+            2
+          ],
+          [
+            3,
+            1
+          ]
+        ]
+      ],
+      "successful_lift": null
+    },
+    "shortest_invisible_repair": [
+      0,
+      54,
+      166
+    ],
+    "repair_trace": [
+      [
+        [
+          -3
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          3
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      [
+        [
+          3
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          1,
+          -3
+        ]
+      ],
+      [
+        [
+          3
+        ],
+        [
+          2
+        ],
+        [
+          1
+        ]
+      ]
+    ],
+    "repair_verdict": {
+      "ok": true,
+      "length": 9,
+      "peak_total_relator_length": 5,
+      "work": 28,
+      "certificate_hash": "sha256:37934ccad203b9eb37d50d07fc625d1f6808c9e20e7c77186fe3905e4a061fd9"
+    },
+    "rejection_verdict": {
+      "ok": false,
+      "code": "E_MOVE_NOT_APPLICABLE",
+      "move_index": 3,
+      "move": 15,
+      "reason": "destabilize_precondition"
+    },
+    "repair_moves": [
+      14,
+      53,
+      30,
+      0,
+      54,
+      166,
+      15,
+      15,
+      15
+    ],
+    "rejected_moves": [
+      14,
+      53,
+      30,
+      15,
+      15,
+      15
+    ]
+  },
+  "runs": [
+    {
+      "challenge_id": "sac-04359",
+      "seconds": 0.19719782799802488,
+      "width": 512,
+      "depth": 36,
+      "seeds_used": 1,
+      "witness": {
+        "challenge_id": "sac-04359",
+        "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+        "full_stabilized_start": [
+          [
+            -2,
+            -2,
+            1,
+            1,
+            1
+          ],
+          [
+            -2,
+            -1,
+            -2,
+            1,
+            2,
+            1
+          ],
+          [
+            3
+          ]
+        ],
+        "rank_preserving_route": [
+          1,
+          4,
+          10,
+          12,
+          8,
+          3,
+          10,
+          13,
+          4,
+          8,
+          7,
+          3,
+          1,
+          0,
+          10,
+          4,
+          2,
+          4
+        ],
+        "clean_endpoint": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "contaminated_endpoint": [
+          [
+            3,
+            1,
+            -3
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "common_projected_endpoint": [
+          [
+            1
+          ],
+          [
+            2
+          ],
+          []
+        ],
+        "z_exponents_clean_and_contaminated": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "accepted": {
+          "moves": [
+            14,
+            1,
+            4,
+            10,
+            12,
+            8,
+            3,
+            10,
+            13,
+            4,
+            8,
+            7,
+            3,
+            1,
+            0,
+            10,
+            4,
+            2,
+            4,
+            15,
+            15,
+            15
+          ],
+          "verdict": {
+            "ok": true,
+            "length": 22,
+            "peak_total_relator_length": 15,
+            "work": 219,
+            "certificate_hash": "sha256:77cb60b6eb59d4c82660a73f98f8ad0ea72b0ed35670e549b96c72150b229aba"
+          }
+        },
+        "rejected": {
+          "moves": [
+            14,
+            1,
+            4,
+            10,
+            12,
+            8,
+            3,
+            10,
+            13,
+            4,
+            8,
+            7,
+            3,
+            1,
+            0,
+            10,
+            4,
+            2,
+            4,
+            137,
+            15,
+            15,
+            15
+          ],
+          "verdict": {
+            "ok": false,
+            "code": "E_MOVE_NOT_APPLICABLE",
+            "move_index": 20,
+            "move": 15,
+            "reason": "destabilize_precondition"
+          }
+        },
+        "repaired": {
+          "moves": [
+            14,
+            1,
+            4,
+            10,
+            12,
+            8,
+            3,
+            10,
+            13,
+            4,
+            8,
+            7,
+            3,
+            1,
+            0,
+            10,
+            4,
+            2,
+            4,
+            137,
+            138,
+            15,
+            15,
+            15
+          ],
+          "verdict": {
+            "ok": true,
+            "length": 24,
+            "peak_total_relator_length": 15,
+            "work": 227,
+            "certificate_hash": "sha256:ece066f68638b5551bbbd3c7e1f0d744fac855b7b866b00c30de4475fe33b9ef"
+          }
+        },
+        "invisible_contamination": 137,
+        "shortest_invisible_repair": [
+          138
+        ],
+        "geodesic_suffix": {
+          "reachable_prefix": [
+            14,
+            1,
+            4,
+            10,
+            12,
+            8,
+            3,
+            10,
+            13,
+            4,
+            8,
+            7,
+            3,
+            1,
+            0,
+            10,
+            4,
+            2,
+            137
+          ],
+          "full_start": [
+            [
+              3,
+              1,
+              -3
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              3
+            ]
+          ],
+          "projected_start": [
+            [
+              1
+            ],
+            [
+              2,
+              -1
+            ],
+            []
+          ],
+          "projected_goal": [
+            [
+              1
+            ],
+            [
+              2
+            ],
+            []
+          ],
+          "exact_projected_distance": 1,
+          "exact_full_rank_three_distance": 2,
+          "projected_move_id": 4,
+          "one_step_lifts_ordered_and_unordered": {
+            "layer_sizes": [
+              1,
+              1
+            ],
+            "final_fibre": [
+              [
+                [
+                  3,
+                  1,
+                  -3
+                ],
+                [
+                  2,
+                  -1,
+                  3,
+                  1,
+                  -3
+                ],
+                [
+                  3
+                ]
+              ]
+            ],
+            "successful_lift": null
+          },
+          "rejected": {
+            "moves": [
+              14,
+              1,
+              4,
+              10,
+              12,
+              8,
+              3,
+              10,
+              13,
+              4,
+              8,
+              7,
+              3,
+              1,
+              0,
+              10,
+              4,
+              2,
+              137,
+              4,
+              15,
+              15,
+              15
+            ],
+            "verdict": {
+              "ok": false,
+              "code": "E_MOVE_NOT_APPLICABLE",
+              "move_index": 20,
+              "move": 15,
+              "reason": "destabilize_precondition"
+            }
+          },
+          "repair_before_projected_edge": {
+            "invisible_moves": [
+              138
+            ],
+            "moves": [
+              14,
+              1,
+              4,
+              10,
+              12,
+              8,
+              3,
+              10,
+              13,
+              4,
+              8,
+              7,
+              3,
+              1,
+              0,
+              10,
+              4,
+              2,
+              137,
+              138,
+              4,
+              15,
+              15,
+              15
+            ],
+            "verdict": {
+              "ok": true,
+              "length": 24,
+              "peak_total_relator_length": 15,
+              "work": 229,
+              "certificate_hash": "sha256:6ec705a5efc83a75d2cea8dac779278b5786dfd1c259857b3a2a8a58583ee200"
+            }
+          },
+          "shortest_repair_after_edge_holding_ordered_projection": {
+            "invisible_moves": [
+              41,
+              138,
+              162,
+              42,
+              161
+            ],
+            "moves": [
+              14,
+              1,
+              4,
+              10,
+              12,
+              8,
+              3,
+              10,
+              13,
+              4,
+              8,
+              7,
+              3,
+              1,
+              0,
+              10,
+              4,
+              2,
+              137,
+              4,
+              41,
+              138,
+              162,
+              42,
+              161,
+              15,
+              15,
+              15
+            ],
+            "verdict": {
+              "ok": true,
+              "length": 28,
+              "peak_total_relator_length": 15,
+              "work": 261,
+              "certificate_hash": "sha256:c86aec31a870bb6bf11a9491f9a50871935b2da473807ccbc67c28334054ead4"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

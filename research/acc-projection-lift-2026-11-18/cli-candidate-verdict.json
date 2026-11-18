@@ -1,0 +1,19 @@
+{
+  "accepted": true,
+  "results": [
+    {
+      "certificate_hash": "sha256:a5c1abe5212407af4631548be0651455046937a94ed87f4153056a25ef7ccbed",
+      "challenge_id": "sac-04359",
+      "length": 19,
+      "ok": true,
+      "work": 193
+    },
+    {
+      "certificate_hash": "sha256:3725fd4d102351b1d8a4699ceb752994103ac9ba388e490ebe2435b62b1eb187",
+      "challenge_id": "sac-08327",
+      "length": 20,
+      "ok": true,
+      "work": 188
+    }
+  ]
+}

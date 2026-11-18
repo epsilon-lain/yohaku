@@ -1,0 +1,258 @@
+{
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "manifest_sha256": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+  "official_source_sha256": {
+    "canon.py": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297",
+    "core.py": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5",
+    "stable_core.py": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+  },
+  "states_per_ball_cap": 1500000,
+  "seconds_cap": 120,
+  "elapsed_seconds": 18.917345811001724,
+  "total_limit": 16,
+  "additional_branches_impossible_from": 8,
+  "runs": [
+    {
+      "additions": 2,
+      "deletions": 4,
+      "total_limit": 16,
+      "preserving_move_limit": 10,
+      "forward_radius": 5,
+      "reverse_radius": 5,
+      "reverse_layers": [
+        1,
+        14,
+        155,
+        1674,
+        19704,
+        256959
+      ],
+      "reverse_projected_calls": 948112,
+      "cases": [
+        {
+          "challenge_id": "sac-04359",
+          "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+          "forward_layers": [
+            1,
+            18,
+            251,
+            3451,
+            50402,
+            800476
+          ],
+          "forward_projected_calls": 2381412,
+          "intersections": 0,
+          "real_routes_excluded": true
+        },
+        {
+          "challenge_id": "sac-08327",
+          "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+          "forward_layers": [
+            1,
+            18,
+            251,
+            3451,
+            50402,
+            800476
+          ],
+          "forward_projected_calls": 2381412,
+          "intersections": 0,
+          "real_routes_excluded": true
+        }
+      ]
+    },
+    {
+      "additions": 3,
+      "deletions": 5,
+      "total_limit": 16,
+      "preserving_move_limit": 8,
+      "forward_radius": 4,
+      "reverse_radius": 4,
+      "reverse_layers": [
+        1,
+        14,
+        155,
+        1694,
+        20394
+      ],
+      "reverse_projected_calls": 121160,
+      "cases": [
+        {
+          "challenge_id": "sac-04359",
+          "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+          "forward_layers": [
+            1,
+            18,
+            251,
+            3471,
+            51376
+          ],
+          "forward_projected_calls": 243165,
+          "intersections": 0,
+          "real_routes_excluded": true
+        },
+        {
+          "challenge_id": "sac-08327",
+          "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+          "forward_layers": [
+            1,
+            18,
+            251,
+            3471,
+            51376
+          ],
+          "forward_projected_calls": 243165,
+          "intersections": 0,
+          "real_routes_excluded": true
+        }
+      ]
+    },
+    {
+      "additions": 4,
+      "deletions": 6,
+      "total_limit": 16,
+      "preserving_move_limit": 6,
+      "forward_radius": 3,
+      "reverse_radius": 3,
+      "reverse_layers": [
+        1,
+        14,
+        155,
+        1694
+      ],
+      "reverse_projected_calls": 15300,
+      "cases": [
+        {
+          "challenge_id": "sac-04359",
+          "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+          "forward_layers": [
+            1,
+            18,
+            251,
+            3471
+          ],
+          "forward_projected_calls": 24300,
+          "intersections": 0,
+          "real_routes_excluded": true
+        },
+        {
+          "challenge_id": "sac-08327",
+          "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+          "forward_layers": [
+            1,
+            18,
+            251,
+            3471
+          ],
+          "forward_projected_calls": 24300,
+          "intersections": 0,
+          "real_routes_excluded": true
+        }
+      ]
+    },
+    {
+      "additions": 5,
+      "deletions": 7,
+      "total_limit": 16,
+      "preserving_move_limit": 4,
+      "forward_radius": 2,
+      "reverse_radius": 2,
+      "reverse_layers": [
+        1,
+        14,
+        155
+      ],
+      "reverse_projected_calls": 1785,
+      "cases": [
+        {
+          "challenge_id": "sac-04359",
+          "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+          "forward_layers": [
+            1,
+            18,
+            251
+          ],
+          "forward_projected_calls": 2261,
+          "intersections": 0,
+          "real_routes_excluded": true
+        },
+        {
+          "challenge_id": "sac-08327",
+          "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+          "forward_layers": [
+            1,
+            18,
+            251
+          ],
+          "forward_projected_calls": 2261,
+          "intersections": 0,
+          "real_routes_excluded": true
+        }
+      ]
+    },
+    {
+      "additions": 6,
+      "deletions": 8,
+      "total_limit": 16,
+      "preserving_move_limit": 2,
+      "forward_radius": 1,
+      "reverse_radius": 1,
+      "reverse_layers": [
+        1,
+        14
+      ],
+      "reverse_projected_calls": 152,
+      "cases": [
+        {
+          "challenge_id": "sac-04359",
+          "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+          "forward_layers": [
+            1,
+            18
+          ],
+          "forward_projected_calls": 152,
+          "intersections": 0,
+          "real_routes_excluded": true
+        },
+        {
+          "challenge_id": "sac-08327",
+          "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+          "forward_layers": [
+            1,
+            18
+          ],
+          "forward_projected_calls": 152,
+          "intersections": 0,
+          "real_routes_excluded": true
+        }
+      ]
+    },
+    {
+      "additions": 7,
+      "deletions": 9,
+      "total_limit": 16,
+      "preserving_move_limit": 0,
+      "method": "nonsingleton_persists",
+      "cases": [
+        {
+          "challenge_id": "sac-04359",
+          "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+          "initial_relator_lengths": [
+            5,
+            6
+          ],
+          "real_routes_excluded": true
+        },
+        {
+          "challenge_id": "sac-08327",
+          "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+          "initial_relator_lengths": [
+            5,
+            6
+          ],
+          "real_routes_excluded": true
+        }
+      ]
+    }
+  ]
+}

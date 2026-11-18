@@ -1,0 +1,667 @@
+{
+  "study": "exactly one added generator; both arms search the fixed-rank representation",
+  "official_commit": "a0fd6e6f52d82c93ccc06ab91d81e8fa3678256e",
+  "official_sha256": {
+    "data/manifest.json": "dc8587d7dc6855edfb8aad087f27f4db59c558f66bdf838b664c1634a357ad37",
+    "canon.py": "36cc9e6e79c8087ffaa48c50e2643872e8a0eb4ab0e134e601526604d9abf297",
+    "core.py": "d2972711dc7008679127a987a8965d41ea1606b0fc50bf67e2e06c71c456b3b5",
+    "stable_core.py": "234b164c766bf7fd2e1bee7f7bfb3910319c5885e4250bf56520d2d2b0f46e9d"
+  },
+  "limits": {
+    "max_preserving_distance": 10,
+    "forward_radius": 4,
+    "reverse_radius": 5,
+    "seconds_per_arm": 30,
+    "states_per_ball": 1800000,
+    "address_space_mib": 460
+  },
+  "runs": [
+    {
+      "case": "sac-04416",
+      "cohort": "fresh",
+      "instance_hash": "sha256:5112a68c8cb6ebd68e659527ae6aa13271527ab1eeb74c9fdc349cfaf2264b1c",
+      "initial_length": 15,
+      "arm_order": [
+        "projected",
+        "direct"
+      ],
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 6.049899820936844e-05,
+        "elapsed_including_preprocess_seconds": 0.3888391299988143,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3098,
+          41039
+        ],
+        "exact_ball_edge_slots": 313011,
+        "forward_shell_edge_slots": 1108053,
+        "elapsed_seconds": 0.382717,
+        "peak_rss_kib": 35776,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 5.589300053543411e-05,
+        "elapsed_including_preprocess_seconds": 4.474276900000405,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14427,
+          285780
+        ],
+        "exact_ball_edge_slots": 1547733,
+        "forward_shell_edge_slots": 9430740,
+        "elapsed_seconds": 4.42961,
+        "peak_rss_kib": 131752,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-07667",
+      "cohort": "fresh",
+      "instance_hash": "sha256:c7cf337ffe0bda07a964899fd96553827bf09f1fe54de554041241d01c2a7b35",
+      "initial_length": 15,
+      "arm_order": [
+        "direct",
+        "projected"
+      ],
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 4.690999776357785e-05,
+        "elapsed_including_preprocess_seconds": 4.649600662000012,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14425,
+          285709
+        ],
+        "exact_ball_edge_slots": 1547667,
+        "forward_shell_edge_slots": 9428397,
+        "elapsed_seconds": 4.60102,
+        "peak_rss_kib": 131828,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 8.539700138499029e-05,
+        "elapsed_including_preprocess_seconds": 0.40427872399959597,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3096,
+          40989
+        ],
+        "exact_ball_edge_slots": 312957,
+        "forward_shell_edge_slots": 1106703,
+        "elapsed_seconds": 0.39724,
+        "peak_rss_kib": 35780,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-00066",
+      "cohort": "fresh",
+      "instance_hash": "sha256:bb5e201ddb9f88286c7b60bf7c85d5565bb526cbb89a8fc15a1bef861764f9e4",
+      "initial_length": 16,
+      "arm_order": [
+        "projected",
+        "direct"
+      ],
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 6.367400055751204e-05,
+        "elapsed_including_preprocess_seconds": 0.38857633100269595,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3098,
+          41040
+        ],
+        "exact_ball_edge_slots": 313011,
+        "forward_shell_edge_slots": 1108080,
+        "elapsed_seconds": 0.382525,
+        "peak_rss_kib": 35900,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 5.6192999181803316e-05,
+        "elapsed_including_preprocess_seconds": 4.5209220579999965,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14427,
+          285781
+        ],
+        "exact_ball_edge_slots": 1547733,
+        "forward_shell_edge_slots": 9430773,
+        "elapsed_seconds": 4.47196,
+        "peak_rss_kib": 132832,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-00626",
+      "cohort": "fresh",
+      "instance_hash": "sha256:dce58c10fcd31e4adb59595b250cf8bc9defd2e438d5e869bb8c25536b0af3fc",
+      "initial_length": 16,
+      "arm_order": [
+        "direct",
+        "projected"
+      ],
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 0.00010649800242390484,
+        "elapsed_including_preprocess_seconds": 4.828926756003057,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14427,
+          285781
+        ],
+        "exact_ball_edge_slots": 1547733,
+        "forward_shell_edge_slots": 9430773,
+        "elapsed_seconds": 4.76664,
+        "peak_rss_kib": 133080,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 6.097100049373694e-05,
+        "elapsed_including_preprocess_seconds": 0.4946325210003124,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3098,
+          41040
+        ],
+        "exact_ball_edge_slots": 313011,
+        "forward_shell_edge_slots": 1108080,
+        "elapsed_seconds": 0.487144,
+        "peak_rss_kib": 35956,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-09241",
+      "cohort": "fresh",
+      "instance_hash": "sha256:224cf2813744111d249d11f9d2e8a4ce3195c072ad5353db51eafa24c65c47fe",
+      "initial_length": 17,
+      "arm_order": [
+        "projected",
+        "direct"
+      ],
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 5.220700040808879e-05,
+        "elapsed_including_preprocess_seconds": 0.43286369900306454,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3097,
+          41019
+        ],
+        "exact_ball_edge_slots": 312984,
+        "forward_shell_edge_slots": 1107513,
+        "elapsed_seconds": 0.425113,
+        "peak_rss_kib": 36080,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 5.67740025871899e-05,
+        "elapsed_including_preprocess_seconds": 4.847583083002974,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14426,
+          285748
+        ],
+        "exact_ball_edge_slots": 1547700,
+        "forward_shell_edge_slots": 9429684,
+        "elapsed_seconds": 4.79495,
+        "peak_rss_kib": 133472,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-04551",
+      "cohort": "fresh",
+      "instance_hash": "sha256:3fc5d221e97dd3498748f176a8263d794900e24dee8464afb5ff0655a8e83bc0",
+      "initial_length": 17,
+      "arm_order": [
+        "direct",
+        "projected"
+      ],
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 4.860199987888336e-05,
+        "elapsed_including_preprocess_seconds": 5.046481573001074,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14426,
+          285748
+        ],
+        "exact_ball_edge_slots": 1547700,
+        "forward_shell_edge_slots": 9429684,
+        "elapsed_seconds": 4.99385,
+        "peak_rss_kib": 133308,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 7.878700125729665e-05,
+        "elapsed_including_preprocess_seconds": 0.5064952229986375,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3097,
+          41019
+        ],
+        "exact_ball_edge_slots": 312984,
+        "forward_shell_edge_slots": 1107513,
+        "elapsed_seconds": 0.49895,
+        "peak_rss_kib": 36048,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-04359",
+      "cohort": "follow_up",
+      "instance_hash": "sha256:b2d07ba17521f5d1bc18fa9dd3386461de56f03fd373917cdd7eadb52cc48533",
+      "initial_length": 11,
+      "arm_order": [
+        "projected",
+        "direct"
+      ],
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 4.965400148648769e-05,
+        "elapsed_including_preprocess_seconds": 0.338337222001428,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3095,
+          40966
+        ],
+        "exact_ball_edge_slots": 312930,
+        "forward_shell_edge_slots": 1106082,
+        "elapsed_seconds": 0.331658,
+        "peak_rss_kib": 35104,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 5.3088002459844574e-05,
+        "elapsed_including_preprocess_seconds": 4.480724657001701,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14424,
+          285674
+        ],
+        "exact_ball_edge_slots": 1547634,
+        "forward_shell_edge_slots": 9427242,
+        "elapsed_seconds": 4.4194,
+        "peak_rss_kib": 127860,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-08327",
+      "cohort": "follow_up",
+      "instance_hash": "sha256:fb7c88b08752e06a5439b72b5433e8d38016a2b357f18c3ae6f1a09e22cdddfb",
+      "initial_length": 11,
+      "arm_order": [
+        "direct",
+        "projected"
+      ],
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 5.700399924535304e-05,
+        "elapsed_including_preprocess_seconds": 4.622586818000855,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          703,
+          14424,
+          285674
+        ],
+        "exact_ball_edge_slots": 1547634,
+        "forward_shell_edge_slots": 9427242,
+        "elapsed_seconds": 4.56934,
+        "peak_rss_kib": 128108,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      },
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 5.9437999880174175e-05,
+        "elapsed_including_preprocess_seconds": 0.3700596509988827,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          241,
+          3095,
+          40966
+        ],
+        "exact_ball_edge_slots": 312930,
+        "forward_shell_edge_slots": 1106082,
+        "elapsed_seconds": 0.362412,
+        "peak_rss_kib": 35188,
+        "distance_lower_bound": 11,
+        "rank_preserving_witness": null
+      }
+    },
+    {
+      "case": "sac-01635",
+      "cohort": "positive_control",
+      "instance_hash": "sha256:ab0e3b2700e7d2339ac66c67f3efe6124f83fba51cf02673c28be5bd25ffb01e",
+      "initial_length": 13,
+      "arm_order": [
+        "projected",
+        "direct"
+      ],
+      "projected": {
+        "status": "complete",
+        "preprocess_seconds": 5.4911000916035846e-05,
+        "elapsed_including_preprocess_seconds": 0.10601022799892235,
+        "reverse_orbit_layers": [
+          1,
+          7,
+          74,
+          711,
+          7442,
+          84537
+        ],
+        "forward_orbit_layers": [
+          1,
+          18,
+          239,
+          3047,
+          39997
+        ],
+        "exact_ball_edge_slots": 311580,
+        "forward_shell_edge_slots": 0,
+        "elapsed_seconds": 0.0993262,
+        "peak_rss_kib": 35272,
+        "distance_lower_bound": 8,
+        "rank_preserving_witness": [
+          0,
+          4,
+          12,
+          4,
+          1,
+          5,
+          3,
+          3
+        ]
+      },
+      "direct": {
+        "status": "complete",
+        "preprocess_seconds": 4.726000042865053e-05,
+        "elapsed_including_preprocess_seconds": 0.6863405809999676,
+        "reverse_orbit_layers": [
+          1,
+          5,
+          94,
+          1671,
+          29968,
+          540624
+        ],
+        "forward_orbit_layers": [
+          1,
+          31,
+          701,
+          14352,
+          283675
+        ],
+        "exact_ball_edge_slots": 1545192,
+        "forward_shell_edge_slots": 0,
+        "elapsed_seconds": 0.631101,
+        "peak_rss_kib": 129436,
+        "distance_lower_bound": 8,
+        "rank_preserving_witness": [
+          0,
+          4,
+          12,
+          4,
+          1,
+          5,
+          3,
+          3
+        ],
+        "certificate": {
+          "moves": [
+            14,
+            0,
+            4,
+            12,
+            4,
+            1,
+            5,
+            3,
+            3,
+            15,
+            15,
+            15
+          ],
+          "ok": true,
+          "length": 12,
+          "peak_total_relator_length": 14,
+          "work": 96,
+          "certificate_hash": "sha256:c7e2704e9810bc4f35a5fc02408dd419ba9b0bfca559692fbcfad159eff69b12"
+        }
+      },
+      "lift": {
+        "status": "lifted",
+        "full_preserving_witness": [
+          0,
+          4,
+          12,
+          4,
+          1,
+          5,
+          3,
+          3
+        ],
+        "frontier_sizes": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "first_empty_frontier": null,
+        "terminal_fiber_size": 1,
+        "terminal_goal_count": 1,
+        "examined_moves": 264,
+        "elapsed_seconds": 0.0010271579994878266,
+        "certificate": {
+          "moves": [
+            14,
+            0,
+            4,
+            12,
+            4,
+            1,
+            5,
+            3,
+            3,
+            15,
+            15,
+            15
+          ],
+          "ok": true,
+          "length": 12,
+          "peak_total_relator_length": 14,
+          "work": 96,
+          "certificate_hash": "sha256:c7e2704e9810bc4f35a5fc02408dd419ba9b0bfca559692fbcfad159eff69b12"
+        }
+      }
+    }
+  ]
+}
