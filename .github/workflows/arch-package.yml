@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: Install build and display test dependencies
-        run: pacman -Syu --noconfirm --needed git rust pkgconf python bubblewrap wayland libxkbcommon libxkbcommon-x11 libx11 libglvnd mesa ttf-dejavu xorg-server-xvfb xorg-xauth xdotool
+        run: pacman -Syu --noconfirm --needed git rust pkgconf python bubblewrap wayland libxkbcommon libxkbcommon-x11 libx11 libxcursor libxi libglvnd mesa ttf-dejavu xorg-server-xvfb xorg-xauth xdotool
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
