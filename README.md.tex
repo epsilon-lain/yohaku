@@ -8,25 +8,43 @@ macro: '[[macros/raw]]'
 ````text
 # Yohaku
 
-给人与 AI 的本地工作空间。
-A local workspace for people and AI.
+A local workspace for people and AI · 给人与 AI 的本地工作空间。
 
-## ⬇️ [下载 Windows 版 / Download for Windows](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip)
+[English](#english) · [简体中文](#简体中文)
 
-**Windows 11 x64 · 约 15 MB · 便携技术预览 2026.11.17-preview1**
-无需另装 Rust、Python 或 WSL。No Rust, Python or WSL installation required.
+## ⬇️ [Download for Windows / 下载 Windows 版](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip)
 
-1. **下载 / Download**：点击上方链接，保存 Windows ZIP。
-2. **解压 / Extract**：完整解压到有写入权限的文件夹，保留所有包内文件。
-3. **启动 / Launch**：双击解压目录中的 **`Launch-Yohaku.cmd`**。
+**Windows 11 x64 · ~15 MB · 2026.11.17-preview1**
 
-[首次使用与常见问题 / Getting started](docs/windows/README.md) · [版本说明与校验 / Release notes](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1) · [反馈问题 / Report an issue](https://github.com/epsilon-lain/yohaku/issues)
+### English
 
-第一次打开可以先体验本地文档、Loom 和 Socius 设置。模型连接可稍后自行配置；
-真实模型工具调用和图片理解尚未验收。资料默认保存在解压目录的 `data/Yohaku`。
+1. Download the Windows ZIP using the link above.
+2. Extract all files to a folder you can write to.
+3. Double-click **`Launch-Yohaku.cmd`** in the extracted folder.
+
+The portable preview includes its runtime, so there’s no need to install Rust, Python, or WSL.
+Start with local documents and Loom. You can configure a model provider in Socius later.
+Your data is saved in `data/Yohaku` inside the extracted folder.
+
+Use the Windows ZIP above to run Yohaku. GitHub’s **Code → Download ZIP** and **Source code** links are for the repository source.
+This preview was tested in an isolated setup on the maintainer’s Windows 11 Home PC.
+Testing on a separate clean Windows installation is pending. Tool calls with a live model and image understanding also need validation.
+
+[Getting started and troubleshooting](docs/windows/README.md#english) · [Release notes](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1) · [Report an issue](https://github.com/epsilon-lain/yohaku/issues)
+
+### 简体中文
+
+1. [下载 Windows ZIP](https://github.com/epsilon-lain/yohaku/releases/download/v2026.11.17-preview1/Yohaku-2026.11.17-preview1-windows-x64.zip)。
+2. 完整解压到有写入权限的文件夹，保留所有包内文件。
+3. 双击解压目录中的 **`Launch-Yohaku.cmd`**。
+
+便携预览版自带运行时，无需另装 Rust、Python 或 WSL。打开后可以先体验本地文档和 Loom，
+需要时再到 Socius 配置模型服务。资料默认保存在解压目录的 `data/Yohaku`。
 
 请使用上方 Windows 下载链接；GitHub 的 **Code → Download ZIP** 和 **Source code** 是源码归档。
-**仅在当前电脑隔离环境验证，尚未在独立干净 Windows 环境验证。**
+**仅在维护者当前电脑的隔离环境验证，尚未在独立干净 Windows 环境验证。** 真实模型工具调用和图片理解仍待验证。
+
+[首次使用与常见问题](docs/windows/README.md#简体中文) · [版本说明](https://github.com/epsilon-lain/yohaku/releases/tag/v2026.11.17-preview1) · [反馈问题](https://github.com/epsilon-lain/yohaku/issues)
 
 ---
 
@@ -34,6 +52,7 @@ A local workspace for people and AI.
 
 以下构建与能力说明对应 Linux / WSL 源码。Windows 预览的实际范围、运行包和独立源码身份见
 [Windows 使用说明](docs/windows/README.md)及 Release 附件 `BUILD-SOURCE.json`。
+The build instructions below are for Linux and WSL. The Windows guide covers the preview’s features, runtime package, and separate build record.
 
 Yohaku is an experimental native, local-first workspace for people and AI.
 It is independent of Lain Brain. Loom, the deterministic `.tex` text generator,
