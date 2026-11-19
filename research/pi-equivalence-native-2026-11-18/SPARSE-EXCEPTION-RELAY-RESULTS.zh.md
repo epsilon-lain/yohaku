@@ -139,3 +139,5 @@ s\ge\max(2,u+g_A-1,2u+2g_A-\gamma_A-2)
 s\ge\max(2,d_c-1,2d_c-2-\gamma_A)
 \]
 均得到 \(N=2^s+A2^u-1\) 的 \(v_2(Y_{N,4N})=-1-\gamma_A\)。因此这是一条允许 \(A,u,s\) 同时变化、由显式二进条件限定的三参数族。
+
+**精确阈值算法。** 对任意奇部 \(A\)，新增四状态二进位 DP，在线性于 \(\log A\) 的步数内精确计算 \(C_A\) 和 \(\gamma_A\)，从而精确判断增长种子定理的适用阈值。推导与复算见 [SPARSE-SEED-CARRY-DP.zh.md](SPARSE-SEED-CARRY-DP.zh.md) 和 [verify_sparse_seed_carry_dp.py](verify_sparse_seed_carry_dp.py)。脚本已与直接枚举逐项比较全部奇数 \(A<1000\)。这使参数族的判定可扩展到很大的奇部，但仍不意味着覆盖所有 \(N\)。
