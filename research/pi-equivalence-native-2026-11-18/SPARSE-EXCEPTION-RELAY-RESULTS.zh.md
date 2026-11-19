@@ -133,3 +133,9 @@ C_A=\max_{0\le k\le(A-1)/2}v_2\binom{A+k}{k},\quad
 s\ge\max(2,u+g_A-1,2u+2g_A-\gamma_A-2)
 \]
 有 \(N=2^s+A2^u-1\) 满足 \(v_2(Y_{N,4N})=-1-\gamma_A\)，故 \(v_2(Q_{N,4N})=4N+1+\gamma_A\)。这是已证两条一般定理的组合应用，不是全体偶数的结论。[完整推导](SPARSE-ARBITRARY-ODD-SEEDS.zh.md) · [Kummer 常数复算](verify_sparse_arbitrary_odd_seeds.py)
+
+**参数加强。** 上述推导可允许奇数 \(A\) 随 \(u\) 变化，不必固定。令 \(C_A,\gamma_A\) 如[任意奇部种子定理](SPARSE-ARBITRARY-ODD-SEEDS.zh.md)定义。只要 \(u+3\ge2C_A+11\)，种子赋值就是 \(-1-\gamma_A\)。再令精确 \(d_c=\lfloor\log_2(12A2^u-3)\rfloor\)，对任意整数
+\[
+s\ge\max(2,d_c-1,2d_c-2-\gamma_A)
+\]
+均得到 \(N=2^s+A2^u-1\) 的 \(v_2(Y_{N,4N})=-1-\gamma_A\)。因此这是一条允许 \(A,u,s\) 同时变化、由显式二进条件限定的三参数族。
