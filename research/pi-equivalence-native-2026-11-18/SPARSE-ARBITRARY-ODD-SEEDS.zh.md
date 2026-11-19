@@ -131,3 +131,7 @@ The proof combines two earlier results without changing either:
 2. the fixed-seed shift theorem, which gives (4) for each such seed.
 
 No new proof of either parent theorem is claimed here. The result still concerns only the BBP rational family on the exact slope \(M=4N\). It does not prove the terminal nonvanishing for all even \(N\), does not cover all \(M=4N+o(N)\), and does not prove bad approximability of \(\pi\) over arbitrary rational denominators.
+
+## Exact finite constants
+
+The companion script [verify_sparse_arbitrary_odd_seeds.py](verify_sparse_arbitrary_odd_seeds.py) computes the finite Kummer carry maxima \(C_A\), terminal carry count \(\gamma_A\), and exact shift thresholds for sample odd \(A\). It checks the coarse sufficient bound (6). This is a finite arithmetic regression; the infinite family is proved by Sections 1–3.
