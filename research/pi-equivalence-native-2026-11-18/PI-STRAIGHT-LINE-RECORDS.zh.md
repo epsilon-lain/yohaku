@@ -72,3 +72,5 @@ n_*=\min\{n>T:n\equiv r\pmod q\}.
 直接算得 \(E(P,Q)=\lambda|a\lambda-d|\)。若 \(Q>q\) 且 \(E(P,Q)\le b\)，则 \(d\ge1\)，因为 \(d\le0\) 时 \(E\ge a\lambda^2>b\)。再由 \(a\lambda=d+a\eta>1-b\) 与 \(E=a\lambda|\eta|\)，得 \(|\eta|\le b/(1-b)<1/2\)。所以每个正整数 \(d=\operatorname{sgn}(e)(pQ-qP)\) 只需检查 \(k=\operatorname{round}(d\theta)\) 对应的唯一候选。若要查到分母 \(N\)，只需令 \(d\le\lfloor|e|N+b\rfloor\)。
 
 用 \(355/113\) 起跳，\(d=1\) 的候选是 \(104348/33215\)。它的竖直偏差约 \(0.0000110\)，原点的竖直偏差约 \(0.0000301\)。乘上分母后，候选的 \(E\) 却升到 \(0.3658638091\)。要继续破纪录，必须同时控制分母放大和剩余偏差 \(|k-d\theta|\)。任意小的误差仍待证明。
+
+[续研证明了怎样跳过不可能破纪录的整段分母](PI-LINE-SKIPPING.zh.md)，也从[阶梯前缀得到斜率区间的无界性判据](PI-LINE-SLOPE-CELLS.zh.md)。
