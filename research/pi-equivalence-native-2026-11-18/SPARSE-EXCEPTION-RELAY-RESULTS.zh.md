@@ -120,3 +120,16 @@ v_2(Y_{2^s+2^u-1,\,4(2^s+2^u-1)})=-1
 \quad(u\ge8,\ s\ge2u+4).
 \]
 故这一二维参数区内 \(v_2(Q)=4N+1\)。这不是 Padé 新路线，而是两个既有二进定理的组合推论。[完整推导](SPARSE-GROWING-DYADIC-SEEDS.zh.md) · [精确种子复算](verify_sparse_growing_seeds.py)
+
+## 任意固定奇部的增长种子族
+
+进一步结合任意固定奇部的二进整块定理与固定种子平移定理，得到新族 \(c=A2^u-1\)，其中 \(A\) 为任意固定正奇数。令
+\[
+C_A=\max_{0\le k\le(A-1)/2}v_2\binom{A+k}{k},\quad
+\gamma_A=v_2\binom{(3A-1)/2}{(A-1)/2}.
+\]
+若 \(u+3\ge2C_A+11\)，则精确种子赋值为 \(v_2(Y_{c,4c})=-1-\gamma_A\)。再令 \(g_A=\lfloor\log_2(12A)\rfloor\)，对充分大的 \(u\) 及
+\[
+s\ge\max(2,u+g_A-1,2u+2g_A-\gamma_A-2)
+\]
+有 \(N=2^s+A2^u-1\) 满足 \(v_2(Y_{N,4N})=-1-\gamma_A\)，故 \(v_2(Q_{N,4N})=4N+1+\gamma_A\)。这是已证两条一般定理的组合应用，不是全体偶数的结论。[完整推导](SPARSE-ARBITRARY-ODD-SEEDS.zh.md) · [Kummer 常数复算](verify_sparse_arbitrary_odd_seeds.py)
