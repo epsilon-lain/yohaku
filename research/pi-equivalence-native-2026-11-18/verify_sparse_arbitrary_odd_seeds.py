@@ -1,4 +1,4 @@
-from math import comb, floor, log2
+from math import comb
 
 
 def v2(n: int) -> int:
@@ -22,8 +22,8 @@ def main():
     for A in [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 25, 31, 33, 63, 65, 101]:
         C_A, gamma_A = seed_constants(A)
         u_exact = max(1, 2 * C_A + 8)
-        u_coarse = 2 * int(log2(3 * A / 2)) + 10
-        g_A = int(log2(12 * A))
+        u_coarse = 2 * ((3 * A).bit_length() - 2) + 10
+        g_A = (12 * A).bit_length() - 1
         rows.append({
             "A": A,
             "C_A": C_A,
