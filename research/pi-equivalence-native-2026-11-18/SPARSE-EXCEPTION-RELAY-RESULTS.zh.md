@@ -184,3 +184,23 @@ v_2(Y_{N,4N})=-\Gamma_A,\qquad v_2(Q_{N,4N})=4N+\Gamma_A.
 
 本节为后续推导与复算，未新增 Yohaku 原生任务或更改上文的原生接力回执。
 
+## 后续：任意奇数前缀的移位与二进分支
+
+写 \(W=A2^s\)，\(A\) 为正奇数。上一节的相邻阶定理保证基底赋值时，可将
+原种子移位证明中的阶乘比赋值 \(-\Gamma_A\) 同时带入主项与误差项。
+若 \(Y(c)\ne0\)、\(\nu_c=v_2(Y(c))\le4c\)，并且
+\[
+s\ge\max\{2,C_A-\Gamma_A-3,d_c-1,\nu_c+2d_c-1\},
+\qquad d_c=\lfloor\log_2(12c+9)\rfloor,
+\]
+则 \(v_2(Y(A2^s+c))=\nu_c-\Gamma_A\)。特别地，
+\(N=3\cdot2^s+4\)、\(s\ge9\) 时 \(v_2(Y(N))=-2\)，这整个族均在旧单个
+二次幂移位窗口之外，也不满足上一节的进位差判据。[完整证明与范围审计](BBP-GLOBAL-VALUATION-FOLLOWUP.zh.md)
+
+同一续研证明，固定四步块 \((Y(2^s)-16^4Y(2^s-4))/H_{2^s}\) 的赋值在
+\(s\ge19\) 时恰为 \(18-s\)，故不能把该块统一看作单位。对归一化量
+\(B_N=2\binom{3(N+1)}{N+1}Y(N)\)，在原 \(N\le32768\) 范围观察到整性、
+\(B_N\equiv3N+6\pmod8\)，以及高赋值点 \(110,4206,20590\) 所在的单一有限
+二进提升分支。这些全局性质仍是待证命题；有限验证没有补成全阶证明。
+[本轮复算](verify_bbp_global_valuation_followup.py) · [紧凑证书](bbp-global-valuation-verification.json)
+

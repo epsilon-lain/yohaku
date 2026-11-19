@@ -1,0 +1,104 @@
+{
+  "format": "bbp-laurent-regularization/1",
+  "beta_finite_part_checks": 697,
+  "truncation_checks": [
+    {
+      "m": 1,
+      "N": 0,
+      "blocks": 24,
+      "error_v2": 96,
+      "proved_tail_lower_bound": 89,
+      "total_log_coefficient": 0
+    },
+    {
+      "m": 2,
+      "N": 1,
+      "blocks": 24,
+      "error_v2": 95,
+      "proved_tail_lower_bound": 89,
+      "total_log_coefficient": 0
+    },
+    {
+      "m": 3,
+      "N": 2,
+      "blocks": 24,
+      "error_v2": 95,
+      "proved_tail_lower_bound": 89,
+      "total_log_coefficient": 0
+    },
+    {
+      "m": 4,
+      "N": 3,
+      "blocks": 24,
+      "error_v2": 95,
+      "proved_tail_lower_bound": 89,
+      "total_log_coefficient": 0
+    },
+    {
+      "m": 5,
+      "N": 4,
+      "blocks": 24,
+      "error_v2": 96,
+      "proved_tail_lower_bound": 88,
+      "total_log_coefficient": 0
+    },
+    {
+      "m": 6,
+      "N": 5,
+      "blocks": 24,
+      "error_v2": 92,
+      "proved_tail_lower_bound": 88,
+      "total_log_coefficient": 0
+    },
+    {
+      "m": 7,
+      "N": 6,
+      "blocks": 24,
+      "error_v2": 94,
+      "proved_tail_lower_bound": 88,
+      "total_log_coefficient": 0
+    },
+    {
+      "m": 8,
+      "N": 7,
+      "blocks": 24,
+      "error_v2": 95,
+      "proved_tail_lower_bound": 88,
+      "total_log_coefficient": 0
+    }
+  ],
+  "first_block_pole_residue": 216,
+  "first_block_nonintegrality_checks": [
+    {
+      "m": 32,
+      "u": 5,
+      "v2_normalized_first_block": -2
+    },
+    {
+      "m": 64,
+      "u": 6,
+      "v2_normalized_first_block": -3
+    },
+    {
+      "m": 128,
+      "u": 7,
+      "v2_normalized_first_block": -4
+    },
+    {
+      "m": 256,
+      "u": 8,
+      "v2_normalized_first_block": -5
+    },
+    {
+      "m": 512,
+      "u": 9,
+      "v2_normalized_first_block": -6
+    },
+    {
+      "m": 1024,
+      "u": 10,
+      "v2_normalized_first_block": -7
+    }
+  ],
+  "scope": "Exact representation and finite checks only; no global normalized-integrality theorem."
+}
