@@ -141,3 +141,17 @@ s\ge\max(2,d_c-1,2d_c-2-\gamma_A)
 均得到 \(N=2^s+A2^u-1\) 的 \(v_2(Y_{N,4N})=-1-\gamma_A\)。因此这是一条允许 \(A,u,s\) 同时变化、由显式二进条件限定的三参数族。
 
 **精确阈值算法。** 对任意奇部 \(A\)，新增四状态二进位 DP，在线性于 \(\log A\) 的步数内精确计算 \(C_A\) 和 \(\gamma_A\)，从而精确判断增长种子定理的适用阈值。推导与复算见 [SPARSE-SEED-CARRY-DP.zh.md](SPARSE-SEED-CARRY-DP.zh.md) 和 [verify_sparse_seed_carry_dp.py](verify_sparse_seed_carry_dp.py)。脚本已与直接枚举逐项比较全部奇数 \(A<1000\)。这使参数族的判定可扩展到很大的奇部，但仍不意味着覆盖所有 \(N\)。
+
+## 偶数分支的覆盖审计与新种子 c=2
+
+必须区分奇偶：若 \(s\ge1\)，则 \(2^s+c\) 与 \(c\) 同奇偶。因此上一节的 \(c=A2^u-1\) 增长种子产生的是奇数 \(N\)，不能覆盖原目标中的偶数 \(N\)。偶数分支需要偶种子。直接精确计算
+\[
+Y_{2,8}=16609872428603/20652682050,
+\qquad v_2(Y_{2,8})=-1,
+\]
+并应用固定种子平移定理，得到 \(N=2^s+2\)、\(s\ge8\) 时 \(v_2(Y_{N,4N})=-1\)，故 \(v_2(Q_{N,4N})=4N+1\)。更一般地，对给定偶数 \(N\)，枚举 \(s\ge1\)、\(2^s<N\)，令 \(c=N-2^s\)，并检查精确条件
+\[
+\nu_c<4c-3,\qquad s\ge\max(2,d_c-1,\nu_c+2d_c-1),
+\quad d_c=\lfloor\log_2(12c+9)\rfloor.
+\]
+这是该机制覆盖单个 \(N\) 的精确判据，不是全体偶数覆盖定理。[偶种子覆盖分析](SPARSE-EVEN-SEED-COVERAGE.zh.md) · [Fraction 复算与覆盖扫描](verify_sparse_even_seed_coverage.py)
