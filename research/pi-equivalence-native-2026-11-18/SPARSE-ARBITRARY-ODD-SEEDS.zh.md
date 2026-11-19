@@ -1,7 +1,7 @@
 # Arbitrary odd-part seeds for the BBP slope-four shift theorem
 
 Date: 2026-11-19  
-Status: **proved infinite family, conditional only on the two previously established theorems cited below**. This extends the special seeds \(c=1\), \(c=14\), and \(c=2^u-1\).
+Status: **proved parameter family, conditional only on the two previously established theorems cited below**. The odd part \(A\) may vary with \(u\); this extends the special seeds \(c=1\), \(c=14\), and \(c=2^u-1\).
 
 ## 1. Exact valuation of the seed \(c=A2^u-1\)
 
@@ -59,7 +59,7 @@ Thus
 \boxed{v_2(Y_{A2^u-1,\,4(A2^u-1)})=-1-\gamma_A.}
 \tag{2}
 \]
-This is an exact seed formula for every fixed odd \(A\) and every \(u\) satisfying (1).
+This is an exact seed formula for every positive odd \(A\) and every \(u\) satisfying (1), even when \(A\) varies with \(u\).
 
 ## 2. Shift each seed again
 
@@ -71,9 +71,10 @@ Let
 \[
 d_c=\lfloor\log_2(12c+9)\rfloor.
 \]
-For all sufficiently large \(u\), since \(12A\) is not a power of two,
+Set the exact integer
 \[
-d_c=u+g_A,\qquad g_A=\lfloor\log_2(12A)\rfloor.
+d_c=\lfloor\log_2(12c+9)\rfloor
+=\lfloor\log_2(12A2^u-3)\rfloor.
 \]
 The shift theorem requires
 \[
@@ -81,15 +82,12 @@ The shift theorem requires
 s\ge\max(2,d_c-1),\qquad
 s+2-2d_c>\nu_A.
 \]
-The first condition holds for all sufficiently large \(u\), because \(\nu_A\) is fixed while \(c\to\infty\). The remaining two conditions are implied exactly by
+The first condition is automatic for \(c\ge1\), since \(\nu_A=-1-\gamma_A\le-1<4c-3\). The remaining two conditions are equivalent to
 \[
-\boxed{
-s\ge
-\max\left(2,\ u+g_A-1,\ 2u+2g_A-\gamma_A-2\right).
-}
+\boxed{s\ge\max(2,d_c-1,2d_c-2-\gamma_A).}
 \tag{3}
 \]
-Therefore, for every fixed positive odd \(A\), every sufficiently large \(u\) satisfying (1), and every \(s\) satisfying (3),
+Thus for every positive odd \(A\), every \(u\) satisfying (1), and every \(s\) satisfying (3),
 \[
 \boxed{
 v_2\!\left(Y_{\,2^s+A2^u-1,\ 4(2^s+A2^u-1)}\right)
@@ -121,7 +119,7 @@ Hence the easily checked sufficient condition
 \]
 implies (1). This bound is not claimed optimal.
 
-For \(A=1\), \(C_A=\gamma_A=0\), and the exact threshold (1) is \(u\ge8\). Formula (3) becomes \(s\ge2u+4\), recovering the previously obtained \(A=1\) growing-seed family.
+For \(A=1\), \(C_A=\gamma_A=0\), and the exact threshold (1) is \(u\ge8\). Then \(d_c=u+3\) and (3) becomes \(s\ge2u+4\), recovering the previously obtained \(A=1\) growing-seed family.
 
 ## 4. Scope and what remains open
 
