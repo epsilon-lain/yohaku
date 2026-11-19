@@ -1,5 +1,7 @@
 # Yohaku
 
+**text is all you need**
+
 A local workspace for people and AI · 给人与 AI 的本地工作空间。
 
 [English](#english) · [简体中文](#简体中文)
