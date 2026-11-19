@@ -90,3 +90,7 @@ The parameter-coverage question now splits cleanly:
 - Even \(N\): use even seeds \(c\), beginning with \(c=2\), \(c=14\), and other exact seed values satisfying (3).
 
 A genuine all-even theorem would require proving that every sufficiently large even \(N\) admits at least one decomposition \(N=2^s+c\) whose seed satisfies (3), or replacing the fixed-seed shift argument by a direct uniform estimate. No such universal statement is claimed here.
+
+## Follow-up: iterated shifts and exceptional seed 110
+
+The even seed \(c=2\) can itself be shifted to \(2^u+2\), then shifted again, yielding \(N=2^s+2^u+2\) for \(u\ge8\), \(s\ge2u+4\). The exceptional seed \(c=110\) has \(v_2(Y)=4\), yet still generates \(N=2^s+110\), \(s\ge23\), with the same valuation. See [iterated even-shift proof](SPARSE-ITERATED-EVEN-SHIFTS.zh.md) and [exact verifier](verify_sparse_iterated_even_shifts.py).
