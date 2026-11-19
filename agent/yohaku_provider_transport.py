@@ -152,7 +152,8 @@ def resolve_turn_config(initial,project,host_config=None):
     config=dict(initial['config']);context=initial.get('context',{})
     root=context.get('root') if isinstance(context,dict) else None
     if not isinstance(root,str) or not Path(root).is_absolute() or not Path(root).is_dir():return config
-    host=Path(host_config) if host_config else Path(project)/'config/ai.json';world=Path(root)/'memory/socius.json'
+    host=Path(host_config) if host_config else Path(os.environ.get('YOHAKU_CONFIG_DIR',Path(project)/'config'))/'ai.json'
+    world=Path(root)/'memory/socius.json'
     if not host.is_file():return config
     keys=('turn_timeout','turn_timeout_long')
     for key in keys:config.pop(key,None)

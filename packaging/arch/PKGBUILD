@@ -1,0 +1,48 @@
+# Run makepkg from packaging/arch in a Yohaku source checkout.
+pkgname=yohaku
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Native workspace for people and AI, with the Loom text compiler'
+arch=('x86_64')
+url='https://github.com/epsilon-lain/yohaku'
+license=('LicenseRef-Yohaku')
+depends=(
+    'bubblewrap' 'gcc-libs' 'libglvnd' 'libx11' 'libxcursor' 'libxi'
+    'libxkbcommon' 'libxkbcommon-x11' 'mesa' 'python' 'ttf-dejavu' 'wayland'
+)
+makedepends=('pkgconf' 'rust')
+optdepends=(
+    'fcitx5: input method support on X11'
+    'wl-clipboard: native Wayland clipboard tools'
+    'xclip: X11 clipboard tools'
+)
+options=('!debug')
+
+build() {
+    cd "$startdir/../.."
+    CARGO_TARGET_DIR="$srcdir/target" ./scripts/build.sh
+}
+
+package() {
+    cd "$startdir/../.."
+    local runtime="$pkgdir/usr/lib/yohaku"
+    local notices="$pkgdir/usr/share/licenses/$pkgname"
+
+    install -Dm755 packaging/arch/yohaku "$pkgdir/usr/bin/yohaku"
+    install -Dm755 -t "$runtime/bin" \
+        bin/loom-linux-x86_64 bin/yohaku_compositor bin/yohaku_terminal_window \
+        bin/yohaku_workspace bin/yohaku_chat_workspace bin/yohaku-tool-window
+    install -Dm644 -t "$runtime/agent" agent/yohaku_*.py
+    install -Dm644 -t "$runtime/config" \
+        config/ai.example.json config/shell.example.json config/session-startup.json.tex
+    install -Dm644 -t "$runtime/macros" macros/raw.source.md
+
+    install -Dm644 -t "$notices" LICENSE THIRD_PARTY_NOTICES.md
+    install -Dm644 vendor/winit/LICENSE "$notices/winit/LICENSE"
+    install -Dm644 examples/yohaku_workspace/native_winit/LICENSE-SMITHAY "$notices/LICENSE-SMITHAY"
+    cp -R licenses/. "$notices/"
+    local notice
+    while IFS= read -r -d '' notice; do
+        install -Dm644 "$notice" "$notices/$notice"
+    done < <(find loom-src/vendor -type f \( -iname 'license*' -o -iname 'copying*' -o -iname 'copyright*' -o -iname 'notice*' \) -print0)
+}

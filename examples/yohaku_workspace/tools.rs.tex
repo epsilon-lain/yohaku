@@ -959,14 +959,14 @@ impl ToolPanel {
         }
         editor.ensure_visible(14);
     }
-    fn open_terminal_window(&mut self,panel:&Panel) -> Result<(),String> {
+    pub(super) fn open_terminal_window(&mut self,panel:&Panel) -> Result<(),String> {
         self.terminal_windows.retain_mut(|(_,child)| matches!(child.try_wait(),Ok(None)));
         if self.terminal_windows.iter().any(|(root,_)|root==&panel.root) { self.status="Terminal window already open for this world; switch to Yohaku Terminal".into();return Ok(()) }
         let executable=std::env::current_exe().map_err(|e|e.to_string())?.parent().ok_or("Missing executable directory")?.join("yohaku_terminal_window");
         if !executable.is_file(){return Err("Build the yohaku_terminal_window example before opening Terminal".into())}
         let agent=std::env::current_dir().map_err(|e|e.to_string())?.join("agent/yohaku_terminal.py");
         let mut command=Command::new(executable);command.arg("--root").arg(&panel.root).arg("--agent").arg(agent).env_clear().env("PATH","/usr/bin:/bin");
-        for key in ["DISPLAY","XAUTHORITY","XDG_RUNTIME_DIR","DBUS_SESSION_BUS_ADDRESS","XMODIFIERS","GTK_IM_MODULE","QT_IM_MODULE","LANG","LC_ALL","WSL_INTEROP","WSL_DISTRO_NAME"]{if let Some(value)=std::env::var_os(key){command.env(key,value);}}
+        for key in ["DISPLAY","XAUTHORITY","WAYLAND_DISPLAY","XDG_RUNTIME_DIR","DBUS_SESSION_BUS_ADDRESS","XMODIFIERS","GTK_IM_MODULE","QT_IM_MODULE","LANG","LC_ALL","WSL_INTEROP","WSL_DISTRO_NAME"]{if let Some(value)=std::env::var_os(key){command.env(key,value);}}
         command.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::inherit());
         let child=command.spawn().map_err(|e|e.to_string())?;self.terminal_windows.push((panel.root.clone(),child));self.status="Terminal window opened. Closing it detaches; sessions remain alive.".into();Ok(())
     }

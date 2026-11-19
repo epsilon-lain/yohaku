@@ -12,4 +12,7 @@ target_dir=${CARGO_TARGET_DIR:-"$project_dir/target"}
 cp "$target_dir/debug/yohaku_workspace" bin/yohaku_workspace
 cp "$target_dir/debug/yohaku_workspace" bin/yohaku_chat_workspace
 cp "$target_dir/debug/examples/wayland_window" bin/yohaku-tool-window
-strip --strip-debug bin/yohaku_workspace bin/yohaku_chat_workspace bin/yohaku-tool-window
+cp "$target_dir/debug/examples/yohaku_compositor" bin/yohaku_compositor
+cp "$target_dir/debug/examples/yohaku_terminal_window" bin/yohaku_terminal_window
+strip --strip-debug bin/yohaku_workspace bin/yohaku_chat_workspace bin/yohaku-tool-window \
+    bin/yohaku_compositor bin/yohaku_terminal_window

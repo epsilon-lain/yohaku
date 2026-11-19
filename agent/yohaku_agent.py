@@ -828,7 +828,7 @@ def optional_count(config, name):
 def read_config(path=None):
     config = {"protocol": "chat", "base_url": "https://api.deepseek.com", "model": "deepseek-flash",
         "api_key_env": "DEEPSEEK_API_KEY", "max_tokens": 4096, "timeout": 120}
-    path = Path(path or ROOT / "config/ai.json")
+    path = Path(path) if path else Path(os.environ.get("YOHAKU_CONFIG_DIR", ROOT / "config")) / "ai.json"
     if path.exists():
         config.update(json.loads(path.read_text()))
     return config

@@ -1,0 +1,46 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+name: Arch package and session
+
+on:
+  pull_request:
+    paths:
+      - 'packaging/arch/**'
+      - '.github/workflows/arch-package.yml*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  arch-package:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    timeout-minutes: 25
+    steps:
+      - name: Install build and display test dependencies
+        run: pacman -Syu --noconfirm --needed git rust pkgconf python bubblewrap wayland libxkbcommon libxkbcommon-x11 libx11 libxcursor libxi libglvnd mesa ttf-dejavu xorg-server-xvfb xorg-xauth xdotool
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build and install
+        run: |
+          useradd --create-home yohaku-builder
+          chown -R yohaku-builder "$GITHUB_WORKSPACE"
+          cd packaging/arch
+          runuser -u yohaku-builder -- env CARGO_BUILD_JOBS=2 makepkg --cleanbuild --noconfirm
+          pacman -U --noconfirm ./*.pkg.tar.zst
+      - name: Verify the installed package and its editable session rule
+        run: runuser -u yohaku-builder -- xvfb-run -a -s '-screen 0 1600x1000x24' /usr/bin/python3 -B packaging/arch/verify-session.py
+````
+
+## 输出与关联
+```yaml
+output: ".github/workflows/arch-package.yml"
+```

@@ -1,4 +1,6 @@
 import io,os,sys,time,unittest
+import tempfile
+from types import SimpleNamespace
 from unittest.mock import patch
 import yohaku_launcher as l
 from pathlib import Path
@@ -21,5 +23,45 @@ class LaunchTests(unittest.TestCase):
         message=next(iter(l.DISPLAY_ERRORS)).decode();output=io.BytesIO();started=time.monotonic()
         code=l.supervise([sys.executable,'-u','-c',f'import signal;signal.signal(signal.SIGTERM,signal.SIG_IGN)\nwhile True: print({message!r},flush=True)'],Path.cwd(),output)
         self.assertEqual(code,70);self.assertEqual(output.getvalue().count(message.encode()),4);self.assertLess(time.monotonic()-started,4)
+
+    def test_installed_launch_uses_prebuilt_compositor_and_keeps_user_config(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            project = base / "package"
+            (project / "bin").mkdir(parents=True)
+            (project / "config").mkdir()
+            for name in ("ai", "shell"):
+                (project / f"config/{name}.example.json").write_text("{}")
+            executable = project / "bin/yohaku_compositor"
+            executable.touch(mode=0o700)
+            config_dir = base / "config/yohaku"
+            config_dir.mkdir(parents=True)
+            (config_dir / "ai.json").write_text('{"model":"keep-me"}')
+            world = base / "data/yohaku/worlds/default"
+            environment = {"XDG_CONFIG_HOME": str(base / "config"), "XDG_DATA_HOME": str(base / "data")}
+            args = ["yohaku", "--installed", "--project", str(project), "--backend", "native"]
+            seed_calls = []
+            startup = SimpleNamespace(seed=lambda *values: seed_calls.append(values))
+            output = SimpleNamespace(buffer=io.BytesIO(), write=lambda _: None, flush=lambda: None)
+            with (
+                patch.dict(os.environ, environment, clear=True),
+                patch.dict(sys.modules, {"yohaku_session_startup": startup}),
+                patch.object(sys, "argv", args),
+                patch.object(sys, "stdout", output),
+                patch.object(l, "supervise", return_value=0) as launch,
+            ):
+                self.assertEqual(l.main(), 0)
+            requested, working_dir, _, child_env = launch.call_args.args
+            self.assertEqual(requested, [str(executable)])
+            self.assertEqual(working_dir, project)
+            self.assertEqual(child_env["YOHAKU_CONFIG_DIR"], str(config_dir))
+            self.assertEqual(child_env["YOHAKU_WORKSPACE"], str(world))
+            self.assertEqual(child_env["YOHAKU_LOOM"], str(project / "bin/loom-linux-x86_64"))
+            self.assertEqual(seed_calls, [(project, world, project / "bin/loom-linux-x86_64")])
+            self.assertEqual((config_dir / "ai.json").read_text(), '{"model":"keep-me"}')
+            self.assertEqual((config_dir / "shell.json").read_text(), "{}")
+            self.assertEqual(sorted(path.name for path in (project / "config").iterdir()),
+                             ["ai.example.json", "shell.example.json"])
+
 
 if __name__=='__main__':unittest.main()

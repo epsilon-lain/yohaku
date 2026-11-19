@@ -1,0 +1,50 @@
+---
+format: yohaku/0.2
+target: text
+macro: '[[macros/raw]]'
+---
+
+## 正文
+````text
+"""Register the packaged Loom startup rule in the user's own workspace."""
+
+from yohaku_agent import ToolError, Workspace
+
+
+SOURCE = 'files/session-startup.json.tex'
+OUTPUT = 'files/session-startup.json'
+RAW_MACRO = 'macros/raw.source.md'
+
+
+def _seed_file(workspace, root, relative, template):
+    if (root / relative).exists():
+        return
+    try:
+        workspace.execute({'command': 'write_text', 'path': relative,
+                           'expected': None, 'text': template.read_text(encoding='utf-8')})
+    except ToolError:
+        # Another launcher may have created it under the workspace lock.
+        if not (root / relative).is_file():
+            raise
+
+
+def seed(project, world, loom):
+    if (world / OUTPUT).exists() and not (world / SOURCE).exists():
+        raise RuntimeError(f'{OUTPUT} already exists without a Loom source')
+    workspace = Workspace(world, loom, project / 'bin/yohaku_workspace')
+    try:
+        _seed_file(workspace, world, RAW_MACRO, project / RAW_MACRO)
+        _seed_file(workspace, world, SOURCE, project / 'config/session-startup.json.tex')
+        registration = workspace.execute({'command': 'adopt', 'path': SOURCE})
+        if registration['output'] != OUTPUT:
+            raise ToolError(f'{SOURCE} must generate {OUTPUT}')
+        if not (world / OUTPUT).exists():
+            workspace.execute({'command': 'sync', 'source': SOURCE})
+    except ToolError as error:
+        raise RuntimeError(f'Could not prepare the session startup rule: {error}') from error
+````
+
+## 输出与关联
+```yaml
+output: "agent/yohaku_session_startup.py"
+```
