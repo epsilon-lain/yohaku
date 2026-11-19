@@ -133,3 +133,7 @@ No new proof of either parent theorem is claimed here. The result still concerns
 ## Exact finite constants
 
 The companion script [verify_sparse_arbitrary_odd_seeds.py](verify_sparse_arbitrary_odd_seeds.py) computes the finite Kummer carry maxima \(C_A\), terminal carry count \(\gamma_A\), and exact shift thresholds for sample odd \(A\). It checks the coarse sufficient bound (6). This is a finite arithmetic regression; the infinite family is proved by Sections 1–3.
+
+## Exact threshold computation in logarithmic time
+
+The threshold constant \(C_A\) need not be computed by scanning all \(k\le(A-1)/2\). Kummer's theorem turns it into a maximum-carry digit DP with four states (borrow in \(K-k\), carry in \(A+k\)), where \(K=(A-1)/2\). The exact algorithm takes \(O(\log A)\) transitions and returns both \(C_A\) and \(\gamma_A\). See [the digit-DP derivation](SPARSE-SEED-CARRY-DP.zh.md) and [the exact verifier](verify_sparse_seed_carry_dp.py), which checks agreement with brute force for every odd \(A<1000\).
