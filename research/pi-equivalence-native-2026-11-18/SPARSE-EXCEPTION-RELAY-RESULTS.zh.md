@@ -155,3 +155,7 @@ Y_{2,8}=16609872428603/20652682050,
 \quad d_c=\lfloor\log_2(12c+9)\rfloor.
 \]
 这是该机制覆盖单个 \(N\) 的精确判据，不是全体偶数覆盖定理。[偶种子覆盖分析](SPARSE-EVEN-SEED-COVERAGE.zh.md) · [Fraction 复算与覆盖扫描](verify_sparse_even_seed_coverage.py)
+
+## 迭代偶种子与异常种子 110
+
+从精确偶种子 \(c=2\)、\(v_2(Y_{2,8})=-1\) 出发，连续应用固定种子平移定理，可得 \(N=2^s+2^u+2\)、\(u\ge8\)、\(s\ge2u+4\) 时 \(v_2(Y_{N,4N})=-1\)。此外，已知反例种子 \(c=110\) 满足 \(v_2(Y_{110,440})=4\)，但仍满足平移定理假设，因此 \(N=2^s+110\)、\(s\ge23\) 时 \(v_2(Y_{N,4N})=4\)。这说明平移机制能保留非典型种子赋值，不能把所有种子都猜成赋值 \(-1\)。[迭代偶种子推导](SPARSE-ITERATED-EVEN-SHIFTS.zh.md) · [精确复算](verify_sparse_iterated_even_shifts.py)
