@@ -1,0 +1,192 @@
+{
+  "format": "bbp-two-mod-eight-verification/1",
+  "script_sha256": "e4d90ac4ab1c8b1ede7cbaca8a90d141898226b526817e7e79db64528f3f795f",
+  "arithmetic": "exact integer polynomials and Fraction; no floating point",
+  "polynomial_identity": {
+    "method": "exact polynomial cross multiplication over integers",
+    "pell_table_rederived_from_signed_twelve_term_formula": true,
+    "three_quadratic_coefficients_verified": true,
+    "U_mod4": [
+      0,
+      1,
+      2
+    ],
+    "V_mod4": [
+      0,
+      3,
+      2
+    ],
+    "W_mod4": [
+      1,
+      2
+    ]
+  },
+  "two_mod8_exact_checks": [
+    {
+      "n": 2,
+      "n_mod8": 2,
+      "v2_3n_plus_2": 3,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        1
+      ],
+      "v2_T": -1,
+      "v2_Z": 0,
+      "gamma_n": 0,
+      "gamma_n_plus_1": 2,
+      "v2_Y": -1,
+      "v2_B": 2,
+      "B_mod8": 4,
+      "direct_Y_difference_agrees_with_local_delta": true
+    },
+    {
+      "n": 10,
+      "n_mod8": 2,
+      "v2_3n_plus_2": 5,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        3
+      ],
+      "v2_T": -3,
+      "v2_Z": 0,
+      "gamma_n": 0,
+      "gamma_n_plus_1": 4,
+      "v2_Y": -3,
+      "v2_B": 2,
+      "B_mod8": 4,
+      "direct_Y_difference_agrees_with_local_delta": true
+    },
+    {
+      "n": 18,
+      "n_mod8": 2,
+      "v2_3n_plus_2": 3,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        1
+      ],
+      "v2_T": -1,
+      "v2_Z": 0,
+      "gamma_n": 0,
+      "gamma_n_plus_1": 2,
+      "v2_Y": -1,
+      "v2_B": 2,
+      "B_mod8": 4,
+      "direct_Y_difference_agrees_with_local_delta": true
+    },
+    {
+      "n": 26,
+      "n_mod8": 2,
+      "v2_3n_plus_2": 4,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        2
+      ],
+      "v2_T": -2,
+      "v2_Z": 0,
+      "gamma_n": 2,
+      "gamma_n_plus_1": 5,
+      "v2_Y": -4,
+      "v2_B": 2,
+      "B_mod8": 4,
+      "direct_Y_difference_agrees_with_local_delta": true
+    },
+    {
+      "n": 42,
+      "n_mod8": 2,
+      "v2_3n_plus_2": 7,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        5
+      ],
+      "v2_T": -5,
+      "v2_Z": 0,
+      "gamma_n": 0,
+      "gamma_n_plus_1": 6,
+      "v2_Y": -5,
+      "v2_B": 2,
+      "B_mod8": 4,
+      "direct_Y_difference_agrees_with_local_delta": true
+    },
+    {
+      "n": 170,
+      "n_mod8": 2,
+      "v2_3n_plus_2": 9,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        7
+      ],
+      "v2_T": -7,
+      "v2_Z": 0,
+      "gamma_n": 0,
+      "gamma_n_plus_1": 8,
+      "v2_Y": -7,
+      "v2_B": 2,
+      "B_mod8": 4,
+      "direct_Y_difference_agrees_with_local_delta": true
+    }
+  ],
+  "six_mod8_lower_bound_checks": [
+    {
+      "n": 6,
+      "n_mod8": 6,
+      "v2_3n_plus_2": 2,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        0
+      ],
+      "v2_T": 1,
+      "v2_Z": 1,
+      "gamma_n": 2,
+      "gamma_n_plus_1": 3,
+      "v2_Y": -1,
+      "v2_B": 3,
+      "B_mod8": 0,
+      "direct_Y_difference_agrees_with_local_delta": true
+    },
+    {
+      "n": 14,
+      "n_mod8": 6,
+      "v2_3n_plus_2": 2,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        0
+      ],
+      "v2_T": 4,
+      "v2_Z": 4,
+      "gamma_n": 3,
+      "gamma_n_plus_1": 4,
+      "v2_Y": 0,
+      "v2_B": 5,
+      "B_mod8": 0,
+      "direct_Y_difference_agrees_with_local_delta": true
+    },
+    {
+      "n": 110,
+      "n_mod8": 6,
+      "v2_3n_plus_2": 2,
+      "quadratic_component_valuations": [
+        0,
+        1,
+        0
+      ],
+      "v2_T": 3,
+      "v2_Z": 3,
+      "gamma_n": 6,
+      "gamma_n_plus_1": 7,
+      "v2_Y": 4,
+      "v2_B": 12,
+      "B_mod8": 0,
+      "direct_Y_difference_agrees_with_local_delta": true
+    }
+  ],
+  "scope": "nine isolated exact checks; not a scan or proof by examples",
+  "all_checks_passed": true
+}

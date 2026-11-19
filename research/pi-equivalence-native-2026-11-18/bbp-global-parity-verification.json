@@ -1,0 +1,2114 @@
+{
+  "N_checked": 25,
+  "N_max": 24,
+  "N_min": 0,
+  "baseline_commit": "b8cbc502dd4e7e44bf08832ffab45d22bfb355f0",
+  "date_Asia_Shanghai": "2026-11-20",
+  "failures": [],
+  "finite_verification_only": true,
+  "format": "bbp-global-parity-exact-audit/1",
+  "low_positive_J_even_checks": 1128,
+  "odd_N_exact_denominator_checks": 12,
+  "original_definition": {
+    "coefficient_recurrence": "a_k=[k=1]-2*a_(k-1)-2*a_(k-3)+a_(k-4), negative indices zero",
+    "kernel": "sum_k=0..4N a_k*(8N+8)!*k!/(8N+k+9)!",
+    "prefix": "sum_i=0..N 16^(N-i)*(4/(8i+1)-2/(8i+4)-1/(8i+5)-1/(8i+6))"
+  },
+  "positive_high_J_even_k_checks": 43,
+  "positive_high_J_odd_k_checks": 54,
+  "rows": [
+    {
+      "A": 1,
+      "B": {
+        "denominator": "5",
+        "numerator": "94"
+      },
+      "B_parity": 0,
+      "Gamma_m": 0,
+      "L": 8,
+      "N": 0,
+      "R": 1,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [],
+      "low_positive_J_even_count": 1,
+      "m": 1,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 1,
+      "nu_Y": 0,
+      "u": 0,
+      "w": 0
+    },
+    {
+      "A": 1,
+      "B": {
+        "denominator": "29393",
+        "numerator": "44323569"
+      },
+      "B_parity": 1,
+      "Gamma_m": 0,
+      "L": 16,
+      "N": 1,
+      "R": 5,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [],
+      "low_positive_J_even_count": 5,
+      "m": 2,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -1,
+      "odd_formula_expected_denominator_v2": 5,
+      "odd_formula_expected_nu_Y": -1,
+      "reduced_X_denominator_v2": 5,
+      "u": 1,
+      "w": 0
+    },
+    {
+      "A": 3,
+      "B": {
+        "denominator": "491730525",
+        "numerator": "66439489714412"
+      },
+      "B_parity": 0,
+      "Gamma_m": 2,
+      "L": 24,
+      "N": 2,
+      "R": 9,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 8,
+      "m": 3,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 2,
+      "nu_Y": -1,
+      "u": 0,
+      "w": 1
+    },
+    {
+      "A": 1,
+      "B": {
+        "denominator": "278013543535",
+        "numerator": "3541693451911195249"
+      },
+      "B_parity": 1,
+      "Gamma_m": 0,
+      "L": 32,
+      "N": 3,
+      "R": 13,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [],
+      "low_positive_J_even_count": 13,
+      "m": 4,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -1,
+      "odd_formula_expected_denominator_v2": 13,
+      "odd_formula_expected_nu_Y": -1,
+      "reduced_X_denominator_v2": 13,
+      "u": 2,
+      "w": 0
+    },
+    {
+      "A": 5,
+      "B": {
+        "denominator": "55136180595291075",
+        "numerator": "68179185627983378719802134"
+      },
+      "B_parity": 0,
+      "Gamma_m": 0,
+      "L": 40,
+      "N": 4,
+      "R": 17,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 15,
+      "m": 5,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 1,
+      "nu_Y": 0,
+      "u": 0,
+      "w": 2
+    },
+    {
+      "A": 3,
+      "B": {
+        "denominator": "8797134108915512745",
+        "numerator": "1075951149957991847527280634053"
+      },
+      "B_parity": 1,
+      "Gamma_m": 2,
+      "L": 48,
+      "N": 5,
+      "R": 21,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 16,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 20,
+      "m": 6,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -3,
+      "odd_formula_expected_denominator_v2": 23,
+      "odd_formula_expected_nu_Y": -3,
+      "reduced_X_denominator_v2": 23,
+      "u": 1,
+      "w": 1
+    },
+    {
+      "A": 7,
+      "B": {
+        "denominator": "17251914779784944120246385",
+        "numerator": "211466750404007744662618625794415150344"
+      },
+      "B_parity": 0,
+      "Gamma_m": 3,
+      "L": 56,
+      "N": 6,
+      "R": 25,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 22,
+      "m": 7,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 3,
+      "nu_Y": -1,
+      "u": 0,
+      "w": 3
+    },
+    {
+      "A": 1,
+      "B": {
+        "denominator": "5506714807964429659642776825",
+        "numerator": "6830899328652144815837060888395591409628131"
+      },
+      "B_parity": 1,
+      "Gamma_m": 0,
+      "L": 64,
+      "N": 7,
+      "R": 29,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [],
+      "low_positive_J_even_count": 29,
+      "m": 8,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -1,
+      "odd_formula_expected_denominator_v2": 29,
+      "odd_formula_expected_nu_Y": -1,
+      "reduced_X_denominator_v2": 29,
+      "u": 3,
+      "w": 0
+    },
+    {
+      "A": 9,
+      "B": {
+        "denominator": "8615380033585402171607560404231",
+        "numerator": "1089664762225265701323753153471463096036537095634"
+      },
+      "B_parity": 0,
+      "Gamma_m": 0,
+      "L": 72,
+      "N": 8,
+      "R": 33,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 4,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 29,
+      "m": 9,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 1,
+      "nu_Y": 0,
+      "u": 0,
+      "w": 4
+    },
+    {
+      "A": 5,
+      "B": {
+        "denominator": "22420349580259603131035981751292905",
+        "numerator": "290853649370564040065397353444443295128426066236719233"
+      },
+      "B_parity": 1,
+      "Gamma_m": 0,
+      "L": 80,
+      "N": 9,
+      "R": 37,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 16,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 32,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 35,
+      "m": 10,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -1,
+      "odd_formula_expected_denominator_v2": 37,
+      "odd_formula_expected_nu_Y": -1,
+      "reduced_X_denominator_v2": 37,
+      "u": 1,
+      "w": 2
+    },
+    {
+      "A": 11,
+      "B": {
+        "denominator": "16265327776678376089131725582323765275",
+        "numerator": "21747327312437703642180804366112794618830741428051420384636"
+      },
+      "B_parity": 0,
+      "Gamma_m": 4,
+      "L": 88,
+      "N": 10,
+      "R": 41,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 5,
+          "Ek_valuation": 5,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 4,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 36,
+      "m": 11,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 2,
+      "nu_Y": -3,
+      "u": 0,
+      "w": 5
+    },
+    {
+      "A": 3,
+      "B": {
+        "denominator": "1786504345765886282001460933722359847200389845",
+        "numerator": "247170291310360697508220167308262771442207476692439280874818377332963"
+      },
+      "B_parity": 1,
+      "Gamma_m": 2,
+      "L": 96,
+      "N": 11,
+      "R": 45,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 32,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 44,
+      "m": 12,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -3,
+      "odd_formula_expected_denominator_v2": 47,
+      "odd_formula_expected_nu_Y": -3,
+      "reduced_X_denominator_v2": 47,
+      "u": 2,
+      "w": 1
+    },
+    {
+      "A": 13,
+      "B": {
+        "denominator": "4269678729759871177204842468090670403379314052375",
+        "numerator": "61333901557688260762696486779506157796032653079907609347661442197816482278"
+      },
+      "B_parity": 0,
+      "Gamma_m": 2,
+      "L": 104,
+      "N": 12,
+      "R": 49,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 6,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 48,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 6,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 43,
+      "m": 13,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 1,
+      "nu_Y": -2,
+      "u": 0,
+      "w": 6
+    },
+    {
+      "A": 7,
+      "B": {
+        "denominator": "4958410201539446224056905294385419097329964795765795",
+        "numerator": "7416707236262353478165239486251844464958863845213023968545986950018464491468031"
+      },
+      "B_parity": 1,
+      "Gamma_m": 3,
+      "L": 112,
+      "N": 13,
+      "R": 53,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 16,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 32,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 48,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 50,
+      "m": 14,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -4,
+      "odd_formula_expected_denominator_v2": 56,
+      "odd_formula_expected_nu_Y": -4,
+      "reduced_X_denominator_v2": 56,
+      "u": 1,
+      "w": 3
+    },
+    {
+      "A": 15,
+      "B": {
+        "denominator": "350993896405181201442808310975103701982912830953462354745",
+        "numerator": "54803887354102815059045455830065516912274863882484185682978693541465233583738505037024"
+      },
+      "B_parity": 0,
+      "Gamma_m": 4,
+      "L": 120,
+      "N": 14,
+      "R": 57,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 8,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 48,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 6,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 56,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 7,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 50,
+      "m": 15,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 5,
+      "nu_Y": 0,
+      "u": 0,
+      "w": 7
+    },
+    {
+      "A": 1,
+      "B": {
+        "denominator": "6960939752031161663283713417638998827870761624967786431125",
+        "numerator": "113701169131037334782388697782074524300117207839256135240190515808942804103541259842302959"
+      },
+      "B_parity": 1,
+      "Gamma_m": 0,
+      "L": 128,
+      "N": 15,
+      "R": 61,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [],
+      "low_positive_J_even_count": 61,
+      "m": 16,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -1,
+      "odd_formula_expected_denominator_v2": 61,
+      "odd_formula_expected_nu_Y": -1,
+      "reduced_X_denominator_v2": 61,
+      "u": 4,
+      "w": 0
+    },
+    {
+      "A": 17,
+      "B": {
+        "denominator": "31385458279004182341253778751322529723921705791718383389001365645",
+        "numerator": "53732864657755254605421839178499238159310464930205559023500667381019629037968664164930882291649918"
+      },
+      "B_parity": 0,
+      "Gamma_m": 0,
+      "L": 136,
+      "N": 16,
+      "R": 65,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 48,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 6,
+          "k_parity": 0,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 56,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 7,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 64,
+          "T_parity": 0,
+          "T_valuation": 5,
+          "contribution_parity": 0,
+          "k": 8,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 57,
+      "m": 17,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 1,
+      "nu_Y": 0,
+      "u": 0,
+      "w": 8
+    },
+    {
+      "A": 9,
+      "B": {
+        "denominator": "43990055507191959101188791171748365765547961747599292153576209275",
+        "numerator": "7907076412065983568952232456141000036674020037770005303759638317004335382295793082937098770153520043"
+      },
+      "B_parity": 1,
+      "Gamma_m": 0,
+      "L": 144,
+      "N": 17,
+      "R": 69,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 16,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 32,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 48,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 64,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 65,
+      "m": 18,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -1,
+      "odd_formula_expected_denominator_v2": 69,
+      "odd_formula_expected_nu_Y": -1,
+      "reduced_X_denominator_v2": 69,
+      "u": 1,
+      "w": 4
+    },
+    {
+      "A": 19,
+      "B": {
+        "denominator": "2229719127426298460426323230979961473335939540410208917266392028480155",
+        "numerator": "42142298444036022542296743087114880757898394044138070846739214275899803420752516309740570016821738038773444"
+      },
+      "B_parity": 0,
+      "Gamma_m": 2,
+      "L": 152,
+      "N": 18,
+      "R": 73,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 48,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 6,
+          "k_parity": 0,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 56,
+          "T_parity": 0,
+          "T_valuation": 7,
+          "contribution_parity": 0,
+          "k": 7,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 64,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 8,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 72,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 9,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 64,
+      "m": 19,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 2,
+      "nu_Y": -1,
+      "u": 0,
+      "w": 9
+    },
+    {
+      "A": 5,
+      "B": {
+        "denominator": "341986932978407223376394493281763998233051507496762948814551020160851086225",
+        "numerator": "680572216405071496582903069125487777626686542266624047307431093161616396812166535794672445280546754800113357433343"
+      },
+      "B_parity": 1,
+      "Gamma_m": 0,
+      "L": 160,
+      "N": 19,
+      "R": 77,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 32,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 64,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 75,
+      "m": 20,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -1,
+      "odd_formula_expected_denominator_v2": 77,
+      "odd_formula_expected_nu_Y": -1,
+      "reduced_X_denominator_v2": 77,
+      "u": 2,
+      "w": 2
+    },
+    {
+      "A": 21,
+      "B": {
+        "denominator": "114496316944097008222733878398569104486780680712761110310869042066519775",
+        "numerator": "24020709703305124466955354034423012165026711905890552872195637717407285252932991625698068282033649952718968259806"
+      },
+      "B_parity": 0,
+      "Gamma_m": 0,
+      "L": 168,
+      "N": 20,
+      "R": 81,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 48,
+          "T_parity": 0,
+          "T_valuation": 4,
+          "contribution_parity": 0,
+          "k": 6,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 1,
+          "Ek_valuation": 1,
+          "J": 56,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 7,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 64,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 8,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 72,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 9,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 80,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 10,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 71,
+      "m": 21,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 1,
+      "nu_Y": 0,
+      "u": 0,
+      "w": 10
+    },
+    {
+      "A": 11,
+      "B": {
+        "denominator": "3928442026385558042475815565509689963706330284303359464934269958645979894997260869",
+        "numerator": "86981742247113450355995566872855490185752503798987676118194844461172254130384712077200682048102227521546078213627460014854945"
+      },
+      "B_parity": 1,
+      "Gamma_m": 4,
+      "L": 176,
+      "N": 21,
+      "R": 85,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 16,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 5,
+          "Ek_valuation": 5,
+          "J": 32,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 48,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 64,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 80,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 80,
+      "m": 22,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -5,
+      "odd_formula_expected_denominator_v2": 89,
+      "odd_formula_expected_nu_Y": -5,
+      "reduced_X_denominator_v2": 89,
+      "u": 1,
+      "w": 5
+    },
+    {
+      "A": 23,
+      "B": {
+        "denominator": "16695956460248066078614174606764875974545350453062991788082666685595912985998654975681035",
+        "numerator": "39054732248165498762580878254754550227566484227014810605403686685955235027383577696947295232949133536882867398048056834049920642322536"
+      },
+      "B_parity": 0,
+      "Gamma_m": 5,
+      "L": 184,
+      "N": 22,
+      "R": 89,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 5,
+          "Ek_valuation": 5,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 6,
+          "Ek_valuation": 6,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 4,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 6,
+          "Ek_valuation": 6,
+          "J": 48,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 6,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 5,
+          "Ek_valuation": 5,
+          "J": 56,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 7,
+          "k_parity": 1,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 5,
+          "Ek_valuation": 5,
+          "J": 64,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 8,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 72,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 9,
+          "k_parity": 1,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 5,
+          "Ek_valuation": 5,
+          "J": 80,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 10,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 88,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 11,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 78,
+      "m": 23,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 3,
+      "nu_Y": -3,
+      "u": 0,
+      "w": 11
+    },
+    {
+      "A": 3,
+      "B": {
+        "denominator": "538528723574816257055497979334558615846508502499299210756584115720462058046811146869864071145",
+        "numerator": "133207833287730882791130643470512346331228547430315425945897002941658577325414769131968368844892570703794003169345409029641370440952450308643"
+      },
+      "B_parity": 1,
+      "Gamma_m": 2,
+      "L": 192,
+      "N": 23,
+      "R": 93,
+      "S0_parity": 1,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 64,
+          "T_parity": 1,
+          "T_valuation": 0,
+          "contribution_parity": 1,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 92,
+      "m": 24,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 0,
+      "nu_Y": -3,
+      "odd_formula_expected_denominator_v2": 95,
+      "odd_formula_expected_nu_Y": -3,
+      "reduced_X_denominator_v2": 95,
+      "u": 3,
+      "w": 1
+    },
+    {
+      "A": 25,
+      "B": {
+        "denominator": "95776827036058764218384310280200524095842499764892098656570992711452181618556128179663282118875",
+        "numerator": "2507327535878658394177545451332762521613260024383425400757074144133697653727784585875539475892926093407041516228828082443361303844332894247009338"
+      },
+      "B_parity": 0,
+      "Gamma_m": 2,
+      "L": 200,
+      "N": 24,
+      "R": 97,
+      "S0_parity": 0,
+      "by_parts_difference": {
+        "denominator": "1",
+        "numerator": "0"
+      },
+      "high_positive_J_checks": [
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 8,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 1,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 16,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 2,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 24,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 3,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 32,
+          "T_parity": 0,
+          "T_valuation": 6,
+          "contribution_parity": 0,
+          "k": 4,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 40,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 5,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 4,
+          "Ek_valuation": 4,
+          "J": 48,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 6,
+          "k_parity": 0,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 0,
+          "Ek_valuation": 0,
+          "J": 56,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 7,
+          "k_parity": 1,
+          "sigma": 3
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 64,
+          "T_parity": 0,
+          "T_valuation": 3,
+          "contribution_parity": 0,
+          "k": 8,
+          "k_parity": 0,
+          "sigma": 0
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 72,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 9,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 3,
+          "Ek_valuation": 3,
+          "J": 80,
+          "T_parity": 0,
+          "T_valuation": 2,
+          "contribution_parity": 0,
+          "k": 10,
+          "k_parity": 0,
+          "sigma": 1
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 88,
+          "T_parity": 0,
+          "T_valuation": 1,
+          "contribution_parity": 0,
+          "k": 11,
+          "k_parity": 1,
+          "sigma": 2
+        },
+        {
+          "Dk_valuation": 2,
+          "Ek_valuation": 2,
+          "J": 96,
+          "T_parity": 0,
+          "T_valuation": 4,
+          "contribution_parity": 0,
+          "k": 12,
+          "k_parity": 0,
+          "sigma": 0
+        }
+      ],
+      "low_positive_J_even_count": 85,
+      "m": 25,
+      "normalized_signed_beta_valuation": 0,
+      "nu_B": 1,
+      "nu_Y": -2,
+      "u": 0,
+      "w": 12
+    }
+  ],
+  "scope": "Exact finite identities and edge cases only; infinite conclusions require the companion proofs.",
+  "signed_beta_checks": 11,
+  "signed_beta_rows": [
+    {
+      "A": 1,
+      "Gamma_A": 0,
+      "exact_signed_beta_sum": {
+        "denominator": "1",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 0
+    },
+    {
+      "A": 3,
+      "Gamma_A": 2,
+      "exact_signed_beta_sum": {
+        "denominator": "4",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 1
+    },
+    {
+      "A": 5,
+      "Gamma_A": 0,
+      "exact_signed_beta_sum": {
+        "denominator": "21",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 2
+    },
+    {
+      "A": 7,
+      "Gamma_A": 3,
+      "exact_signed_beta_sum": {
+        "denominator": "120",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 3,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 3,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 3,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 3,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 3
+    },
+    {
+      "A": 9,
+      "Gamma_A": 0,
+      "exact_signed_beta_sum": {
+        "denominator": "715",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 4
+    },
+    {
+      "A": 11,
+      "Gamma_A": 4,
+      "exact_signed_beta_sum": {
+        "denominator": "4368",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 4,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 4,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 4,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 4,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 5
+    },
+    {
+      "A": 13,
+      "Gamma_A": 2,
+      "exact_signed_beta_sum": {
+        "denominator": "27132",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 2,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 6
+    },
+    {
+      "A": 17,
+      "Gamma_A": 0,
+      "exact_signed_beta_sum": {
+        "denominator": "1081575",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 8
+    },
+    {
+      "A": 21,
+      "Gamma_A": 0,
+      "exact_signed_beta_sum": {
+        "denominator": "44352165",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 10
+    },
+    {
+      "A": 33,
+      "Gamma_A": 0,
+      "exact_signed_beta_sum": {
+        "denominator": "3348108992991",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 16
+    },
+    {
+      "A": 65,
+      "Gamma_A": 0,
+      "exact_signed_beta_sum": {
+        "denominator": "44324146676655640642475727",
+        "numerator": "1"
+      },
+      "gamma_scaling_checks": [
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 0
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 1
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 2
+        },
+        {
+          "Gamma_m": 0,
+          "ratio_valuation": 0,
+          "u": 3
+        }
+      ],
+      "w": 32
+    }
+  ]
+}

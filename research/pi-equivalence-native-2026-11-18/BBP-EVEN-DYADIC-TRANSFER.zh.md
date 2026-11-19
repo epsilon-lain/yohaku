@@ -1,5 +1,9 @@
 # BBP 斜率四：偶数二进伸缩与相邻阶传递
 
+**后续状态更新（2026-11-20）：** 本文的局部差式单位定理现已结合
+[全阶共振与全局整性](BBP-RESONANCE-NEWTON.zh.md)，证明全部 $4\mid n$ 上的公式 (B)，
+不再需要进位差阈值 (A)。下文保留原充分条件及其证明过程。
+
 本节只讨论 [原生接力报告](SPARSE-EXCEPTION-RELAY-RESULTS.zh.md) 中定义的
 \(Y(n)=Y_{n,4n}\)。使用已建立的 12 项差式和
 [共同基与进位报告](MIXED-RANK-CARRY-RESULTS.zh.md) 的有限分部求和恒等式。

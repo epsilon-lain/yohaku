@@ -1,0 +1,262 @@
+{
+  "format": "bbp-newton-quotient-mod4-verification/1",
+  "arithmetic": "exact integers and Fraction; no floating point",
+  "script_sha256": "aded800cdcf640dc5e76b769a03be10f01d93a35e4c7acfa47505fcaff8516dc",
+  "proof_status": "finite reproduction of proved identities, not their proof",
+  "coefficient_tables": [
+    {
+      "J": 8,
+      "actual_mod4": [
+        0,
+        0,
+        1,
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      "expected_mod4": [
+        0,
+        0,
+        1,
+        2,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "J": 16,
+      "actual_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "expected_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "J": 24,
+      "actual_mod4": [
+        0,
+        0,
+        1,
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      "expected_mod4": [
+        0,
+        0,
+        1,
+        2,
+        3,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "J": 32,
+      "actual_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "expected_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "J": 64,
+      "actual_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "expected_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "J": 128,
+      "actual_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "expected_mod4": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "newton_pairs": [
+    {
+      "m": 3,
+      "J": 8,
+      "K": 9,
+      "D": 1,
+      "direct_equals_factorized": true,
+      "coefficient_table_and_integrality_passed": true,
+      "quotient_mod4": 0,
+      "quotient_v2": 2,
+      "S_v2": 2
+    },
+    {
+      "m": 5,
+      "J": 8,
+      "K": 17,
+      "D": 9,
+      "direct_equals_factorized": true,
+      "coefficient_table_and_integrality_passed": true,
+      "quotient_mod4": 2,
+      "quotient_v2": 1,
+      "S_v2": 2
+    },
+    {
+      "m": 6,
+      "J": 16,
+      "K": 21,
+      "D": 5,
+      "direct_equals_factorized": true,
+      "coefficient_table_and_integrality_passed": true,
+      "quotient_mod4": 3,
+      "quotient_v2": 0,
+      "S_v2": 0
+    },
+    {
+      "m": 10,
+      "J": 16,
+      "K": 37,
+      "D": 21,
+      "direct_equals_factorized": true,
+      "coefficient_table_and_integrality_passed": true,
+      "quotient_mod4": 3,
+      "quotient_v2": 0,
+      "S_v2": 1
+    },
+    {
+      "m": 22,
+      "J": 48,
+      "K": 85,
+      "D": 37,
+      "direct_equals_factorized": true,
+      "coefficient_table_and_integrality_passed": true,
+      "quotient_mod4": 3,
+      "quotient_v2": 0,
+      "S_v2": 1
+    },
+    {
+      "m": 31,
+      "J": 8,
+      "K": 121,
+      "D": 113,
+      "direct_equals_factorized": true,
+      "coefficient_table_and_integrality_passed": true,
+      "quotient_mod4": 0,
+      "quotient_v2": 4,
+      "S_v2": 4
+    }
+  ],
+  "direct_B_checks": [
+    {
+      "N": 2,
+      "m": 3,
+      "v2_B": 2,
+      "B_mod4": 0
+    },
+    {
+      "N": 6,
+      "m": 7,
+      "v2_B": 3,
+      "B_mod4": 0
+    },
+    {
+      "N": 10,
+      "m": 11,
+      "v2_B": 2,
+      "B_mod4": 0
+    },
+    {
+      "N": 14,
+      "m": 15,
+      "v2_B": 5,
+      "B_mod4": 0
+    },
+    {
+      "N": 18,
+      "m": 19,
+      "v2_B": 2,
+      "B_mod4": 0
+    },
+    {
+      "N": 22,
+      "m": 23,
+      "v2_B": 3,
+      "B_mod4": 0
+    }
+  ],
+  "previous_certificate_recheck": {
+    "source_name": "analyze_residuals.json",
+    "source_sha256": "6f8f5bc5d3a9f6b21fda3501b0aa3ba8f67ef9453a91ae3d309c1db76f5e9017",
+    "method": "read and recheck saved modular residues; no new scan",
+    "source_max_n": 32768,
+    "checked_N_2_mod4": 8192,
+    "failure_count": 0,
+    "failures": []
+  },
+  "all_checks_passed": true
+}
