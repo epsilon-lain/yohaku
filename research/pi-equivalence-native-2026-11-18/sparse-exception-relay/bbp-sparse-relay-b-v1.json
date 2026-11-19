@@ -1,0 +1,281 @@
+{
+  "L0_failures": [],
+  "N_even_max": 65536,
+  "N_even_min": 4,
+  "checked_even": 32767,
+  "exact_Y14": [
+    570873826605237656865056831563182467836196498775876934197694724390262849830609427469,
+    2521799196853167356262779346191318883755731332675040633170139516585
+  ],
+  "format": "bbp-sparse-relay-b/1",
+  "global_R": 39,
+  "rows": [
+    {
+      "J": 3,
+      "M": 16,
+      "N": 4,
+      "d": 5,
+      "independent_residue": 1888,
+      "r": 11,
+      "terminal": 1888,
+      "truncated_prefix_v2": [
+        0,
+        0,
+        0
+      ],
+      "v2Y": 0
+    },
+    {
+      "J": 4,
+      "M": 56,
+      "N": 14,
+      "d": 7,
+      "independent_residue": 25216,
+      "r": 15,
+      "terminal": 25216,
+      "truncated_prefix_v2": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "v2Y": 0
+    },
+    {
+      "J": 5,
+      "M": 184,
+      "N": 46,
+      "d": 9,
+      "independent_residue": 303872,
+      "r": 19,
+      "terminal": 303872,
+      "truncated_prefix_v2": [
+        -2,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "v2Y": -1
+    },
+    {
+      "J": 5,
+      "M": 312,
+      "N": 78,
+      "d": 9,
+      "independent_residue": 378368,
+      "r": 19,
+      "terminal": 378368,
+      "truncated_prefix_v2": [
+        3,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v2Y": 0
+    },
+    {
+      "J": 6,
+      "M": 436,
+      "N": 109,
+      "d": 10,
+      "independent_residue": 1665000,
+      "r": 21,
+      "terminal": 1665000,
+      "truncated_prefix_v2": [
+        -7,
+        -7,
+        -7,
+        -7,
+        -7,
+        -7
+      ],
+      "v2Y": -7
+    },
+    {
+      "J": 6,
+      "M": 440,
+      "N": 110,
+      "d": 10,
+      "independent_residue": 16384,
+      "r": 21,
+      "terminal": 16384,
+      "truncated_prefix_v2": [
+        -3,
+        3,
+        4,
+        4,
+        4,
+        4
+      ],
+      "v2Y": 4
+    },
+    {
+      "J": 6,
+      "M": 444,
+      "N": 111,
+      "d": 10,
+      "independent_residue": 158272,
+      "r": 21,
+      "terminal": 158272,
+      "truncated_prefix_v2": [
+        -4,
+        -4,
+        -4,
+        -4,
+        -4,
+        -4
+      ],
+      "v2Y": -4
+    },
+    {
+      "J": 6,
+      "M": 1336,
+      "N": 334,
+      "d": 11,
+      "independent_residue": 6674432,
+      "r": 23,
+      "terminal": 6674432,
+      "truncated_prefix_v2": [
+        5,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v2Y": 0
+    },
+    {
+      "J": 7,
+      "M": 2488,
+      "N": 622,
+      "d": 12,
+      "independent_residue": 15130624,
+      "r": 25,
+      "terminal": 15130624,
+      "truncated_prefix_v2": [
+        -3,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "v2Y": 1
+    },
+    {
+      "J": 7,
+      "M": 4536,
+      "N": 1134,
+      "d": 13,
+      "independent_residue": 101875712,
+      "r": 27,
+      "terminal": 101875712,
+      "truncated_prefix_v2": [
+        -3,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "v2Y": 2
+    },
+    {
+      "J": 9,
+      "M": 32824,
+      "N": 8206,
+      "d": 16,
+      "independent_residue": 7340752896,
+      "r": 33,
+      "terminal": 7340752896,
+      "truncated_prefix_v2": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v2Y": 0
+    },
+    {
+      "J": 9,
+      "M": 65592,
+      "N": 16398,
+      "d": 17,
+      "independent_residue": 20318650368,
+      "r": 35,
+      "terminal": 20318650368,
+      "truncated_prefix_v2": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v2Y": 0
+    },
+    {
+      "J": 9,
+      "M": 82360,
+      "N": 20590,
+      "d": 17,
+      "independent_residue": 22246588416,
+      "r": 35,
+      "terminal": 22246588416,
+      "truncated_prefix_v2": [
+        -3,
+        3,
+        6,
+        8,
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "v2Y": 8
+    },
+    {
+      "J": 10,
+      "M": 131128,
+      "N": 32782,
+      "d": 18,
+      "independent_residue": 63185879040,
+      "r": 37,
+      "terminal": 63185879040,
+      "truncated_prefix_v2": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "v2Y": 0
+    }
+  ],
+  "v2_at_least_7": [
+    [
+      20590,
+      8
+    ]
+  ],
+  "v2_max_nonzero": 8
+}
