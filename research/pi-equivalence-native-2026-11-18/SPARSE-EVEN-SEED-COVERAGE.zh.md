@@ -74,7 +74,12 @@ s\ge\max(2,d_c-1,\nu_c+2d_c-1).
 \]
 Thus (3), over the finite set \(s=1,\ldots,\lfloor\log_2(N-1)\rfloor\), is an exact finite decision test for whether this seed-shift mechanism certifies the particular even \(N\).
 
-This is not a universal coverage theorem: it still depends on the exact seed value \(Y_c\), and the shift exponent \(s\) must be large compared with \(\log c\). It does, however, expose the precise binary obstruction. Writing \(N=2^s+c\), a successful certificate requires the remainder \(c\) to be small enough relative to the chosen power \(2^s\), and its seed valuation must satisfy (3).
+The subsequent [coverage audit](SPARSE-COVERAGE-OBSTRUCTION.zh.md) proves that only the highest-bit decomposition can pass (3):
+\[
+s=\lfloor\log_2N\rfloor,\qquad
+1\le c=N-2^s\le\lfloor2^s/3\rfloor-1.
+\]
+Thus one can reject every other decomposition before computing a rational seed. Even with arbitrary seeds, the current sufficient criterion cannot cover the upper approximately two-thirds of any large dyadic block. Failure of this criterion does not imply a failure of the desired valuation bound.
 
 ## 4. Exact finite regression
 
@@ -89,8 +94,9 @@ The parameter-coverage question now splits cleanly:
 - Odd \(N\): the arbitrary odd-part block theorem supplies seeds \(c=A2^u-1\).
 - Even \(N\): use even seeds \(c\), beginning with \(c=2\), \(c=14\), and other exact seed values satisfying (3).
 
-A genuine all-even theorem would require proving that every sufficiently large even \(N\) admits at least one decomposition \(N=2^s+c\) whose seed satisfies (3), or replacing the fixed-seed shift argument by a direct uniform estimate. No such universal statement is claimed here.
+The idea that supplying enough seeds might make every sufficiently large even \(N\) admit a decomposition satisfying (3) is now ruled out by the geometric obstruction. An all-even theorem requires an additional argument beyond this sufficient shift condition. The [adjacent-step theorem](BBP-EVEN-DYADIC-TRANSFER.zh.md) provides one such additional mechanism: in particular it proves \(\nu(3\cdot2^u)=-2\) for every \(u\ge2\), a family entirely outside the shift window. It still does not establish the all-even statement.
 
 ## Follow-up: iterated shifts and exceptional seed 110
 
 The even seed \(c=2\) can itself be shifted to \(2^u+2\), then shifted again, yielding \(N=2^s+2^u+2\) for \(u\ge8\), \(s\ge2u+4\). The exceptional seed \(c=110\) has \(v_2(Y)=4\), yet still generates \(N=2^s+110\), \(s\ge23\), with the same valuation. See [iterated even-shift proof](SPARSE-ITERATED-EVEN-SHIFTS.zh.md) and [exact verifier](verify_sparse_iterated_even_shifts.py).
+

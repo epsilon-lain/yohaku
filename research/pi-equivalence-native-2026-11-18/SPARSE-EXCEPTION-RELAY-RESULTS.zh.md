@@ -154,8 +154,33 @@ Y_{2,8}=16609872428603/20652682050,
 \nu_c<4c-3,\qquad s\ge\max(2,d_c-1,\nu_c+2d_c-1),
 \quad d_c=\lfloor\log_2(12c+9)\rfloor.
 \]
-这是该机制覆盖单个 \(N\) 的精确判据，不是全体偶数覆盖定理。[偶种子覆盖分析](SPARSE-EVEN-SEED-COVERAGE.zh.md) · [Fraction 复算与覆盖扫描](verify_sparse_even_seed_coverage.py)
+这是该机制覆盖单个 \(N\) 的精确判据，不是全体偶数覆盖定理。后续已证明只需检查唯一的最高位分解：\(s=\lfloor\log_2N\rfloor\)，且必须有 \(1\le c\le\lfloor2^s/3\rfloor-1\)。[偶种子覆盖分析](SPARSE-EVEN-SEED-COVERAGE.zh.md) · [覆盖边界证明](SPARSE-COVERAGE-OBSTRUCTION.zh.md)
 
 ## 迭代偶种子与异常种子 110
 
-从精确偶种子 \(c=2\)、\(v_2(Y_{2,8})=-1\) 出发，连续应用固定种子平移定理，可得 \(N=2^s+2^u+2\)、\(u\ge8\)、\(s\ge2u+4\) 时 \(v_2(Y_{N,4N})=-1\)。此外，已知反例种子 \(c=110\) 满足 \(v_2(Y_{110,440})=4\)，但仍满足平移定理假设，因此 \(N=2^s+110\)、\(s\ge23\) 时 \(v_2(Y_{N,4N})=4\)。这说明平移机制能保留非典型种子赋值，不能把所有种子都猜成赋值 \(-1\)。[迭代偶种子推导](SPARSE-ITERATED-EVEN-SHIFTS.zh.md) · [精确复算](verify_sparse_iterated_even_shifts.py)
+从精确偶种子 \(c=2\)、\(v_2(Y_{2,8})=-1\) 出发，连续应用固定种子平移定理，可得 \(N=2^s+2^u+2\)、\(u\ge8\)、\(s\ge2u+4\) 时 \(v_2(Y_{N,4N})=-1\)。此外，\(c=110\) 是只保留最新一项或前两项会读错赋值的例子；它满足 \(v_2(Y_{110,440})=4\)，不是全偶数引理的反例。它仍满足平移定理假设，因此 \(N=2^s+110\)、\(s\ge23\) 时 \(v_2(Y_{N,4N})=4\)。这说明平移机制能保留非典型种子赋值，不能把所有种子都猜成赋值 \(-1\)。[迭代偶种子推导](SPARSE-ITERATED-EVEN-SHIFTS.zh.md) · [精确复算](verify_sparse_iterated_even_shifts.py)
+
+## 覆盖边界与窗口之外的相邻阶传递
+
+后续覆盖审计证明：任何合法正种子移位 \(N=2^s+c\) 都必须有
+\[
+2^s<N\le\lfloor4\cdot2^s/3\rfloor-1,
+\qquad s=\lfloor\log_2N\rfloor.
+\]
+故每个大二进区间中，至少约三分之二的偶数无法由这条移位判据作证。即便增加任意种子也不能消除这个窗口限制。任意有限个固定种子的全部有限迭代后代进一步只有零密度；从种子 \(2\) 出发、小于 \(2^{64}\) 的后代恰有 813 个（含种子）。[覆盖与计数证明](SPARSE-COVERAGE-OBSTRUCTION.zh.md) · [复算](verify_sparse_coverage.py)
+
+随后沿原十二项差式证明了一项额外机制。写 \(N=A2^u\)，\(A\) 为正奇数，令
+\[
+C_A=\max_{0\le k\le(A-1)/2}v_2\binom{A+k}{k},
+\qquad\Gamma_A=v_2\binom{3A}{A}.
+\]
+若 \(u\ge\max(2,C_A-\Gamma_A-3)\)，则
+\[
+v_2(Y_{N,4N})=-\Gamma_A,\qquad v_2(Q_{N,4N})=4N+\Gamma_A.
+\]
+关键局部结论是：对每个 \(4\mid N\)，\(\Delta_{N,0}/[(8N)!(4N)!/(12N)!]\) 都是二进奇单位；充分条件保证前一阶乘以 16 后不能消去它。特别地，\(N=3\cdot2^u\)、\(u\ge2\) 时赋值为 \(-2\)，这一族的二进制最高两位都是 `11`，完全在旧移位窗口之外。[相邻阶传递证明](BBP-EVEN-DYADIC-TRANSFER.zh.md) · [直接复算](verify_bbp_even_dyadic_transfer.py)
+
+有限扫描中，\(4\le N\le32768\) 的 8192 个四的倍数全部符合上述赋值公式，其中 5789 个满足充分条件、2403 个仅提供条件之外的有限证据。对所有四的倍数的公式仍是待证命题，全偶数和可变补偿阶的目标仍然开放。[扫描与独立复核](verify_bbp_multiple_four.py) · [紧凑证书](bbp-multiple-four-verification.json)
+
+本节为后续推导与复算，未新增 Yohaku 原生任务或更改上文的原生接力回执。
+

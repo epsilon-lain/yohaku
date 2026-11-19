@@ -1,0 +1,134 @@
+{
+  "format": "bbp-sparse-coverage-audit/1",
+  "baseline_commit": "e28ad613e651b94e3e2f235452e2de3c60aabc01",
+  "geometric_exhaustive_N": [
+    4,
+    16383
+  ],
+  "descendant_count_crosscheck_K": [
+    2,
+    70
+  ],
+  "geometry_rows": [
+    {
+      "s": 2,
+      "block_start": 4,
+      "forbidden_from": 5,
+      "even_candidates": 0
+    },
+    {
+      "s": 3,
+      "block_start": 8,
+      "forbidden_from": 10,
+      "even_candidates": 0
+    },
+    {
+      "s": 4,
+      "block_start": 16,
+      "forbidden_from": 21,
+      "even_candidates": 2
+    },
+    {
+      "s": 5,
+      "block_start": 32,
+      "forbidden_from": 42,
+      "even_candidates": 4
+    },
+    {
+      "s": 6,
+      "block_start": 64,
+      "forbidden_from": 85,
+      "even_candidates": 10
+    },
+    {
+      "s": 7,
+      "block_start": 128,
+      "forbidden_from": 170,
+      "even_candidates": 20
+    },
+    {
+      "s": 8,
+      "block_start": 256,
+      "forbidden_from": 341,
+      "even_candidates": 42
+    },
+    {
+      "s": 9,
+      "block_start": 512,
+      "forbidden_from": 682,
+      "even_candidates": 84
+    },
+    {
+      "s": 10,
+      "block_start": 1024,
+      "forbidden_from": 1365,
+      "even_candidates": 170
+    },
+    {
+      "s": 11,
+      "block_start": 2048,
+      "forbidden_from": 2730,
+      "even_candidates": 340
+    },
+    {
+      "s": 12,
+      "block_start": 4096,
+      "forbidden_from": 5461,
+      "even_candidates": 682
+    },
+    {
+      "s": 13,
+      "block_start": 8192,
+      "forbidden_from": 10922,
+      "even_candidates": 1364
+    }
+  ],
+  "seed_rows": [
+    {
+      "seed": 2,
+      "v2Y": -1,
+      "first_exponent": 8,
+      "next_exponent_offset": 4,
+      "counts_below_two_power": {
+        "16": 9,
+        "32": 67,
+        "64": 813,
+        "128": 18967,
+        "256": 807809,
+        "512": 60963051,
+        "1024": 8182440533
+      }
+    },
+    {
+      "seed": 14,
+      "v2Y": 0,
+      "first_exponent": 13,
+      "next_exponent_offset": 5,
+      "counts_below_two_power": {
+        "16": 4,
+        "32": 21,
+        "64": 341,
+        "128": 7973,
+        "256": 313973,
+        "512": 22508357,
+        "1024": 2980440085
+      }
+    },
+    {
+      "seed": 110,
+      "v2Y": 4,
+      "first_exponent": 23,
+      "next_exponent_offset": 9,
+      "counts_below_two_power": {
+        "16": 1,
+        "32": 10,
+        "64": 67,
+        "128": 1510,
+        "256": 67626,
+        "512": 4908302,
+        "1024": 621463666
+      }
+    }
+  ],
+  "scope": "Coverage of the stated sufficient theorem only; no all-even claim."
+}

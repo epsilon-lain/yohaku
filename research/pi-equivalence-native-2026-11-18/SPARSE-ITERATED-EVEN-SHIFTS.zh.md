@@ -93,16 +93,17 @@ This gives a second even infinite family, but it also warns us not to conjecture
 
 ## 4. What this says about coverage
 
-For any fixed seed \(c\), (1) covers only the arithmetic progression
+For any fixed seed \(c\), one application of (1) covers only the shifted powers-of-two sequence
 \[
 N=2^s+c
 \]
 with \(s\) above its threshold. A finite collection of seeds therefore covers only a finite union of shifted powers of two, not all sufficiently large even integers.
 
-The iterated family (2) adds sums of two powers, and deeper iteration adds further superincreasing binary terms. This enlarges the covered set, but does not establish positive density or cofinite coverage.
+The subsequent [coverage and counting theorem](SPARSE-COVERAGE-OBSTRUCTION.zh.md) characterizes every finite iteration from seed \(2\) exactly: the added exponents satisfy \(e_1\ge8\), \(e_{j+1}\ge2e_j+4\). The number of descendants up to \(X\) is at most \(\exp(O((\log\log X)^2))\). Hence all iterations from any fixed finite seed set together have density zero.
 
-The exact coverage question remains: for a given even \(N\), does there exist a decomposition \(N=2^s+c\) for which the exact seed valuation \(\nu(c)\) satisfies (1)? A universal theorem would need a uniform supply of suitable even seeds \(c\) depending on \(N\), or a new argument that does not freeze the seed.
+Moreover, every final shift must satisfy \(s=\lfloor\log_2N\rfloor\) and \(N\le\lfloor4\cdot2^s/3\rfloor-1\). Thus supplying even an unlimited collection of seeds cannot make this particular shift criterion cover every sufficiently large even integer. The [adjacent-step theorem](BBP-EVEN-DYADIC-TRANSFER.zh.md) now proves an additional family outside that window; general coverage still requires further work.
 
 ## 5. Scope
 
 Equations (2) and (3) are rigorous consequences of exact seed valuations and the previously proved shift theorem. They do not establish terminal nonvanishing for all even \(N\), do not control \(M=4N+o(N)\), and do not prove bad approximability of \(\pi\).
+
