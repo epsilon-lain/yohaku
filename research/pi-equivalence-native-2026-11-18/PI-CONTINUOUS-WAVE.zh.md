@@ -68,3 +68,5 @@ $$
 反证现在遇到一个明确的障碍。均值允许极少数区间大幅增长，而坏逼近要求所有区间的增长倍数有界。这个缺口即使在同类正弦波上也会出现。一个对照是 $\alpha=[0;1,2,3,\ldots]$，把 $w_n$ 换成 $1/\sin^2(\pi n\alpha)$。其第 $k+1$ 个部分商趋于无穷，故 $q_k\|q_k\alpha\|\to0$。另一方面 $q_k$ 至少按斐波那契数增长，$q_{k+1}\le(k+2)q_k$。由收敛分数的第二类最佳逼近性，$q_k\le r<q_{k+1}$ 时 $\|r\alpha\|\ge\|q_k\alpha\|>1/(q_{k+1}+q_k)$。这给出 $\|r\alpha\|\gg_\eta r^{-1-\eta}$ 对每个 $\eta>0$ 成立，故同样有几何平均 $4$，同时 $\sup_jD_j=\infty$。要完成针对 $\pi$ 的反证，目前缺的是在固定相位 $\sin n$ 下排除无界的稀疏峰。[OpenAI 原文中的指数定理、量词与推论](https://github.com/openai/math/blob/main/preprints/The-irrationality-exponent-of-pi-is-2-September-24-2026/build/main.tex)
 
 运行 `python verify_pi_continuous_wave.py` 可重算有限证书。运行 `python verify_pi_continuous_wave.py --long` 可另验 $355/113$ 对应的 $51\,830$ 项窗口。
+
+后续已把首个窗口的估计延伸至所有窗口，并给出误差不随窗口号增长的公式。[越过第一座峰的整条波](PI-SINE-WAVE-TRANSFER.zh.md)
