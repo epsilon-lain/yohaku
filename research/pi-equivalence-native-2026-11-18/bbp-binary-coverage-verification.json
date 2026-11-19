@@ -1,0 +1,433 @@
+{
+  "status": "all finite audits passed; infinite theorems are proved in the note",
+  "date_asia_shanghai": "2026-11-20",
+  "base_commit": "8ba9f9b46802af098bd79897aa8ff5a51d9c08a2",
+  "checks": {
+    "exact_binomial_maxima_odd_A_1_to_513": 257,
+    "interval_maxima_odd_A_3_to_4095": 2047,
+    "xor_comparisons": 2047,
+    "carry_and_budget_traces_odd_A_below_2pow16": 32768,
+    "histogram_full_bit_lengths_1_through_16": 16,
+    "failures": 0
+  },
+  "exact_count_table": [
+    {
+      "bits": 8,
+      "budget_at_most_4": 48,
+      "all_odd_with_these_bits": 64
+    },
+    {
+      "bits": 12,
+      "budget_at_most_4": 451,
+      "all_odd_with_these_bits": 1024
+    },
+    {
+      "bits": 16,
+      "budget_at_most_4": 4107,
+      "all_odd_with_these_bits": 16384
+    },
+    {
+      "bits": 32,
+      "budget_at_most_4": 20469852,
+      "all_odd_with_these_bits": 1073741824
+    },
+    {
+      "bits": 64,
+      "budget_at_most_4": 266950972785771,
+      "all_odd_with_these_bits": 4611686018427387904
+    },
+    {
+      "bits": 128,
+      "budget_at_most_4": 19596151757824658626314133644,
+      "all_odd_with_these_bits": 85070591730234615865843651857942052864
+    }
+  ],
+  "hard_family_samples": [
+    {
+      "v": 2,
+      "A": 5,
+      "k": 1,
+      "required_bits": 1
+    },
+    {
+      "v": 3,
+      "A": 9,
+      "k": 3,
+      "required_bits": 2
+    },
+    {
+      "v": 4,
+      "A": 17,
+      "k": 7,
+      "required_bits": 3
+    },
+    {
+      "v": 5,
+      "A": 33,
+      "k": 15,
+      "required_bits": 4
+    },
+    {
+      "v": 6,
+      "A": 65,
+      "k": 31,
+      "required_bits": 5
+    },
+    {
+      "v": 7,
+      "A": 129,
+      "k": 63,
+      "required_bits": 6
+    },
+    {
+      "v": 8,
+      "A": 257,
+      "k": 127,
+      "required_bits": 7
+    },
+    {
+      "v": 9,
+      "A": 513,
+      "k": 255,
+      "required_bits": 8
+    },
+    {
+      "v": 10,
+      "A": 1025,
+      "k": 511,
+      "required_bits": 9
+    },
+    {
+      "v": 11,
+      "A": 2049,
+      "k": 1023,
+      "required_bits": 10
+    },
+    {
+      "v": 12,
+      "A": 4097,
+      "k": 2047,
+      "required_bits": 11
+    },
+    {
+      "v": 13,
+      "A": 8193,
+      "k": 4095,
+      "required_bits": 12
+    },
+    {
+      "v": 14,
+      "A": 16385,
+      "k": 8191,
+      "required_bits": 13
+    },
+    {
+      "v": 15,
+      "A": 32769,
+      "k": 16383,
+      "required_bits": 14
+    },
+    {
+      "v": 16,
+      "A": 65537,
+      "k": 32767,
+      "required_bits": 15
+    },
+    {
+      "v": 17,
+      "A": 131073,
+      "k": 65535,
+      "required_bits": 16
+    },
+    {
+      "v": 18,
+      "A": 262145,
+      "k": 131071,
+      "required_bits": 17
+    },
+    {
+      "v": 19,
+      "A": 524289,
+      "k": 262143,
+      "required_bits": 18
+    },
+    {
+      "v": 20,
+      "A": 1048577,
+      "k": 524287,
+      "required_bits": 19
+    },
+    {
+      "v": 21,
+      "A": 2097153,
+      "k": 1048575,
+      "required_bits": 20
+    },
+    {
+      "v": 22,
+      "A": 4194305,
+      "k": 2097151,
+      "required_bits": 21
+    },
+    {
+      "v": 23,
+      "A": 8388609,
+      "k": 4194303,
+      "required_bits": 22
+    },
+    {
+      "v": 24,
+      "A": 16777217,
+      "k": 8388607,
+      "required_bits": 23
+    },
+    {
+      "v": 25,
+      "A": 33554433,
+      "k": 16777215,
+      "required_bits": 24
+    },
+    {
+      "v": 26,
+      "A": 67108865,
+      "k": 33554431,
+      "required_bits": 25
+    },
+    {
+      "v": 27,
+      "A": 134217729,
+      "k": 67108863,
+      "required_bits": 26
+    },
+    {
+      "v": 28,
+      "A": 268435457,
+      "k": 134217727,
+      "required_bits": 27
+    },
+    {
+      "v": 29,
+      "A": 536870913,
+      "k": 268435455,
+      "required_bits": 28
+    },
+    {
+      "v": 30,
+      "A": 1073741825,
+      "k": 536870911,
+      "required_bits": 29
+    },
+    {
+      "v": 31,
+      "A": 2147483649,
+      "k": 1073741823,
+      "required_bits": 30
+    },
+    {
+      "v": 32,
+      "A": 4294967297,
+      "k": 2147483647,
+      "required_bits": 31
+    },
+    {
+      "v": 33,
+      "A": 8589934593,
+      "k": 4294967295,
+      "required_bits": 32
+    },
+    {
+      "v": 34,
+      "A": 17179869185,
+      "k": 8589934591,
+      "required_bits": 33
+    },
+    {
+      "v": 35,
+      "A": 34359738369,
+      "k": 17179869183,
+      "required_bits": 34
+    },
+    {
+      "v": 36,
+      "A": 68719476737,
+      "k": 34359738367,
+      "required_bits": 35
+    },
+    {
+      "v": 37,
+      "A": 137438953473,
+      "k": 68719476735,
+      "required_bits": 36
+    },
+    {
+      "v": 38,
+      "A": 274877906945,
+      "k": 137438953471,
+      "required_bits": 37
+    },
+    {
+      "v": 39,
+      "A": 549755813889,
+      "k": 274877906943,
+      "required_bits": 38
+    },
+    {
+      "v": 40,
+      "A": 1099511627777,
+      "k": 549755813887,
+      "required_bits": 39
+    },
+    {
+      "v": 41,
+      "A": 2199023255553,
+      "k": 1099511627775,
+      "required_bits": 40
+    },
+    {
+      "v": 42,
+      "A": 4398046511105,
+      "k": 2199023255551,
+      "required_bits": 41
+    },
+    {
+      "v": 43,
+      "A": 8796093022209,
+      "k": 4398046511103,
+      "required_bits": 42
+    },
+    {
+      "v": 44,
+      "A": 17592186044417,
+      "k": 8796093022207,
+      "required_bits": 43
+    },
+    {
+      "v": 45,
+      "A": 35184372088833,
+      "k": 17592186044415,
+      "required_bits": 44
+    },
+    {
+      "v": 46,
+      "A": 70368744177665,
+      "k": 35184372088831,
+      "required_bits": 45
+    },
+    {
+      "v": 47,
+      "A": 140737488355329,
+      "k": 70368744177663,
+      "required_bits": 46
+    },
+    {
+      "v": 48,
+      "A": 281474976710657,
+      "k": 140737488355327,
+      "required_bits": 47
+    },
+    {
+      "v": 49,
+      "A": 562949953421313,
+      "k": 281474976710655,
+      "required_bits": 48
+    },
+    {
+      "v": 50,
+      "A": 1125899906842625,
+      "k": 562949953421311,
+      "required_bits": 49
+    },
+    {
+      "v": 51,
+      "A": 2251799813685249,
+      "k": 1125899906842623,
+      "required_bits": 50
+    },
+    {
+      "v": 52,
+      "A": 4503599627370497,
+      "k": 2251799813685247,
+      "required_bits": 51
+    },
+    {
+      "v": 53,
+      "A": 9007199254740993,
+      "k": 4503599627370495,
+      "required_bits": 52
+    },
+    {
+      "v": 54,
+      "A": 18014398509481985,
+      "k": 9007199254740991,
+      "required_bits": 53
+    },
+    {
+      "v": 55,
+      "A": 36028797018963969,
+      "k": 18014398509481983,
+      "required_bits": 54
+    },
+    {
+      "v": 56,
+      "A": 72057594037927937,
+      "k": 36028797018963967,
+      "required_bits": 55
+    },
+    {
+      "v": 57,
+      "A": 144115188075855873,
+      "k": 72057594037927935,
+      "required_bits": 56
+    },
+    {
+      "v": 58,
+      "A": 288230376151711745,
+      "k": 144115188075855871,
+      "required_bits": 57
+    },
+    {
+      "v": 59,
+      "A": 576460752303423489,
+      "k": 288230376151711743,
+      "required_bits": 58
+    },
+    {
+      "v": 60,
+      "A": 1152921504606846977,
+      "k": 576460752303423487,
+      "required_bits": 59
+    },
+    {
+      "v": 61,
+      "A": 2305843009213693953,
+      "k": 1152921504606846975,
+      "required_bits": 60
+    },
+    {
+      "v": 62,
+      "A": 4611686018427387905,
+      "k": 2305843009213693951,
+      "required_bits": 61
+    },
+    {
+      "v": 63,
+      "A": 9223372036854775809,
+      "k": 4611686018427387903,
+      "required_bits": 62
+    },
+    {
+      "v": 64,
+      "A": 18446744073709551617,
+      "k": 9223372036854775807,
+      "required_bits": 63
+    }
+  ],
+  "scope": {
+    "density_zero_proof_applies_to": "original adjacent-order sufficient condition only",
+    "not_asserted": [
+      "zero density of the union with all prefix-shift certificates",
+      "failure of any uncovered Y valuation",
+      "global B integrality or mod 8 congruence"
+    ]
+  }
+}

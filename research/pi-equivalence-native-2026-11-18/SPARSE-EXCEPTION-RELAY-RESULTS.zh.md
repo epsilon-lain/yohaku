@@ -204,3 +204,34 @@ s\ge\max\{2,C_A-\Gamma_A-3,d_c-1,\nu_c+2d_c-1\},
 二进提升分支。这些全局性质仍是待证命题；有限验证没有补成全阶证明。
 [本轮复算](verify_bbp_global_valuation_followup.py) · [紧凑证书](bbp-global-valuation-verification.json)
 
+## 后续：四位共振整除与二进覆盖结构
+
+对上一节归一化量的逐系数充分条件，已进一步证明所有额外整除需求不超过四位的共振位置。
+具体地，写 $m=A2^u$、$J=2^{u+3}k$、$w=(A-1)/2$，其中 $A,k$ 为正奇数且 $k\le w$。
+令 $\sigma=v_2\binom wk$、$b=J/2$、
+$U=b\binom{2m-1}{b+1}+(b+1)\binom{2m-1}{b+2}$。
+新的统一公式为
+
+$$
+S_J\equiv\begin{cases}U,&u\ge1,\\U+8\binom wk,&u=0\end{cases}\pmod{16}.
+$$
+
+它给出 $u\ge1$ 时 $v_2(S_J)\ge\min(4,\sigma)$，以及 $u=0$ 时
+$v_2(S_J)\ge\min(4,\sigma+1)$。结合已证进位不等式，可完成全部四位以内的共振要求。
+[四位共振证明](BBP-RESONANCE-MOD16.zh.md) · [标准库复算](verify_bbp_resonance_mod16.py)
+
+覆盖参数也已化为闭式：对 $r$ 位奇数 $A\ge3$，$C_A$ 在
+$3A-1\ge2^{r+1}$ 时为 $r$，否则为 $r-2$。
+这进一步简化了原有四状态动态规划；由此可直接判定 $E_A=C_A-\Gamma_A$。
+四位定理证明 $E_A\le4$ 时 $B_{A2^u-1}$ 对所有 $u\ge0$ 均为二进整数。
+还已严格证明原相邻阶判据的全部覆盖集合具有自然密度零，表明该充分条件本身不能覆盖一般整数。
+[二进闭式、计数与密度证明](BBP-BINARY-COVERAGE-CRITERION.zh.md) · [复算](verify_bbp_binary_coverage.py)
+
+额外获得的精确恒等式
+$\sum_{t=0}^{J-1}\binom{J-1}{t}g_t=0$ 对所有正的八倍数 $J$ 成立。
+完整强化共振界仍只得到有限证据，并另列出 $u=0$ 上过强精确等式的反例。
+[强化界审计与复算](RESONANCE-STRONG-BOUND-AUDIT.zh.md)
+
+以上均为后续数学推导及复算，没有新增 Yohaku 原生任务。
+全局 $B_N$ 的模四、模八公式、全偶数终端非零引理、可变补偿阶及全体有理逼近目标仍待证明。
+

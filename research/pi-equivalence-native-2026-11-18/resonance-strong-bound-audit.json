@@ -1,0 +1,513 @@
+{
+  "format": "bbp-resonance-strong-bound-audit/1",
+  "generated_utc": "2026-11-19T16:52:02.869785+00:00",
+  "script_sha256": "443ebceeb89142e4d1151dd45776ed4d69865a9f54c8b78caf5544553bdff2ad",
+  "status": "finite verification, not a proof of the stronger bound",
+  "transform_crosscheck": {
+    "N_min": 1,
+    "N_max": 20,
+    "coefficients_checked": 860,
+    "precision_bits": 32,
+    "passed": true
+  },
+  "exact_zero_identity": {
+    "polynomial_identity_verified": true,
+    "arithmetic": "exact integers and fractions",
+    "rows": [
+      {
+        "J": 8,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 16,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 24,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 32,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 40,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 48,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 56,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 64,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 72,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 80,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 88,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 96,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 104,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 112,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 120,
+        "numerator": 0,
+        "denominator": 1
+      },
+      {
+        "J": 128,
+        "numerator": 0,
+        "denominator": 1
+      }
+    ]
+  },
+  "exact_high_case": {
+    "A": 257,
+    "u": 1,
+    "k": 63,
+    "N": 513,
+    "J": 1008,
+    "method": "exact integer binomial transform",
+    "v2_b": 10,
+    "b_mod_2048": 1024,
+    "b_abs_bit_length": 4653,
+    "v2_S": 7,
+    "sigma": 7,
+    "S_denominator": 63
+  },
+  "u0_counterexample": {
+    "A": 3,
+    "u": 0,
+    "k": 1,
+    "N": 2,
+    "J": 8,
+    "g7": [
+      36,
+      1
+    ],
+    "g8": [
+      -232,
+      3
+    ],
+    "S": [
+      -660,
+      1
+    ],
+    "v2_S": 2,
+    "sigma": 0,
+    "refutes": "universal equality v2(S)=sigma+1 when u=0",
+    "does_not_refute": "lower bound v2(S)>=sigma+1 when u=0"
+  },
+  "positive_u_batch": {
+    "comparisons": 83348,
+    "exact_equal_to_sigma": 83348,
+    "valuation_lower_bounds_only": 0,
+    "maximum_sigma": 8,
+    "exact_gap_histogram": {
+      "0": 83348
+    },
+    "failure_count": 0,
+    "failures": [],
+    "scope": "all odd N with 1<=N<2000, all allowed odd k",
+    "precision_bits": 40,
+    "claim_status": "finite check; general bound unproved"
+  },
+  "u0_batch": {
+    "comparisons": 5776,
+    "exact_equal_to_sigma": 0,
+    "valuation_lower_bounds_only": 0,
+    "maximum_sigma": 7,
+    "exact_gap_histogram": {
+      "2": 1482,
+      "1": 2850,
+      "3": 722,
+      "4": 361,
+      "8": 23,
+      "7": 47,
+      "5": 180,
+      "6": 89,
+      "10": 6,
+      "9": 11,
+      "12": 1,
+      "11": 1,
+      "14": 2,
+      "13": 1
+    },
+    "failure_count": 0,
+    "failures": [],
+    "scope": "all odd A with 3<=A<=303, u=0, all allowed odd k",
+    "precision_bits": 40,
+    "A_mod4_1": {
+      "comparisons": 2850,
+      "exact_equal_to_sigma": 0,
+      "valuation_lower_bounds_only": 0,
+      "maximum_sigma": 7,
+      "exact_gap_histogram": {
+        "1": 2850
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    "A_mod4_3": {
+      "comparisons": 2926,
+      "exact_equal_to_sigma": 0,
+      "valuation_lower_bounds_only": 0,
+      "maximum_sigma": 6,
+      "exact_gap_histogram": {
+        "2": 1482,
+        "3": 722,
+        "4": 361,
+        "8": 23,
+        "7": 47,
+        "5": 180,
+        "6": 89,
+        "10": 6,
+        "9": 11,
+        "12": 1,
+        "11": 1,
+        "14": 2,
+        "13": 1
+      },
+      "failure_count": 0,
+      "failures": []
+    },
+    "claim_status": "finite check; general bounds unproved"
+  },
+  "extended_batch": {
+    "scope": "21 isolated parameter pairs; not a full interval scan",
+    "precision_bits": 40,
+    "rows": [
+      {
+        "comparisons": 64,
+        "exact_equal_to_sigma": 64,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 7,
+        "exact_gap_histogram": {
+          "0": 64
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 257,
+        "u": 1,
+        "N": 513
+      },
+      {
+        "comparisons": 64,
+        "exact_equal_to_sigma": 64,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 0,
+        "exact_gap_histogram": {
+          "0": 64
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 255,
+        "u": 1,
+        "N": 509
+      },
+      {
+        "comparisons": 192,
+        "exact_equal_to_sigma": 192,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 8,
+        "exact_gap_histogram": {
+          "0": 192
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 769,
+        "u": 1,
+        "N": 1537
+      },
+      {
+        "comparisons": 192,
+        "exact_equal_to_sigma": 192,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 1,
+        "exact_gap_histogram": {
+          "0": 192
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 767,
+        "u": 1,
+        "N": 1533
+      },
+      {
+        "comparisons": 256,
+        "exact_equal_to_sigma": 256,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 9,
+        "exact_gap_histogram": {
+          "0": 256
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 1025,
+        "u": 1,
+        "N": 2049
+      },
+      {
+        "comparisons": 256,
+        "exact_equal_to_sigma": 256,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 0,
+        "exact_gap_histogram": {
+          "0": 256
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 1023,
+        "u": 1,
+        "N": 2045
+      },
+      {
+        "comparisons": 768,
+        "exact_equal_to_sigma": 768,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 10,
+        "exact_gap_histogram": {
+          "0": 768
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 3073,
+        "u": 1,
+        "N": 6145
+      },
+      {
+        "comparisons": 768,
+        "exact_equal_to_sigma": 768,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 1,
+        "exact_gap_histogram": {
+          "0": 768
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 3071,
+        "u": 1,
+        "N": 6141
+      },
+      {
+        "comparisons": 1024,
+        "exact_equal_to_sigma": 1024,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 11,
+        "exact_gap_histogram": {
+          "0": 1024
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 4097,
+        "u": 1,
+        "N": 8193
+      },
+      {
+        "comparisons": 1024,
+        "exact_equal_to_sigma": 1024,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 0,
+        "exact_gap_histogram": {
+          "0": 1024
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 4095,
+        "u": 1,
+        "N": 8189
+      },
+      {
+        "comparisons": 3072,
+        "exact_equal_to_sigma": 3072,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 12,
+        "exact_gap_histogram": {
+          "0": 3072
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 12289,
+        "u": 1,
+        "N": 24577
+      },
+      {
+        "comparisons": 3072,
+        "exact_equal_to_sigma": 3072,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 1,
+        "exact_gap_histogram": {
+          "0": 3072
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 12287,
+        "u": 1,
+        "N": 24573
+      },
+      {
+        "comparisons": 4096,
+        "exact_equal_to_sigma": 4096,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 13,
+        "exact_gap_histogram": {
+          "0": 4096
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 16385,
+        "u": 1,
+        "N": 32769
+      },
+      {
+        "comparisons": 4096,
+        "exact_equal_to_sigma": 4096,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 0,
+        "exact_gap_histogram": {
+          "0": 4096
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 16383,
+        "u": 1,
+        "N": 32765
+      },
+      {
+        "comparisons": 12288,
+        "exact_equal_to_sigma": 12288,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 14,
+        "exact_gap_histogram": {
+          "0": 12288
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 49153,
+        "u": 1,
+        "N": 98305
+      },
+      {
+        "comparisons": 12288,
+        "exact_equal_to_sigma": 12288,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 1,
+        "exact_gap_histogram": {
+          "0": 12288
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 49151,
+        "u": 1,
+        "N": 98301
+      },
+      {
+        "comparisons": 64,
+        "exact_equal_to_sigma": 64,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 7,
+        "exact_gap_histogram": {
+          "0": 64
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 257,
+        "u": 2,
+        "N": 1027
+      },
+      {
+        "comparisons": 64,
+        "exact_equal_to_sigma": 64,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 7,
+        "exact_gap_histogram": {
+          "0": 64
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 257,
+        "u": 4,
+        "N": 4111
+      },
+      {
+        "comparisons": 256,
+        "exact_equal_to_sigma": 256,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 9,
+        "exact_gap_histogram": {
+          "0": 256
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 1025,
+        "u": 2,
+        "N": 4099
+      },
+      {
+        "comparisons": 1024,
+        "exact_equal_to_sigma": 1024,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 11,
+        "exact_gap_histogram": {
+          "0": 1024
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 4097,
+        "u": 2,
+        "N": 16387
+      },
+      {
+        "comparisons": 5461,
+        "exact_equal_to_sigma": 5461,
+        "valuation_lower_bounds_only": 0,
+        "maximum_sigma": 13,
+        "exact_gap_histogram": {
+          "0": 5461
+        },
+        "failure_count": 0,
+        "failures": [],
+        "A": 21845,
+        "u": 1,
+        "N": 43689
+      }
+    ],
+    "claim_status": "finite check; general equality unproved"
+  },
+  "all_requested_checks_passed": true
+}
