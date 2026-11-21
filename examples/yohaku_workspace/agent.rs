@@ -22,6 +22,7 @@ use yohaku::socius::{
 };
 
 enum Event {
+    InputWritten(u64),
     Message(u64, Value),
     Request(u64, Value, Sender<Value>),
     Paste(Option<Field>, Result<String, String>),
@@ -135,6 +136,13 @@ impl ChatLayout {
 include!("agent_entries.rs");
 include!("agent_copy.rs");
 
+const WORKER_INPUT_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(20);
+
+struct PendingWorkerInput {
+    draft: Editor,
+    deadline: std::time::Instant,
+}
+
 pub struct AgentPanel {
     route_error: Option<String>,
     legacy_config: Value,
@@ -178,6 +186,7 @@ pub struct AgentPanel {
     tx: Sender<Event>,
     rx: Receiver<Event>,
     child: Option<Arc<Mutex<Child>>>,
+    pending_worker_input: Option<PendingWorkerInput>,
     waiting: HashMap<u64, Sender<Value>>,
     history: Value,
     turn: u64,
@@ -301,6 +310,7 @@ impl AgentPanel {
             tx,
             rx,
             child: None,
+            pending_worker_input: None,
             waiting: HashMap::new(),
             history: json!([]),
             turn: 0,
@@ -465,53 +475,56 @@ impl AgentPanel {
         };
         let mut stdin = child.stdin.take().unwrap();
         let stdout = child.stdout.take().unwrap();
-        if writeln!(stdin, "{initial}").is_err() {
-            let _ = child.kill();
-            let _ = child.wait();
-            self.status = "Could not send request to AI connector".into();
-            return false;
-        }
         let child = Arc::new(Mutex::new(child));
         self.child = Some(child.clone());
+        self.pending_worker_input = Some(PendingWorkerInput {
+            draft: std::mem::take(&mut self.input),
+            deadline: std::time::Instant::now() + WORKER_INPUT_TIMEOUT,
+        });
         let tx = self.tx.clone();
         std::thread::spawn(move || {
-            for line in BufReader::new(stdout).lines() {
-                let value = match line
-                    .ok()
-                    .and_then(|s| serde_json::from_str::<Value>(&s).ok())
-                {
-                    Some(v) => v,
-                    None => break,
-                };
-                if value["event"] == "request" {
-                    let local_id = value["id"].as_u64().unwrap_or(0);
-                    let id = (turn << 32) | local_id;
-                    let (reply, rx) = mpsc::channel();
-                    if tx
-                        .send(Event::Request(
-                            id,
-                            {
-                                let mut request = value["request"].clone();
-                                request["__agent_tool"] = value["tool"].clone();
-                                request
-                            },
-                            reply,
-                        ))
-                        .is_err()
+            // A worker that never reads stdin can fill the pipe on a large request.
+            let sent = writeln!(stdin, "{initial}").is_ok()
+                && tx.send(Event::InputWritten(turn)).is_ok();
+            if sent {
+                for line in BufReader::new(stdout).lines() {
+                    let value = match line
+                        .ok()
+                        .and_then(|s| serde_json::from_str::<Value>(&s).ok())
                     {
+                        Some(v) => v,
+                        None => break,
+                    };
+                    if value["event"] == "request" {
+                        let local_id = value["id"].as_u64().unwrap_or(0);
+                        let id = (turn << 32) | local_id;
+                        let (reply, rx) = mpsc::channel();
+                        if tx
+                            .send(Event::Request(
+                                id,
+                                {
+                                    let mut request = value["request"].clone();
+                                    request["__agent_tool"] = value["tool"].clone();
+                                    request
+                                },
+                                reply,
+                            ))
+                            .is_err()
+                        {
+                            break;
+                        }
+                        match rx.recv() {
+                            Ok(mut result) => {
+                                result["id"] = json!(local_id);
+                                if writeln!(stdin, "{result}").is_err() {
+                                    break;
+                                }
+                            }
+                            Err(_) => break,
+                        }
+                    } else if tx.send(Event::Message(turn, value)).is_err() {
                         break;
                     }
-                    match rx.recv() {
-                        Ok(mut result) => {
-                            result["id"] = json!(local_id);
-                            if writeln!(stdin, "{result}").is_err() {
-                                break;
-                            }
-                        }
-                        Err(_) => break,
-                    }
-                } else if tx.send(Event::Message(turn, value)).is_err() {
-                    break;
                 }
             }
             drop(stdin);
@@ -527,8 +540,6 @@ impl AgentPanel {
         panel.agent_active = true;
         self.turn_tool_failed = false;
         self.status = "AI processing | starting connector".into();
-        self.log(format!("You: {}", self.input.text));
-        self.input.load(String::new());
         true
     }
     fn stop(&mut self, panel: &mut Panel) {
@@ -695,9 +706,34 @@ impl AgentPanel {
                         panel.queue_agent(id, request);
                     }
                 }
+                Event::InputWritten(turn) if turn == self.turn => {
+                    if let Some(pending) = self.pending_worker_input.take() {
+                        self.log(format!("You: {}", pending.draft.text));
+                    }
+                }
                 Event::Exit(turn) if turn == self.turn => {
+                    let restored = if let Some(mut pending) = self.pending_worker_input.take() {
+                        if !self.input.text.is_empty() {
+                            pending.draft.load(format!("{}\n\n{}", pending.draft.text, self.input.text));
+                        }
+                        self.input = pending.draft;
+                        true
+                    } else {
+                        false
+                    };
                     if self.stop_requested {
                         self.status = "Stopped by user | AI process closed | dispatched outcomes may be unknown; tools/terminals may continue; inspect Techne | completed file changes remain saved | ready for next message".into();
+                        if restored {
+                            self.status.push_str(" | draft restored");
+                        }
+                    } else if self.stopping {
+                        self.status = if restored {
+                            "AI connector input timed out | draft restored"
+                        } else {
+                            "AI connector input timed out | request outcome unknown; check before retrying"
+                        }.into();
+                    } else if restored {
+                        self.status = "Could not send request to AI connector | draft restored".into();
                     } else if self.running {
                         self.status =
                             "AI connection interrupted | no end event received | ready to retry".into();
@@ -800,6 +836,13 @@ impl AgentPanel {
                 }
                 _ => (),
             }
+        }
+        if self.running && self.pending_worker_input.as_ref().is_some_and(|input| {
+            std::time::Instant::now() >= input.deadline
+        }) {
+            self.stop(panel);
+            self.stop_requested = false;
+            self.status = "AI connector input timed out | closing connector".into();
         }
     }
     pub fn key(
@@ -3128,6 +3171,59 @@ mod tests {
         assert_eq!(rx.recv().unwrap()["ok"], false);
         assert!(!panel.agent_active);
     }
+    #[test]
+    fn stalled_worker_input_leaves_ui_responsive_and_draft_can_be_sent_again() {
+        let mut a = AgentPanel::new();
+        let mut panel = render_panel();
+        let draft = "呀".repeat(96_000);
+        a.input.load(draft.clone());
+        let mut stall = Command::new("python3");
+        stall.args(["-B", "-c", "import time; time.sleep(4)"]);
+        let started = std::time::Instant::now();
+        assert!(a.launch_worker(stall, json!({"prompt": draft}), &mut panel));
+        assert!(started.elapsed() < std::time::Duration::from_secs(2));
+        assert!(panel.agent_active);
+        assert!(a.input.text.is_empty());
+
+        a.pending_worker_input.as_mut().unwrap().deadline = std::time::Instant::now();
+        a.update(&mut panel, "socius");
+        assert!(a.stopping);
+        assert!(a.status.contains("timed out"));
+        for _ in 0..200 {
+            a.update(&mut panel, "socius");
+            if !a.stopping {
+                break;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+        assert!(!a.stopping);
+        assert!(!panel.agent_active);
+        assert!(a.child.is_none());
+        assert_eq!(a.input.text, draft);
+        assert!(a.status.contains("draft restored"));
+        assert!(a.logs.is_empty());
+
+        let mut accept = Command::new("python3");
+        accept.args(["-B", "-c", concat!(
+            "import json, sys; ",
+            "request = json.loads(sys.stdin.readline()); ",
+            "assert request['prompt'] == '呀' * 96000; ",
+            "print(json.dumps(dict(event='done', text='accepted', history=[])), flush=True)",
+        )]);
+        assert!(a.launch_worker(accept, json!({"prompt": a.input.text}), &mut panel));
+        for _ in 0..200 {
+            a.update(&mut panel, "socius");
+            if a.child.is_none() {
+                break;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(10));
+        }
+        assert!(a.child.is_none());
+        assert_eq!(a.answer.as_deref(), Some("accepted"));
+        assert!(a.input.text.is_empty());
+        assert_eq!(a.logs.len(), 1);
+    }
+
     #[test]
     fn transport_recovery_stop_closes_worker_and_rejects_late_tool_events() {
         let (base, mut panel) = live_panel("transport-stop");

@@ -118,8 +118,8 @@ def serve():
                 assert parsed['ok'] and parsed['result']['text']=='offline native guide\n',parsed
                 message={'role':'assistant','content':'OFFLINE_NATIVE_TOOL_ROUNDTRIP_OK'}
             payload=json.dumps({'choices':[{'message':message,'finish_reason':'tool_calls' if len(self.rounds)==1 else 'stop'}],'model':'offline-fixture','usage':{'total_tokens':0}}).encode()
-            self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(payload)));self.end_headers();self.wfile.write(payload)
             destination.write_text(json.dumps({'requests':len(self.rounds),'path':self.path,'tool_returned':len(self.rounds)==2,'model_service_called':False}))
+            self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(payload)));self.end_headers();self.wfile.write(payload)
     server=http.server.HTTPServer(('127.0.0.1',0),Handler)
     print(server.server_port,flush=True)
     server.serve_forever()

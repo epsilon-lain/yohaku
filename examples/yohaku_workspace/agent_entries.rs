@@ -18,7 +18,7 @@ impl AgentPanel {
         if self.session_id.contains("\ncodex:") { "Codex / codex-local" } else { "Yohaku Agent / direct" }
     }
     fn select_session(&mut self, root: &str, backend: &str, config: Value) -> Result<(), String> {
-        if self.running { return Err("Finish or stop the current turn before switching Agent".into()); }
+        if self.running || self.stopping { return Err("Wait for the current turn to finish or stop before switching Agent".into()); }
         let key = if backend == "agent" { "agent".into() } else { format!("codex:{}", config["codex_entry"].as_str().ok_or("Missing Codex entry")?) };
         let identifier = format!("{root}\n{key}");
         if identifier != self.session_id {
